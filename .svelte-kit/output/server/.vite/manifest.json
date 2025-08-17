@@ -50,13 +50,6 @@
       "_environment.js"
     ]
   },
-  "_stores.js": {
-    "file": "chunks/stores.js",
-    "name": "stores",
-    "imports": [
-      "_index.js"
-    ]
-  },
   "_utils.js": {
     "file": "chunks/utils.js",
     "name": "utils"
@@ -106,7 +99,7 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
-      "_stores.js"
+      "_index.js"
     ],
     "css": [
       "_app/immutable/assets/_layout.BXfHt6wn.css"
@@ -119,10 +112,10 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
-      "_stores.js"
+      "_index.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.VmT0IP5L.css"
+      "_app/immutable/assets/_page.CaPeG4Ak.css"
     ]
   }
 }

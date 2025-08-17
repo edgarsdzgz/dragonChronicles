@@ -24,7 +24,7 @@ function create_validator(validate_or_fn, maybe_fn) {
         error(
           400,
           await state.handleValidationError({
-            ...result,
+            issues: result.issues,
             event
           })
         );

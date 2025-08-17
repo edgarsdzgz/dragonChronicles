@@ -1,4 +1,4 @@
-export type CurrencyKey = 'steak' | 'gold' | 'dragonscales' | 'gems';
+export type CurrencyKey = 'arcana';
 
 export interface Currency {
 	key: CurrencyKey;

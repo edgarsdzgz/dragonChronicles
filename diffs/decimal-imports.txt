@@ -1,0 +1,4 @@
+$ git grep -n "break_eternity" src || true
+
+No direct break_eternity imports found in src directory.
+All decimal imports use the canonical wrapper: src/lib/num/decimal.ts

@@ -21,8 +21,12 @@
       "Bash(rg:*)",
       "Bash(tasklist:*)",
       "Bash(taskkill:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(git grep:*)",
+      "Bash(true)",
+      "Bash(curl:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }

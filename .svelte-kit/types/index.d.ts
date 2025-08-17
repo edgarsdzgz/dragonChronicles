@@ -16,4 +16,4 @@ export type Pathname = "/";
 
 export type ResolvedPathname = `${"" | `/${string}`}${Pathname}`;
 
-export type Asset = "/favicon.png" | "/steak.svg" | "/ui_mockups/Dragon_Idler_UI_Mockup_Forge_A11y_CB_v01.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_Forge_Dark_v02.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_Mobile_Forge_Dark_v01.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_v01.png" | "/ui_mockups/screenshot_mvp.png" | "/ui_mockups/screenshot_mvp2.png";
+export type Asset = "/distance-config.json" | "/favicon.png" | "/steak.svg" | "/ui_mockups/Dragon_Idler_UI_Mockup_Forge_A11y_CB_v01.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_Forge_Dark_v02.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_Mobile_Forge_Dark_v01.png" | "/ui_mockups/Dragon_Idler_UI_Mockup_v01.png" | "/ui_mockups/enchant_example.png" | "/ui_mockups/manual_mockup_v1.png" | "/ui_mockups/manual_mockup_v1_noCrossouts.png" | "/ui_mockups/screenshot_mvp.png" | "/ui_mockups/screenshot_mvp2.png";

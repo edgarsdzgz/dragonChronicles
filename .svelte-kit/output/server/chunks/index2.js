@@ -1671,6 +1671,7 @@ function to_style(value, styles) {
 function subscribe_to_store(store, run, invalidate) {
   if (store == null) {
     run(void 0);
+    if (invalidate) invalidate(void 0);
     return noop;
   }
   const unsub = untrack(
@@ -1823,22 +1824,6 @@ function render(component, options = {}) {
     abort();
   }
 }
-function spread_props(props) {
-  const merged_props = {};
-  let key;
-  for (let i = 0; i < props.length; i++) {
-    const obj = props[i];
-    for (key in obj) {
-      const desc = Object.getOwnPropertyDescriptor(obj, key);
-      if (desc) {
-        Object.defineProperty(merged_props, key, desc);
-      } else {
-        merged_props[key] = obj[key];
-      }
-    }
-  }
-  return merged_props;
-}
 function stringify(value) {
   return typeof value === "string" ? value : value == null ? "" : value + "";
 }
@@ -1902,20 +1887,22 @@ export {
   getContext as F,
   escape_html as G,
   HYDRATION_ERROR as H,
-  store_get as I,
-  attr as J,
-  unsubscribe_stores as K,
+  current_component as I,
+  fallback as J,
+  attr as K,
   LEGACY_PROPS as L,
-  ensure_array_like as M,
-  attr_class as N,
-  bind_props as O,
-  stringify as P,
-  attr_style as Q,
-  fallback as R,
-  spread_props as S,
-  copy_payload as T,
-  assign_payload as U,
+  bind_props as M,
+  store_get as N,
+  copy_payload as O,
+  assign_payload as P,
+  unsubscribe_stores as Q,
+  attr_class as R,
+  attr_style as S,
+  stringify as T,
+  ensure_array_like as U,
   safe_not_equal as V,
+  subscribe_to_store as W,
+  run_all as X,
   set_active_effect as a,
   active_effect as b,
   active_reaction as c,

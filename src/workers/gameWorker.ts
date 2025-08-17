@@ -34,10 +34,7 @@ function defaultState(): GameState {
 		},
 		
 		currencies: {
-			steak: { key: 'steak', amount: 0, unlocked: true },
-			gold: { key: 'gold', amount: 0, unlocked: false },
-			dragonscales: { key: 'dragonscales', amount: 0, unlocked: false },
-			gems: { key: 'gems', amount: 0, unlocked: false }
+			arcana: { key: 'arcana', amount: 0, unlocked: true }
 		},
 		upgrades: {
 			damage: 0,

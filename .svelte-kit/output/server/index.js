@@ -1637,7 +1637,11 @@ ${indent}}`);
       blocks.push(boot);
     }
     if (options2.service_worker) {
-      const opts = "";
+      let opts = "";
+      if (options2.service_worker_options != null) {
+        const service_worker_options = { ...options2.service_worker_options };
+        opts = `, ${s(service_worker_options)}`;
+      }
       blocks.push(`if ('serviceWorker' in navigator) {
 						addEventListener('load', function () {
 							navigator.serviceWorker.register('${prefixed("service-worker.js")}'${opts});

@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { gameState } from '$lib/stores';
+	import { runBootDiagnostics } from '$lib/boot/diagnostics';
+	import { onMount } from 'svelte';
 	import '../app.css';
+	
+	// Phase 0.2: Run boot diagnostics
+	onMount(() => {
+		runBootDiagnostics();
+	});
 </script>
 
 <main>

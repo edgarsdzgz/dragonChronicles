@@ -1,0 +1,10 @@
+{
+  "levelBaseKm": 1.5,
+  "levelGrowth": 1.25,
+  "maxLevels": 2000,
+  "overrides": {
+    "1": 1.5,
+    "2": 1.9,
+    "10": 8.0
+  }
+}

@@ -1,0 +1,98 @@
+
+> dragon-idler@0.0.1 test
+> vitest run --reporter=basic
+
+
+ RUN  v3.2.4 /home/edgar_dev/game-dev/dragonChronicles
+
+ DEPRECATED  'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}
+ ✓ src/test/gear-sets.test.ts (22 tests) 27ms
+ ✓ src/test/phase24-integration.test.ts (16 tests) 14ms
+ ✓ src/test/gear.test.ts (10 tests) 11ms
+ ✓ src/test/progression.test.ts (12 tests) 11ms
+ ✓ src/test/crafting.test.ts (20 tests) 21ms
+ ✓ src/test/rune-system.test.ts (24 tests) 25ms
+ ✓ tests/num/decimal.spec.ts (1 test) 6ms
+stderr | tests/config/enemyConfig.spec.ts > enemy-config loader > throws on invalid
+Enemy config invalid: ZodError: [
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "spawning",
+      "basicShooter"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  },
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "movement"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  },
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "projectiles"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  },
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "caps"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  },
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "scaling"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  },
+  {
+    "expected": "object",
+    "code": "invalid_type",
+    "path": [
+      "bossLand10"
+    ],
+    "message": "Invalid input: expected object, received undefined"
+  }
+]
+    at new ZodError [90m(file:///home/edgar_dev/game-dev/dragonChronicles/[39mnode_modules/[4mzod[24m/v4/core/core.js:30:39[90m)[39m
+    at Module.<anonymous> [90m(file:///home/edgar_dev/game-dev/dragonChronicles/[39mnode_modules/[4mzod[24m/v4/core/parse.js:40:20[90m)[39m
+    at _.inst.safeParse [90m(file:///home/edgar_dev/game-dev/dragonChronicles/[39mnode_modules/[4mzod[24m/v4/classic/schemas.js:30:46[90m)[39m
+    at Module.loadEnemyConfig [90m(/home/edgar_dev/game-dev/dragonChronicles/[39msrc/lib/config/enemyConfig.ts:80:32[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+    at [90m/home/edgar_dev/game-dev/dragonChronicles/[39mtests/config/enemyConfig.spec.ts:24:5
+    at [90mfile:///home/edgar_dev/game-dev/dragonChronicles/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20
+
+ ✓ tests/config/enemyConfig.spec.ts (2 tests) 27ms
+ ✓ tests/config/loadEnemyConfig.spec.ts (2 tests) 9ms
+ ✓ tests/boot/diagnostics.spec.ts (2 tests) 5ms
+
+
+ Test Files  10 passed (10)
+      Tests  111 passed (111)
+   Start at  15:39:34
+   Duration  3.05s (transform 1.38s, setup 457ms, collect 2.70s, tests 155ms, environment 9.05s, prepare 1.57s)
+
