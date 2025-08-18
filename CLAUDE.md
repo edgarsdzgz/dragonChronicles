@@ -58,3 +58,25 @@ This ensures:
 - ✅ Meaningful output ("ok - 2 passed" vs "FAIL - 1 failed, 1 passed")
 - ✅ CI/pnpm compatibility
 - ✅ Individual test case tracking
+
+## Build Optimization Notes
+
+### Current Build Pattern
+The current test scripts trigger TypeScript compilation multiple times:
+1. Unit tests build specific packages (`tsc -b packages/shared`)  
+2. Integration tests build dependencies (`tsc -b packages/shared packages/logger packages/sim`)
+3. E2E tests build entire workspace (`tsc -b`)
+
+This results in multiple rebuilds of the same packages during `test:all`.
+
+### Future Optimization Options
+- **SKIP_BUILD environment variable:** Allow tests to skip compilation when artifacts are known to be current
+- **Workspace scripts:** Use `pnpm --filter` patterns instead of direct TypeScript paths for better dependency management
+- **Build-once pattern:** Run full workspace build once, then run all tests against existing artifacts
+
+Example improved pattern:
+```bash
+# Instead of rebuilding per test
+npm run build  # Once
+SKIP_BUILD=1 npm run test:all  # Skip rebuilds
+```
