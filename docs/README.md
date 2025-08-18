@@ -5,7 +5,9 @@ Welcome to the Draconia Chronicles documentation hub. This documentation covers 
 ## Navigation
 
 ### 📋 [Overview](./overview/)
-Product summaries, architecture overviews, and project status.
+Product summaries, architecture overviews, and project status:
+- [Project Overview](./overview/README.md) - Status, metrics, architecture
+- [Changelog](./overview/changelog.md) - v2.0.0 release notes and versioning
 
 ### 🔧 [Engineering](./engineering/)
 Development standards, policies, and technical guidelines:
@@ -14,6 +16,7 @@ Development standards, policies, and technical guidelines:
 
 ### 🏛️ [ADR (Architectural Decision Records)](./adr/)
 Key technical decisions and their rationale:
+- [ADR Template](./adr/TEMPLATE.md) - For documenting architectural decisions
 - [ADR-0001: Testing Strategy](./adr/0001-testing-strategy.md)
 - [ADR-0002: TypeScript Strict Gate](./adr/0002-typescript-strict-gate.md)
 
