@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
-  "scripts": { "build": "tsc -b", "clean": "rimraf dist" },
+  "scripts": { "build": "npx tsc -b", "clean": "rimraf dist", "echo-ok": "echo ok" },
   "dependencies": { "@draconia/shared": "workspace:*" },
   "devDependencies": { "typescript": "^5.4.0", "rimraf": "^5.0.5" }
 }

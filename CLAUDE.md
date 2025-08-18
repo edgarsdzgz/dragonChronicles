@@ -8,6 +8,34 @@ This file contains important guidelines and patterns for working on the Draconia
 
 **Don't add a naked `console.log("ok")` at the end—that lies about the result.** The runner already prints derived results and sets the exit code correctly.
 
+## Development Standards (From Scrum Master Feedback)
+
+### Never Bypass Agreed Requirements
+
+**Don't fall back to alternative approaches when the agreed path fails.** Instead:
+1. Debug the root cause systematically  
+2. Fix the underlying configuration/environment issue
+3. Implement exactly what was requested
+4. Document the solution and validation steps
+
+Example: If `pnpm -w -r run build` fails, don't fall back to `npx tsc -b`. Find out why the workspace isn't working and fix it.
+
+### Always Provide Objective Evidence
+
+Support all claims with concrete, reproducible proof:
+- Use grep checks to verify code patterns: `git grep -n "pattern" -- tests`
+- Show exact command outputs when demonstrating functionality
+- Provide before/after comparisons for changes
+- Include validation commands others can reproduce
+
+### Quality Gate Checklist
+
+Before claiming work is complete, ensure:
+- All requested grep checks pass (0 results for bad patterns)
+- Full workflow runs and produces expected output exactly
+- Documentation is updated with root cause analysis and solution
+- Cross-platform compatibility is verified
+
 ❌ **WRONG:**
 ```javascript
 assert.equal(someFunction(), expectedValue);
@@ -76,10 +104,42 @@ This results in multiple rebuilds of the same packages during `test:all`.
 
 Example improved pattern:
 ```bash
-# Instead of rebuilding per test
-npm run build  # Once
-SKIP_BUILD=1 npm run test:all  # Skip rebuilds
+# Cross-platform driver with build-once optimization
+node tests/run-all.mjs  # Builds once, runs all tests
 ```
+
+## Cross-Platform Compatibility Issues
+
+### Windows Path Interpretation Error
+
+**Problem:** `/c: /c: Is a directory` error when using `spawnSync` with `shell: true` on Windows Git Bash.
+
+**Root Cause:** Windows shell path interpretation conflicts with Git Bash environment, causing directory path confusion.
+
+**Solution:** Remove `shell: true` from `spawnSync` options to avoid shell-based path interpretation issues.
+
+**Example Fix:**
+```javascript
+// WRONG - causes Windows path issues
+const r = spawnSync(cmd, args, { 
+  stdio: "pipe", 
+  encoding: "utf8",
+  shell: true,  // ❌ Remove this on Windows
+  env: { ...process.env, ...env }
+});
+
+// CORRECT - works cross-platform  
+const r = spawnSync(cmd, args, { 
+  stdio: "pipe", 
+  encoding: "utf8",
+  env: { ...process.env, ...env }
+  // No shell option - direct process execution
+});
+```
+
+**When This Occurs:** Usually in test runners, build scripts, or any Node.js spawn commands on Windows with Git Bash as the shell environment.
+
+**Reference:** Fixed in `tests/run-all.mjs` during S002 implementation.
 
 ## GitHub PR Guidelines
 

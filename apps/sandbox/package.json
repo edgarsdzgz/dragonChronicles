@@ -3,7 +3,7 @@
   "version": "0.0.0-phase0",
   "type": "module",
   "private": true,
-  "scripts": { "build": "tsc -b", "dev": "node dist/index.js" },
+  "scripts": { "build": "npx tsc -b", "dev": "node dist/index.js", "echo-ok": "echo ok" },
   "dependencies": {
     "@draconia/shared": "workspace:*",
     "@draconia/logger": "workspace:*",

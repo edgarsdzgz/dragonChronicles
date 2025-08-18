@@ -18,11 +18,8 @@ cd dragonChronicles
 # 2. Install dependencies
 pnpm install
 
-# 3. Build workspace
-pnpm run build
-
-# 4. Run tests
-pnpm run test:all
+# 3. Run tests (includes build optimization)
+node tests/run-all.mjs
 ```
 
 **Expected output**: `ok - 2 passed` (for each test file)
@@ -63,10 +60,10 @@ ls apps/*/dist
 
 ### 4. Test Execution
 ```bash
-# Run all tests (optimized)
-pnpm run test:all
+# Run all tests (cross-platform driver with build-once optimization)
+node tests/run-all.mjs
 
-# Run individual test suites
+# Run individual test suites (if needed)
 pnpm run test:unit          # Unit tests
 pnpm run test:integration   # Integration tests  
 pnpm run test:e2e          # End-to-end tests
@@ -102,8 +99,7 @@ dragonChronicles/
 
 3. **Build and test**:
    ```bash
-   pnpm run build
-   pnpm run test:all
+   node tests/run-all.mjs
    ```
 
 4. **Commit changes**:
@@ -124,8 +120,8 @@ dragonChronicles/
 # Quick test during development
 node tests/test-unit-shared.mjs
 
-# Full test suite (optimized)
-pnpm run test:all
+# Full test suite (cross-platform, optimized)
+node tests/run-all.mjs
 
 # With verbose TypeScript output
 node tests/test-ts-strict.mjs
@@ -142,7 +138,7 @@ pnpm run typecheck    # Type checking without emit
 
 ### Test Scripts
 ```bash
-pnpm run test:all          # All tests with BUILD_ONCE optimization
+node tests/run-all.mjs     # All tests with build-once optimization
 pnpm run test:unit         # Unit tests only
 pnpm run test:integration  # Integration tests only
 pnpm run test:e2e         # End-to-end tests only
@@ -185,9 +181,12 @@ node tests/test-unit-shared.mjs
 node tests/test-integration-graph.mjs
 ```
 
-**Issue**: `BUILD_ONCE=1` not working
+**Issue**: Individual tests failing after changes
 ```bash
-# Solution: Ensure you've built first
+# Solution: Use the driver for reliable cross-platform testing
+node tests/run-all.mjs
+
+# Or build manually first
 pnpm run build
 BUILD_ONCE=1 node tests/test-unit-shared.mjs
 ```
@@ -227,13 +226,16 @@ cat docs/engineering/typescript.md
 # Use TypeScript build mode for incremental compilation
 pnpm run build
 
-# Skip builds during testing if artifacts are current
-BUILD_ONCE=1 pnpm run test:unit
+# Use the driver for build-once optimization
+node tests/run-all.mjs
 ```
 
 ### Faster Tests
 ```bash
-# Run specific test categories
+# Run all tests with driver (fastest, cross-platform)
+node tests/run-all.mjs
+
+# Run specific test categories if needed
 pnpm run test:unit      # Fastest
 pnpm run test:ts-strict # Fast (no runtime execution)
 pnpm run test:e2e      # Slowest (full builds)

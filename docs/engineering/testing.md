@@ -87,10 +87,10 @@ await run(); // Prints accurate results based on test outcomes
 
 ## How to Run Tests
 
-### All Tests (Optimized)
+### All Tests (Cross-Platform)
 ```bash
-pnpm run test:all
-# Executes: tsc -b && BUILD_ONCE=1 for each test file
+node tests/run-all.mjs
+# Driver builds once, then runs all tests with BUILD_ONCE=1
 # Result: ok - 2/2/3/2 passed (unit/integration/e2e/strict)
 ```
 
@@ -107,7 +107,7 @@ pnpm run test:ts-strict    # TypeScript strict gate only
 # Run single test file directly
 node tests/test-unit-shared.mjs
 
-# With build optimization
+# With build optimization (after running driver or manual build)
 BUILD_ONCE=1 node tests/test-unit-shared.mjs
 ```
 
@@ -120,11 +120,11 @@ Running `pnpm run test:all` triggers multiple TypeScript builds:
 3. E2E tests: `tsc -b` (full workspace)
 
 ### Solution
-Set `BUILD_ONCE=1` environment variable to skip rebuilds:
+Use the cross-platform driver which handles build-once optimization:
 
 ```bash
-# Build once, then run tests against existing artifacts
-tsc -b && BUILD_ONCE=1 node tests/test-unit-shared.mjs
+# Driver builds once, then runs all tests with BUILD_ONCE=1
+node tests/run-all.mjs
 ```
 
 ### Implementation
@@ -191,7 +191,7 @@ if (process.env.BUILD_ONCE !== "1") {
   "test:integration": "node tests/test-integration-graph.mjs", 
   "test:e2e": "node tests/test-e2e-build.mjs",
   "test:ts-strict": "node tests/test-ts-strict.mjs",
-  "test:all": "tsc -b && BUILD_ONCE=1 node tests/test-unit-shared.mjs && BUILD_ONCE=1 node tests/test-integration-graph.mjs && BUILD_ONCE=1 node tests/test-e2e-build.mjs && node tests/test-ts-strict.mjs"
+  "test:all": "node tests/run-all.mjs"
 }
 ```
 

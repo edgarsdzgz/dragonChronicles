@@ -11,8 +11,7 @@ cd dragonChronicles
 pnpm install
 
 # Build and test
-pnpm run build
-pnpm run test:all
+node tests/run-all.mjs   # Cross-platform driver with build-once optimization
 ```
 
 **Expected output**: `ok - 2 passed` for each test suite.
@@ -28,7 +27,7 @@ pnpm run test:all
 ### Common Commands
 ```bash
 pnpm run build          # Build all packages and apps
-pnpm run test:all        # Run all tests (optimized)
+node tests/run-all.mjs   # Run all tests (with build-once optimization)
 pnpm run test:ts-strict  # TypeScript strict mode enforcement
 pnpm run dev:sandbox     # Run sandbox app in dev mode
 ```
@@ -59,7 +58,7 @@ pnpm run dev:sandbox     # Run sandbox app in dev mode
 ## Contributing
 
 All PRs require:
-- ✅ Passing tests (`pnpm run test:all`)
+- ✅ Passing tests (`node tests/run-all.mjs`)
 - ✅ TypeScript strict mode compliance
 - ✅ Documentation updates (see [PR template](./.github/pull_request_template.md))
 
