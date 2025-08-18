@@ -8,21 +8,30 @@
     { "path": "./apps/sandbox" }
   ],
   "compilerOptions": {
+    // Project structure
     "composite": true,
     "declaration": true,
     "declarationMap": false,
     "sourceMap": false,
+    "outDir": "./dist",
+    "rootDir": ".",
+
+    // Modern ES + Node.js ESM
     "target": "ES2021",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "./dist",
-    "rootDir": ".",
+
+    // Strict type checking (principal-level safety)
     "strict": true,
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+    
+    // Enhanced error reporting
     "noErrorTruncation": true,
     "forceConsistentCasingInFileNames": true,
+    
+    // Performance
     "skipLibCheck": true
   }
 }
