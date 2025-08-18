@@ -145,9 +145,18 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
    - Update plan document if scope changes
    - Regular commits with clear messages
 
-5. **Final PR**
+5. **Pre-PR Check (MANDATORY)**
+   - Provide comprehensive summary of all work completed
+   - List all changes made with verification
+   - Include test results and validation
+   - Get user approval before creating PR
+   - Example: "Ready to create PR? Here's what was implemented..."
+
+6. **Final PR Creation**
+   - Create PR using `gh CLI` after pre-PR approval
    - Reference original issue with `Closes #X`
    - Include plan summary in PR description
+   - Push code only after user gives final git push confirmation
 
 ### Branch Naming Convention
 - Feature branches: `feat/p0-s00X-<description>`
@@ -175,6 +184,50 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ```
 
 **Remember: No implementation work until plan is approved!**
+
+### Pre-PR Check Process (MANDATORY)
+
+**Before creating any PR, ALWAYS provide a comprehensive pre-PR summary:**
+
+1. **Work Summary**
+   - List all files changed with brief description of changes
+   - Highlight key functionality added/modified/removed
+   - Note any breaking changes or migration requirements
+
+2. **Verification Results**
+   - Test execution results (`npm run test:all` output)
+   - Build validation (`npm run build` status)  
+   - Any manual testing performed
+   - Screenshots or logs if relevant
+
+3. **Quality Checklist**
+   - Code follows project conventions
+   - No linting/type errors
+   - Documentation updated if needed
+   - Tests added/updated for new functionality
+
+4. **User Review**
+   - Present summary to user: "Ready to create PR? Here's what was implemented..."
+   - Wait for user approval before proceeding
+   - Address any feedback or concerns
+   - Only create PR after explicit user go-ahead
+
+**Example Pre-PR Check:**
+```markdown
+## Pre-PR Summary
+
+### Changes Made
+- `package.json`: Updated test:all script with BUILD_ONCE=1 optimization
+- `tests/test-*.mjs`: Added robust TS binary resolution and normalized stdio
+- `tests/README.md`: Created documentation for test suite usage
+
+### Verification
+- ✅ All tests pass: `npm run test:all` → ok - 2/2/3/2 passed
+- ✅ Build succeeds: `npm run build` → exit 0
+- ✅ No type errors: `npm run typecheck` → clean
+
+Ready to create PR for issue #X?
+```
 
 ## Commit Message Guidelines
 

@@ -17,9 +17,14 @@
     "test:ts:audit": "node scripts/tsconfig-audit.mjs",
     "test:ts:should-fail": "node scripts/test-tsc-should-fail.mjs",
     "test:ts:workspace": "node scripts/test-tsc-workspace.mjs",
-    "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail"
+    "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail",
+    "docs:lint": "markdownlint '**/*.md' -i node_modules",
+    "docs:links": "linkinator docs --silent --recurse",
+    "docs:check": "node scripts/check-docs-presence.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "markdownlint-cli": "^0.41.0",
+    "linkinator": "^6.1.2"
   }
 }
