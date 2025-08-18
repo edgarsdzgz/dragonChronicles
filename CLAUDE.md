@@ -175,3 +175,59 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ```
 
 **Remember: No implementation work until plan is approved!**
+
+## Commit Message Guidelines
+
+### DO NOT Include Claude Attribution
+
+**NEVER include these lines in commit messages:**
+- `🤖 Generated with [Claude Code](https://claude.ai/code)`
+- `Co-Authored-By: Claude <noreply@anthropic.com>`
+- Any other Claude/Anthropic attribution
+
+**Write commit messages as if you are the developer.** Keep them professional and focused on the technical changes.
+
+## PR Summary Guidelines
+
+### Always Provide PR Summary
+
+**After completing implementation and before git push, ALWAYS provide:**
+- PR title
+- PR body with summary, key changes, verification results
+- Reference to issue being closed (`Closes #X`)
+- Any special notes for reviewer
+
+### Issue Number Verification
+
+**ALWAYS ask for issue number if not provided:**
+- When starting new work, confirm the GitHub issue number
+- Update planning documents with correct issue reference
+- Ensure PR will close the right issue with `Closes #X`
+- If user forgets to provide issue number, ASK before proceeding
+
+### Planning Document Cleanup
+
+**After PR merge, clean up old planning documents:**
+- When finishing an issue and pushing final PR, ASK if the PR was merged
+- Once confirmed merged, delete the corresponding S00XPlan.md file to avoid clutter
+- Keep only active/current planning documents
+- Example: After S002 merges, delete S002Plan.md when working on S002-R1
+
+**Template:**
+```markdown
+## PR Title
+feat: [brief description]
+
+## PR Body
+### Summary
+- Brief overview of changes
+
+### Key Changes
+- Specific technical changes made
+
+### Verification
+- Test results and validation
+
+### Resolves
+- Closes #[issue-number]
+```

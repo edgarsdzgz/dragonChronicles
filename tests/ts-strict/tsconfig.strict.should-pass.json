@@ -1,0 +1,13 @@
+{
+  // TypeScript strict mode PASS test configuration
+  // Tests that well-typed code compiles cleanly under strict enforcement
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "ESNext"
+  },
+  "include": ["../fixtures/strict/good.ts"]
+}

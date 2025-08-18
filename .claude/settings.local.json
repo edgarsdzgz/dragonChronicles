@@ -14,7 +14,13 @@
       "Bash(node:*)",
       "Bash(echo $?)",
       "Bash(npm run test:all:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(ls:*)",
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(BUILD_ONCE=1 node tests/test-unit-shared.mjs)"
     ],
     "deny": []
   }
