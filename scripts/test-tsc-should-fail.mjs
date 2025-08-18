@@ -1,7 +1,10 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 
-const r = spawnSync("node", ["./node_modules/typescript/bin/tsc", "-p", "tests/ts-strict/tsconfig.strict.should-fail.json", "--pretty", "false"], { encoding: "utf8" });
+const require = createRequire(import.meta.url);
+const tscPath = require.resolve("typescript/bin/tsc");
+const r = spawnSync("node", [tscPath, "-p", "tests/ts-strict/tsconfig.strict.should-fail.json", "--pretty", "false"], { encoding: "utf8" });
 const exitCode = r.status ?? r.signal ?? 0;
 const out = (r.stderr || r.stdout || "").toString();
 

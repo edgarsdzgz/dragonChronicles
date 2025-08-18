@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "outDir": "../../dist-tests/fail", "rootDir": "." },
+  "compilerOptions": { "noEmit": true, "rootDir": "." },
   "include": ["./bad-implicit-any.ts"],
   "references": []
 }

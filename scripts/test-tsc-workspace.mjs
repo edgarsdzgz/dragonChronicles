@@ -1,7 +1,10 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
+import { createRequire } from "node:module";
 
-const r = spawnSync("node", ["./node_modules/typescript/bin/tsc", "-b", "--pretty", "false"], { encoding: "utf8" });
+const require = createRequire(import.meta.url);
+const tscPath = require.resolve("typescript/bin/tsc");
+const r = spawnSync("node", [tscPath, "-b", "--pretty", "false"], { encoding: "utf8" });
 const out = (r.stderr || r.stdout || "").toString();
 const exitCode = r.status ?? r.signal ?? 1;
 
