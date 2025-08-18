@@ -3,12 +3,14 @@
 ## Running Tests
 
 ### Individual Tests
+
 - `npm run test:unit` - Unit tests for shared utilities
 - `npm run test:integration` - Integration tests between packages  
 - `npm run test:e2e` - End-to-end build and sandbox tests
 - `npm run test:ts-strict` - TypeScript strict mode enforcement
 
 ### All Tests
+
 - `npm run test:all` - Runs all tests with BUILD_ONCE=1 optimization
 
 ## BUILD_ONCE Optimization

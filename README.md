@@ -19,12 +19,14 @@ node tests/run-all.mjs   # Cross-platform driver with build-once optimization
 ## Development
 
 ### Project Structure
+
 - `packages/` - Shared libraries (shared, logger, db, sim)
 - `apps/` - Applications (sandbox CLI)
 - `tests/` - Test suites with tiny-runner
 - `docs/` - **Documentation hub** 📚
 
 ### Common Commands
+
 ```bash
 pnpm run build          # Build all packages and apps
 node tests/run-all.mjs   # Run all tests (with build-once optimization)
@@ -37,12 +39,14 @@ pnpm run dev:sandbox     # Run sandbox app in dev mode
 📚 **[Full Documentation](./docs/README.md)** - Complete documentation hub
 
 ### Key Resources
+
 - **[Local Development](./docs/runbooks/local-dev.md)** - Setup guide from clone to tests
 - **[Testing Strategy](./docs/engineering/testing.md)** - Test layers, execution, BUILD_ONCE optimization
 - **[TypeScript Standards](./docs/engineering/typescript.md)** - Strict mode policy, examples, troubleshooting
 - **[Architectural Decisions](./docs/adr/)** - Key technical decisions (ADRs)
 
 ### Quick Links
+
 - [ADR-0001: Testing Strategy](./docs/adr/0001-testing-strategy.md)
 - [ADR-0002: TypeScript Strict Gate](./docs/adr/0002-typescript-strict-gate.md)
 
@@ -58,6 +62,7 @@ pnpm run dev:sandbox     # Run sandbox app in dev mode
 ## Contributing
 
 All PRs require:
+
 - ✅ Passing tests (`node tests/run-all.mjs`)
 - ✅ TypeScript strict mode compliance
 - ✅ Documentation updates (see [PR template](./.github/pull_request_template.md))

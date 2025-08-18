@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # S002-R1 Planning Document - Simplify & Refactor Strict-Mode Gate
 
 ## Issue Analysis
@@ -80,21 +81,23 @@
 ## TODO List
 
 ### High Priority
+
 1. [x] Capture current baseline output for comparison
-2. [x] Add clear documentation to test script
-3. [x] Extract helper function for TypeScript project execution
-4. [x] Simplify and minimize both tsconfig files
-5. [x] Add documentation comments to configs
-6. [x] Move fixtures to better organized location
-7. [x] Update config includes for new fixture paths
-8. [x] Verify exact same behavior and output
+1. [x] Add clear documentation to test script
+1. [x] Extract helper function for TypeScript project execution
+1. [x] Simplify and minimize both tsconfig files
+1. [x] Add documentation comments to configs
+1. [x] Move fixtures to better organized location
+1. [x] Update config includes for new fixture paths
+1. [x] Verify exact same behavior and output
 
 ### Verification Tasks
-9. [x] `node tests/test-ts-strict.mjs` outputs exactly `ok - 2 passed`
-10. [x] Exit code remains 0
-11. [x] Manual flip test: break good.ts → pass test fails
-12. [x] Manual flip test: fix bad-implicit-any.ts → fail test fails
-13. [x] Full test suite still passes
+
+1. [x] `node tests/test-ts-strict.mjs` outputs exactly `ok - 2 passed`
+1. [x] Exit code remains 0
+1. [x] Manual flip test: break good.ts → pass test fails
+1. [x] Manual flip test: fix bad-implicit-any.ts → fail test fails
+1. [x] Full test suite still passes
 
 ## Implementation Summary
 

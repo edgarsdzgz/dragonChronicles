@@ -1,0 +1,13 @@
+# third-party / generated / archived
+node_modules/
+**/node_modules/**
+LEGACY_v*/**
+**/dist/**
+**/coverage/**
+**/playwright-report/**
+**/test-results/**
+**/screens/**
+
+# lockfiles, etc (belt-and-suspenders)
+**/*.lock
+pnpm-lock.yaml
