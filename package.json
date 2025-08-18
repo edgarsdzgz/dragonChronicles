@@ -1,0 +1,20 @@
+{
+  "name": "draconia",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "engines": { "node": ">=18.17" },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "git clean -xfd -e node_modules -e .pnpm-store",
+    "typecheck": "tsc -b --pretty false --noEmit",
+    "list": "pnpm -w list --depth -1",
+    "dev:sandbox": "pnpm --filter @draconia/sandbox run dev",
+    "test:unit": "node scripts/test-unit-shared.mjs",
+    "test:integration": "node scripts/test-integration-graph.mjs",
+    "test:e2e": "node scripts/test-e2e-build.mjs",
+    "test:all": "pnpm run build && node scripts/test-unit-shared.mjs && node scripts/test-integration-graph.mjs && node scripts/test-e2e-build.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
