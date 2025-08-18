@@ -197,6 +197,14 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 - Reference to issue being closed (`Closes #X`)
 - Any special notes for reviewer
 
+### Issue Number Verification
+
+**ALWAYS ask for issue number if not provided:**
+- When starting new work, confirm the GitHub issue number
+- Update planning documents with correct issue reference
+- Ensure PR will close the right issue with `Closes #X`
+- If user forgets to provide issue number, ASK before proceeding
+
 **Template:**
 ```markdown
 ## PR Title

@@ -2,6 +2,7 @@
 
 ## Issue Analysis
 
+**Issue**: #13 (S002-R1: Simplify & Refactor the Strict-Mode Gate)  
 **Goal**: Refactor the S002 strict TypeScript gate to be simpler, clearer, and less brittle while maintaining identical behavior and outcomes.
 
 **Current State**:
