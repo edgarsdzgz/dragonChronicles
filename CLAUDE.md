@@ -289,6 +289,24 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 Ready to create PR for issue #X?
 ```
 
+## Git Commands Guidelines
+
+### Always Specify Origin and Branch for Push
+
+**ALWAYS use explicit origin and branch when pushing:**
+```bash
+git push origin <BRANCH>
+```
+
+**Examples:**
+```bash
+git push origin feat/p0-s002-r1-simplify-strict-gate
+git push origin main
+git push origin dev
+```
+
+**Never use bare `git push`** - this can accidentally push to wrong branches or attempt to merge to main.
+
 ## Commit Message Guidelines
 
 ### DO NOT Include Claude Attribution
