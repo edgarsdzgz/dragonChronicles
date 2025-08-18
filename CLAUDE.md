@@ -205,6 +205,14 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 - Ensure PR will close the right issue with `Closes #X`
 - If user forgets to provide issue number, ASK before proceeding
 
+### Planning Document Cleanup
+
+**After PR merge, clean up old planning documents:**
+- When finishing an issue and pushing final PR, ASK if the PR was merged
+- Once confirmed merged, delete the corresponding S00XPlan.md file to avoid clutter
+- Keep only active/current planning documents
+- Example: After S002 merges, delete S002Plan.md when working on S002-R1
+
 **Template:**
 ```markdown
 ## PR Title
