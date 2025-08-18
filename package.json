@@ -1,35 +1,20 @@
 {
-  "name": "dragon-idler",
-  "version": "0.0.1",
+  "name": "draconia",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "engines": { "node": ">=18.17" },
   "scripts": {
-    "build": "vite build",
-    "dev": "vite dev",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "test": "vitest run",
-    "test:ui": "vitest --ui",
-    "e2e": "playwright test"
+    "build": "tsc -b",
+    "clean": "git clean -xfd -e node_modules -e .pnpm-store",
+    "typecheck": "tsc -b --pretty false --noEmit",
+    "list": "pnpm -w list --depth -1",
+    "dev:sandbox": "pnpm --filter @draconia/sandbox run dev",
+    "test:unit": "node tests/test-unit-shared.mjs",
+    "test:integration": "node tests/test-integration-graph.mjs",
+    "test:e2e": "node tests/test-e2e-build.mjs",
+    "test:all": "node tests/test-unit-shared.mjs && node tests/test-integration-graph.mjs && node tests/test-e2e-build.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.2",
-    "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^4.0.0",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.2.4",
-    "jsdom": "^26.1.0",
-    "svelte": "^5.0.0",
-    "svelte-check": "^4.0.0",
-    "typescript": "^5.0.0",
-    "vite": "^5.0.3",
-    "vitest": "^3.2.4",
-    "zod": "^4.0.17"
-  },
-  "dependencies": {
-    "break_eternity.js": "^2.1.2",
-    "dexie": "^4.0.8"
-  },
-  "type": "module"
+    "typescript": "^5.4.0"
+  }
 }

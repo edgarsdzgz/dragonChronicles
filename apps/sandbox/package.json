@@ -1,0 +1,14 @@
+{
+  "name": "@draconia/sandbox",
+  "version": "0.0.0-phase0",
+  "type": "module",
+  "private": true,
+  "scripts": { "build": "tsc -b", "dev": "node dist/index.js" },
+  "dependencies": {
+    "@draconia/shared": "workspace:*",
+    "@draconia/logger": "workspace:*",
+    "@draconia/db": "workspace:*",
+    "@draconia/sim": "workspace:*"
+  },
+  "devDependencies": { "typescript": "^5.4.0" }
+}

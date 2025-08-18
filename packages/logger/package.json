@@ -1,0 +1,11 @@
+{
+  "name": "@draconia/logger",
+  "version": "0.0.0-phase0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
+  "scripts": { "build": "tsc -b", "clean": "rimraf dist" },
+  "dependencies": { "@draconia/shared": "workspace:*" },
+  "devDependencies": { "typescript": "^5.4.0", "rimraf": "^5.0.5" }
+}
