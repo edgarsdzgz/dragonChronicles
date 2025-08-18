@@ -18,7 +18,9 @@
       "Bash(npx tsc:*)",
       "Bash(npm run typecheck:*)",
       "Bash(ls:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(BUILD_ONCE=1 node tests/test-unit-shared.mjs)"
     ],
     "deny": []
   }

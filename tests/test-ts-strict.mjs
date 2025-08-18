@@ -24,7 +24,7 @@ const tscPath = require.resolve("typescript/bin/tsc");
  * @returns {object} Spawn result with status, stdout, stderr
  */
 const runTscProject = (projectPath) => {
-  return spawnSync("node", [tscPath, "-p", projectPath], { encoding: "utf8" });
+  return spawnSync("node", [tscPath, "-p", projectPath], { stdio: "pipe", encoding: "utf8" });
 };
 
 test("strict should PASS on good.ts", () => {

@@ -2,10 +2,16 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { test, run } from "./_tiny-runner.mjs";
+import { createRequire } from "node:module";
 
-// (Temporary) build the package you're testing
-const built = spawnSync("node", ["./node_modules/typescript/bin/tsc", "-b", "packages/shared"], { stdio: "inherit" });
-assert.equal(built.status, 0, "Build failed for packages/shared");
+const require = createRequire(import.meta.url);
+const tscBin = require.resolve("typescript/bin/tsc");
+
+// (Temporary) build the package you're testing - skip if BUILD_ONCE=1
+if (process.env.BUILD_ONCE !== "1") {
+  const built = spawnSync("node", [tscBin, "-b", "packages/shared"], { stdio: "pipe", encoding: "utf8" });
+  assert.equal(built.status, 0, "Build failed for packages/shared");
+}
 
 // Import artifact (better: import source via Vitest later)
 const { clamp, DRACONIA_VERSION } = await import("../packages/shared/dist/index.js");
