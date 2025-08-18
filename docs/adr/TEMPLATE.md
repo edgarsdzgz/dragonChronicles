@@ -1,7 +1,7 @@
 # ADR NNN: <Title>
 
-**Date**: YYYY-MM-DD  
-**Status**: Accepted | Superseded by ADR NNN
+**Date**: YYYY-MM-DD (Use UTC ISO dates)  
+**Status**: Proposed | Accepted | Superseded by ADR NNN
 
 ## Context
 
