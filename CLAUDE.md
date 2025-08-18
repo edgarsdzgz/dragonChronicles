@@ -80,3 +80,98 @@ Example improved pattern:
 npm run build  # Once
 SKIP_BUILD=1 npm run test:all  # Skip rebuilds
 ```
+
+## GitHub PR Guidelines
+
+### PR References and Issue Closing
+
+**Always reference related PRs and issues in PR descriptions using GitHub keywords:**
+
+✅ **CORRECT:**
+```markdown
+## Summary
+This PR implements feature X...
+
+## Resolves
+- Closes #123 (the issue this PR addresses)
+- Related to #124 (if there are related issues)
+
+## Previous Work
+- Builds on #120 (if this continues work from another PR)
+```
+
+❌ **WRONG:**
+```markdown
+## Summary  
+This PR implements feature X...
+// No issue references - GitHub won't auto-close issues
+```
+
+### Keywords for Auto-Closing Issues
+Use these keywords in PR descriptions to automatically close issues when the PR is merged:
+- `Closes #123`
+- `Fixes #123` 
+- `Resolves #123`
+- `Closes: #123`
+
+### PR Linking Best Practices
+- **Always** reference the original issue being resolved
+- Link to previous PRs when work is iterative
+- Use "Related to #X" for issues that are connected but not directly resolved
+- Include issue numbers in commit messages when relevant
+
+## Issue Implementation Workflow
+
+### New Issue Process (MANDATORY)
+
+**When given a new issue, ALWAYS follow this sequence:**
+
+1. **Create Feature Branch**
+   - Create new git branch: `feat/p0-s00X-<short-description>`
+   - Example: `feat/p0-s002-typescript-strict`
+
+2. **Create Planning Document** 
+   - Create `S00XPlan.md` in root directory
+   - Include: analysis, implementation plan, risk assessment, TODO list
+   - Commit the planning document to the new branch
+   - Push branch to create PR placeholder
+
+3. **Present Plan to User**
+   - Review plan with user before implementation
+   - Get confirmation to proceed
+
+4. **Execute Implementation**
+   - Work through TODO list systematically
+   - Update plan document if scope changes
+   - Regular commits with clear messages
+
+5. **Final PR**
+   - Reference original issue with `Closes #X`
+   - Include plan summary in PR description
+
+### Branch Naming Convention
+- Feature branches: `feat/p0-s00X-<description>`
+- Bugfix branches: `fix/p0-s00X-<description>`  
+- Refactor branches: `refactor/p0-s00X-<description>`
+
+### Planning Document Template
+```markdown
+# S00X Planning Document
+
+## Issue Analysis
+[Summary of requirements and current state]
+
+## Implementation Plan
+[Detailed step-by-step plan]
+
+## Risk Assessment
+[Potential issues and mitigation strategies]
+
+## TODO List
+[Actionable items with priorities]
+
+## Acceptance Criteria
+[How to verify completion]
+```
+
+**Remember: No implementation work until plan is approved!**
