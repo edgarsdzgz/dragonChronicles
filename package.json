@@ -12,7 +12,11 @@
     "test:unit": "node tests/test-unit-shared.mjs",
     "test:integration": "node tests/test-integration-graph.mjs",
     "test:e2e": "node tests/test-e2e-build.mjs",
-    "test:all": "node tests/test-unit-shared.mjs && node tests/test-integration-graph.mjs && node tests/test-e2e-build.mjs"
+    "test:all": "node tests/test-unit-shared.mjs && node tests/test-integration-graph.mjs && node tests/test-e2e-build.mjs",
+    "test:ts:audit": "node scripts/tsconfig-audit.mjs",
+    "test:ts:should-fail": "node scripts/test-tsc-should-fail.mjs",
+    "test:ts:workspace": "node scripts/test-tsc-workspace.mjs",
+    "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail"
   },
   "devDependencies": {
     "typescript": "^5.4.0"

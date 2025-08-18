@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "outDir": "../../dist-tests/pass", "rootDir": "." },
+  "include": ["./good.ts"],
+  "references": []
+}
