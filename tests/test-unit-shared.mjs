@@ -17,7 +17,7 @@ test("clamp bounds", () => {
 });
 
 test("version is semver (phase-agnostic)", () => {
-  assert.match(DRACONIA_VERSION, /^\d+\.\d+\.\d+(-\w+)?$/);
+  assert.match(DRACONIA_VERSION, /^\d+\.\d+\.\d+(-[0-9A-Za-z-.]+)?$/);
 });
 
 await run();
