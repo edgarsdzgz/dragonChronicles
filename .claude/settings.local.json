@@ -12,7 +12,9 @@
       "Bash(find:*)",
       "Bash(rm:*)",
       "Bash(node:*)",
-      "Bash(echo $?)"
+      "Bash(echo $?)",
+      "Bash(npm run test:all:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": []
   }
