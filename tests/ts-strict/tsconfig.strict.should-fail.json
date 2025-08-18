@@ -1,6 +1,13 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "rootDir": "." },
-  "include": ["./bad-implicit-any.ts"],
-  "references": []
+  // TypeScript strict mode FAIL test configuration  
+  // Tests that implicit any code fails compilation with TS7006/TS7031 errors
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "ESNext"
+  },
+  "include": ["../fixtures/strict/bad-implicit-any.ts"]
 }
