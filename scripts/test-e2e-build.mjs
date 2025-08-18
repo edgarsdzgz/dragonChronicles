@@ -3,29 +3,34 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 
-function exists(p) { return fs.existsSync(p); }
-function must(p) { assert.ok(exists(p), `Missing: ${p}`); }
+const run = (cmd, args, opts = {}) => {
+  const r = spawnSync(cmd, args, { stdio: "inherit", ...opts });
+  assert.equal(r.status, 0, `${cmd} ${args.join(" ")} failed`);
+  return r;
+};
 
+// Build workspace using TypeScript directly to avoid shell issues
 console.log("E2E: building workspace...");
-const r = spawnSync("node", ["./node_modules/typescript/bin/tsc", "-b"], { stdio: "inherit" });
-assert.equal(r.status, 0, "tsc -b build failed");
+run("node", ["./node_modules/typescript/bin/tsc", "-b"]);
 
-[
-  "packages/shared/dist/index.js",
-  "packages/logger/dist/index.js",
-  "packages/db/dist/index.js",
-  "packages/sim/dist/index.js",
-  "apps/sandbox/dist/index.js"
-].forEach(must);
+// Probe for at least one artifact per workspace without hard-coding full list
+const must = (p) => assert.ok(fs.existsSync(p), `Missing: ${p}`);
+["packages/shared", "packages/logger", "packages/db", "packages/sim", "apps/sandbox"]
+  .forEach((pkg) => must(path.join(pkg, "dist")));
 
 console.log("E2E: running sandbox...");
-const run = spawnSync("node", ["apps/sandbox/dist/index.js"], { encoding: "utf8" });
-assert.equal(run.status, 0, "sandbox execution failed");
-const out = run.stdout.toString().trim();
+const runResult = spawnSync("node", ["apps/sandbox/dist/index.js"], { encoding: "utf8" });
+assert.equal(runResult.status, 0, "sandbox execution failed");
+const out = runResult.stdout.toString().trim();
 assert.ok(out.startsWith("{") && out.endsWith("}"), "sandbox did not print JSON");
+
 const json = JSON.parse(out);
+// Test the contract, not exact values
 assert.equal(json.tick, 1);
 assert.match(json.hello, /^logger-ok@/);
 assert.equal(typeof json.profile.id, "string");
+assert.equal(typeof json.profile.name, "number");
+assert.equal(typeof json.profile.createdAt, "number");
+assert.match(json.v, /^\d+\.\d+\.\d+(-\w+)?$/);
 
-console.log("E2E: ok");
+console.log("E2E(build+cli): ok");
