@@ -11,7 +11,8 @@
       "Bash(./node_modules/.bin/tsc:*)",
       "Bash(find:*)",
       "Bash(rm:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(echo $?)"
     ],
     "deny": []
   }
