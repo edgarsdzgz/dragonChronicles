@@ -22,7 +22,7 @@
     "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail",
     "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
     "lint:md": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
-    "docs:links": "linkinator docs --silent --recurse --skip \"^docs$\"",
+    "docs:links": "linkinator docs/README.md --recurse --config .linkinatorrc.json",
     "docs:check": "node .github/scripts/require-docs-change.mjs"
   },
   "devDependencies": {
