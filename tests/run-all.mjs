@@ -39,6 +39,22 @@ if (projects.length === 0) {
   run("node", [tscBin, "-b", ...projects]);
 }
 
+console.log("Verifying build artifacts...");
+const expectedArtifacts = [
+  "packages/shared/dist/index.js",
+  "packages/logger/dist/index.js", 
+  "packages/db/dist/index.js",
+  "packages/sim/dist/index.js",
+  "apps/sandbox/dist/index.js"
+];
+
+for (const artifact of expectedArtifacts) {
+  if (!existsSync(artifact)) {
+    console.error(`Missing expected artifact: ${artifact}`);
+    process.exit(1);
+  }
+}
+
 console.log("Running tests with BUILD_ONCE=1...");
 run("node", ["tests/test-unit-shared.mjs"], { BUILD_ONCE: "1" });   // unit
 run("node", ["tests/test-integration-graph.mjs"], { BUILD_ONCE: "1" }); // integration

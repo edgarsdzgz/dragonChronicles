@@ -18,6 +18,11 @@ if (!process.env.BUILD_ONCE) {
 const { createMemoryLogger, helloLog } = await import("../packages/logger/dist/index.js");
 const { simulateTick } = await import("../packages/sim/dist/index.js");
 
+// Fail fast on missing exports
+assert.equal(typeof createMemoryLogger, "function", "createMemoryLogger should be a function");
+assert.equal(typeof helloLog, "function", "helloLog should be a function");
+assert.equal(typeof simulateTick, "function", "simulateTick should be a function");
+
 test("logger contract", () => {
   assert.match(helloLog(), /^logger-ok@/);
 });

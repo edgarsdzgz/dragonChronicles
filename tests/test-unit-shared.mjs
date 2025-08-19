@@ -18,6 +18,10 @@ if (!process.env.BUILD_ONCE) {
 // Import artifact (better: import source via Vitest later)
 const { clamp, DRACONIA_VERSION } = await import("../packages/shared/dist/index.js");
 
+// Fail fast on missing exports
+assert.equal(typeof clamp, "function", "clamp should be a function");
+assert.equal(typeof DRACONIA_VERSION, "string", "DRACONIA_VERSION should be a string");
+
 test("clamp bounds", () => {
   assert.equal(clamp(5, 0, 10), 5);
   assert.equal(clamp(-1, 0, 10), 0);
