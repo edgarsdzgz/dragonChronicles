@@ -484,6 +484,45 @@ Text after code
 - ✅ Local development workflow preserved
 - ✅ Documentation standards established for future work
 
+## Test Hygiene — Non-Negotiables (Pinned)
+
+1) **Never hard-code tool paths.** Always resolve binaries:
+   ```javascript
+   const require = createRequire(import.meta.url);
+   const tscBin = require.resolve("typescript/bin/tsc");
+   ```
+
+2) **Keep CI output clean.** In tests and build steps use:
+   ```javascript
+   { stdio: "pipe", encoding: "utf8" }
+   ```
+   Never use `stdio: "inherit"` in tests - it floods CI logs and hides real failures.
+
+3) **Only the tiny-runner should emit "ok".** Never add console.log("ok") or similar in tests.
+   The runner reports "ok - N passed" or "FAIL - N failed" with proper exit codes.
+
+4) **Use resilient assertions, not brittle exact counts.**
+   ```javascript
+   // ✅ GOOD: Filter and check meaningful content
+   const simLogs = logs.filter(l => l.src === "sim");
+   assert.ok(simLogs.length >= 1, "expected at least one sim log");
+   assert.ok(simLogs.some(l => (l.msg || "").includes("->")), "expected meaningful sim message");
+   
+   // ❌ BAD: Brittle exact assertions
+   assert.equal(logs.length, 1, "expected exactly one log");
+   ```
+
+5) **Guard builds with BUILD_ONCE=1.** Tests should build only if needed:
+   ```javascript
+   if (!process.env.BUILD_ONCE) {
+     const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+     // handle errors...
+   }
+   ```
+
+6) **Use the orchestrator for full test runs.** Always use `node tests/run-all.mjs` 
+   which builds once and runs all tests with BUILD_ONCE=1.
+
 ## Commit Message Guidelines
 
 ### DO NOT Include Claude Attribution
