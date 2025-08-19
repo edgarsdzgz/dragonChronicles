@@ -43,7 +43,7 @@ Design specifications, wireframes, and visual guidelines.
 ## Contributing to Documentation
 
 All code changes that affect packages, apps, or tests require corresponding documentation
-updates. See our [PR template](../.github/pull_request_template.md) for requirements.
+updates. See our [PR template](/.github/pull_request_template.md) for requirements.
 
 ### Quick Links
 

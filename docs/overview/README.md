@@ -18,9 +18,9 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 - **TypeScript Strict Gate**: ✅ Type safety enforcement
 
 ### Documentation Status
-- **Engineering Standards**: ✅ Complete ([Testing](../engineering/testing.md), [TypeScript](../engineering/typescript.md))
+- **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md), [TypeScript](/docs/engineering/typescript.md))
 - **Architectural Decisions**: ✅ ADRs 0001-0002 documented
-- **Runbooks**: ✅ [Local Development](../runbooks/local-dev.md), [CI/CD](../runbooks/ci.md)
+- **Runbooks**: ✅ [Local Development](/docs/runbooks/local-dev.md), [CI/CD](/docs/runbooks/ci.md)
 - **Player Documentation**: ❌ Not yet implemented
 
 ### Code Quality
@@ -77,7 +77,7 @@ tests/             # Test infrastructure
 **Architecture**: PWA with offline-first design  
 **Platform**: Desktop/Mobile browsers with installable PWA
 
-For complete game design, see [Draconia Chronicles v2 GDD](../../Draconia_Chronicles_v2_GDD.md).
+For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_v2_GDD.md).
 
 ## Next Milestones
 
@@ -95,14 +95,14 @@ For complete game design, see [Draconia Chronicles v2 GDD](../../Draconia_Chroni
 ## Links and Resources
 
 ### Internal Documentation
-- [Engineering Standards](../engineering/testing.md) - Technical guidelines and policies
-- [Architectural Decisions](../adr/0001-testing-strategy.md) - Key technical decisions (ADRs)
-- [Runbooks](../runbooks/local-dev.md) - Operational procedures and setup guides
+- [Engineering Standards](/docs/engineering/testing.md) - Technical guidelines and policies
+- [Architectural Decisions](/docs/adr/0001-testing-strategy.md) - Key technical decisions (ADRs)
+- [Runbooks](/docs/runbooks/local-dev.md) - Operational procedures and setup guides
 
 ### External Resources
-- [Game Design Document](../../Draconia_Chronicles_v2_GDD.md) - Complete game design
+- [Game Design Document](/Draconia_Chronicles_v2_GDD.md) - Complete game design
 - [Project Repository](https://github.com/edgarsdzgz/dragonChronicles) - Source code and issues
-- [Development Guidelines](../../CLAUDE.md) - Development processes and standards
+- [Development Guidelines](/CLAUDE.md) - Development processes and standards
 
 ---
 

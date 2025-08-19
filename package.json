@@ -21,7 +21,7 @@
     "test:ts:workspace": "node scripts/test-tsc-workspace.mjs",
     "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail",
     "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
-    "docs:links": "linkinator docs --silent --recurse --skip \"node_modules|LEGACY_v|playwright-report|test-results|dist\"",
+    "docs:links": "linkinator docs --silent --recurse --skip \"^docs$\"",
     "docs:check": "node .github/scripts/require-docs-change.mjs"
   },
   "devDependencies": {

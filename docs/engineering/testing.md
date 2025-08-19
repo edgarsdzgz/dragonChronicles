@@ -237,4 +237,4 @@ tests/
 └── ts-strict/               # TypeScript gate configurations
 ```
 
-See [ADR-0001: Testing Strategy](../adr/0001-testing-strategy.md) for the architectural decision record.
+See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural decision record.
