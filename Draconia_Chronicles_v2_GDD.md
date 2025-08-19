@@ -1,36 +1,51 @@
+<!-- markdownlint-disable -->
 # 🐉 Draconia Chronicles v2 — Game Design Document (GDD)
 
 **Version:** 2025-08-18 • **Owner:** Draconia Team • **Status:** MVP in progress (Shooter‑Idle focus)  
 **Stack:** TypeScript • SvelteKit • PixiJS (WebGL) • Web Workers • Dexie (IndexedDB) • Workbox PWA
 
-> This GDD follows modern best practices for clarity, being a **living document**, scoped to **audiences across disciplines**, and organized for **fast retrieval**. It is structured and maintained per recommendations from GitBook, Document360/DEV, and Assembla guidance.
+> This GDD follows modern best practices for clarity, being a **living document**, scoped to
+> **audiences across disciplines**, and organized for **fast retrieval**. It is structured and
+> maintained per recommendations from GitBook, Document360/DEV, and Assembla guidance.
 
 ---
 
-
 ## 0) Inspirations & Positioning
 
-**Primary inspiration:** *Unnamed Space Idle* (USI) — phased unlocks, powerful automation, unfolding systems and satisfying prestige-like resets.  
-**Secondary references:** *Cookie Clicker* (evergreen escalators), *Melvor Idle* (multi-skill progression), *Rusty’s Retirement* (ambient idle UX).
+**Primary inspiration:** *Unnamed Space Idle* (USI) — phased unlocks, powerful automation,
+unfolding systems and satisfying prestige-like resets.
 
-**Differentiator:** A **shooter‑idle** centered on one main dragon with a crisp combat log-as-narration, tight temporary **Enchant** economy (DMG/HP), and a post‑chapter city/market meta that intentionally stays **subordinate** to the shooter loop until credits.
+**Secondary references:** *Cookie Clicker* (evergreen escalators), *Melvor Idle*
+(multi-skill progression), *Rusty's Retirement* (ambient idle UX).
+
+**Differentiator:** A **shooter‑idle** centered on one main dragon with a crisp combat
+log-as-narration, tight temporary **Enchant** economy (DMG/HP), and a post‑chapter city/market
+meta that intentionally stays **subordinate** to the shooter loop until credits.
 
 ---
 
 ## 1) Vision, Goals, Pillars
 
-**Vision:** Defend the Dragonlands from encroaching evil. Traverse Wards within Lands, defeat enemies, gather **Arcana**, and invest in temporary **Enchants** to push farther. Return to Draconia to bank progress, buy upgrades, and (later) expand the city.
+**Vision:** Defend the Dragonlands from encroaching evil. Traverse Wards within Lands, defeat
+enemies, gather **Arcana**, and invest in temporary **Enchants** to push farther. Return to
+Draconia to bank progress, buy upgrades, and (later) expand the city.
 
-**MVP Goals**
-- A. **Feel‑good combat** at 60 fps desktop / ≥40 fps mid‑phones, with clear legibility and responsive inputs.
-- B. **Two-track progression:** permanent **Distance → Ward/Land** and temporary **Enchants (DMG/HP)** that reset on “Return to Draconia”.
-- C. **Offline progress** model that is generous but controlled (8h linear → diminishing; base cap 24h, META up to 96h; rested +50%/15m, 30m cooldown).
-- D. **Client‑only** architecture: offline‑first PWA, multiple local profiles, exportable saves/logs.
+### MVP Goals
 
-**Pillars**
-1) **Clarity:** deterministic upgrades; readable numbers; narrated logs.  
-2) **Momentum:** micro‑ramps every few meters; frequent small wins; smooth resets.  
-3) **Performance:** pooling, workers, and PixiJS rendering budgets.  
+- A. **Feel‑good combat** at 60 fps desktop / ≥40 fps mid‑phones, with clear legibility and
+  responsive inputs.
+- B. **Two-track progression:** permanent **Distance → Ward/Land** and temporary
+  **Enchants (DMG/HP)** that reset on "Return to Draconia".
+- C. **Offline progress** model that is generous but controlled (8h linear → diminishing; base
+  cap 24h, META up to 96h; rested +50%/15m, 30m cooldown).
+- D. **Client‑only** architecture: offline‑first PWA, multiple local profiles, exportable
+  saves/logs.
+
+### Pillars
+
+1) **Clarity:** deterministic upgrades; readable numbers; narrated logs.
+2) **Momentum:** micro‑ramps every few meters; frequent small wins; smooth resets.
+3) **Performance:** pooling, workers, and PixiJS rendering budgets.
 4) **Respect:** strong accessibility baseline and no grind traps by design.
 
 ---

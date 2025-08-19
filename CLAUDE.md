@@ -307,6 +307,113 @@ git push origin dev
 
 **Never use bare `git push`** - this can accidentally push to wrong branches or attempt to merge to main.
 
+## Markdown Best Practices
+
+### Common Linting Issues to Avoid
+
+**Root Cause Analysis**: The GDD file had 40+ linting violations because we didn't follow
+consistent markdown formatting from the beginning. Prevention is better than mass fixes.
+
+#### 1. Line Length (MD013)
+
+- **Rule**: Keep lines under 120 characters
+- **Fix**: Break long lines at logical points, continue with proper indentation
+- **Example**:
+
+```markdown
+❌ BAD: This is a very long line that exceeds 120 characters and should be broken up
+into multiple lines for better readability
+✅ GOOD: This is a very long line that exceeds 120 characters and should be broken up
+into multiple lines for better readability
+```
+
+#### 2. Headings Need Blank Lines (MD022)
+
+- **Rule**: Always put blank lines before and after headings
+- **Example**:
+
+```markdown
+❌ BAD:
+Some text here
+### Heading
+More text
+
+✅ GOOD:
+Some text here
+
+### Heading
+
+More text
+```
+
+#### 3. Lists Need Blank Lines (MD032)
+
+- **Rule**: Surround lists with blank lines
+- **Example**:
+
+```markdown
+❌ BAD:
+Text before list
+- Item 1
+- Item 2
+Text after list
+
+✅ GOOD:
+Text before list
+
+- Item 1
+- Item 2
+
+Text after list
+```
+
+#### 4. Code Blocks Need Blank Lines (MD031)
+
+- **Rule**: Surround fenced code blocks with blank lines
+- **Example**:
+
+```markdown
+❌ BAD:
+Text before code
+\`\`\`typescript
+code here
+\`\`\`
+Text after code
+
+✅ GOOD:
+Text before code
+
+\`\`\`typescript
+code here
+\`\`\`
+
+Text after code
+```
+
+#### 5. Use Proper Headings vs Bold (MD036)
+
+- **Rule**: Use `### Heading` instead of `**Bold Text**` for section headers
+- **Example**:
+
+```markdown
+❌ BAD: **My Section**
+✅ GOOD: ### My Section
+```
+
+#### 6. Planning Documents
+
+- **For planning documents** (like S002R1Plan.md), add `<!-- markdownlint-disable -->` at the top
+- **For design documents** (like GDD files), follow proper formatting from the start
+- **For permanent documentation**, always follow linting rules
+
+### Prevention Strategy
+
+1. **Write markdown correctly from the start** - don't rely on bulk fixes later
+2. **Test markdown files locally** before committing: `npx markdownlint -c .markdownlint.json file.md`
+3. **Use proper headings hierarchy** - ## for main sections, ### for subsections
+4. **Keep lines reasonable length** - aim for 80-100 chars, max 120
+5. **Add blank lines liberally** - around headings, lists, code blocks
+
 ## Commit Message Guidelines
 
 ### DO NOT Include Claude Attribution
