@@ -297,5 +297,5 @@ After completing setup:
 
 1. Review [Testing Strategy](../engineering/testing.md)
 2. Read [TypeScript Standards](../engineering/typescript.md)  
-3. Check [Architectural Decision Records](../adr/)
+3. Check [Architectural Decision Records](../adr/0001-testing-strategy.md)
 4. Start with small changes to familiarize yourself with the workflow

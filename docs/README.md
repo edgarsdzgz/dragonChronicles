@@ -5,21 +5,21 @@ architecture, processes, and engineering standards.
 
 ## Navigation
 
-### 📋 [Overview](./overview/)
+### 📋 [Overview](./overview/README.md)
 
 Product summaries, architecture overviews, and project status:
 
 - [Project Overview](./overview/README.md) - Status, metrics, architecture
 - [Changelog](./overview/changelog.md) - v2.0.0 release notes and versioning
 
-### 🔧 [Engineering](./engineering/)
+### 🔧 Engineering
 
 Development standards, policies, and technical guidelines:
 
 - [Testing Strategy](./engineering/testing.md) - Test layers, runner behavior, execution guide
 - [TypeScript Standards](./engineering/typescript.md) - Strict mode policy, examples, best practices
 
-### 🏛️ [ADR (Architectural Decision Records)](./adr/)
+### 🏛️ Architectural Decision Records (ADRs)
 
 Key technical decisions and their rationale:
 
@@ -27,14 +27,14 @@ Key technical decisions and their rationale:
 - [ADR-0001: Testing Strategy](./adr/0001-testing-strategy.md)
 - [ADR-0002: TypeScript Strict Gate](./adr/0002-typescript-strict-gate.md)
 
-### 📚 [Runbooks](./runbooks/)
+### 📚 Runbooks
 
 Operational procedures and setup guides:
 
 - [Local Development](./runbooks/local-dev.md) - Clone to running tests
 - [CI/CD](./runbooks/ci.md) - Continuous integration execution
 
-### 🎨 [UI](./ui/)
+### 🎨 UI
 
 Design specifications, wireframes, and visual guidelines.
 

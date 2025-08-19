@@ -95,9 +95,9 @@ For complete game design, see [Draconia Chronicles v2 GDD](../../Draconia_Chroni
 ## Links and Resources
 
 ### Internal Documentation
-- [Engineering Standards](../engineering/) - Technical guidelines and policies
-- [Architectural Decisions](../adr/) - Key technical decisions (ADRs)
-- [Runbooks](../runbooks/) - Operational procedures and setup guides
+- [Engineering Standards](../engineering/testing.md) - Technical guidelines and policies
+- [Architectural Decisions](../adr/0001-testing-strategy.md) - Key technical decisions (ADRs)
+- [Runbooks](../runbooks/local-dev.md) - Operational procedures and setup guides
 
 ### External Resources
 - [Game Design Document](../../Draconia_Chronicles_v2_GDD.md) - Complete game design
