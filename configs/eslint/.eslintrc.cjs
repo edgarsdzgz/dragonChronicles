@@ -29,15 +29,21 @@ module.exports = {
       files: ["**/*.svelte"],
       parser: "svelte-eslint-parser",
       parserOptions: {
-        parser: {
-          ts: "@typescript-eslint/parser"
-        },
-        extraFileExtensions: [".svelte"],
-        project: ["./tsconfig.base.json"]
+        parser: "@typescript-eslint/parser",
+        extraFileExtensions: [".svelte"]
       },
+      plugins: ["svelte", "@typescript-eslint"],
+      extends: [
+        "plugin:svelte/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
       rules: {
         // Keep template rules sane and low-noise
-        "svelte/no-at-html-tags": "warn"
+        "svelte/no-at-html-tags": "warn",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
       }
     },
     {

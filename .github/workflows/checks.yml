@@ -1,0 +1,42 @@
+name: checks
+
+on:
+  pull_request:
+    paths:
+      - "**/*.ts"
+      - "**/*.svelte"
+      - "**/*.md"
+      - "tests/**"
+      - "configs/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with: 
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # tests
+      - run: pnpm run test:all
+
+      # style gates
+      - run: pnpm -w lint
+      - run: pnpm run format:check
+
+      # docs gates (you already have these)
+      - run: pnpm run docs:lint
+      - run: pnpm run docs:links
