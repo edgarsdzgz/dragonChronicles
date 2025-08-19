@@ -9,11 +9,10 @@ including test layers, execution patterns, and the tiny-runner implementation.
 
 ### Unit Tests
 
-**Purpose**: Test individual functions and utilities in isolation
-**Scope**: Single package functionality, pure functions, data transformations
-**Location**: `tests/test-unit-*.mjs`
-**Example**: `tests/test-unit-shared.mjs` tests the `clamp()` function and version
-constants
+**Purpose**: Test individual functions and utilities in isolation  
+**Scope**: Single package functionality, pure functions, data transformations  
+**Location**: `tests/test-unit-*.mjs`  
+**Example**: `tests/test-unit-shared.mjs` tests the `clamp()` function and version constants
 
 **Current Implementation**:
 
@@ -22,14 +21,12 @@ constants
 - Test isolated utility functions and constants
 - Assert exact values and boundary conditions
 
+### Integration Tests  
 
-### Integration Tests
-
-**Purpose**: Test interactions between packages and system components
-**Scope**: Cross-package dependencies, logger integration, worker communication
-**Location**: `tests/test-integration-*.mjs`
-**Example**: `tests/test-integration-graph.mjs` tests logger + simulation package
-interaction
+**Purpose**: Test interactions between packages and system components  
+**Scope**: Cross-package dependencies, logger integration, worker communication  
+**Location**: `tests/test-integration-*.mjs`  
+**Example**: `tests/test-integration-graph.mjs` tests logger + simulation package interaction
 
 **Current Implementation**:
 
@@ -41,8 +38,8 @@ interaction
 
 ### End-to-End Tests
 
-**Purpose**: Test full build pipeline and application contracts
-**Scope**: Complete workspace builds, CLI output, JSON contracts
+**Purpose**: Test full build pipeline and application contracts  
+**Scope**: Complete workspace builds, CLI output, JSON contracts  
 **Location**: `tests/test-e2e-*.mjs`
 **Example**: `tests/test-e2e-build.mjs` builds workspace and tests sandbox CLI output
 
@@ -56,8 +53,8 @@ interaction
 
 ### TypeScript Strict Gate
 
-**Purpose**: Enforce TypeScript strict mode compliance
-**Scope**: Type safety, implicit any detection, configuration validation
+**Purpose**: Enforce TypeScript strict mode compliance  
+**Scope**: Type safety, implicit any detection, configuration validation  
 **Location**: `tests/test-ts-strict.mjs`
 **Details**: See [TypeScript Standards](./typescript.md)
 
@@ -99,8 +96,6 @@ await run(); // Handles exit codes and reporting
 assert.equal(someFunction(), expectedValue);
 console.log("UNIT(shared): ok"); // Always prints even if assert failed
 ```
-
-
 
 ### ✅ Correct Pattern
 
@@ -194,7 +189,6 @@ if (process.env.BUILD_ONCE !== "1") {
 3. **Run individual tests**: Isolate failing test file
 4. **Check assertions**: Review assertion error messages
 
-
 ### Build Failures
 
 1. **TypeScript errors**: Check `tsc -b` output for compilation errors
@@ -262,7 +256,7 @@ if (process.env.BUILD_ONCE !== "1") {
 
 ### Test File Locations
 
-```text
+```
 tests/
 ├── _tiny-runner.mjs           # Test runner implementation
 ├── test-unit-shared.mjs       # Unit tests for shared package
@@ -273,6 +267,4 @@ tests/
 └── ts-strict/               # TypeScript gate configurations
 ```
 
-
-See [ADR-0001: Testing Strategy](../adr/0001-testing-strategy.md) for the architectural
-decision record.
+See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural decision record.

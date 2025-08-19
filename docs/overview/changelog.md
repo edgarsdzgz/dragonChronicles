@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive documentation system with engineering standards
 - ADR system for architectural decisions
 - PR template with required docs checkboxes
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - TBD
 
 ### Added
+
 - **S001**: Testing Strategy Implementation
   - Custom tiny-runner test infrastructure
   - BUILD_ONCE optimization for faster test execution
@@ -30,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive TypeScript standards documentation
 
 ### Documentation
+
 - First-class documentation system under `/docs`
 - Engineering standards for testing and TypeScript
 - Architectural Decision Records (ADRs)
@@ -37,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Project overview and status tracking
 
 ### Infrastructure
+
 - Monorepo structure with TypeScript project references
 - pnpm workspace configuration
 - Incremental compilation with build optimization

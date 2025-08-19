@@ -26,8 +26,7 @@ error code assertions:
 
 ### Strict Policy Configuration
 
-- **Required flags**: `strict: true`, `noImplicitAny: true`,
-  `exactOptionalPropertyTypes: true`
+- **Required flags**: `strict: true`, `noImplicitAny: true`, `exactOptionalPropertyTypes: true`
 - **Compilation**: `noEmit: true`, `skipLibCheck: true`
 - **Target/Module**: `ES2022`/`ESNext` for modern compatibility
 - **Minimal includes**: Point only to relevant test fixtures
@@ -36,8 +35,7 @@ error code assertions:
 ### Gate Implementation
 
 - **Test command**: `node tests/test-ts-strict.mjs`
-- **Test fixtures**: `tests/fixtures/strict/good.ts` and
-  `tests/fixtures/strict/bad-implicit-any.ts`
+- **Test fixtures**: `tests/fixtures/strict/good.ts` and `tests/fixtures/strict/bad-implicit-any.ts`
 - **Configuration files**:
   - `tests/ts-strict/tsconfig.strict.should-pass.json` - Tests good TypeScript
   - `tests/ts-strict/tsconfig.strict.should-fail.json` - Tests bad TypeScript
@@ -57,14 +55,22 @@ error code assertions:
 
 ### Positive
 
+<<<<<<< HEAD
 - **Immediate feedback**: Developers get clear type error messages during
   development
+=======
+- **Immediate feedback**: Developers get clear type error messages during development
+>>>>>>> main
 - **Automated enforcement**: CI fails on type violations, preventing merge
 - **Extensible**: Easy to add more strict TypeScript rules and fixtures
 - **Non-brittle**: Error code assertions are stable across TypeScript versions
 
+<<<<<<< HEAD
 
 ### Negative
+=======
+### Negative  
+>>>>>>> main
 
 - **Additional overhead**: Extra test execution time for TypeScript compilation
 - **Maintenance**: Test fixtures need updates when adding new type patterns
@@ -81,9 +87,14 @@ error code assertions:
 
 ### Current Implementation
 
+<<<<<<< HEAD
 - **Good fixture**: `tests/fixtures/strict/good.ts` - Properly typed function with
   optional properties
 - **Bad fixture**: `tests/fixtures/strict/bad-implicit-any.ts` - Function parameters
   with implicit any
+=======
+- **Good fixture**: `tests/fixtures/strict/good.ts` - Properly typed function with optional properties
+- **Bad fixture**: `tests/fixtures/strict/bad-implicit-any.ts` - Function parameters with implicit any
+>>>>>>> main
 - **Gate test**: `tests/test-ts-strict.mjs` - Validates both pass and fail scenarios
 - **Integration**: Included in `pnpm run test:all` execution

@@ -43,7 +43,7 @@ pnpm run dev:sandbox     # Run sandbox app in dev mode
 - **[Local Development](./docs/runbooks/local-dev.md)** - Setup guide from clone to tests
 - **[Testing Strategy](./docs/engineering/testing.md)** - Test layers, execution, BUILD_ONCE optimization
 - **[TypeScript Standards](./docs/engineering/typescript.md)** - Strict mode policy, examples, troubleshooting
-- **[Architectural Decisions](./docs/adr/)** - Key technical decisions (ADRs)
+- **[Architectural Decisions](./docs/adr/0001-testing-strategy.md)** - Key technical decisions (ADRs)
 
 ### Quick Links
 

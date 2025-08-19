@@ -10,12 +10,14 @@ This runbook describes how Continuous Integration (CI) executes tests and docume
 ## Test Execution in CI
 
 ### Test Command
+
 ```bash
 # Full test suite with build optimization
 pnpm run test:all
 ```
 
 ### Expected Execution Flow
+
 1. **Dependencies**: `pnpm install`
 2. **Build**: `tsc -b` (full workspace build)
 3. **Unit Tests**: `BUILD_ONCE=1 node tests/test-unit-shared.mjs`
@@ -24,6 +26,7 @@ pnpm run test:all
 6. **TypeScript Strict Gate**: `node tests/test-ts-strict.mjs`
 
 ### Expected Output
+
 ```
 ok - 2 passed
 ok - 2 passed
@@ -34,6 +37,7 @@ ok - 2 passed
 ## Documentation Checks in CI
 
 ### Planned Documentation Validation
+
 ```bash
 # Markdown linting (when CI is implemented)
 pnpm run docs:lint
@@ -46,6 +50,7 @@ pnpm run docs:check
 ```
 
 ### Documentation Requirements
+
 - All PRs changing `packages/`, `apps/`, or `tests/` must update documentation
 - Markdown files must pass linting rules
 - Internal links must resolve correctly
@@ -54,6 +59,7 @@ pnpm run docs:check
 ## Build Verification
 
 ### TypeScript Compilation
+
 ```bash
 # Type checking without emit
 pnpm run typecheck
@@ -63,6 +69,7 @@ pnpm run build
 ```
 
 ### Artifact Validation
+
 - All packages must compile successfully
 - `dist/` directories must contain expected outputs
 - No TypeScript errors allowed
@@ -70,13 +77,17 @@ pnpm run build
 ## Performance Considerations
 
 ### BUILD_ONCE Optimization
+
 CI uses `BUILD_ONCE=1` environment variable to optimize test execution:
+
 - Single workspace build: `tsc -b`
 - Skip rebuilds in individual tests
 - Reduces total CI time from ~3x to 1x build cost
 
 ### Parallel Execution (Future)
+
 Planned optimization for CI pipeline:
+
 ```bash
 # Run tests in parallel when CI supports it
 pnpm run test:unit & pnpm run test:integration & pnpm run test:e2e & wait
@@ -85,27 +96,33 @@ pnpm run test:unit & pnpm run test:integration & pnpm run test:e2e & wait
 ## Failure Scenarios
 
 ### Test Failures
+
 **Exit Code**: 1  
 **Action**: Block PR merge, require fixes
+
 ```
 FAIL - 1 failed, 1 passed
 ```
 
 ### Build Failures
+
 **Exit Code**: Non-zero from `tsc -b`  
 **Action**: Block PR merge, fix TypeScript errors
 
 ### Documentation Failures
+
 **Exit Code**: 1 from docs checks  
 **Action**: Block PR merge, require docs updates
 
 ### Strict Gate Failures
+
 **Exit Code**: 1 from TypeScript strict enforcement  
 **Action**: Block PR merge, fix type violations
 
 ## CI Configuration (Future Implementation)
 
 ### GitHub Actions (Planned)
+
 ```yaml
 # .github/workflows/ci.yml (future implementation)
 name: CI
@@ -128,6 +145,7 @@ jobs:
 ```
 
 ### Required Checks (Planned)
+
 - ✅ All tests pass (`pnpm run test:all`)
 - ✅ Build succeeds (`pnpm run build`)
 - ✅ Docs pass linting (`pnpm run docs:lint`)
@@ -150,7 +168,9 @@ echo $? # Should show 0 for success
 ```
 
 ### Pre-PR Checklist
+
 Before submitting PRs, ensure:
+
 - [ ] `pnpm run test:all` passes locally
 - [ ] `pnpm run build` succeeds without errors
 - [ ] Documentation updated for code changes
@@ -159,12 +179,14 @@ Before submitting PRs, ensure:
 ## Monitoring and Alerts (Future)
 
 ### Planned Monitoring
+
 - Test execution duration tracking
 - Build success/failure rates
 - Documentation coverage metrics
 - TypeScript strict compliance metrics
 
 ### Alert Conditions (Future)
+
 - Consecutive test failures
 - Build time degradation
 - Documentation debt accumulation
@@ -173,6 +195,7 @@ Before submitting PRs, ensure:
 ## Deployment (Future)
 
 ### Planned Deployment Pipeline
+
 1. **Tests Pass**: All CI checks green
 2. **Build Artifacts**: Generate production build
 3. **Deploy Staging**: Automated staging deployment
@@ -180,6 +203,7 @@ Before submitting PRs, ensure:
 5. **Deploy Production**: Manual or automated production deployment
 
 ### Rollback Strategy (Future)
+
 - Immediate rollback on critical failures
 - Health check monitoring post-deployment
 - Database migration rollback procedures

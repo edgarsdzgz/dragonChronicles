@@ -15,7 +15,8 @@
 
 ## BUILD_ONCE Optimization
 
-The test suite supports `BUILD_ONCE=1` environment variable to skip rebuilding when running multiple tests:
+The test suite supports `BUILD_ONCE=1` environment variable to skip rebuilding when running
+multiple tests:
 
 ```bash
 # Build once, then run all tests without rebuilding
