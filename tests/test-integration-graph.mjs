@@ -7,11 +7,12 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const tscBin = require.resolve("typescript/bin/tsc");
 
-// Build integration packages - skip if BUILD_ONCE=1
-if (process.env.BUILD_ONCE !== "1") {
-  const built = spawnSync("node", [tscBin, "-b",
-    "packages/shared", "packages/logger", "packages/sim"], { stdio: "pipe", encoding: "utf8" });
-  assert.equal(built.status, 0, "Build failed for integration packages");
+if (!process.env.BUILD_ONCE) {
+  const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+  if (r.status !== 0) {
+    console.error(r.stderr || "");
+    process.exit(r.status ?? 1);
+  }
 }
 
 const { createMemoryLogger, helloLog } = await import("../packages/logger/dist/index.js");
@@ -30,8 +31,9 @@ test("sim integrates with logger", () => {
   assert.equal(out, 42);
   assert.ok(captured.includes("41"));         // sim logged something meaningful
   const logs = mem.drain();
-  assert.ok(logs.length >= 1, "Expected at least one log entry");
-  assert.equal(logs[0].src, "sim");
+  const simLogs = logs.filter(l => l.src === "sim");
+  assert.ok(simLogs.length >= 1, "expected at least one sim log");
+  assert.ok(simLogs.some(l => (l.msg || "").includes("->")), "expected meaningful sim message");
 });
 
 await run();

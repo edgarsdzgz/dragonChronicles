@@ -4,7 +4,7 @@
   "packageManager": "pnpm@9.0.0",
   "engines": { "node": ">=18.17" },
   "scripts": {
-    "build": "tsc -b",
+    "build": "npx tsc -b",
     "clean": "git clean -xfd -e node_modules -e .pnpm-store",
     "typecheck": "tsc -b --pretty false --noEmit",
     "list": "pnpm -w list --depth -1",
@@ -13,13 +13,22 @@
     "test:integration": "node tests/test-integration-graph.mjs",
     "test:e2e": "node tests/test-e2e-build.mjs",
     "test:ts-strict": "node tests/test-ts-strict.mjs",
-    "test:all": "tsc -b && BUILD_ONCE=1 node tests/test-unit-shared.mjs && BUILD_ONCE=1 node tests/test-integration-graph.mjs && BUILD_ONCE=1 node tests/test-e2e-build.mjs && node tests/test-ts-strict.mjs",
+    "test:all": "node tests/run-all.mjs",
+    "ws:check": "pnpm -w list --depth -1 && pnpm -w -r run echo-ok --if-present",
+    "echo-ok": "echo ok",
     "test:ts:audit": "node scripts/tsconfig-audit.mjs",
     "test:ts:should-fail": "node scripts/test-tsc-should-fail.mjs",
     "test:ts:workspace": "node scripts/test-tsc-workspace.mjs",
-    "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail"
+    "test:ts:all": "pnpm run test:ts:audit && pnpm run test:ts:workspace && pnpm run test:ts:should-fail",
+    "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
+    "lint:md": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
+    "docs:links": "linkinator docs/README.md --recurse --config .linkinatorrc.json",
+    "docs:check": "node .github/scripts/require-docs-change.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "markdownlint-cli": "^0.41.0",
+    "linkinator": "^6.1.2",
+    "cross-env": "^7.0.3"
   }
 }

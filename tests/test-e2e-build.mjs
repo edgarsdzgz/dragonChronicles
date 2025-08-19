@@ -11,14 +11,14 @@ const tscBin = require.resolve("typescript/bin/tsc");
 
 const must = (p) => assert.ok(fs.existsSync(p), `missing: ${p}`);
 
-test("workspace builds", () => {
-  // Skip if BUILD_ONCE=1 (assume already built)
-  if (process.env.BUILD_ONCE === "1") {
-    return; // Skip build, assume artifacts exist
-  }
+if (!process.env.BUILD_ONCE) {
   const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
-  assert.equal(r.status, 0, "tsc -b failed");
-});
+  if (r.status !== 0) {
+    console.error(r.stderr || "");
+    process.exit(r.status ?? 1);
+  }
+}
+
 
 test("artifacts exist (coarse)", () => {
   ["packages/shared","packages/logger","packages/db","packages/sim","apps/sandbox"]
@@ -26,7 +26,7 @@ test("artifacts exist (coarse)", () => {
 });
 
 test("sandbox JSON contract", () => {
-  const r = spawnSync("node", ["apps/sandbox/dist/index.js"], { encoding: "utf8" });
+  const r = spawnSync("node", ["apps/sandbox/dist/index.js"], { stdio: "pipe", encoding: "utf8" });
   assert.equal(r.status, 0, "sandbox run failed");
   const txt = r.stdout.trim();
   assert.ok(txt.startsWith("{") && txt.endsWith("}"), "stdout not JSON");

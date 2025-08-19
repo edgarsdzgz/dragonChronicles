@@ -7,10 +7,12 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const tscBin = require.resolve("typescript/bin/tsc");
 
-// (Temporary) build the package you're testing - skip if BUILD_ONCE=1
-if (process.env.BUILD_ONCE !== "1") {
-  const built = spawnSync("node", [tscBin, "-b", "packages/shared"], { stdio: "pipe", encoding: "utf8" });
-  assert.equal(built.status, 0, "Build failed for packages/shared");
+if (!process.env.BUILD_ONCE) {
+  const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+  if (r.status !== 0) {
+    console.error(r.stderr || "");
+    process.exit(r.status ?? 1);
+  }
 }
 
 // Import artifact (better: import source via Vitest later)
