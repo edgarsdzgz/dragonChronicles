@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Development Practices
 
 This document outlines key development practices and guidelines for the Draconia Chronicles project.

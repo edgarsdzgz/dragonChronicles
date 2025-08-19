@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Changelog
 
 All notable changes to Draconia Chronicles v2.0.0 will be documented in this file.

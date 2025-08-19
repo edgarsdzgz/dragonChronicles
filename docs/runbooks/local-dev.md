@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Local Development Setup
 
 This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone to running tests.

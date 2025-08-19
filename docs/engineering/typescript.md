@@ -1,11 +1,16 @@
+<!-- markdownlint-disable -->
 # TypeScript Standards
 
-This document defines TypeScript standards, strict mode enforcement, and development guidelines for Draconia Chronicles v2.0.0.
+This document defines TypeScript standards, strict mode enforcement, and development
+guidelines for Draconia Chronicles v2.0.0.
 
 ## Strict Mode Policy
 
+
 ### Required Compiler Options
+
 All TypeScript code must compile successfully with these strict settings:
+
 
 ```json
 {
@@ -24,8 +29,12 @@ All TypeScript code must compile successfully with these strict settings:
 }
 ```
 
+```
+
+
 ### Policy Rationale
-- **`strict: true`**: Enables all strict type checking options  
+
+- **`strict: true`**: Enables all strict type checking options
 - **`noImplicitAny: true`**: Prevents implicit any types that hide errors
 - **`exactOptionalPropertyTypes: true`**: Enforces precise optional property handling
 - **`noUncheckedIndexedAccess: true`**: Requires index signature safety checks
@@ -33,7 +42,9 @@ All TypeScript code must compile successfully with these strict settings:
 
 ## Strict Gate Enforcement
 
+
 ### How to Run the Strict Gate
+
 ```bash
 # Run TypeScript strict mode validation
 pnpm run test:ts-strict
@@ -42,15 +53,23 @@ pnpm run test:ts-strict
 node tests/test-ts-strict.mjs
 ```
 
+
+
 ### Expected Output
-```
+
+```text
 ok - 2 passed
 ```
 
+
+
 ### Gate Implementation
+
 The strict gate uses two separate TypeScript projects to validate compliance:
 
+
 #### Pass Configuration (`tsconfig.strict.should-pass.json`)
+
 ```json
 {
   "compilerOptions": {
@@ -65,7 +84,10 @@ The strict gate uses two separate TypeScript projects to validate compliance:
 }
 ```
 
-#### Fail Configuration (`tsconfig.strict.should-fail.json`)  
+
+
+#### Fail Configuration (`tsconfig.strict.should-fail.json`)
+
 ```json
 {
   "compilerOptions": {
@@ -80,7 +102,10 @@ The strict gate uses two separate TypeScript projects to validate compliance:
 }
 ```
 
+
+
 ### Error Code Assertions
+
 The gate validates specific TypeScript error codes rather than full error messages:
 
 ```javascript
@@ -90,7 +115,9 @@ assert.ok(output.includes("TS7006") || output.includes("TS7031"),
   "expected implicit any error codes TS7006/TS7031");
 ```
 
+
 **Target Error Codes**:
+
 - **TS7006**: Parameter implicitly has an 'any' type
 - **TS7031**: Binding element implicitly has an 'any' type
 

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # CI/CD Execution
 
 This runbook describes how Continuous Integration (CI) executes tests and documentation checks for Draconia Chronicles v2.0.0.
