@@ -17,9 +17,16 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (fetch all history + base ref)
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0   # unshallow so we can diff properly
+
+      # Optional but fast: fetch the PR base explicitly (helps forks)
+      - name: Fetch base branch
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git fetch origin +refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
 
       # Actionlint via Reviewdog (keeps nice PR annotations)
       - name: Actionlint
@@ -43,5 +50,10 @@ jobs:
       - run: pnpm run docs:lint
       - run: pnpm run docs:links
 
-      - name: Enforce docs presence on code/test changes
+      - name: Require docs change
         run: node .github/scripts/require-docs-change.mjs
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}            # PR base (e.g., main)
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || '' }}
