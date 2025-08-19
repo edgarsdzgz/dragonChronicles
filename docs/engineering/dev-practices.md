@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Development Practices
 
 This document outlines key development practices and guidelines for the Draconia Chronicles project.
@@ -23,6 +24,7 @@ Always support implementation claims with concrete, reproducible evidence:
 4. **Document validation steps** that others can reproduce
 
 Example validation commands:
+
 ```bash
 # Verify robust TypeScript resolution (should return 0 results)
 git grep -n "node_modules/typescript/bin/tsc" -- tests

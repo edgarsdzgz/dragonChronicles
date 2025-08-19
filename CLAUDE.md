@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Claude Development Guidelines
 
 This file contains important guidelines and patterns for working on the Draconia Chronicles project.

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Local Development Setup
 
 This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone to running tests.
@@ -27,6 +28,7 @@ node tests/run-all.mjs
 ## Detailed Setup
 
 ### 1. Repository Clone
+
 ```bash
 git clone https://github.com/edgarsdzgz/dragonChronicles.git
 cd dragonChronicles
@@ -36,6 +38,7 @@ git branch --show-current
 ```
 
 ### 2. Dependency Installation
+
 ```bash
 # Install all workspace dependencies
 pnpm install
@@ -45,10 +48,12 @@ pnpm list --depth=0
 ```
 
 **Troubleshooting**:
+
 - If `pnpm` not found: `npm install -g pnpm`
 - If Node version mismatch: Use Node 18.17+
 
 ### 3. TypeScript Compilation
+
 ```bash
 # Build all packages and apps
 pnpm run build
@@ -59,6 +64,7 @@ ls apps/*/dist
 ```
 
 ### 4. Test Execution
+
 ```bash
 # Run all tests (cross-platform driver with build-once optimization)
 node tests/run-all.mjs
@@ -91,6 +97,7 @@ dragonChronicles/
 ### Making Changes
 
 1. **Create feature branch**:
+
    ```bash
    git checkout -b feat/your-feature-name
    ```
@@ -98,11 +105,13 @@ dragonChronicles/
 2. **Make your changes** to packages or apps
 
 3. **Build and test**:
+
    ```bash
    node tests/run-all.mjs
    ```
 
 4. **Commit changes**:
+
    ```bash
    git add .
    git commit -m "feat: add your feature"
@@ -130,6 +139,7 @@ node tests/test-ts-strict.mjs
 ## Package Scripts Reference
 
 ### Build Scripts
+
 ```bash
 pnpm run build        # Build all packages and apps
 pnpm run clean        # Clean all build artifacts
@@ -137,6 +147,7 @@ pnpm run typecheck    # Type checking without emit
 ```
 
 ### Test Scripts
+
 ```bash
 node tests/run-all.mjs     # All tests with build-once optimization
 pnpm run test:unit         # Unit tests only
@@ -146,6 +157,7 @@ pnpm run test:ts-strict   # TypeScript strict enforcement
 ```
 
 ### Development Scripts  
+
 ```bash
 pnpm run dev:sandbox   # Run sandbox app in dev mode
 pnpm run list         # List all workspace packages
@@ -156,6 +168,7 @@ pnpm run list         # List all workspace packages
 ### Build Failures
 
 **Issue**: `tsc -b` fails with compilation errors
+
 ```bash
 # Solution: Check specific package errors
 pnpm run typecheck
@@ -166,6 +179,7 @@ pnpm run build
 ```
 
 **Issue**: Missing `dist/` directories
+
 ```bash
 # Solution: Ensure build completed successfully
 pnpm run build
@@ -175,6 +189,7 @@ ls packages/*/dist  # Should show compiled output
 ### Test Failures
 
 **Issue**: Tests report failures but errors aren't clear
+
 ```bash
 # Solution: Run individual test files for detailed output
 node tests/test-unit-shared.mjs
@@ -182,6 +197,7 @@ node tests/test-integration-graph.mjs
 ```
 
 **Issue**: Individual tests failing after changes
+
 ```bash
 # Solution: Use the driver for reliable cross-platform testing
 node tests/run-all.mjs
@@ -194,6 +210,7 @@ BUILD_ONCE=1 node tests/test-unit-shared.mjs
 ### TypeScript Issues
 
 **Issue**: Strict mode violations (TS7006, TS7031)
+
 ```bash
 # Solution: Check specific errors
 pnpm run test:ts-strict
@@ -203,18 +220,21 @@ cat docs/engineering/typescript.md
 ```
 
 **Issue**: Module resolution errors
+
 - Check `tsconfig.base.json` has correct `moduleResolution: "NodeNext"`
 - Ensure `package.json` has `"type": "module"` if needed
 
 ### IDE Setup
 
 #### VS Code
+
 1. Install TypeScript extension
 2. Use workspace TypeScript version
 3. Enable strict mode warnings
 4. Configure auto-imports from `tsconfig.base.json`
 
 #### Other IDEs
+
 - Point to `tsconfig.base.json` for project configuration
 - Enable TypeScript strict mode checking
 - Configure import resolution for monorepo structure
@@ -222,6 +242,7 @@ cat docs/engineering/typescript.md
 ## Performance Tips
 
 ### Faster Builds
+
 ```bash
 # Use TypeScript build mode for incremental compilation
 pnpm run build
@@ -231,6 +252,7 @@ node tests/run-all.mjs
 ```
 
 ### Faster Tests
+
 ```bash
 # Run all tests with driver (fastest, cross-platform)
 node tests/run-all.mjs
@@ -242,6 +264,7 @@ pnpm run test:e2e      # Slowest (full builds)
 ```
 
 ### Development Mode
+
 ```bash
 # Watch mode for sandbox development
 pnpm run dev:sandbox
@@ -253,6 +276,7 @@ pnpm run dev:sandbox
 ## Documentation Integration
 
 When making changes that affect:
+
 - **Packages/Apps**: Update relevant documentation in `/docs`
 - **Tests**: Update `/docs/engineering/testing.md`
 - **TypeScript**: Update `/docs/engineering/typescript.md`
@@ -270,6 +294,7 @@ See [Documentation Standards](../README.md) for detailed guidance.
 ## Next Steps
 
 After completing setup:
+
 1. Review [Testing Strategy](../engineering/testing.md)
 2. Read [TypeScript Standards](../engineering/typescript.md)  
 3. Check [Architectural Decision Records](../adr/)
