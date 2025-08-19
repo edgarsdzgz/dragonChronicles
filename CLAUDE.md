@@ -470,3 +470,18 @@ feat: [brief description]
 ### Resolves
 - Closes #[issue-number]
 ```
+
+## Markdown Quality Charter (Never Break These)
+
+- **Do not bypass** agreed requirements or CI checks to "make it pass".
+- **Never** edit tests or linters to hide failures; fix the doc instead.
+- **Ask questions** when unsure; do not guess and push broken work.
+- **Follow markdownlint rules**:
+  - Wrap lines at **100** chars (`MD013`)
+  - Add blank line **before headings** (`MD022`)
+  - Only **one H1** per document (`MD025`)
+  - **No trailing spaces** (`MD009`)
+  - Provide a **language** for fenced code blocks (`MD040`)
+  - **No bare URLs**; use `[text](url)` (`MD034`)
+  - Don't **skip heading levels** (`MD001`)
+- If stuck or tempted to "cheat", **stop, document the blocker, and request review**.

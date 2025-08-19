@@ -1,13 +1,16 @@
 {
   "default": true,
   "MD013": {
-    "line_length": 120,
-    "heading_line_length": 120,
+    "line_length": 100,
+    "heading_line_length": 100,
     "code_block_line_length": 0,
     "tables": false
   },
+  "MD040": true,
+  "MD049": { "style": "asterisk" },
+  "MD035": { "style": "---" },
   "MD033": {
-    "allowed_elements": ["br", "img", "a", "sub", "sup", "span", "div", "picture", "source"]
+    "allowed_elements": ["br", "img", "a", "sub", "sup", "span", "div", "picture", "source", "Title"]
   },
   "MD041": false
 }

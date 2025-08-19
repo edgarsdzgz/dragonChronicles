@@ -1,6 +1,7 @@
 # TypeScript Standards
 
-This document defines TypeScript standards, strict mode enforcement, and development guidelines for Draconia Chronicles v2.0.0.
+This document defines TypeScript standards, strict mode enforcement, and development guidelines for
+Draconia Chronicles v2.0.0.
 
 ## Strict Mode Policy
 
@@ -403,4 +404,5 @@ Ensure your IDE uses the project's TypeScript configuration:
 - Prefer explicit types over `any` or `unknown`
 - Document complex type definitions with comments
 
-See [ADR-0002: TypeScript Strict Gate](/docs/adr/0002-typescript-strict-gate.md) for the architectural decision record.
+See [ADR-0002: TypeScript Strict Gate](/docs/adr/0002-typescript-strict-gate.md) for the
+architectural decision record.
