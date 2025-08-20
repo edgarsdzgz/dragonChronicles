@@ -9,7 +9,8 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {}
   },
   "references": [
     { "path": "../../packages/logger" },

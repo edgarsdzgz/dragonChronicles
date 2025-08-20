@@ -12,6 +12,7 @@
     }
   },
   "files": ["dist"],
+  "sideEffects": false,
   "scripts": {
     "build": "npx tsc -b",
     "clean": "rimraf dist",
