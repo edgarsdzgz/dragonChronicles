@@ -48,7 +48,8 @@
       "Bash(git mv:*)",
       "Bash(git rm:*)",
       "Bash(sh:*)",
-      "Bash(.husky/pre-commit)"
+      "Bash(.husky/pre-commit)",
+      "Bash(cmd /c pnpm exec lint-staged)"
     ],
     "deny": []
   }

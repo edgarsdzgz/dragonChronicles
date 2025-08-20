@@ -33,7 +33,14 @@
     "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
     "verify:style": "pnpm run lint:quiet && pnpm run format:check",
     "verify:all": "node tests/run-all.mjs && pnpm run lint:quiet && pnpm run format:check && pnpm run docs:lint && pnpm run docs:links",
-    "prepare": "husky",
+    "prepare": "husky install",
+    "commitlint": "commitlint --from=HEAD~1 --to=HEAD",
+    "commitlint:stdin": "commitlint",
+    "test:hooks:audit": "node scripts/husky-audit.mjs",
+    "test:hooks:unit": "node scripts/test-commitlint-unit.mjs",
+    "test:hooks:integration": "node scripts/test-precommit-format.mjs",
+    "test:hooks:e2e": "node scripts/test-commit-msg-hook.mjs",
+    "test:hooks:all": "pnpm run test:hooks:audit && pnpm run test:hooks:unit && pnpm run test:hooks:integration && pnpm run test:hooks:e2e",
     "test:lint:unit": "node scripts/test-lint-unit.mjs",
     "test:lint:workspace": "node scripts/test-lint-workspace.mjs",
     "test:lint:e2e": "node scripts/test-precommit-e2e.mjs",
@@ -57,10 +64,10 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,svelte}": [
-      "eslint --cache --cache-location ./.cache/eslint --fix"
+      "eslint --config ./configs/eslint/.eslintrc.cjs --fix"
     ],
     "*.{ts,tsx,js,json,md,css,scss,svelte}": [
-      "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --write"
+      "prettier --config ./configs/prettier/.prettierrc.cjs --write"
     ]
   }
 }
