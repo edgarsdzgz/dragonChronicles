@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 console.log("UNIT: Validate ESLint configuration loads and processes TypeScript + Svelte…");
 
 // Test that ESLint config can be loaded and parsed
-const eslintConfigPath = "eslint.config.js";
+const eslintConfigPath = "eslint.config.mjs";
 assert.ok(existsSync(eslintConfigPath), "ESLint config must exist");
 
 // Verify the config contains required rules and plugins
