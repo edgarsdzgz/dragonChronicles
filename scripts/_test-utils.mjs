@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 // Shared constants
 export const PATHS = {
-  eslintConfig: "eslint.config.js",
+  eslintConfig: "eslint.config.mjs",
   prettierConfig: "configs/prettier/.prettierrc.cjs",
   eslintIgnore: "configs/eslint/.eslintignore",
   packageJson: "package.json",
