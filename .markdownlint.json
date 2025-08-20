@@ -10,7 +10,18 @@
   "MD049": { "style": "asterisk" },
   "MD035": { "style": "---" },
   "MD033": {
-    "allowed_elements": ["br", "img", "a", "sub", "sup", "span", "div", "picture", "source", "Title"]
+    "allowed_elements": [
+      "br",
+      "img",
+      "a",
+      "sub",
+      "sup",
+      "span",
+      "div",
+      "picture",
+      "source",
+      "Title"
+    ]
   },
   "MD041": false
 }

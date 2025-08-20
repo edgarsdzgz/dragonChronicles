@@ -3,13 +3,13 @@
  * @description Provides structured logging with memory buffering and level-based filtering
  */
 
-import { DRACONIA_VERSION } from "@draconia/shared";
+import { DRACONIA_VERSION } from '@draconia/shared';
 
 /** Supported log levels in ascending order of severity */
-export type LogLevel = "debug" | "info" | "warn" | "error";
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
-/** 
- * Structured log event with metadata 
+/**
+ * Structured log event with metadata
  * @property t - Timestamp (Unix milliseconds)
  * @property lvl - Log level
  * @property src - Source component/module name
@@ -29,6 +29,7 @@ export type LogEvent = {
  */
 export interface Logger {
   /** Write a log event to the logger */
+  // eslint-disable-next-line no-unused-vars
   log(event: LogEvent): void;
   /** Drain all buffered events and clear the buffer */
   drain(): LogEvent[];
@@ -38,7 +39,7 @@ export interface Logger {
  * Creates an in-memory logger with circular buffer behavior
  * @param capacity - Maximum number of events to buffer (default: 1000)
  * @returns A Logger instance that stores events in memory
- * 
+ *
  * @example
  * const logger = createMemoryLogger(100);
  * logger.log({ t: Date.now(), lvl: "info", src: "app", msg: "Started" });
@@ -46,7 +47,7 @@ export interface Logger {
  */
 export function createMemoryLogger(capacity = 1000): Logger {
   const buffer: LogEvent[] = [];
-  
+
   return {
     log(event: LogEvent): void {
       buffer.push(event);
@@ -55,12 +56,12 @@ export function createMemoryLogger(capacity = 1000): Logger {
         buffer.shift();
       }
     },
-    
+
     drain(): LogEvent[] {
       const snapshot = buffer.slice();
       buffer.length = 0; // Clear the buffer
       return snapshot;
-    }
+    },
   };
 }
 

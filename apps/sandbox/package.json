@@ -3,12 +3,18 @@
   "version": "0.0.0-phase0",
   "type": "module",
   "private": true,
-  "scripts": { "build": "npx tsc -b", "dev": "node dist/index.js", "echo-ok": "echo ok" },
+  "scripts": {
+    "build": "npx tsc -b",
+    "dev": "node dist/index.js",
+    "echo-ok": "echo ok"
+  },
   "dependencies": {
     "@draconia/shared": "workspace:*",
     "@draconia/logger": "workspace:*",
     "@draconia/db": "workspace:*",
     "@draconia/sim": "workspace:*"
   },
-  "devDependencies": { "typescript": "^5.4.0" }
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
 }

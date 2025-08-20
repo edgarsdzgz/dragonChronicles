@@ -1,0 +1,20 @@
+# Build outputs
+dist/
+dist-tests/
+.svelte-kit/
+
+# Dependencies and caches
+node_modules/
+.pnpm-store/
+.cache/
+
+# Tool directories
+.husky/_/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Local/ephemeral files
+.claude/
+.vscode/

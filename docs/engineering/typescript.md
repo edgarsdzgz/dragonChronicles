@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # TypeScript Standards
 
 This document defines TypeScript standards, strict mode enforcement, and development guidelines for
@@ -26,15 +28,19 @@ All TypeScript code must compile successfully with these strict settings:
 }
 ```
 
+````
+
+
 ### Policy Rationale
 
-- **`strict: true`**: Enables all strict type checking options  
+- **`strict: true`**: Enables all strict type checking options
 - **`noImplicitAny: true`**: Prevents implicit any types that hide errors
 - **`exactOptionalPropertyTypes: true`**: Enforces precise optional property handling
 - **`noUncheckedIndexedAccess: true`**: Requires index signature safety checks
 - **`noFallthroughCasesInSwitch: true`**: Prevents accidental switch fallthrough bugs
 
 ## Strict Gate Enforcement
+
 
 ### How to Run the Strict Gate
 
@@ -44,7 +50,7 @@ pnpm run test:ts-strict
 
 # Or directly
 node tests/test-ts-strict.mjs
-```
+````
 
 ### Expected Output
 
@@ -94,9 +100,11 @@ The gate validates specific TypeScript error codes rather than full error messag
 
 ```javascript
 // Assert specific error codes (non-brittle)
-const output = (result.stderr || result.stdout || "").toString();
-assert.ok(output.includes("TS7006") || output.includes("TS7031"), 
-  "expected implicit any error codes TS7006/TS7031");
+const output = (result.stderr || result.stdout || '').toString();
+assert.ok(
+  output.includes('TS7006') || output.includes('TS7031'),
+  'expected implicit any error codes TS7006/TS7031',
+);
 ```
 
 **Target Error Codes**:
@@ -114,7 +122,7 @@ assert.ok(output.includes("TS7006") || output.includes("TS7031"),
 type Opt = { title?: string };
 export function greet(name: string, opt?: Opt) {
   // exactOptionalPropertyTypes: opt?.title is string | undefined, not string
-  const label = opt?.title ? `${opt.title}: ` : "";
+  const label = opt?.title ? `${opt.title}: ` : '';
   return `${label}Hello, ${name}`;
 }
 ```
@@ -149,20 +157,28 @@ export function bad(a, { b }) {
 
 ```typescript
 // ❌ Implicit any
-function process(data) { return data; }
+function process(data) {
+  return data;
+}
 
 // ✅ Explicit types
-function process(data: unknown): unknown { return data; }
-function processUser(user: { name: string }): string { return user.name; }
+function process(data: unknown): unknown {
+  return data;
+}
+function processUser(user: { name: string }): string {
+  return user.name;
+}
 ```
 
-### Object Destructuring  
+### Object Destructuring
 
 ```typescript
 // ❌ Implicit any in destructuring
-function handle({ name, age }) { return `${name}: ${age}`; }
+function handle({ name, age }) {
+  return `${name}: ${age}`;
+}
 
-// ✅ Explicit types in destructuring  
+// ✅ Explicit types in destructuring
 function handle({ name, age }: { name: string; age: number }): string {
   return `${name}: ${age}`;
 }
@@ -183,7 +199,7 @@ function getTitle(config: Config): string {
 
 // ✅ Safe optional access
 function getTitle(config: Config): string {
-  return config.title ? config.title.toUpperCase() : "DEFAULT";
+  return config.title ? config.title.toUpperCase() : 'DEFAULT';
 }
 ```
 
@@ -199,10 +215,10 @@ function getValue(dict: Dictionary, key: string): string {
   return dict[key].trim(); // Error: might be undefined
 }
 
-// ✅ Checked index access  
+// ✅ Checked index access
 function getValue(dict: Dictionary, key: string): string {
   const value = dict[key];
-  return value ? value.trim() : "";
+  return value ? value.trim() : '';
 }
 ```
 
@@ -212,20 +228,28 @@ function getValue(dict: Dictionary, key: string): string {
 
 ```typescript
 // Before (fails strict gate)
-function helper(value) { return value; }
+function helper(value) {
+  return value;
+}
 
 // After (passes strict gate)
-function helper(value: unknown): unknown { return value; }
+function helper(value: unknown): unknown {
+  return value;
+}
 ```
 
 ### Fix TS7031: Binding Element Implicitly Has Any
 
 ```typescript
-// Before (fails strict gate)  
-function extract({ data }) { return data; }
+// Before (fails strict gate)
+function extract({ data }) {
+  return data;
+}
 
 // After (passes strict gate)
-function extract({ data }: { data: unknown }): unknown { return data; }
+function extract({ data }: { data: unknown }): unknown {
+  return data;
+}
 ```
 
 ### Fix Exact Optional Properties
@@ -287,7 +311,7 @@ Located in `tests/ts-strict/`:
 
 ```typescript
 // Problem: TypeScript doesn't know about dynamic properties
-const obj: any = { name: "test" };
+const obj: any = { name: 'test' };
 console.log(obj.unknownProp); // No error, but dangerous
 
 // Solution: Use proper typing or index signatures
@@ -320,7 +344,7 @@ interface Config {
 }
 
 const config: Config = {
-  debug: undefined // Error with exactOptionalPropertyTypes
+  debug: undefined, // Error with exactOptionalPropertyTypes
 };
 
 // Solution: Omit undefined properties or use union types
@@ -341,11 +365,11 @@ interface Config {
     // Start with these
     "noImplicitReturns": true,
     "noImplicitAny": true,
-    
-    // Add these next  
+
+    // Add these next
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    
+
     // Finally enable full strict mode
     "strict": true
   }
@@ -361,7 +385,7 @@ pnpm run test:ts-strict
 # Fix reported implicit any issues
 ```
 
-### Step 3: Address Optional Property Issues  
+### Step 3: Address Optional Property Issues
 
 Enable `exactOptionalPropertyTypes` and fix undefined handling:
 
@@ -372,7 +396,7 @@ interface User {
 }
 const user: User = { name: undefined }; // Will fail
 
-// After  
+// After
 interface User {
   name?: string;
 }
@@ -386,7 +410,7 @@ const user: User = {}; // Correct - omit undefined properties
 The TypeScript strict gate runs as part of:
 
 - `pnpm run test:all` - Full test suite execution
-- CI/CD pipeline validation  
+- CI/CD pipeline validation
 - Manual quality checks before PR submission
 
 ### IDE Configuration

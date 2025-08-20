@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+LEGACY_v*/
+playwright-report/
+test-results/
+screens/
+.svelte-kit/
+.pnpm-store/
+.husky/_/*

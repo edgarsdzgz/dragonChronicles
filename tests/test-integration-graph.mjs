@@ -2,13 +2,9 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { test, run } from "./_tiny-runner.mjs";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const tscBin = require.resolve("typescript/bin/tsc");
 
 if (!process.env.BUILD_ONCE) {
-  const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+  const r = spawnSync("pnpm", ["-w", "exec", "tsc", "-b"], { stdio: "pipe", encoding: "utf8" });
   if (r.status !== 0) {
     console.error(r.stderr || "");
     process.exit(r.status ?? 1);
@@ -17,6 +13,11 @@ if (!process.env.BUILD_ONCE) {
 
 const { createMemoryLogger, helloLog } = await import("../packages/logger/dist/index.js");
 const { simulateTick } = await import("../packages/sim/dist/index.js");
+
+// Fail fast on missing exports
+assert.equal(typeof createMemoryLogger, "function", "createMemoryLogger should be a function");
+assert.equal(typeof helloLog, "function", "helloLog should be a function");
+assert.equal(typeof simulateTick, "function", "simulateTick should be a function");
 
 test("logger contract", () => {
   assert.match(helloLog(), /^logger-ok@/);

@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # ADR 0001: Testing Strategy
 
 **Date**: 2025-08-18  
@@ -6,18 +7,21 @@
 
 ## Context
 
-In the early phase of Draconia Chronicles v2.0.0 development, we need deterministic test execution without the overhead of a full testing framework. The project requires:
+In the early phase of Draconia Chronicles v2.0.0 development, we need deterministic test
+execution without the overhead of a full testing framework. The project requires:
 
 - Fast feedback loops during development
 - Clear pass/fail indicators for CI/CD
 - Simple test execution without complex setup
 - Foundation for future migration to full testing frameworks
 
-The codebase uses a monorepo structure with TypeScript packages that need unit, integration, and end-to-end testing coverage.
+The codebase uses a monorepo structure with TypeScript packages that need unit,
+integration, and end-to-end testing coverage.
 
 ## Decision
 
-Implement a **tiny-runner + Node scripts** testing approach with the following architecture:
+Implement a **tiny-runner + Node scripts** testing approach with the following
+architecture:
 
 ### Test Layers
 
@@ -28,7 +32,7 @@ Implement a **tiny-runner + Node scripts** testing approach with the following a
 ### Tiny Runner Behavior
 
 - Derived test summaries with proper exit codes
-- No hard-coded "OK" messages that lie about results  
+- No hard-coded "OK" messages that lie about results
 - Output format: `ok - N passed` or `FAIL - N failed, N passed`
 - Exit code 0 for success, 1 for failure
 

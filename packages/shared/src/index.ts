@@ -4,7 +4,7 @@
  */
 
 /** Current version of the Draconia Chronicles system */
-export const DRACONIA_VERSION = "0.0.0-phase0";
+export const DRACONIA_VERSION = '0.0.0-phase0';
 
 /**
  * Clamps a numeric value within the specified bounds [lo, hi]

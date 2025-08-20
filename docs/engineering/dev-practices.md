@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # Development Practices
 
 This document outlines key development practices and guidelines for the Draconia Chronicles project.
@@ -10,7 +11,7 @@ This document outlines key development practices and guidelines for the Draconia
 When given specific technical requirements (such as using `pnpm -w -r run build` for workspace builds), implement those exact requirements rather than falling back to alternative solutions. If implementation fails:
 
 1. **Debug the root cause** - Use diagnostic commands to understand why the requirement fails
-2. **Fix the underlying issue** - Address configuration, environment, or tooling problems  
+2. **Fix the underlying issue** - Address configuration, environment, or tooling problems
 3. **Document the solution** - Explain what was broken and how it was fixed
 4. **Avoid shortcuts** - Don't substitute different approaches without explicit approval
 
@@ -29,7 +30,7 @@ Example validation commands:
 # Verify robust TypeScript resolution (should return 0 results)
 git grep -n "node_modules/typescript/bin/tsc" -- tests
 
-# Verify normalized stdio (should return 0 results)  
+# Verify normalized stdio (should return 0 results)
 git grep -n 'stdio: *"inherit"' -- tests
 
 # Count BUILD_ONCE guards (should return 3)
@@ -45,10 +46,10 @@ When reporting work completion:
 3. **Provide specific details** - Include exact commands, file paths, and error messages
 4. **Focus on blockers** - Clearly identify what still needs to be resolved
 
-### Build and Test Standards  
+### Build and Test Standards
 
 1. **BUILD_ONCE pattern** - All test files should check `!process.env.BUILD_ONCE` before running builds
-2. **Robust path resolution** - Use `require.resolve("typescript/bin/tsc")` instead of hardcoded paths  
+2. **Robust path resolution** - Use `require.resolve("typescript/bin/tsc")` instead of hardcoded paths
 3. **Consistent stdio** - All spawn calls should use `{ stdio: "pipe", encoding: "utf8" }`
 4. **Cross-platform compatibility** - Consider Windows/Unix differences in environment variables and paths
 

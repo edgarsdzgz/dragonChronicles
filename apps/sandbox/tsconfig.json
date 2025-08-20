@@ -1,11 +1,17 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "outDir": "dist", "rootDir": "src" },
-  "include": ["src"],
-  "references": [
-    { "path": "../../packages/shared" },
-    { "path": "../../packages/logger" },
-    { "path": "../../packages/db" },
-    { "path": "../../packages/sim" }
-  ]
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {}
+  },
+  "references": [{ "path": "../../packages/logger" }, { "path": "../../packages/sim" }],
+  "include": ["src"]
 }

@@ -1,7 +1,9 @@
 <!-- markdownlint-disable -->
+
 # Testing Strategy
 
-This document describes the current testing approach for Draconia Chronicles v2.0.0, including test layers, execution patterns, and the tiny-runner implementation.
+This document describes the current testing approach for Draconia Chronicles v2.0.0,
+including test layers, execution patterns, and the tiny-runner implementation.
 
 ## Test Layers
 
@@ -19,7 +21,7 @@ This document describes the current testing approach for Draconia Chronicles v2.
 - Test isolated utility functions and constants
 - Assert exact values and boundary conditions
 
-### Integration Tests  
+### Integration Tests
 
 **Purpose**: Test interactions between packages and system components  
 **Scope**: Cross-package dependencies, logger integration, worker communication  
@@ -37,7 +39,7 @@ This document describes the current testing approach for Draconia Chronicles v2.
 
 **Purpose**: Test full build pipeline and application contracts  
 **Scope**: Complete workspace builds, CLI output, JSON contracts  
-**Location**: `tests/test-e2e-*.mjs`  
+**Location**: `tests/test-e2e-*.mjs`
 **Example**: `tests/test-e2e-build.mjs` builds workspace and tests sandbox CLI output
 
 **Current Implementation**:
@@ -51,7 +53,7 @@ This document describes the current testing approach for Draconia Chronicles v2.
 
 **Purpose**: Enforce TypeScript strict mode compliance  
 **Scope**: Type safety, implicit any detection, configuration validation  
-**Location**: `tests/test-ts-strict.mjs`  
+**Location**: `tests/test-ts-strict.mjs`
 **Details**: See [TypeScript Standards](./typescript.md)
 
 ## Tiny Runner Implementation
@@ -65,9 +67,9 @@ This document describes the current testing approach for Draconia Chronicles v2.
 ### Usage Pattern
 
 ```javascript
-import { test, run } from "./_tiny-runner.mjs";
+import { test, run } from './_tiny-runner.mjs';
 
-test("descriptive test name", () => {
+test('descriptive test name', () => {
   // Your assertions here using Node assert/strict
 });
 
@@ -85,14 +87,14 @@ await run(); // Handles exit codes and reporting
 ```javascript
 // DON'T: This lies about results
 assert.equal(someFunction(), expectedValue);
-console.log("UNIT(shared): ok"); // Always prints even if assert failed
+console.log('UNIT(shared): ok'); // Always prints even if assert failed
 ```
 
-### ✅ Correct Pattern  
+### ✅ Correct Pattern
 
 ```javascript
 // DO: Let the runner derive and report results
-test("function works correctly", () => {
+test('function works correctly', () => {
   assert.equal(someFunction(), expectedValue);
 });
 await run(); // Prints accurate results based on test outcomes
@@ -112,7 +114,7 @@ node tests/run-all.mjs
 
 ```bash
 pnpm run test:unit          # Unit tests only
-pnpm run test:integration   # Integration tests only  
+pnpm run test:integration   # Integration tests only
 pnpm run test:e2e          # End-to-end tests only
 pnpm run test:ts-strict    # TypeScript strict gate only
 ```
@@ -134,7 +136,7 @@ BUILD_ONCE=1 node tests/test-unit-shared.mjs
 Running `pnpm run test:all` triggers multiple TypeScript builds:
 
 1. Unit tests: `tsc -b packages/shared`
-2. Integration tests: `tsc -b packages/shared packages/logger packages/sim`  
+2. Integration tests: `tsc -b packages/shared packages/logger packages/sim`
 3. E2E tests: `tsc -b` (full workspace)
 
 ### Solution
@@ -151,10 +153,12 @@ node tests/run-all.mjs
 Test files check environment variable:
 
 ```javascript
-if (process.env.BUILD_ONCE !== "1") {
-  const built = spawnSync("node", [tscBin, "-b", "packages/shared"], 
-    { stdio: "pipe", encoding: "utf8" });
-  assert.equal(built.status, 0, "Build failed");
+if (process.env.BUILD_ONCE !== '1') {
+  const built = spawnSync('node', [tscBin, '-b', 'packages/shared'], {
+    stdio: 'pipe',
+    encoding: 'utf8',
+  });
+  assert.equal(built.status, 0, 'Build failed');
 }
 ```
 
@@ -167,7 +171,7 @@ if (process.env.BUILD_ONCE !== "1") {
 3. **Run individual tests**: Isolate failing test file
 4. **Check assertions**: Review assertion error messages
 
-### Build Failures  
+### Build Failures
 
 1. **TypeScript errors**: Check `tsc -b` output for compilation errors
 2. **Missing dependencies**: Ensure `pnpm install` completed successfully
@@ -184,7 +188,7 @@ if (process.env.BUILD_ONCE !== "1") {
 ### Current State (Phase 1)
 
 - ✅ Custom tiny-runner with Node scripts
-- ✅ Import from compiled `dist/` artifacts  
+- ✅ Import from compiled `dist/` artifacts
 - ✅ BUILD_ONCE optimization for performance
 - ✅ TypeScript strict gate enforcement
 
@@ -200,7 +204,7 @@ if (process.env.BUILD_ONCE !== "1") {
 #### Phase 3: Playwright Integration (E2E)
 
 - **Target**: When UI testing becomes critical
-- **Benefits**: Real browser testing, visual regression, user interaction simulation  
+- **Benefits**: Real browser testing, visual regression, user interaction simulation
 - **Scope**: True end-to-end testing with browser automation
 - **Complements**: Vitest for unit/integration, Playwright for UI E2E
 
@@ -217,7 +221,7 @@ if (process.env.BUILD_ONCE !== "1") {
 ```json
 {
   "test:unit": "node tests/test-unit-shared.mjs",
-  "test:integration": "node tests/test-integration-graph.mjs", 
+  "test:integration": "node tests/test-integration-graph.mjs",
   "test:e2e": "node tests/test-e2e-build.mjs",
   "test:ts-strict": "node tests/test-ts-strict.mjs",
   "test:all": "node tests/run-all.mjs"
@@ -230,7 +234,7 @@ if (process.env.BUILD_ONCE !== "1") {
 tests/
 ├── _tiny-runner.mjs           # Test runner implementation
 ├── test-unit-shared.mjs       # Unit tests for shared package
-├── test-integration-graph.mjs # Integration tests across packages  
+├── test-integration-graph.mjs # Integration tests across packages
 ├── test-e2e-build.mjs        # End-to-end build and CLI tests
 ├── test-ts-strict.mjs        # TypeScript strict mode gate
 ├── fixtures/strict/          # TypeScript test fixtures

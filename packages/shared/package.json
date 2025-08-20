@@ -4,7 +4,24 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
-  "scripts": { "build": "npx tsc -b", "clean": "rimraf dist", "echo-ok": "echo ok" },
-  "devDependencies": { "typescript": "^5.4.0", "rimraf": "^5.0.5" }
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "npx tsc -b",
+    "clean": "rimraf dist",
+    "echo-ok": "echo ok"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "rimraf": "^5.0.5"
+  }
 }

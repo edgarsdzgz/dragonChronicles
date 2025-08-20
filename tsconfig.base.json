@@ -25,6 +25,13 @@
     "skipLibCheck": true,
     "noErrorTruncation": true,
     "outDir": "./dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@draconia/shared": ["packages/shared/src/index.ts"],
+      "@draconia/logger": ["packages/logger/src/index.ts"],
+      "@draconia/db": ["packages/db/src/index.ts"],
+      "@draconia/sim": ["packages/sim/src/index.ts"]
+    }
   }
 }
