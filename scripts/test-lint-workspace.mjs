@@ -1,5 +1,5 @@
 // Validate workspace-level lint configuration and package.json setup for P0-S003
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import assert from "node:assert/strict";
 
 console.log("WORKSPACE: Validate package.json workspace lint configuration…");

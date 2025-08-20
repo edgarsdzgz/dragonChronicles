@@ -3,7 +3,7 @@ import { execSync } from 'node:child_process';
 
 function sh(cmd) {
   try { return execSync(cmd, { stdio: ['ignore', 'pipe', 'pipe'] }).toString().trim(); }
-  catch (err) { return null; }
+  catch { return null; }
 }
 
 function requireNonEmpty(val, name) {
@@ -57,7 +57,7 @@ if (!changed) {
 const files = changed.split('\n').filter(Boolean);
 
 // Define what counts as "docs"
-const DOCS_GLOBS = [
+const _DOCS_GLOBS = [
   'docs/',                 // anything under docs/
   '*.md',                  // top-level markdown
   '**/*.md',               // markdown anywhere

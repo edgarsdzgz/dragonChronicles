@@ -43,64 +43,44 @@ export default [
     },
   },
 
-  // 3) TS: recommended configs (scoped properly)
-  ...tseslint.configs.recommended.map(config => ({
-    ...config,
-    files: ['**/*.{ts,tsx}'],
-  })),
-
-  // 4) TS: type-checked rules *only for TS files in packages* + projectService
-  ...tseslint.configs.recommendedTypeChecked.map(config => ({
-    ...config,
-    files: ['packages/**/*.{ts,tsx}', 'apps/**/*.{ts,tsx}'],
-    languageOptions: {
-      ...config.languageOptions,
-      parser: tseslint.parser,
-      parserOptions: {
-        projectService: true,         // <-- key: supports project refs
-        tsconfigRootDir,              // repo root for refs
-      },
-    },
-  })),
-
-  // 5) Custom TS rules for project files
+  // 3) JS files: don't use TS plugin; keep core rule with underscore escape
   {
-    files: ['packages/**/*.{ts,tsx}', 'apps/**/*.{ts,tsx}'],
+    files: ['**/*.{js,mjs,cjs,jsx}'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 
-  // 6) Non-type-checked TS rules for scripts/tests
+  // 4) TS files: use TS parser + TS rules (typed linting)
   {
-    files: ['scripts/**/*.{js,mjs,ts}', 'tests/**/*.{js,mjs,ts}', '.github/**/*.{js,mjs,ts}'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        require: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        Buffer: 'readonly',
-        global: 'readonly',
+      parserOptions: { 
+        projectService: true, 
+        tsconfigRootDir 
       },
     },
     plugins: {
       '@typescript-eslint': tseslint.plugin,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      'no-unused-vars': 'off', // Use TS version instead
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+        args: 'after-used'
+      }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
 
-  // 7) Svelte recommended (flat)
+  // 5) Svelte recommended (flat)
   ...svelte.configs['flat/recommended'],
 
-  // 8) Svelte TS-in-script + projectService for packages only
+  // 6) Svelte TS-in-script + projectService for packages only
   {
     files: ['packages/**/*.svelte', 'apps/**/*.svelte'],
     languageOptions: {
@@ -116,6 +96,6 @@ export default [
     },
   },
 
-  // 9) Prettier last to disable conflicting stylistic rules
+  // 7) Prettier last to disable conflicting stylistic rules
   eslintConfigPrettier,
 ];

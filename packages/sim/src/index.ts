@@ -11,6 +11,7 @@ import { clamp } from "@draconia/shared";
  */
 export interface SimLogger {
   /** Log a simulation message */
+  // eslint-disable-next-line no-unused-vars
   log(message: string): void;
 }
 

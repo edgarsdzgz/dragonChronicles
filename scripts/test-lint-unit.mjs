@@ -1,9 +1,6 @@
 // Validate ESLint and Prettier configurations and test fixtures for P0-S003
-import { readFileSync, existsSync, writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
+import { readFileSync, existsSync } from "node:fs";
 import assert from "node:assert/strict";
-
-const require = createRequire(import.meta.url);
 
 console.log("UNIT: Validate ESLint configuration loads and processes TypeScript + Svelte…");
 

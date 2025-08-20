@@ -29,6 +29,7 @@ export type LogEvent = {
  */
 export interface Logger {
   /** Write a log event to the logger */
+  // eslint-disable-next-line no-unused-vars
   log(event: LogEvent): void;
   /** Drain all buffered events and clear the buffer */
   drain(): LogEvent[];

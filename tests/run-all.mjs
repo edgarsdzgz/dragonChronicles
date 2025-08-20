@@ -18,14 +18,7 @@ const run = (cmd, args, env = {}) => {
   return r;
 };
 
-// Explicit per-package tsconfig paths (order matters for deps → consumers)
-const projects = [
-  "packages/shared/tsconfig.json",
-  "packages/logger/tsconfig.json",
-  "packages/db/tsconfig.json",
-  "packages/sim/tsconfig.json",
-  "apps/sandbox/tsconfig.json",
-].filter(existsSync);
+// Projects are built via tsconfig.build.json with references
 
 if (process.env.VERBOSE) console.log("Building TypeScript projects.");
 // Use direct TypeScript path to avoid pnpm exec issues on Windows
