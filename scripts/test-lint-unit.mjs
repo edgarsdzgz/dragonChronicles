@@ -8,14 +8,14 @@ const require = createRequire(import.meta.url);
 console.log("UNIT: Validate ESLint configuration loads and processes TypeScript + Svelte…");
 
 // Test that ESLint config can be loaded and parsed
-const eslintConfigPath = "configs/eslint/.eslintrc.cjs";
+const eslintConfigPath = "eslint.config.js";
 assert.ok(existsSync(eslintConfigPath), "ESLint config must exist");
 
 // Verify the config contains required rules and plugins
 const eslintConfigContent = readFileSync(eslintConfigPath, "utf8");
 assert.ok(eslintConfigContent.includes("@typescript-eslint/no-explicit-any"), "ESLint config must forbid 'any' types");
-assert.ok(eslintConfigContent.includes("plugin:svelte/recommended"), "ESLint config must include Svelte support");
-assert.ok(eslintConfigContent.includes("prettier"), "ESLint config must include prettier for conflict resolution");
+assert.ok(eslintConfigContent.includes("eslint-plugin-svelte"), "ESLint config must include Svelte support");
+assert.ok(eslintConfigContent.includes("eslint-config-prettier"), "ESLint config must include prettier for conflict resolution");
 
 // Verify Prettier config has Svelte plugin
 const prettierConfigPath = "configs/prettier/.prettierrc.cjs";
@@ -48,7 +48,7 @@ const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 // Verify lint script exists with correct flags
 assert.ok(packageJson.scripts.lint, "package.json must have lint script");
 assert.ok(packageJson.scripts.lint.includes("--max-warnings 0"), "lint script must enforce zero warnings");
-assert.ok(packageJson.scripts.lint.includes("configs/eslint/.eslintrc.cjs"), "lint script must use correct config");
+assert.ok(packageJson.scripts.lint.includes("eslint ."), "lint script must run ESLint on all files");
 
 // Verify format scripts exist
 assert.ok(packageJson.scripts.format, "package.json must have format script");

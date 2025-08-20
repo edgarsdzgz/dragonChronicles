@@ -27,8 +27,8 @@
     "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
     "docs:links": "linkinator docs/README.md --recurse --config .linkinatorrc.json",
     "docs:check": "node .github/scripts/require-docs-change.mjs",
-    "lint": "eslint . --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --ext .ts,.tsx,.js,.svelte --max-warnings 0",
-    "lint:quiet": "eslint . --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --ext .ts,.tsx,.js,.svelte --max-warnings 0 --quiet",
+    "lint": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0",
+    "lint:quiet": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0 --quiet",
     "format": "prettier --config ./configs/prettier/.prettierrc.cjs --write \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
     "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
     "verify:style": "pnpm run lint:quiet && pnpm run format:check",
@@ -40,6 +40,7 @@
     "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e"
   },
   "devDependencies": {
+    "@eslint/js": "^9.33.0",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "cross-env": "^7.0.3",
@@ -57,7 +58,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,svelte}": [
-      "eslint --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --fix"
+      "eslint --cache --cache-location ./.cache/eslint --fix"
     ],
     "*.{ts,tsx,js,json,md,css,scss,svelte}": [
       "prettier --config ./configs/prettier/.prettierrc.cjs --write"

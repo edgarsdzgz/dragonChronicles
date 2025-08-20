@@ -40,7 +40,7 @@ const eslintRule = lintStaged["*.{ts,tsx,js,svelte}"];
 assert.ok(Array.isArray(eslintRule), "lint-staged ESLint rule must be an array");
 const eslintCommand = eslintRule[0];
 assert.ok(eslintCommand.includes("eslint"), "lint-staged must run ESLint");
-assert.ok(eslintCommand.includes("configs/eslint/.eslintrc.cjs"), "lint-staged ESLint must use correct config");
+assert.ok(eslintCommand.includes("eslint"), "lint-staged must use ESLint");
 assert.ok(eslintCommand.includes("--fix"), "lint-staged ESLint must auto-fix issues");
 
 // Verify Prettier integration in lint-staged  

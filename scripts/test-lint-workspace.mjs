@@ -12,8 +12,7 @@ const lintScript = packageJson.scripts.lint;
 
 // Verify lint script uses correct config and flags for P0-S003 requirements
 assert.ok(lintScript.includes("eslint"), "lint script must use ESLint");
-assert.ok(lintScript.includes("configs/eslint/.eslintrc.cjs"), "lint script must use correct ESLint config path");
-assert.ok(lintScript.includes("--ext .ts,.tsx,.js,.svelte"), "lint script must handle TypeScript and Svelte files");
+assert.ok(lintScript.includes("eslint ."), "lint script must run ESLint on all files");
 assert.ok(lintScript.includes("--max-warnings 0"), "lint script must enforce zero warnings");
 
 // Verify format scripts
