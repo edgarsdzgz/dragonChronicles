@@ -43,7 +43,8 @@
       "Bash(npm run lint:*)",
       "Bash(npm run docs:links:*)",
       "Bash(touch:*)",
-      "Bash(packages/shared/node_modules/.bin/tsc -b packages/shared/tsconfig.json --pretty false --verbose)"
+      "Bash(packages/shared/node_modules/.bin/tsc -b packages/shared/tsconfig.json --pretty false --verbose)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
