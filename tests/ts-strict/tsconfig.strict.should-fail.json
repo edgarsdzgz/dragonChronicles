@@ -1,5 +1,5 @@
 {
-  // TypeScript strict mode FAIL test configuration  
+  // TypeScript strict mode FAIL test configuration
   // Tests that implicit any code fails compilation with TS7006/TS7031 errors
   "compilerOptions": {
     "strict": true,

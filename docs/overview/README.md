@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # Overview
 
 Product summaries, architecture overviews, and project status for Draconia Chronicles v2.0.0.
@@ -12,18 +13,21 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 ## Key Metrics
 
 ### Test Coverage
+
 - **Unit Tests**: ✅ Shared utilities and constants
 - **Integration Tests**: ✅ Cross-package communication
 - **E2E Tests**: ✅ Full build pipeline and CLI contracts
 - **TypeScript Strict Gate**: ✅ Type safety enforcement
 
 ### Documentation Status
+
 - **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md), [TypeScript](/docs/engineering/typescript.md))
 - **Architectural Decisions**: ✅ ADRs 0001-0002 documented
 - **Runbooks**: ✅ [Local Development](/docs/runbooks/local-dev.md), [CI/CD](/docs/runbooks/ci.md)
 - **Player Documentation**: ❌ Not yet implemented
 
 ### Code Quality
+
 - **TypeScript Strict Mode**: ✅ Enforced across all packages
 - **Build System**: ✅ Incremental compilation with project references
 - **Test Optimization**: ✅ BUILD_ONCE pattern reduces build time 3x
@@ -31,6 +35,7 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 ## Architecture Summary
 
 ### Monorepo Structure
+
 ```
 packages/           # Shared libraries
 ├── shared/        # Common utilities, constants
@@ -50,6 +55,7 @@ tests/             # Test infrastructure
 ```
 
 ### Technology Stack
+
 - **Language**: TypeScript 5.4.0 with strict mode
 - **Runtime**: Node.js 18.17+ with ES modules
 - **Package Manager**: pnpm 9.0.0 with workspace support
@@ -60,12 +66,14 @@ tests/             # Test infrastructure
 ## Development Workflow
 
 ### Quality Gates
+
 1. **TypeScript Strict**: All code must pass strict type checking
 2. **Test Suite**: Unit + Integration + E2E tests must pass
 3. **Documentation**: Code changes require documentation updates
 4. **Build Verification**: Full workspace must compile successfully
 
 ### Performance Optimizations
+
 - **BUILD_ONCE**: Reduces test execution time by building once, testing multiple times
 - **Incremental Builds**: TypeScript project references for faster compilation
 - **Robust Tooling**: `require.resolve()` for reliable binary resolution
@@ -82,11 +90,13 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 ## Next Milestones
 
 ### Current Phase (Phase 0)
+
 - ✅ **S001**: Testing Strategy Implementation
 - ✅ **S002**: TypeScript Strict Enforcement
 - ✅ **Documentation**: Engineering standards and processes
 
 ### Upcoming Phases
+
 - **Phase 1**: Core Game Loop Implementation
 - **Phase 2**: UI/UX Development with SvelteKit
 - **Phase 3**: Performance Optimization and Polish
@@ -95,11 +105,13 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 ## Links and Resources
 
 ### Internal Documentation
+
 - [Engineering Standards](/docs/engineering/testing.md) - Technical guidelines and policies
 - [Architectural Decisions](/docs/adr/0001-testing-strategy.md) - Key technical decisions (ADRs)
 - [Runbooks](/docs/runbooks/local-dev.md) - Operational procedures and setup guides
 
 ### External Resources
+
 - [Game Design Document](/Draconia_Chronicles_v2_GDD.md) - Complete game design
 - [Project Repository](https://github.com/edgarsdzgz/dragonChronicles) - Source code and issues
 - [Development Guidelines](/CLAUDE.md) - Development processes and standards

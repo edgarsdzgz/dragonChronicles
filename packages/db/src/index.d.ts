@@ -2,7 +2,7 @@
  * @file Database models and factories for the Draconia Chronicles
  * @description Provides user profile management and data persistence abstractions
  */
-import type { Seed } from "@draconia/shared";
+import type { Seed } from '@draconia/shared';
 /**
  * User profile data structure
  * @property id - Unique identifier for the profile
@@ -11,10 +11,10 @@ import type { Seed } from "@draconia/shared";
  * @property seed - Optional deterministic seed for gameplay RNG
  */
 export type Profile = {
-    readonly id: string;
-    readonly name: string;
-    readonly createdAt: number;
-    readonly seed?: Seed;
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt: number;
+  readonly seed?: Seed;
 };
 /**
  * Creates a new user profile with generated ID and current timestamp

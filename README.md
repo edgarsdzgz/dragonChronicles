@@ -53,7 +53,7 @@ pnpm run dev:sandbox     # Run sandbox app in dev mode
 ## Technology Stack
 
 - **Language**: TypeScript with strict mode enforcement
-- **Framework**: SvelteKit for UI components  
+- **Framework**: SvelteKit for UI components
 - **Runtime**: Node.js 18.17+ with ES modules
 - **Package Manager**: pnpm 9.0.0+ with workspace support
 - **Testing**: Custom tiny-runner (migrating to Vitest/Playwright)

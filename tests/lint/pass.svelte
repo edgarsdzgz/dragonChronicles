@@ -1,6 +1,6 @@
 <script lang="ts">
-  export let title: string = "Dragon Chronicles";
-  
+  export let title: string = 'Dragon Chronicles';
+
   function handleClick() {
     console.log(`Clicked: ${title}`);
   }

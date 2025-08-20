@@ -5,7 +5,7 @@
   "skip": [
     "node_modules",
     "LEGACY_v",
-    "playwright-report", 
+    "playwright-report",
     "test-results",
     "dist",
     "\\.svg$",

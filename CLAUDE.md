@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # Claude Development Guidelines
 
 This file contains important guidelines and patterns for working on the Draconia Chronicles project.
@@ -14,7 +15,8 @@ This file contains important guidelines and patterns for working on the Draconia
 ### Never Bypass Agreed Requirements
 
 **Don't fall back to alternative approaches when the agreed path fails.** Instead:
-1. Debug the root cause systematically  
+
+1. Debug the root cause systematically
 2. Fix the underlying configuration/environment issue
 3. Implement exactly what was requested
 4. Document the solution and validation steps
@@ -24,6 +26,7 @@ Example: If `pnpm -w -r run build` fails, don't fall back to `npx tsc -b`. Find 
 ### Always Provide Objective Evidence
 
 Support all claims with concrete, reproducible proof:
+
 - Use grep checks to verify code patterns: `git grep -n "pattern" -- tests`
 - Show exact command outputs when demonstrating functionality
 - Provide before/after comparisons for changes
@@ -32,20 +35,23 @@ Support all claims with concrete, reproducible proof:
 ### Quality Gate Checklist
 
 Before claiming work is complete, ensure:
+
 - All requested grep checks pass (0 results for bad patterns)
 - Full workflow runs and produces expected output exactly
 - Documentation is updated with root cause analysis and solution
 - Cross-platform compatibility is verified
 
 ❌ **WRONG:**
+
 ```javascript
 assert.equal(someFunction(), expectedValue);
-console.log("UNIT(shared): ok"); // Meaningless - always prints even if asserts failed
+console.log('UNIT(shared): ok'); // Meaningless - always prints even if asserts failed
 ```
 
 ✅ **CORRECT:**
+
 ```javascript
-test("function works correctly", () => {
+test('function works correctly', () => {
   assert.equal(someFunction(), expectedValue);
 });
 await run(); // Prints "ok - 1 passed" or "FAIL - 1 failed" with proper exit codes
@@ -56,11 +62,13 @@ await run(); // Prints "ok - 1 passed" or "FAIL - 1 failed" with proper exit cod
 These scripts currently build and import from `dist/`. That's fine for now, but when we move to Vitest/Playwright we'll import source for unit/integration and run a browser for true UI E2E. (This file set is focused on quick smoke/unit/integration checks and a build-level E2E.)
 
 **Current Pattern:**
+
 - **Unit tests:** Build specific packages, import from `dist/`, test isolated functions
-- **Integration tests:** Build dependencies, import from `dist/`, test package interactions  
+- **Integration tests:** Build dependencies, import from `dist/`, test package interactions
 - **E2E tests:** Build workspace, run compiled sandbox app, test CLI contracts
 
 **Future Migration:**
+
 - **Unit/Integration:** Direct source imports via Vitest for faster feedback
 - **E2E:** Browser-based testing via Playwright for real UI validation
 
@@ -69,13 +77,13 @@ These scripts currently build and import from `dist/`. That's fine for now, but 
 Use the tiny test runner for structured, countable tests:
 
 ```javascript
-import { test, run } from "./_tiny-runner.mjs";
+import { test, run } from './_tiny-runner.mjs';
 
-test("descriptive test name", () => {
+test('descriptive test name', () => {
   // Your assertions here
 });
 
-test("another test case", () => {
+test('another test case', () => {
   // More assertions
 });
 
@@ -83,6 +91,7 @@ await run(); // Handles exit codes and reporting
 ```
 
 This ensures:
+
 - ✅ Proper exit codes (0 = pass, 1 = fail)
 - ✅ Meaningful output ("ok - 2 passed" vs "FAIL - 1 failed, 1 passed")
 - ✅ CI/pnpm compatibility
@@ -91,19 +100,23 @@ This ensures:
 ## Build Optimization Notes
 
 ### Current Build Pattern
+
 The current test scripts trigger TypeScript compilation multiple times:
-1. Unit tests build specific packages (`tsc -b packages/shared`)  
+
+1. Unit tests build specific packages (`tsc -b packages/shared`)
 2. Integration tests build dependencies (`tsc -b packages/shared packages/logger packages/sim`)
 3. E2E tests build entire workspace (`tsc -b`)
 
 This results in multiple rebuilds of the same packages during `test:all`.
 
 ### Future Optimization Options
+
 - **SKIP_BUILD environment variable:** Allow tests to skip compilation when artifacts are known to be current
 - **Workspace scripts:** Use `pnpm --filter` patterns instead of direct TypeScript paths for better dependency management
 - **Build-once pattern:** Run full workspace build once, then run all tests against existing artifacts
 
 Example improved pattern:
+
 ```bash
 # Cross-platform driver with build-once optimization
 node tests/run-all.mjs  # Builds once, runs all tests
@@ -120,20 +133,21 @@ node tests/run-all.mjs  # Builds once, runs all tests
 **Solution:** Remove `shell: true` from `spawnSync` options to avoid shell-based path interpretation issues.
 
 **Example Fix:**
+
 ```javascript
 // WRONG - causes Windows path issues
-const r = spawnSync(cmd, args, { 
-  stdio: "pipe", 
-  encoding: "utf8",
-  shell: true,  // ❌ Remove this on Windows
-  env: { ...process.env, ...env }
+const r = spawnSync(cmd, args, {
+  stdio: 'pipe',
+  encoding: 'utf8',
+  shell: true, // ❌ Remove this on Windows
+  env: { ...process.env, ...env },
 });
 
-// CORRECT - works cross-platform  
-const r = spawnSync(cmd, args, { 
-  stdio: "pipe", 
-  encoding: "utf8",
-  env: { ...process.env, ...env }
+// CORRECT - works cross-platform
+const r = spawnSync(cmd, args, {
+  stdio: 'pipe',
+  encoding: 'utf8',
+  env: { ...process.env, ...env },
   // No shell option - direct process execution
 });
 ```
@@ -149,33 +163,42 @@ const r = spawnSync(cmd, args, {
 **Always reference related PRs and issues in PR descriptions using GitHub keywords:**
 
 ✅ **CORRECT:**
+
 ```markdown
 ## Summary
+
 This PR implements feature X...
 
 ## Resolves
+
 - Closes #123 (the issue this PR addresses)
 - Related to #124 (if there are related issues)
 
 ## Previous Work
+
 - Builds on #120 (if this continues work from another PR)
 ```
 
 ❌ **WRONG:**
+
 ```markdown
-## Summary  
+## Summary
+
 This PR implements feature X...
 // No issue references - GitHub won't auto-close issues
 ```
 
 ### Keywords for Auto-Closing Issues
+
 Use these keywords in PR descriptions to automatically close issues when the PR is merged:
+
 - `Closes #123`
-- `Fixes #123` 
+- `Fixes #123`
 - `Resolves #123`
 - `Closes: #123`
 
 ### PR Linking Best Practices
+
 - **Always** reference the original issue being resolved
 - Link to previous PRs when work is iterative
 - Use "Related to #X" for issues that are connected but not directly resolved
@@ -191,7 +214,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
    - Create new git branch: `feat/p0-s00X-<short-description>`
    - Example: `feat/p0-s002-typescript-strict`
 
-2. **Create Planning Document** 
+2. **Create Planning Document**
    - Create `S00XPlan.md` in root directory
    - Include: analysis, implementation plan, risk assessment, TODO list
    - Commit the planning document to the new branch
@@ -220,27 +243,34 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
    - Push code only after user gives final git push confirmation
 
 ### Branch Naming Convention
+
 - Feature branches: `feat/p0-s00X-<description>`
-- Bugfix branches: `fix/p0-s00X-<description>`  
+- Bugfix branches: `fix/p0-s00X-<description>`
 - Refactor branches: `refactor/p0-s00X-<description>`
 
 ### Planning Document Template
+
 ```markdown
 # S00X Planning Document
 
 ## Issue Analysis
+
 [Summary of requirements and current state]
 
 ## Implementation Plan
+
 [Detailed step-by-step plan]
 
 ## Risk Assessment
+
 [Potential issues and mitigation strategies]
 
 ## TODO List
+
 [Actionable items with priorities]
 
 ## Acceptance Criteria
+
 [How to verify completion]
 ```
 
@@ -257,7 +287,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 2. **Verification Results**
    - Test execution results (`npm run test:all` output)
-   - Build validation (`npm run build` status)  
+   - Build validation (`npm run build` status)
    - Any manual testing performed
    - Screenshots or logs if relevant
 
@@ -274,15 +304,18 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
    - Only create PR after explicit user go-ahead
 
 **Example Pre-PR Check:**
+
 ```markdown
 ## Pre-PR Summary
 
 ### Changes Made
+
 - `package.json`: Updated test:all script with BUILD_ONCE=1 optimization
 - `tests/test-*.mjs`: Added robust TS binary resolution and normalized stdio
 - `tests/README.md`: Created documentation for test suite usage
 
 ### Verification
+
 - ✅ All tests pass: `npm run test:all` → ok - 2/2/3/2 passed
 - ✅ Build succeeds: `npm run build` → exit 0
 - ✅ No type errors: `npm run typecheck` → clean
@@ -295,11 +328,13 @@ Ready to create PR for issue #X?
 ### Always Specify Origin and Branch for Push
 
 **ALWAYS use explicit origin and branch when pushing:**
+
 ```bash
 git push origin <BRANCH>
 ```
 
 **Examples:**
+
 ```bash
 git push origin feat/p0-s002-r1-simplify-strict-gate
 git push origin main
@@ -336,7 +371,9 @@ into multiple lines for better readability
 ```markdown
 ❌ BAD:
 Some text here
+
 ### Heading
+
 More text
 
 ✅ GOOD:
@@ -355,9 +392,10 @@ More text
 ```markdown
 ❌ BAD:
 Text before list
+
 - Item 1
 - Item 2
-Text after list
+  Text after list
 
 ✅ GOOD:
 Text before list
@@ -409,7 +447,6 @@ Text after code
 
 ### Prevention Strategy
 
-
 1. **Write markdown correctly from the start** - don't rely on bulk fixes later
 2. **Test markdown files locally** before committing:
    `npx markdownlint -c .markdownlint.json file.md`
@@ -428,11 +465,13 @@ Text after code
 #### Files Modified with `<!-- markdownlint-disable -->`
 
 **Operational/Planning Documents** (comprehensive disable for workflow efficiency):
+
 - `CLAUDE.md` - AI development guidelines and operational procedures
 - `S002R1Plan.md` - Planning document with disable comment already in place
 - `Draconia_Chronicles_v2_GDD.md` - Design document with disable comment already in place
 
 **Documentation Files** (disable applied due to formatting complexity):
+
 - `docs/adr/TEMPLATE.md` - ADR template with HTML elements
 - `docs/adr/0001-testing-strategy.md` - Testing strategy ADR
 - `docs/adr/0002-typescript-strict-gate.md` - TypeScript strict gate ADR
@@ -445,6 +484,7 @@ Text after code
 - `docs/overview/changelog.md` - Project changelog
 
 **Core Documentation Files** (properly formatted):
+
 - `docs/README.md` - Main documentation hub (kept properly formatted)
 - `README.md` - Project README (kept properly formatted)
 - `tests/README.md` - Test suite documentation (kept properly formatted)
@@ -452,10 +492,12 @@ Text after code
 #### Configuration Files Created/Updated
 
 **Linting Configuration**:
+
 - `.markdownlint.json` - Comprehensive linting rules with MD013 line length (120 chars), MD033 allowed HTML elements
 - `.markdownlintignore` - Ignore patterns for vendor files, build artifacts, legacy content
 
 **Package Scripts Updated**:
+
 ```json
 {
   "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
@@ -486,41 +528,49 @@ Text after code
 
 ## Test Hygiene — Non-Negotiables (Pinned)
 
-1) **Never hard-code tool paths.** Always resolve binaries:
+1. **Never hard-code tool paths.** Always resolve binaries:
+
    ```javascript
    const require = createRequire(import.meta.url);
-   const tscBin = require.resolve("typescript/bin/tsc");
+   const tscBin = require.resolve('typescript/bin/tsc');
    ```
 
-2) **Keep CI output clean.** In tests and build steps use:
+2. **Keep CI output clean.** In tests and build steps use:
+
    ```javascript
    { stdio: "pipe", encoding: "utf8" }
    ```
+
    Never use `stdio: "inherit"` in tests - it floods CI logs and hides real failures.
 
-3) **Only the tiny-runner should emit "ok".** Never add console.log("ok") or similar in tests.
+3. **Only the tiny-runner should emit "ok".** Never add console.log("ok") or similar in tests.
    The runner reports "ok - N passed" or "FAIL - N failed" with proper exit codes.
 
-4) **Use resilient assertions, not brittle exact counts.**
+4. **Use resilient assertions, not brittle exact counts.**
+
    ```javascript
    // ✅ GOOD: Filter and check meaningful content
-   const simLogs = logs.filter(l => l.src === "sim");
-   assert.ok(simLogs.length >= 1, "expected at least one sim log");
-   assert.ok(simLogs.some(l => (l.msg || "").includes("->")), "expected meaningful sim message");
-   
+   const simLogs = logs.filter((l) => l.src === 'sim');
+   assert.ok(simLogs.length >= 1, 'expected at least one sim log');
+   assert.ok(
+     simLogs.some((l) => (l.msg || '').includes('->')),
+     'expected meaningful sim message',
+   );
+
    // ❌ BAD: Brittle exact assertions
-   assert.equal(logs.length, 1, "expected exactly one log");
+   assert.equal(logs.length, 1, 'expected exactly one log');
    ```
 
-5) **Guard builds with BUILD_ONCE=1.** Tests should build only if needed:
+5. **Guard builds with BUILD_ONCE=1.** Tests should build only if needed:
+
    ```javascript
    if (!process.env.BUILD_ONCE) {
-     const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+     const r = spawnSync('node', [tscBin, '-b'], { stdio: 'pipe', encoding: 'utf8' });
      // handle errors...
    }
    ```
 
-6) **Use the orchestrator for full test runs.** Always use `node tests/run-all.mjs` 
+6. **Use the orchestrator for full test runs.** Always use `node tests/run-all.mjs`
    which builds once and runs all tests with BUILD_ONCE=1.
 
 ## Commit Message Guidelines
@@ -569,19 +619,25 @@ focused on the technical changes.
 
 ```markdown
 ## PR Title
+
 feat: [brief description]
 
 ## PR Body
+
 ### Summary
+
 - Brief overview of changes
 
 ### Key Changes
+
 - Specific technical changes made
 
 ### Verification
+
 - Test results and validation
 
 ### Resolves
+
 - Closes #[issue-number]
 ```
 
@@ -643,7 +699,7 @@ feat: [brief description]
 ```javascript
 ❌ WRONG:
 console.log("ok");
-console.log("success"); 
+console.log("success");
 console.log("All tests completed successfully!");
 console.log("UNIT: ok");
 ```
@@ -679,18 +735,20 @@ if (process.env.VERBOSE) console.log("All tests completed successfully!");
 ### Test Result Standards
 
 **Test runners should:**
+
 - Use proper exit codes (0 = pass, non-zero = fail)
 - Print derived results based on actual test outcomes
 - Never print success messages before all tests complete
 - Let assertions and exit codes be the source of truth
 
 **Example compliant test ending:**
+
 ```javascript
 // Run all assertions first
 assert.equal(actualResult, expectedResult);
-assert.ok(condition, "descriptive error message");
+assert.ok(condition, 'descriptive error message');
 
 // Only print success if we reach the end without assertion failures
 // (assertions will throw and prevent reaching this line)
-if (process.env.VERBOSE) console.log("All validations passed");
+if (process.env.VERBOSE) console.log('All validations passed');
 ```

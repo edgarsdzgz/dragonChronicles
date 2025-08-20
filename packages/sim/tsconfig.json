@@ -15,8 +15,5 @@
     "sourceMap": false
   },
   "include": ["src"],
-  "references": [
-    { "path": "../shared" },
-    { "path": "../logger" }
-  ]
+  "references": [{ "path": "../shared" }, { "path": "../logger" }]
 }

@@ -3,7 +3,7 @@
  * @description Provides user profile management and data persistence abstractions
  */
 
-import type { Seed } from "@draconia/shared";
+import type { Seed } from '@draconia/shared';
 
 /**
  * User profile data structure
@@ -24,20 +24,22 @@ export type Profile = {
  * @param name - The display name for the profile
  * @returns A new Profile instance
  * @throws {Error} When name doesn't match validation rules
- * 
+ *
  * @example
  * const profile = makeProfile("Aster");
  * console.log(profile.id); // "ak9x7m2p" (random)
  */
 export function makeProfile(name: string): Profile {
   if (!isValidProfileName(name)) {
-    throw new Error("invalid-name: must be 2-24 characters, letters/numbers/spaces/apostrophes/hyphens only");
+    throw new Error(
+      'invalid-name: must be 2-24 characters, letters/numbers/spaces/apostrophes/hyphens only',
+    );
   }
-  
+
   return {
     id: generateProfileId(),
     name,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   };
 }
 

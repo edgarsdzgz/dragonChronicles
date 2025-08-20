@@ -1,1 +1,2 @@
-const   x=1;let y:number=2  
+const x = 1;
+let y: number = 2;

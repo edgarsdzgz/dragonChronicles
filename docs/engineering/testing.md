@@ -1,11 +1,11 @@
 <!-- markdownlint-disable -->
+
 # Testing Strategy
 
 This document describes the current testing approach for Draconia Chronicles v2.0.0,
 including test layers, execution patterns, and the tiny-runner implementation.
 
 ## Test Layers
-
 
 ### Unit Tests
 
@@ -21,7 +21,7 @@ including test layers, execution patterns, and the tiny-runner implementation.
 - Test isolated utility functions and constants
 - Assert exact values and boundary conditions
 
-### Integration Tests  
+### Integration Tests
 
 **Purpose**: Test interactions between packages and system components  
 **Scope**: Cross-package dependencies, logger integration, worker communication  
@@ -34,7 +34,6 @@ including test layers, execution patterns, and the tiny-runner implementation.
 - Import from compiled artifacts to test real integration
 - Verify cross-package contracts and data flow
 - Assert message passing and state coordination
-
 
 ### End-to-End Tests
 
@@ -50,7 +49,6 @@ including test layers, execution patterns, and the tiny-runner implementation.
 - Validate CLI contracts and JSON output formats
 - Ensure artifacts exist at expected locations
 
-
 ### TypeScript Strict Gate
 
 **Purpose**: Enforce TypeScript strict mode compliance  
@@ -60,27 +58,23 @@ including test layers, execution patterns, and the tiny-runner implementation.
 
 ## Tiny Runner Implementation
 
-
 ### Design Philosophy
 
 - **Derived results**: Test outcomes determine output, not hard-coded messages
 - **Exit codes**: 0 for success, 1 for failure (CI-compatible)
 - **No lies**: Never print "ok" when tests actually failed
 
-
 ### Usage Pattern
 
 ```javascript
-import { test, run } from "./_tiny-runner.mjs";
+import { test, run } from './_tiny-runner.mjs';
 
-test("descriptive test name", () => {
+test('descriptive test name', () => {
   // Your assertions here using Node assert/strict
 });
 
 await run(); // Handles exit codes and reporting
 ```
-
-
 
 ### Output Format
 
@@ -88,28 +82,25 @@ await run(); // Handles exit codes and reporting
 - **Failure**: `FAIL - N failed, M passed` (exit code 1)
 - **Count-based**: Shows exact test execution summary
 
-
 ### ❌ Anti-Pattern
 
 ```javascript
 // DON'T: This lies about results
 assert.equal(someFunction(), expectedValue);
-console.log("UNIT(shared): ok"); // Always prints even if assert failed
+console.log('UNIT(shared): ok'); // Always prints even if assert failed
 ```
 
 ### ✅ Correct Pattern
 
 ```javascript
 // DO: Let the runner derive and report results
-test("function works correctly", () => {
+test('function works correctly', () => {
   assert.equal(someFunction(), expectedValue);
 });
 await run(); // Prints accurate results based on test outcomes
 ```
 
-
 ## How to Run Tests
-
 
 ### All Tests (Cross-Platform)
 
@@ -119,8 +110,6 @@ node tests/run-all.mjs
 # Result: ok - 2/2/3/2 passed (unit/integration/e2e/strict)
 ```
 
-
-
 ### Individual Test Files
 
 ```bash
@@ -129,8 +118,6 @@ pnpm run test:integration   # Integration tests only
 pnpm run test:e2e          # End-to-end tests only
 pnpm run test:ts-strict    # TypeScript strict gate only
 ```
-
-
 
 ### Manual Execution
 
@@ -142,9 +129,7 @@ node tests/test-unit-shared.mjs
 BUILD_ONCE=1 node tests/test-unit-shared.mjs
 ```
 
-
 ## BUILD_ONCE Optimization
-
 
 ### Problem
 
@@ -153,7 +138,6 @@ Running `pnpm run test:all` triggers multiple TypeScript builds:
 1. Unit tests: `tsc -b packages/shared`
 2. Integration tests: `tsc -b packages/shared packages/logger packages/sim`
 3. E2E tests: `tsc -b` (full workspace)
-
 
 ### Solution
 
@@ -164,23 +148,21 @@ Use the cross-platform driver which handles build-once optimization:
 node tests/run-all.mjs
 ```
 
-
-
 ### Implementation
 
 Test files check environment variable:
 
 ```javascript
-if (process.env.BUILD_ONCE !== "1") {
-  const built = spawnSync("node", [tscBin, "-b", "packages/shared"], 
-    { stdio: "pipe", encoding: "utf8" });
-  assert.equal(built.status, 0, "Build failed");
+if (process.env.BUILD_ONCE !== '1') {
+  const built = spawnSync('node', [tscBin, '-b', 'packages/shared'], {
+    stdio: 'pipe',
+    encoding: 'utf8',
+  });
+  assert.equal(built.status, 0, 'Build failed');
 }
 ```
 
-
 ## Failure Triage
-
 
 ### Test Execution Failures
 
@@ -195,7 +177,6 @@ if (process.env.BUILD_ONCE !== "1") {
 2. **Missing dependencies**: Ensure `pnpm install` completed successfully
 3. **Path resolution**: Verify `require.resolve("typescript/bin/tsc")` works
 
-
 ### Common Issues
 
 - **Silent failures**: Check that tests use tiny-runner, not hard-coded output
@@ -203,7 +184,6 @@ if (process.env.BUILD_ONCE !== "1") {
 - **Path issues**: Ensure tests run from project root directory
 
 ## Migration Roadmap
-
 
 ### Current State (Phase 1)
 
@@ -214,7 +194,6 @@ if (process.env.BUILD_ONCE !== "1") {
 
 ### Future Phases
 
-
 #### Phase 2: Vitest Migration (Unit/Integration)
 
 - **Target**: Q4 2025 or when test complexity increases
@@ -222,14 +201,12 @@ if (process.env.BUILD_ONCE !== "1") {
 - **Scope**: Migrate unit and integration tests to Vitest
 - **Imports**: Direct source imports instead of compiled artifacts
 
-
 #### Phase 3: Playwright Integration (E2E)
 
 - **Target**: When UI testing becomes critical
 - **Benefits**: Real browser testing, visual regression, user interaction simulation
 - **Scope**: True end-to-end testing with browser automation
 - **Complements**: Vitest for unit/integration, Playwright for UI E2E
-
 
 #### Phase 4: Framework Standardization
 
@@ -239,20 +216,17 @@ if (process.env.BUILD_ONCE !== "1") {
 
 ## Configuration Files
 
-
 ### Test Scripts (package.json)
 
 ```json
 {
   "test:unit": "node tests/test-unit-shared.mjs",
-  "test:integration": "node tests/test-integration-graph.mjs", 
+  "test:integration": "node tests/test-integration-graph.mjs",
   "test:e2e": "node tests/test-e2e-build.mjs",
   "test:ts-strict": "node tests/test-ts-strict.mjs",
   "test:all": "node tests/run-all.mjs"
 }
 ```
-
-
 
 ### Test File Locations
 

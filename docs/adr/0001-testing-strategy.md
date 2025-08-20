@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # ADR 0001: Testing Strategy
 
 **Date**: 2025-08-18  
@@ -8,7 +9,6 @@
 
 In the early phase of Draconia Chronicles v2.0.0 development, we need deterministic test
 execution without the overhead of a full testing framework. The project requires:
-
 
 - Fast feedback loops during development
 - Clear pass/fail indicators for CI/CD
@@ -23,13 +23,11 @@ integration, and end-to-end testing coverage.
 Implement a **tiny-runner + Node scripts** testing approach with the following
 architecture:
 
-
 ### Test Layers
 
 1. **Unit Tests**: Test individual functions and utilities from source/dist
 2. **Integration Tests**: Test interactions between packages
 3. **End-to-End Tests**: Test full build pipeline and CLI contracts
-
 
 ### Tiny Runner Behavior
 
@@ -37,7 +35,6 @@ architecture:
 - No hard-coded "OK" messages that lie about results
 - Output format: `ok - N passed` or `FAIL - N failed, N passed`
 - Exit code 0 for success, 1 for failure
-
 
 ### Execution Commands
 
@@ -49,7 +46,6 @@ architecture:
 
 ## Consequences
 
-
 ### Positive
 
 - **Fast feedback**: Minimal overhead, quick execution
@@ -57,13 +53,11 @@ architecture:
 - **Developer-friendly**: Clear output, easy to run individual tests
 - **Foundation**: Establishes testing patterns for future framework migration
 
-
 ### Negative
 
 - **Limited features**: No built-in mocking, coverage, or advanced assertions
 - **Manual maintenance**: Test runner and utilities are project-specific
 - **Migration required**: Eventually need to move to Vitest/Playwright
-
 
 ### Migration Path
 
@@ -71,7 +65,6 @@ architecture:
 - **Phase 2**: Migrate unit/integration tests to Vitest for better tooling
 - **Phase 3**: Add Playwright for true UI end-to-end testing
 - **Phase 4**: Remove custom tiny-runner in favor of standard tools
-
 
 ### Operational Impact
 

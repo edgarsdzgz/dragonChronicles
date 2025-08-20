@@ -29,8 +29,8 @@
     "docs:check": "node .github/scripts/require-docs-change.mjs",
     "lint": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0",
     "lint:quiet": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0 --quiet",
-    "format": "prettier --config ./configs/prettier/.prettierrc.cjs --write \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
-    "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
+    "format": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --write \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
+    "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
     "verify:style": "pnpm run lint:quiet && pnpm run format:check",
     "verify:all": "node tests/run-all.mjs && pnpm run lint:quiet && pnpm run format:check && pnpm run docs:lint && pnpm run docs:links",
     "prepare": "husky",
@@ -60,7 +60,7 @@
       "eslint --cache --cache-location ./.cache/eslint --fix"
     ],
     "*.{ts,tsx,js,json,md,css,scss,svelte}": [
-      "prettier --config ./configs/prettier/.prettierrc.cjs --write"
+      "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --write"
     ]
   }
 }

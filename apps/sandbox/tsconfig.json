@@ -12,9 +12,6 @@
     "skipLibCheck": true,
     "paths": {}
   },
-  "references": [
-    { "path": "../../packages/logger" },
-    { "path": "../../packages/sim" }
-  ],
+  "references": [{ "path": "../../packages/logger" }, { "path": "../../packages/sim" }],
   "include": ["src"]
 }

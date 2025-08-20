@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # Changelog
 
 All notable changes to Draconia Chronicles v2.0.0 will be documented in this file.
@@ -58,5 +59,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Related Issues
 
 - #15: Centralize Game Documentation: Developer & Player Dual Structure
-- S001: Testing Strategy Implementation  
+- S001: Testing Strategy Implementation
 - S002: TypeScript Strict Enforcement

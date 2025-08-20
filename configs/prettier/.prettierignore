@@ -14,3 +14,7 @@ node_modules/
 # Generated files
 *.min.js
 *.min.css
+
+# Local/ephemeral files
+.claude/
+.vscode/

@@ -11,12 +11,17 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "npx tsc -b",
     "clean": "rimraf dist",
     "echo-ok": "echo ok"
   },
-  "devDependencies": { "typescript": "^5.4.0", "rimraf": "^5.0.5" }
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "rimraf": "^5.0.5"
+  }
 }

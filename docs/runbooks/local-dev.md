@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # Local Development Setup
 
 This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone to running tests.
@@ -71,7 +72,7 @@ node tests/run-all.mjs
 
 # Run individual test suites (if needed)
 pnpm run test:unit          # Unit tests
-pnpm run test:integration   # Integration tests  
+pnpm run test:integration   # Integration tests
 pnpm run test:e2e          # End-to-end tests
 pnpm run test:ts-strict    # TypeScript strict gate
 ```
@@ -156,7 +157,7 @@ pnpm run test:e2e         # End-to-end tests only
 pnpm run test:ts-strict   # TypeScript strict enforcement
 ```
 
-### Development Scripts  
+### Development Scripts
 
 ```bash
 pnpm run dev:sandbox   # Run sandbox app in dev mode
@@ -296,6 +297,6 @@ See [Documentation Standards](/docs/README.md) for detailed guidance.
 After completing setup:
 
 1. Review [Testing Strategy](/docs/engineering/testing.md)
-2. Read [TypeScript Standards](/docs/engineering/typescript.md)  
+2. Read [TypeScript Standards](/docs/engineering/typescript.md)
 3. Check [Architectural Decision Records](/docs/adr/0001-testing-strategy.md)
 4. Start with small changes to familiarize yourself with the workflow

@@ -13,14 +13,16 @@
  * console.log(profile.id); // "ak9x7m2p" (random)
  */
 export function makeProfile(name) {
-    if (!isValidProfileName(name)) {
-        throw new Error("invalid-name: must be 2-24 characters, letters/numbers/spaces/apostrophes/hyphens only");
-    }
-    return {
-        id: generateProfileId(),
-        name,
-        createdAt: Date.now()
-    };
+  if (!isValidProfileName(name)) {
+    throw new Error(
+      'invalid-name: must be 2-24 characters, letters/numbers/spaces/apostrophes/hyphens only',
+    );
+  }
+  return {
+    id: generateProfileId(),
+    name,
+    createdAt: Date.now(),
+  };
 }
 /**
  * Validates profile name according to business rules
@@ -28,9 +30,9 @@ export function makeProfile(name) {
  * @returns true if the name is valid
  */
 function isValidProfileName(name) {
-    // Unicode-aware: letters, numbers, spaces, apostrophes, hyphens
-    // Length: 2-24 characters
-    return /^[\p{L}\p{N}\s'-]{2,24}$/u.test(name);
+  // Unicode-aware: letters, numbers, spaces, apostrophes, hyphens
+  // Length: 2-24 characters
+  return /^[\p{L}\p{N}\s'-]{2,24}$/u.test(name);
 }
 /**
  * Generates a random profile ID
@@ -38,6 +40,6 @@ function isValidProfileName(name) {
  * @note Using Math.random() for Phase 0 simplicity; will upgrade to crypto.randomUUID() later
  */
 function generateProfileId() {
-    // Convert to base36 and take 8 chars (excluding "0.")
-    return Math.random().toString(36).slice(2, 10);
+  // Convert to base36 and take 8 chars (excluding "0.")
+  return Math.random().toString(36).slice(2, 10);
 }

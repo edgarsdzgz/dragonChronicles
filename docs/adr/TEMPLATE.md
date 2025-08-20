@@ -1,4 +1,5 @@
 <!-- markdownlint-disable -->
+
 # ADR NNN: <Title>
 
 **Date**: YYYY-MM-DD (Use UTC ISO dates)  
