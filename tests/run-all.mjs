@@ -1,10 +1,6 @@
 // tests/run-all.mjs
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const tscBin = require.resolve("typescript/bin/tsc");
 
 const run = (cmd, args, env = {}) => {
   const r = spawnSync(cmd, args, {
@@ -12,9 +8,10 @@ const run = (cmd, args, env = {}) => {
     encoding: "utf8",
     env: { ...process.env, ...env },
   });
+  // Always surface child output so test results are visible
+  if (r.stdout) process.stdout.write(r.stdout);
+  if (r.stderr) process.stderr.write(r.stderr);
   if (r.status !== 0) {
-    if (r.stdout) console.log(r.stdout);
-    if (r.stderr) console.error(r.stderr);
     console.error(`Command failed: ${cmd} ${args.join(" ")}`);
     process.exit(r.status ?? 1);
   }
@@ -30,16 +27,19 @@ const projects = [
   "apps/sandbox/tsconfig.json",
 ].filter(existsSync);
 
-console.log("Building TypeScript projects...");
+if (process.env.VERBOSE) console.log("Building TypeScript projects.");
+// Use direct TypeScript path to avoid pnpm exec issues on Windows
+const tscPath = "node_modules/.pnpm/typescript@5.9.2/node_modules/typescript/lib/tsc.js";
+
 if (projects.length === 0) {
   // Fallback: root build if no per-package tsconfigs were found
-  run("node", [tscBin, "-b"]);
+  run("node", [tscPath, "-b", "--pretty", "false", "--verbose"]);
 } else {
   // One multi-project build (tsc -b resolves proper order)
-  run("node", [tscBin, "-b", ...projects]);
+  run("node", [tscPath, "-b", "--pretty", "false", "--verbose", ...projects]);
 }
 
-console.log("Verifying build artifacts...");
+if (process.env.VERBOSE) console.log("Verifying build artifacts...");
 const expectedArtifacts = [
   "packages/shared/dist/index.js",
   "packages/logger/dist/index.js", 
@@ -55,10 +55,15 @@ for (const artifact of expectedArtifacts) {
   }
 }
 
-console.log("Running tests with BUILD_ONCE=1...");
+if (process.env.VERBOSE) console.log("Running tests with BUILD_ONCE=1...");
 run("node", ["tests/test-unit-shared.mjs"], { BUILD_ONCE: "1" });   // unit
 run("node", ["tests/test-integration-graph.mjs"], { BUILD_ONCE: "1" }); // integration
 run("node", ["tests/test-e2e-build.mjs"], { BUILD_ONCE: "1" });     // e2e
 run("node", ["tests/test-ts-strict.mjs"]);                           // strict gate
 
-console.log("\nAll tests completed successfully!");
+if (process.env.VERBOSE) console.log("Running P0-S003 lint tests...");
+run("node", ["scripts/test-lint-unit.mjs"]);                         // S003 unit
+run("node", ["scripts/test-lint-workspace.mjs"]);                    // S003 integration
+run("node", ["scripts/test-precommit-e2e.mjs"]);                     // S003 e2e
+
+if (process.env.VERBOSE) console.log("\nAll tests completed successfully!");

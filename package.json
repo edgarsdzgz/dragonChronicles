@@ -6,6 +6,7 @@
     "node": ">=18.17"
   },
   "prettier": "./configs/prettier/.prettierrc.cjs",
+  "eslintConfig": "./configs/eslint/.eslintrc.cjs",
   "scripts": {
     "build": "npx tsc -b",
     "clean": "git clean -xfd -e node_modules -e .pnpm-store",
@@ -26,14 +27,17 @@
     "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
     "docs:links": "linkinator docs/README.md --recurse --config .linkinatorrc.json",
     "docs:check": "node .github/scripts/require-docs-change.mjs",
-    "lint": "eslint . --ext .ts,.tsx,.svelte --max-warnings 0",
-    "lint:fix": "eslint . --ext .ts,.tsx,.svelte --fix",
-    "format": "prettier . --write",
-    "format:check": "prettier . --check",
-    "verify:style": "pnpm -w lint && pnpm run format:check",
-    "verify:all": "node tests/run-all.mjs && pnpm -w lint && pnpm run format:check && pnpm run docs:lint && pnpm run docs:links",
-    "prepare": "husky install",
-    "test:lint:smoke": "node scripts/test-lint-smoke.mjs"
+    "lint": "eslint . --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --ext .ts,.tsx,.js,.svelte --max-warnings 0",
+    "lint:quiet": "eslint . --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --ext .ts,.tsx,.js,.svelte --max-warnings 0 --quiet",
+    "format": "prettier --config ./configs/prettier/.prettierrc.cjs --write \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
+    "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
+    "verify:style": "pnpm run lint:quiet && pnpm run format:check",
+    "verify:all": "node tests/run-all.mjs && pnpm run lint:quiet && pnpm run format:check && pnpm run docs:lint && pnpm run docs:links",
+    "prepare": "husky",
+    "test:lint:unit": "node scripts/test-lint-unit.mjs",
+    "test:lint:workspace": "node scripts/test-lint-workspace.mjs",
+    "test:lint:e2e": "node scripts/test-precommit-e2e.mjs",
+    "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.40.0",
@@ -52,12 +56,11 @@
     "typescript": "^5.4.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,svelte,js,jsx}": [
-      "prettier --write",
-      "eslint --fix"
+    "*.{ts,tsx,js,svelte}": [
+      "eslint --cache --cache-location ./.cache/eslint --config ./configs/eslint/.eslintrc.cjs --fix"
     ],
-    "*.{md,json,yml,yaml}": [
-      "prettier --write"
+    "*.{ts,tsx,js,json,md,css,scss,svelte}": [
+      "prettier --config ./configs/prettier/.prettierrc.cjs --write"
     ]
   }
 }

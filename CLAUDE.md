@@ -599,3 +599,98 @@ feat: [brief description]
   - **No bare URLs**; use `[text](url)` (`MD034`)
   - Don't **skip heading levels** (`MD001`)
 - If stuck or tempted to "cheat", **stop, document the blocker, and request review**.
+
+## Refactor Notes (P0-S003)
+
+### Performance Optimizations
+
+**ESLint caching**: All lint scripts use `--cache --cache-location ./.cache/eslint` for faster subsequent runs.
+
+**Quiet mode**: Use `lint:quiet` script in CI to reduce noise by hiding non-error output.
+
+**Minimal fixtures**: Test fixtures contain only one violation per intent to reduce noise and improve clarity.
+
+### Configuration Standards
+
+**Shared constants**: Use `_test-utils.mjs` for path constants and shared utilities across test scripts.
+
+**Consistent ignore patterns**: Both `.eslintignore` and `.prettierignore` use consistent directory patterns with comments.
+
+**Config references**: Package.json includes `eslintConfig` and `prettier` keys for tool discovery.
+
+### Code Organization
+
+**Test utilities**: Extract common functions (`readJsonFile`, `assertIncludes`, etc.) to reduce duplication.
+
+**Descriptive assertions**: All test assertions include meaningful error messages for easier debugging.
+
+**Fixture symmetry**: Both TypeScript and Svelte have corresponding `pass.*` and `bad.*` examples.
+
+### Integration Patterns
+
+**Pre-commit optimization**: lint-staged uses ESLint caching and single Prettier passes per batch.
+
+**Modern Husky**: Use simplified `husky` command in prepare script following current best practices.
+
+**Flag consistency**: Maintain consistent ordering and quoting across all package.json scripts.
+
+## Test Output Guidelines (Never Print Fake Success)
+
+### Prohibited: Unconditional Affirmative Messages
+
+**NEVER use unconditional console.log() with affirmative strings in test files:**
+
+```javascript
+❌ WRONG:
+console.log("ok");
+console.log("success"); 
+console.log("All tests completed successfully!");
+console.log("UNIT: ok");
+```
+
+**These always print regardless of actual test results and create false positive feedback.**
+
+### Allowed: Conditional Success Messages
+
+**Only print success messages when tests actually pass:**
+
+```javascript
+✅ CORRECT:
+if (failCount === 0) {
+  console.log(`ok - ${passCount} passed`);
+  process.exit(0);
+} else {
+  console.error(`FAIL - ${failCount} failed, ${passCount} passed`);
+  process.exit(1);
+}
+```
+
+### Allowed: Progress Messages with VERBOSE Gate
+
+**For human-friendly progress output, gate behind environment variable:**
+
+```javascript
+✅ CORRECT:
+if (process.env.VERBOSE) console.log("Building TypeScript projects...");
+if (process.env.VERBOSE) console.log("Running tests with BUILD_ONCE=1...");
+if (process.env.VERBOSE) console.log("All tests completed successfully!");
+```
+
+### Test Result Standards
+
+**Test runners should:**
+- Use proper exit codes (0 = pass, non-zero = fail)
+- Print derived results based on actual test outcomes
+- Never print success messages before all tests complete
+- Let assertions and exit codes be the source of truth
+
+**Example compliant test ending:**
+```javascript
+// Run all assertions first
+assert.equal(actualResult, expectedResult);
+assert.ok(condition, "descriptive error message");
+
+// Only print success if we reach the end without assertion failures
+// (assertions will throw and prevent reaching this line)
+if (process.env.VERBOSE) console.log("All validations passed");
+```

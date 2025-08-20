@@ -1,2 +1,6 @@
-<script lang="ts"> // wrong quotes, spacing, any type export let title:any="Draconia" </script>
-{title}
+<script lang="ts">
+  // Should fail ESLint: explicit any type
+  export let data: any = "bad";
+</script>
+
+{data}

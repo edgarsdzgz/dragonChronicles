@@ -4,15 +4,11 @@ import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 import { test, run } from "./_tiny-runner.mjs";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const tscBin = require.resolve("typescript/bin/tsc");
 
 const must = (p) => assert.ok(fs.existsSync(p), `missing: ${p}`);
 
 if (!process.env.BUILD_ONCE) {
-  const r = spawnSync("node", [tscBin, "-b"], { stdio: "pipe", encoding: "utf8" });
+  const r = spawnSync("pnpm", ["-w", "exec", "tsc", "-b"], { stdio: "pipe", encoding: "utf8" });
   if (r.status !== 0) {
     console.error(r.stderr || "");
     process.exit(r.status ?? 1);

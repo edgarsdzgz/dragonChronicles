@@ -13,10 +13,6 @@
 import { spawnSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { test, run } from "./_tiny-runner.mjs";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const tscPath = require.resolve("typescript/bin/tsc");
 
 /**
  * Helper function to run TypeScript compilation on a project
@@ -24,6 +20,8 @@ const tscPath = require.resolve("typescript/bin/tsc");
  * @returns {object} Spawn result with status, stdout, stderr
  */
 const runTscProject = (projectPath) => {
+  // Use direct TypeScript path to avoid pnpm exec issues on Windows
+  const tscPath = "node_modules/.pnpm/typescript@5.9.2/node_modules/typescript/lib/tsc.js";
   return spawnSync("node", [tscPath, "-p", projectPath], { stdio: "pipe", encoding: "utf8" });
 };
 

@@ -2,26 +2,48 @@
 module.exports = {
   root: true,
   ignorePatterns: [
-    "**/dist/",
-    "**/.svelte-kit/",
-    "node_modules/",
-    "**/dist-tests/"
+    "dist/",
+    "dist-tests/",
+    ".svelte-kit/",
+    ".cache/",
+    "node_modules/"
   ],
   env: { es2021: true, browser: false, node: true },
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 2021,
-    sourceType: "module"
+    tsconfigRootDir: __dirname + "/../..",
+    project: ["./tsconfig.base.json"]
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "svelte"],
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier" // must be last to disable conflicting rules
+    "@typescript-eslint/recommended",
+    "plugin:svelte/recommended",
+    "prettier" // MUST be last to disable conflicting rules
   ],
-  rules: {
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
-  }
+  settings: {
+    "svelte3/typescript": true
+  },
+  overrides: [
+    {
+      files: ["**/*.svelte"],
+      parser: "svelte-eslint-parser",
+      parserOptions: {
+        parser: { ts: "@typescript-eslint/parser" },
+        extraFileExtensions: [".svelte"],
+        project: ["./tsconfig.base.json"]
+      },
+      rules: {
+        "svelte/no-at-html-tags": "warn"
+      }
+    },
+    {
+      files: ["**/*.ts", "**/*.tsx", "**/*.js"],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
+      }
+    }
+  ]
 };

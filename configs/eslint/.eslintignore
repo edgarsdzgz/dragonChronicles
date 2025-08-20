@@ -1,6 +1,12 @@
-node_modules
-dist
-dist-tests
-.svelte-kit
-.pnpm-store
-.husky/_/*
+# Build outputs
+dist/
+dist-tests/
+.svelte-kit/
+
+# Dependencies and caches
+node_modules/
+.pnpm-store/
+.cache/
+
+# Tool directories
+.husky/_/

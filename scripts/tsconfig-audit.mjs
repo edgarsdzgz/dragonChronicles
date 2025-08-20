@@ -33,4 +33,5 @@ for (const p of PACKS) {
   );
   assert.equal(bad, false, `${p} must NOT override strict flags in its tsconfig`);
 }
-console.log("AUDIT: ok");
+// All assertions passed - tsconfig audit completed successfully
+// (No unconditional success message - let exit code indicate success)
