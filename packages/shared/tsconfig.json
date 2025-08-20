@@ -14,5 +14,6 @@
     "skipLibCheck": true,
     "sourceMap": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": []
 }
