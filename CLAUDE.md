@@ -688,6 +688,32 @@ feat: [brief description]
 
 **Modern Husky**: Use simplified `husky` command in prepare script following current best practices.
 
+### Husky v9+ Hook Format (2025-08-20)
+
+**Important**: Husky v9+ hooks are plain shell command snippets and must NOT include:
+
+- Shebang lines (`#!/usr/bin/env sh`)
+- Husky.sh sourcing (`. "$(dirname -- "$0")/_/husky.sh"`)
+
+**Correct Format:**
+
+```bash
+# .husky/pre-commit - CORRECT for v9+
+pnpm exec lint-staged
+```
+
+**Deprecated Format (will fail in v10):**
+
+```bash
+# .husky/pre-commit - DEPRECATED, remove these lines
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+pnpm exec lint-staged
+```
+
+**Rule**: Husky v9+ hooks must contain only the commands to run. Husky runs them with `sh` automatically.
+
 **Flag consistency**: Maintain consistent ordering and quoting across all package.json scripts.
 
 ## Test Output Guidelines (Never Print Fake Success)
