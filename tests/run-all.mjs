@@ -31,13 +31,9 @@ if (process.env.VERBOSE) console.log("Building TypeScript projects.");
 // Use direct TypeScript path to avoid pnpm exec issues on Windows
 const tscPath = "node_modules/.pnpm/typescript@5.9.2/node_modules/typescript/lib/tsc.js";
 
-if (projects.length === 0) {
-  // Fallback: root build if no per-package tsconfigs were found
-  run("node", [tscPath, "-b", "--pretty", "false", "--verbose"]);
-} else {
-  // One multi-project build (tsc -b resolves proper order)
-  run("node", [tscPath, "-b", "--pretty", "false", "--verbose", ...projects]);
-}
+// Clean + build with build-only config that disables source redirects
+run("node", [tscPath, "-b", "--clean"]);
+run("node", [tscPath, "-b", "tsconfig.build.json", "--pretty", "false", "--verbose"]);
 
 if (process.env.VERBOSE) console.log("Verifying build artifacts...");
 const expectedArtifacts = [
