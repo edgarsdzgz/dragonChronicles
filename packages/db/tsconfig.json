@@ -3,13 +3,16 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
     "rootDir": "src",
     "outDir": "dist",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "sourceMap": false
   },
   "references": [{ "path": "../shared" }],
   "include": ["src"]
