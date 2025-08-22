@@ -44,7 +44,8 @@
     "test:lint:unit": "node scripts/test-lint-unit.mjs",
     "test:lint:workspace": "node scripts/test-lint-workspace.mjs",
     "test:lint:e2e": "node scripts/test-precommit-e2e.mjs",
-    "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e"
+    "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e",
+    "size:check": "node scripts/size-budgets.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
