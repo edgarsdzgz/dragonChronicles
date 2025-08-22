@@ -47,6 +47,8 @@
     "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.33.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.33.0",
