@@ -8,6 +8,10 @@ fs.writeFileSync(file, 'export function sum (a:number,b:number){return a+b}\n', 
 let r = spawnSync('git', ['add', file], { encoding: 'utf8' });
 assert.equal(r.status, 0, 'git add failed (ensure repo is a git repo)');
 
+// Verify file is staged
+r = spawnSync('git', ['diff', '--cached', '--name-only'], { encoding: 'utf8' });
+assert.ok(r.stdout.includes('tests/hooks/messy.ts'), 'messy.ts file not properly staged');
+
 // Run the hook directly (v9+ hook is just a command snippet)
 // On Windows, use cmd.exe to execute .CMD files, otherwise use sh
 const isWindows = process.platform === 'win32';

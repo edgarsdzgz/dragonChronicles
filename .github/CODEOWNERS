@@ -1,11 +1,3 @@
-# CODEOWNERS for Draconia Chronicles
-
-# Documentation and CI configuration require docs/CI maintainer review
-/docs/** @edgarsdzgz
-/.github/** @edgarsdzgz
-
-# TypeScript configuration changes need review
-tsconfig*.json @edgarsdzgz
-
-# Test infrastructure changes need review  
-/tests/** @edgarsdzgz
+*       @edgarsdzgz
+/apps/  @edgarsdzgz
+/packages/db/ @edgarsdzgz

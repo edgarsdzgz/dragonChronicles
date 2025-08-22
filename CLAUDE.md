@@ -161,38 +161,42 @@ const r = spawnSync(cmd, args, {
 **Problem:** On Windows, Node.js `spawnSync` cannot directly execute npm/pnpm package binaries, leading to various failure modes.
 
 **Root Causes:**
+
 1. **Direct .CMD execution fails**: `spawnSync('npx', ['command'])` returns null status
-2. **npm/pnpm path resolution issues**: Commands fail with `/c: /c: Is a directory` 
+2. **npm/pnpm path resolution issues**: Commands fail with `/c: /c: Is a directory`
 3. **Windows shell argument mangling**: CLI args become `^^^--config^^^` instead of `--config`
 
 **Solutions by Use Case:**
 
 **✅ CORRECT - For Node.js spawnSync calls:**
+
 ```javascript
 function runCommand(msg) {
   const isWindows = process.platform === 'win32';
   const cmd = isWindows ? 'cmd' : 'npx';
   const args = isWindows ? ['/c', 'node_modules\\.bin\\command.CMD'] : ['command'];
-  
-  return spawnSync(cmd, args, { 
-    input: msg, 
+
+  return spawnSync(cmd, args, {
+    input: msg,
     encoding: 'utf8',
-    stdio: ['pipe', 'pipe', 'pipe']
+    stdio: ['pipe', 'pipe', 'pipe'],
     // Never use shell: true - causes Windows path interpretation issues
   });
 }
 ```
 
 **✅ CORRECT - For Husky hooks (v9+):**
+
 ```bash
 # .husky/pre-commit - works fine, Husky handles shell properly
 pnpm exec lint-staged
 
-# .husky/commit-msg - works fine, Husky handles shell properly  
+# .husky/commit-msg - works fine, Husky handles shell properly
 pnpm exec commitlint --edit "$1"
 ```
 
 **❌ WRONG - These patterns fail on Windows:**
+
 ```javascript
 // Fails with null status
 spawnSync('npx', ['commitlint'], { input: msg });
@@ -205,6 +209,7 @@ spawnSync('cmd', ['/c', 'pnpm', 'exec', 'lint-staged'], { encoding: 'utf8' });
 ```
 
 **Key Principles:**
+
 - **Husky hooks work fine** with `pnpm exec` - Husky provides proper shell environment
 - **Node.js spawnSync** requires direct .CMD file execution on Windows
 - **Never use shell: true** - causes `/c: /c: Is a directory` errors

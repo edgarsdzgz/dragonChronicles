@@ -1,37 +1,28 @@
-## What changed
+## Summary
 
-- [ ] Code
-- [ ] Tests
-- [ ] Docs (required)
-  - [ ] Updated `/docs/engineering/testing.md` (if tests/process changed)
-  - [ ] Updated `/docs/engineering/typescript.md` (if TypeScript standards changed)
-  - [ ] Added/updated ADR under `/docs/adr/` (if architectural decisions changed)
+Brief description of the changes made.
 
-## Verification
+## Changes Made
 
-- [ ] `pnpm run test:all` green with same summaries
-- [ ] Docs build/check passes (if docs:lint and docs:links scripts are available)
-- [ ] No linting/type errors introduced
-
-## Description
-
-<!-- Brief description of changes and motivation -->
+- List key changes
+- Include any breaking changes
+- Reference related issues
 
 ## Testing
 
-<!-- How were these changes tested? -->
+- [ ] Build passes (`pnpm run build`)
+- [ ] Linting passes (`pnpm run lint`)
+- [ ] Tests pass (`pnpm run test:all`)
+- [ ] Manual testing completed
 
-## Documentation
+## Screenshots/Logs
 
-<!-- Link to updated documentation or explain why docs updates aren't needed -->
+(If applicable, attach screenshots or logs)
 
 ## Checklist
 
-- [ ] PR title follows conventional commit format
-- [ ] Breaking changes are documented
-- [ ] Related issues are linked (e.g., Closes #123)
-- [ ] All review feedback has been addressed
-
----
-
-**Note**: All code changes affecting `/packages`, `/apps`, or `/tests` require corresponding documentation updates. See [Documentation Standards](../docs/README.md) for guidance.
+- [ ] Code follows project conventions
+- [ ] Documentation updated if needed
+- [ ] Breaking changes documented
+- [ ] Tests added/updated for new functionality
+      EOF < /dev/null
