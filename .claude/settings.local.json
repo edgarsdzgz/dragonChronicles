@@ -46,7 +46,10 @@
       "Bash(packages/shared/node_modules/.bin/tsc -b packages/shared/tsconfig.json --pretty false --verbose)",
       "Bash(git push:*)",
       "Bash(git mv:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(sh:*)",
+      "Bash(.husky/pre-commit)",
+      "Bash(cmd /c pnpm exec lint-staged)"
     ],
     "deny": []
   }

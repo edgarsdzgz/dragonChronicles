@@ -156,6 +156,66 @@ const r = spawnSync(cmd, args, {
 
 **Reference:** Fixed in `tests/run-all.mjs` during S002 implementation.
 
+### Windows Node.js spawnSync Binary Execution Issues (2025-08-20)
+
+**Problem:** On Windows, Node.js `spawnSync` cannot directly execute npm/pnpm package binaries, leading to various failure modes.
+
+**Root Causes:**
+
+1. **Direct .CMD execution fails**: `spawnSync('npx', ['command'])` returns null status
+2. **npm/pnpm path resolution issues**: Commands fail with `/c: /c: Is a directory`
+3. **Windows shell argument mangling**: CLI args become `^^^--config^^^` instead of `--config`
+
+**Solutions by Use Case:**
+
+**✅ CORRECT - For Node.js spawnSync calls:**
+
+```javascript
+function runCommand(msg) {
+  const isWindows = process.platform === 'win32';
+  const cmd = isWindows ? 'cmd' : 'npx';
+  const args = isWindows ? ['/c', 'node_modules\\.bin\\command.CMD'] : ['command'];
+
+  return spawnSync(cmd, args, {
+    input: msg,
+    encoding: 'utf8',
+    stdio: ['pipe', 'pipe', 'pipe'],
+    // Never use shell: true - causes Windows path interpretation issues
+  });
+}
+```
+
+**✅ CORRECT - For Husky hooks (v9+):**
+
+```bash
+# .husky/pre-commit - works fine, Husky handles shell properly
+pnpm exec lint-staged
+
+# .husky/commit-msg - works fine, Husky handles shell properly
+pnpm exec commitlint --edit "$1"
+```
+
+**❌ WRONG - These patterns fail on Windows:**
+
+```javascript
+// Fails with null status
+spawnSync('npx', ['commitlint'], { input: msg });
+
+// Fails with path interpretation errors
+spawnSync('pnpm', ['exec', 'commitlint'], { input: msg, shell: true });
+
+// Fails with argument mangling via cmd.exe for complex commands
+spawnSync('cmd', ['/c', 'pnpm', 'exec', 'lint-staged'], { encoding: 'utf8' });
+```
+
+**Key Principles:**
+
+- **Husky hooks work fine** with `pnpm exec` - Husky provides proper shell environment
+- **Node.js spawnSync** requires direct .CMD file execution on Windows
+- **Never use shell: true** - causes `/c: /c: Is a directory` errors
+- **Use platform detection** to choose correct execution method
+- **Test both Windows and Unix** execution paths in cross-platform scripts
+
 ## GitHub PR Guidelines
 
 ### PR References and Issue Closing
@@ -687,6 +747,32 @@ feat: [brief description]
 **Pre-commit optimization**: lint-staged uses ESLint caching and single Prettier passes per batch.
 
 **Modern Husky**: Use simplified `husky` command in prepare script following current best practices.
+
+### Husky v9+ Hook Format (2025-08-20)
+
+**Important**: Husky v9+ hooks are plain shell command snippets and must NOT include:
+
+- Shebang lines (`#!/usr/bin/env sh`)
+- Husky.sh sourcing (`. "$(dirname -- "$0")/_/husky.sh"`)
+
+**Correct Format:**
+
+```bash
+# .husky/pre-commit - CORRECT for v9+
+pnpm exec lint-staged
+```
+
+**Deprecated Format (will fail in v10):**
+
+```bash
+# .husky/pre-commit - DEPRECATED, remove these lines
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+pnpm exec lint-staged
+```
+
+**Rule**: Husky v9+ hooks must contain only the commands to run. Husky runs them with `sh` automatically.
 
 **Flag consistency**: Maintain consistent ordering and quoting across all package.json scripts.
 

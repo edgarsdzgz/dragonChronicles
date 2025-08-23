@@ -23,6 +23,7 @@ export default [
       'configs/**/*.cjs',             // ignore config files
       'tests/fixtures/**',            // ignore test fixtures
       'tests/lint/**',                // ignore lint test files
+      'tests/hooks/**',               // ignore hook test files
       '**/*.d.ts',                    // ignore declaration files
     ],
   },
