@@ -17,9 +17,6 @@ permissions:
   id-token: write
 
 env:
-  # keep this in sync with packageManager in package.json if you set it
-  PNPM_VERSION: 9.15.9
-  NODE_VERSION: 20.x
   # keep build sizes lean; skip source maps in CI builds unless you need them
   VITE_SOURCEMAP: false
   # fail PRs if Lighthouse a11y < 95
@@ -34,24 +31,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Print versions
-        run: |
-          node -v
-          pnpm -v
+      - name: Setup Node + pnpm
+        uses: ./.github/actions/pnpm-setup
 
       - name: Install deps (frozen)
         run: pnpm -w install --frozen-lockfile
+        env:
+          HUSKY: 0
 
   lint-type:
     name: Lint & Typecheck
@@ -59,17 +45,16 @@ jobs:
     needs: install
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node + pnpm
+        uses: ./.github/actions/pnpm-setup
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile
+        env:
+          HUSKY: 0
 
       - name: ESLint
         run: pnpm -w run lint --if-present
@@ -89,22 +74,22 @@ jobs:
     needs: install
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node + pnpm
+        uses: ./.github/actions/pnpm-setup
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile
+        env:
+          HUSKY: 0
 
       - name: Run tests (Node.js + Vitest)
         run: pnpm -w run test:all --if-present
         env:
           CI: true
+          HUSKY: 1  # Enable Husky for test-precommit-e2e
 
   build:
     name: Build (web)
@@ -112,17 +97,16 @@ jobs:
     needs: [lint-type, unit-tests]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node + pnpm
+        uses: ./.github/actions/pnpm-setup
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile
+        env:
+          HUSKY: 0
 
       # Build TypeScript packages first
       - name: Build TypeScript packages
@@ -148,7 +132,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 20.x
 
       - name: Download site artifact
         uses: actions/download-artifact@v4
