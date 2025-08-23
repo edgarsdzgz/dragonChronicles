@@ -122,6 +122,94 @@ Example improved pattern:
 node tests/run-all.mjs  # Builds once, runs all tests
 ```
 
+## PNPM Lockfile Management Guidelines
+
+### Root Cause of CI Failures
+
+**Problem:** CI fails with `pnpm install --frozen-lockfile` errors when lockfile and package.json specs don't match.
+
+**Symptoms:**
+- "Lockfile has vitest: '^1.6.1' but package.json has vitest: '^1.6.0'"
+- Missing specifiers in lockfile vs package.json
+- CI blocks on dependency verification
+
+### Prevention Strategy (MANDATORY)
+
+**1. Always Use Workspace Root Commands**
+
+```bash
+# ✅ CORRECT - from repo root
+pnpm -w install
+
+# ✅ CORRECT - adding dependencies 
+pnpm -w add -D vitest@^1.6.1 --filter ./apps/web
+
+# ❌ WRONG - local installs cause drift
+cd apps/web && pnpm install
+```
+
+**2. Sync Lockfile After Package Changes**
+
+```bash
+# When package.json changes, always sync lockfile
+pnpm -w install --lockfile-only
+git add pnpm-lock.yaml
+git commit -m "chore: sync lockfile with package.json"
+```
+
+**3. Standardized PNPM Version**
+
+- Root `package.json` specifies: `"packageManager": "pnpm@9.15.9"`
+- All developers use `corepack enable` for consistent versions
+- CI and local environments use identical PNPM version
+
+**4. Automated Lockfile Sync (Pre-commit Hook)**
+
+The `.husky/pre-commit` hook automatically syncs lockfile when package.json changes:
+
+```bash
+# Check if package.json changed and sync lockfile
+if git diff --cached --name-only | grep -qE '(^|/)(package\.json)$'; then
+  echo "package.json changed -> syncing pnpm-lock.yaml"
+  pnpm -w install --lockfile-only
+  git add pnpm-lock.yaml
+fi
+```
+
+**5. Lockfile Conflict Resolution**
+
+```bash
+# After resolving package.json conflicts in PR
+pnpm -w install --lockfile-only
+git add pnpm-lock.yaml
+# Never hand-edit pnpm-lock.yaml
+```
+
+### Emergency Fix Process
+
+**When CI fails on frozen lockfile:**
+
+1. Sync lockfile immediately:
+   ```bash
+   pnpm -w install --lockfile-only
+   git add pnpm-lock.yaml
+   git commit -m "chore: sync lockfile with package.json"
+   ```
+
+2. Push fix and re-run CI
+
+3. Investigate root cause (parallel PRs, manual edits, version mismatches)
+
+### Quality Gates
+
+- ✅ CI uses `pnpm install --frozen-lockfile` (keep this)
+- ✅ Pre-commit hook prevents lockfile drift
+- ✅ All package changes go through workspace root
+- ✅ Lockfile conflicts resolved by regeneration, not hand-editing
+- ✅ Consistent PNPM version across all environments
+
+**Reference:** This prevents the "specifiers in lockfile don't match package.json" class of CI failures that block development workflow.
+
 ## Cross-Platform Compatibility Issues
 
 ### Windows Path Interpretation Error

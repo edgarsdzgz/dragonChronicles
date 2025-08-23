@@ -1,1 +1,8 @@
+# Check if package.json changed and sync lockfile
+if git diff --cached --name-only | grep -qE '(^|/)(package\.json)$'; then
+  echo "package.json changed -> syncing pnpm-lock.yaml"
+  pnpm -w install --lockfile-only
+  git add pnpm-lock.yaml
+fi
+
 pnpm exec lint-staged
