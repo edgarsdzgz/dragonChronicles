@@ -34,7 +34,7 @@ describe('HUD decoupled from Pixi ticker', () => {
       path.resolve('apps/web/src/routes/+page.svelte'),
     ].filter(fs.existsSync);
 
-    const badPatterns = [/from\s+['"]pixi.*ticker['"]/, /PIXI\.\s*ticker/i];
+    const badPatterns = [/from\s+['"]pixi.*ticker['"]/, /PIXI\.\s*ticker/i, /app\.ticker\./];
     
     for (const p of hudPaths) {
       const src = fs.readFileSync(p, 'utf8');

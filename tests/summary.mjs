@@ -23,6 +23,11 @@ if (vitest && Array.isArray(vitest.testResults)) {
   vitestTotals.failed = vitest.numFailedTests || 0;
 }
 
+// Show Vitest status
+if (vitestTotals.total === 0) {
+  console.log('Note: Vitest tests were skipped (installation or configuration issue)');
+}
+
 const grand = {
   total: node.total + vitestTotals.total,
   passed: node.passed + vitestTotals.passed,
