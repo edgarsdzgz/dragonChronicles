@@ -2,38 +2,54 @@
 // Emits window 'bg-tick' CustomEvents with an approximate dt (ms).
 // Replace with Worker wiring in P0-W3 (same event name to keep API stable).
 
+import { realTicker, type Ticker } from './ticker';
+import { isVisible } from './visibility-gate';
+
 export type BgTickDetail = { dt: number };
 export type BgSimHandle = { start: () => void; stop: () => void; isRunning: () => boolean };
 
-export function createBackgroundSim(freqHz = 2): BgSimHandle {
-  let id: number | null = null;
-  let last = performance.now();
-  const intervalMs = Math.max(250, Math.round(1000 / freqHz)); // guard: never < 4Hz here
+const PERIOD_MS = 500; // ~2Hz
+let stop: null | (() => void) = null;
+let last = performance.now();
 
-  const tick = () => {
-    const now = performance.now();
-    const dt = now - last;
-    last = now;
-    // Use microtask to avoid blocking visibility handler
-    queueMicrotask(() => {
-      window.dispatchEvent(new CustomEvent<BgTickDetail>('bg-tick', { detail: { dt } }));
-    });
-  };
-
+export function createBackgroundSim(ticker: Ticker = realTicker): BgSimHandle {
   return {
     start() {
-      if (id !== null) return;
+      if (stop) return;
       last = performance.now();
-      id = window.setInterval(tick, intervalMs);
+      stop = ticker.start(PERIOD_MS, () => {
+        if (!isVisible()) return;
+        const now = performance.now();
+        const dt = now - last;
+        last = now;
+        // Use microtask to avoid blocking visibility handler
+        queueMicrotask(() => {
+          window.dispatchEvent(new CustomEvent<BgTickDetail>('bg-tick', { detail: { dt } }));
+        });
+      });
     },
     stop() {
-      if (id !== null) {
-        clearInterval(id);
-        id = null;
+      if (stop) {
+        stop();
+        stop = null;
       }
     },
     isRunning() {
-      return id !== null;
+      return stop !== null;
     }
   };
+}
+
+// Legacy API for backward compatibility
+export function startBackground(ticker: Ticker = realTicker) {
+  const sim = createBackgroundSim(ticker);
+  sim.start();
+  return sim;
+}
+
+export function stopBackground() {
+  if (stop) {
+    stop();
+    stop = null;
+  }
 }
