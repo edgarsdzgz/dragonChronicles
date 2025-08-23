@@ -47,30 +47,23 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # This step guarantees a pnpm binary is on PATH for this job
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9           # keep in sync with package.json "packageManager"
-          run_install: false
+      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm on PATH
+      - name: Verify pnpm works
         run: |
           set -e
-          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
           command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
-          node -v
-          pnpm -v
+          pnpm --version
 
-      # Use pnpm's store path for a more effective cache
-      - name: Get pnpm store path
-        id: pnpm-store
-        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
+      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          path: ~/.pnpm-store
           key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-store-${{ runner.os }}-
@@ -103,30 +96,23 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # This step guarantees a pnpm binary is on PATH for this job
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9           # keep in sync with package.json "packageManager"
-          run_install: false
+      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm on PATH
+      - name: Verify pnpm works
         run: |
           set -e
-          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
           command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
-          node -v
-          pnpm -v
+          pnpm --version
 
-      # Use pnpm's store path for a more effective cache
-      - name: Get pnpm store path
-        id: pnpm-store
-        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
+      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          path: ~/.pnpm-store
           key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-store-${{ runner.os }}-
@@ -169,30 +155,23 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # This step guarantees a pnpm binary is on PATH for this job
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9           # keep in sync with package.json "packageManager"
-          run_install: false
+      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm on PATH
+      - name: Verify pnpm works
         run: |
           set -e
-          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
           command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
-          node -v
-          pnpm -v
+          pnpm --version
 
-      # Use pnpm's store path for a more effective cache
-      - name: Get pnpm store path
-        id: pnpm-store
-        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
+      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          path: ~/.pnpm-store
           key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-store-${{ runner.os }}-
@@ -233,30 +212,23 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # This step guarantees a pnpm binary is on PATH for this job
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9           # keep in sync with package.json "packageManager"
-          run_install: false
+      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
+      - name: Enable pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm on PATH
+      - name: Verify pnpm works
         run: |
           set -e
-          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
           command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
-          node -v
-          pnpm -v
+          pnpm --version
 
-      # Use pnpm's store path for a more effective cache
-      - name: Get pnpm store path
-        id: pnpm-store
-        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
+      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          path: ~/.pnpm-store
           key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-store-${{ runner.os }}-
