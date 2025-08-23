@@ -268,12 +268,19 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 ### Workpack Model (W# Issues)
 
-**Phase 0 established the W# workpack model**: Consolidating multiple related stories into comprehensive workpacks that deliver complete functionality blocks.
+**Phase 0 uses the W# workpack model**: 8 comprehensive workpacks delivering complete functionality blocks instead of granular stories.
 
-- **W1 (P0-S001..S004)**: Repository Standards - Consolidated monorepo setup, TypeScript strict mode, linting, git hooks, and repo hygiene into single comprehensive deliverable
-- **Future W# issues**: Will follow same pattern of consolidating related functionality
+**Phase 0 Workpack Structure:**
+- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
+- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
+- ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
+- ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Benefits**: Reduces context switching, ensures complete feature delivery, simplifies testing and validation.
+**Benefits**: Reduces context switching, ensures complete feature delivery, bigger PRs with comprehensive testing, avoids lint/hook churn.
 
 ### New Issue Process (MANDATORY)
 

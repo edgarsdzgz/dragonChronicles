@@ -282,27 +282,28 @@ export type UIToSim =
 
 ---
 
-## 14) Roadmap (EPIC → Stories)
+## 14) Development Roadmap (Workpack Structure)
 
-**EPIC 1 — Opening Section (Shooter‑Idle)**
+**Phase 0 — Foundational Scaffolding & Guardrails (W1-W8)**
 
-- S1: Splash → “Begin Quest” flow + naming (local persistence).
-- S2: Distance meter + Ward/Land scaffolding; boss gate at Ward end.
-- S3: Enemy spawn (Poisson), arc formation, stop-at-range, basic AI.
-- S4: Dragon attack loop + health/retreat.
-- S5: Arcana drops; Enchant bars (DMG/HP) with costs & Tier‑Up.
-- S6: Return to Draconia reset; keep Arcana; item sell splash.
-- S7: Offline calc + rested; first‑run tutorial; logs as narration.
-- S8: PWA shell; Dexie v1; logger ring buffer; export UI.
-- S9: Performance pass (pooling/culling); metrics overlay.
-- S10: A11y baseline + mobile bottom‑sheet patterns.
+"Less thrash, bigger chunks, green pipeline."
 
-**EPIC 2 — Market/City (gated after Ch.1)**
+- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
+- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
+- ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
+- ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-- License → taxed stalls → owned shops → hire clerks → mercantile level.
-- City donations → permanent civic buffs.
-- Scroll hunts → manual abilities quests.
-- Junior dragons → land automation (later).
+**Phase 0 Success Criteria**: Base app cold start ≤ 2s; bundle ≤ 200 KB gz; logger ≤ 8 KB gz; deterministic worker sim ≥60fps; Dexie v1 + 3 profiles; structured logging with export; PWA install + update toast; full CI pipeline.
+
+**Phase 1+ — Game Content (After Phase 0)**
+
+- **Core Game Loop**: Shooter-idle mechanics, combat, progression, enchants
+- **Meta Systems**: Market/city, collections, automation
+- **Polish & Launch**: Performance optimization, accessibility, documentation
 
 ---
 

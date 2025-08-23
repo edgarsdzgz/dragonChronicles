@@ -7,9 +7,9 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 ## Project Status
 
 **Version**: 2.0.0 (In Development)  
-**Phase**: Phase 1 Ready (Phase 0 Repository Standards Complete)  
+**Phase**: Phase 0 (1/8 workpacks complete - W1 foundation established)  
 **Architecture**: TypeScript Monorepo with Strict Mode Enforcement  
-**Workpack Model**: Consolidated development approach (W1-W12)
+**Workpack Model**: 8-workpack Phase 0 approach (W1 complete, W2-W8 pending)
 
 ## Key Metrics
 
@@ -90,24 +90,36 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 ## Next Milestones
 
-### Phase 0 — Repository Standards (COMPLETED ✅)
+### Phase 0 — Foundational Scaffolding & Guardrails (IN PROGRESS)
 
-**Workpack Structure**: Individual stories (S001-S004) consolidated into comprehensive workpack W1
+**Workpack Structure**: 8 comprehensive workpacks delivering complete functionality blocks
 
-- ✅ **S001**: Testing Strategy Implementation (pnpm monorepo, TypeScript strict mode)
-- ✅ **S002**: TypeScript Strict Enforcement (project references, build optimization)  
-- ✅ **S003**: ESLint + Prettier Integration (TypeScript + Svelte support)
-- ✅ **S004**: Git Hooks & Conventional Commits (Husky v9+, commitlint)
-- ✅ **W1**: Repository Standards & Hygiene (GitHub templates, CODEOWNERS, size budgets)
+- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
+- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
+- ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
+- ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Key Outcomes**: Production-ready monorepo with strict TypeScript, automated quality gates, conventional commits, and comprehensive testing infrastructure.
+**Current Status**: 1/8 workpacks complete. W1 established production-ready foundation with TypeScript strict mode, automated quality gates, and development standards.
 
-### Upcoming Phases
+### Phase 0 Success Criteria
 
-- **Phase 1**: Core Game Loop Implementation (W2-W4)
-- **Phase 2**: UI/UX Development with SvelteKit (W5-W7)  
-- **Phase 3**: Performance Optimization and Polish (W8-W10)
-- **Phase 4**: Player Documentation and Onboarding (W11-W12)
+- Base app cold start ≤ 2s desktop; base JS bundle ≤ 200 KB gz; logger layer ≤ 8 KB gz
+- Deterministic worker sim (≥60fps desktop with UI disconnected)
+- Dexie v1 schema + migrations scaffold; 3 profiles; export/import proven
+- Structured JSON logging; 2 MB / 10k rolling buffer; export; no PII beyond dragon name
+- PWA installs; update toast on SW waiting
+- CI gates: typecheck, unit, integration, Playwright smoke, Lighthouse a11y
+
+### Future Phases
+
+- **Phase 1**: Core Game Loop Implementation (after W8 completion)
+- **Phase 2**: UI/UX Development and Polish  
+- **Phase 3**: Performance Optimization and Advanced Features
+- **Phase 4**: Player Documentation and Release Preparation
 
 ## Links and Resources
 
