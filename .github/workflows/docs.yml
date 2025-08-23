@@ -16,6 +16,11 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
     steps:
       - name: Checkout (fetch all history + base ref)
         uses: actions/checkout@v4
@@ -35,18 +40,29 @@ jobs:
           reporter: github-pr-check
           fail_level: error         # <- replace fail_on_error
 
-      # Set up pnpm — DO NOT set "version" here when you have packageManager in package.json
-      - uses: pnpm/action-setup@v4
+      - name: Use Node 20
+        uses: actions/setup-node@v4
         with:
-          run_install: false        # we'll install after Node is set up
+          node-version: '20'
+          cache: 'pnpm'
 
-      - uses: actions/setup-node@v4
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
         with:
-          node-version: 20
-          cache: pnpm
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
 
-      - run: pnpm -v                # debug: should print 9.x from package.json
-      - run: pnpm install --frozen-lockfile
+      - name: Install (frozen lockfile, ignore scripts in CI)
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
       - run: pnpm run docs:lint
       - run: pnpm run docs:links
 

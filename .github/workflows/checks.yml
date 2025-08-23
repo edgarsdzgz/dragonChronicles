@@ -14,21 +14,40 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with: 
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        with: 
-          run_install: false
-
-      - uses: actions/setup-node@v4
+      - name: Use Node 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: pnpm
+          node-version: '20'
+          cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
+
+      - name: Install (frozen lockfile, ignore scripts in CI)
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
 
       # tests
       - run: pnpm run test:all

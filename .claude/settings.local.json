@@ -63,7 +63,8 @@
       "Bash(gh auth:*)",
       "Bash(npm config delete:*)",
       "Bash(npm config:*)",
-      "Bash(npm run prepare:*)"
+      "Bash(npm run prepare:*)",
+      "Bash(corepack enable)"
     ],
     "deny": []
   }

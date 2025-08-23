@@ -26,35 +26,77 @@ jobs:
   install:
     name: Install (frozen lockfile)
     runs-on: ubuntu-latest
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node + pnpm
-        uses: ./.github/actions/pnpm-setup
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
 
-      - name: Install deps (frozen)
-        run: pnpm -w install --frozen-lockfile
-        env:
-          HUSKY: 0
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
+
+      - name: Install deps (frozen lockfile, ignore scripts in CI)
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
 
   lint-type:
     name: Lint & Typecheck
     runs-on: ubuntu-latest
     needs: install
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node + pnpm
-        uses: ./.github/actions/pnpm-setup
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
 
       - name: Restore node_modules from install job
-        run: pnpm -w install --frozen-lockfile
-        env:
-          HUSKY: 0
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
 
       - name: ESLint
         run: pnpm -w run lint --if-present
@@ -72,16 +114,37 @@ jobs:
     name: Unit/Integration Tests
     runs-on: ubuntu-latest
     needs: install
+    env:
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node + pnpm
-        uses: ./.github/actions/pnpm-setup
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
 
       - name: Restore node_modules from install job
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
         env:
           HUSKY: 0
 
@@ -95,18 +158,39 @@ jobs:
     name: Build (web)
     runs-on: ubuntu-latest
     needs: [lint-type, unit-tests]
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node + pnpm
-        uses: ./.github/actions/pnpm-setup
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      # Corepack ships with Node 20 — this makes pnpm available on PATH
+      - name: Enable Corepack and pin pnpm from package.json
+        run: |
+          corepack enable
+          corepack use pnpm
+          pnpm --version
+
+      # Optional: restore a separate pnpm store cache
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
 
       - name: Restore node_modules from install job
-        run: pnpm -w install --frozen-lockfile
-        env:
-          HUSKY: 0
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
 
       # Build TypeScript packages first
       - name: Build TypeScript packages
