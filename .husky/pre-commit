@@ -1,1 +1,6 @@
-node scripts/precommit.mjs
+pnpm exec lint-staged
+if git diff --cached --name-only | grep -qE '(^|/)package\.json$'; then
+  echo "package.json changed -> syncing pnpm-lock.yaml"
+  pnpm -w install --lockfile-only
+  git add pnpm-lock.yaml
+fi
