@@ -30,7 +30,7 @@
     "lint": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0",
     "lint:quiet": "eslint . --cache --cache-location ./.cache/eslint --max-warnings 0 --quiet",
     "format": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --write \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
-    "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --check \"**/*.{ts,tsx,js,json,md,css,scss,svelte}\"",
+    "format:check": "prettier --config ./configs/prettier/.prettierrc.cjs --ignore-path ./configs/prettier/.prettierignore --check \"{apps,packages,configs,scripts,tests/ts-strict,tests/fixtures,tests/lint}/**/*.{ts,tsx,js,json,md,css,scss,svelte}\" \"*.{ts,tsx,js,json,md,css,scss,svelte}\"",
     "verify:style": "pnpm run lint:quiet && pnpm run format:check",
     "verify:all": "node tests/run-all.mjs && pnpm run lint:quiet && pnpm run format:check && pnpm run docs:lint && pnpm run docs:links",
     "prepare": "husky install",
