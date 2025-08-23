@@ -1,5 +1,12 @@
-# Check if package.json changed and sync lockfile
-if git diff --cached --name-only | grep -qE '(^|/)(package\.json)$'; then
+#!/usr/bin/env sh
+set -eu
+
+# Only run from repo root
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+# Sync lockfile if any package.json changed in the commit
+if git diff --cached --name-only | grep -E '(^|/)package\.json$' >/dev/null; then
   echo "package.json changed -> syncing pnpm-lock.yaml"
   pnpm -w install --lockfile-only
   git add pnpm-lock.yaml
