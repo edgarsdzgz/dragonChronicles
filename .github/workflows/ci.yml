@@ -1,0 +1,202 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# prevent concurrent runs on the same ref (keeps previews/builds tidy)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  # keep this in sync with packageManager in package.json if you set it
+  PNPM_VERSION: 9.15.9
+  NODE_VERSION: 20.x
+  # keep build sizes lean; skip source maps in CI builds unless you need them
+  VITE_SOURCEMAP: false
+  # fail PRs if Lighthouse a11y < 95
+  LIGHTHOUSE_MIN_A11Y: '0.95'
+
+jobs:
+  install:
+    name: Install (frozen lockfile)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Print versions
+        run: |
+          node -v
+          pnpm -v
+
+      - name: Install deps (frozen)
+        run: pnpm -w install --frozen-lockfile
+
+  lint-type:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore node_modules from install job
+        run: pnpm -w install --frozen-lockfile
+
+      - name: ESLint
+        run: pnpm -w run lint --if-present
+
+      - name: Prettier (check)
+        run: pnpm -w run format:check --if-present
+
+      - name: TypeScript check
+        run: pnpm -w run typecheck --if-present
+
+      - name: Docs lint (markdownlint) - optional
+        run: pnpm -w run docs:lint --if-present
+
+  unit-tests:
+    name: Unit/Integration Tests
+    runs-on: ubuntu-latest
+    needs: install
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore node_modules from install job
+        run: pnpm -w install --frozen-lockfile
+
+      - name: Run tests (Node.js + Vitest)
+        run: pnpm -w run test:all --if-present
+        env:
+          CI: true
+
+  build:
+    name: Build (web)
+    runs-on: ubuntu-latest
+    needs: [lint-type, unit-tests]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore node_modules from install job
+        run: pnpm -w install --frozen-lockfile
+
+      # Build TypeScript packages first
+      - name: Build TypeScript packages
+        run: pnpm -w run build --if-present
+
+      # If your web app package name differs, adjust filter
+      - name: Build SvelteKit (adapter-static)
+        run: pnpm --filter @draconia/web build --if-present
+
+      - name: Upload static site artifact for GH Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/build
+
+  lighthouse:
+    name: Lighthouse (a11y gate)
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+
+      - name: Start static server
+        run: |
+          npx http-server ./ -p 4173 -s &> /dev/null &
+          echo $! > server.pid
+        working-directory: ./ # artifact root
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: 'http://localhost:4173'
+          configPath: |
+            {
+              "ci": {
+                "assert": {
+                  "assertions": {
+                    "categories:accessibility": ["error", {"minScore": ${{ env.LIGHTHOUSE_MIN_A11Y }}}],
+                    "categories:performance": ["warn", {"minScore": 0.90}]
+                  }
+                }
+              }
+            }
+          uploadArtifacts: true
+          runs: 1
+
+      - name: Stop server
+        if: always()
+        run: kill $(cat server.pid) || true
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [build, lighthouse]
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
