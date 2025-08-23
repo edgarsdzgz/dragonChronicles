@@ -31,6 +31,11 @@ jobs:
       HUSKY: '0'
       # Optional: faster installs, keeps cache clean
       PNPM_CACHE_DIR: ~/.pnpm-store
+    
+    # Force bash everywhere so scripts behave consistently
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
@@ -47,24 +52,28 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.9           # keep in sync with package.json "packageManager"
-
-      - name: Print tool versions
-        run: |
-          node -v
-          pnpm -v
+          run_install: false
 
       - name: Verify pnpm on PATH
         run: |
-          which pnpm || (echo "pnpm missing"; exit 1)
+          set -e
+          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
+          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          node -v
           pnpm -v
 
-      # Optional: restore a separate pnpm store cache
+      # Use pnpm's store path for a more effective cache
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: pnpm-store-
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
 
       - name: Install deps (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
@@ -78,6 +87,11 @@ jobs:
       HUSKY: '0'
       # Optional: faster installs, keeps cache clean
       PNPM_CACHE_DIR: ~/.pnpm-store
+    
+    # Force bash everywhere so scripts behave consistently
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
@@ -94,24 +108,28 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.9           # keep in sync with package.json "packageManager"
-
-      - name: Print tool versions
-        run: |
-          node -v
-          pnpm -v
+          run_install: false
 
       - name: Verify pnpm on PATH
         run: |
-          which pnpm || (echo "pnpm missing"; exit 1)
+          set -e
+          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
+          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          node -v
           pnpm -v
 
-      # Optional: restore a separate pnpm store cache
+      # Use pnpm's store path for a more effective cache
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: pnpm-store-
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile --ignore-scripts
@@ -135,6 +153,11 @@ jobs:
     env:
       # Optional: faster installs, keeps cache clean
       PNPM_CACHE_DIR: ~/.pnpm-store
+    
+    # Force bash everywhere so scripts behave consistently
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
@@ -151,24 +174,28 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.9           # keep in sync with package.json "packageManager"
-
-      - name: Print tool versions
-        run: |
-          node -v
-          pnpm -v
+          run_install: false
 
       - name: Verify pnpm on PATH
         run: |
-          which pnpm || (echo "pnpm missing"; exit 1)
+          set -e
+          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
+          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          node -v
           pnpm -v
 
-      # Optional: restore a separate pnpm store cache
+      # Use pnpm's store path for a more effective cache
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: pnpm-store-
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile --ignore-scripts
@@ -190,6 +217,11 @@ jobs:
       HUSKY: '0'
       # Optional: faster installs, keeps cache clean
       PNPM_CACHE_DIR: ~/.pnpm-store
+    
+    # Force bash everywhere so scripts behave consistently
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
@@ -206,24 +238,28 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.9           # keep in sync with package.json "packageManager"
-
-      - name: Print tool versions
-        run: |
-          node -v
-          pnpm -v
+          run_install: false
 
       - name: Verify pnpm on PATH
         run: |
-          which pnpm || (echo "pnpm missing"; exit 1)
+          set -e
+          # bash-friendly checks; works cross-platform with defaults.run.shell: bash
+          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          node -v
           pnpm -v
 
-      # Optional: restore a separate pnpm store cache
+      # Use pnpm's store path for a more effective cache
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
-          path: ~/.pnpm-store
-          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: pnpm-store-
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
 
       - name: Restore node_modules from install job
         run: pnpm -w install --frozen-lockfile --ignore-scripts
