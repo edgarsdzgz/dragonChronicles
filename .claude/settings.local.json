@@ -56,7 +56,8 @@
       "Bash(cat:*)",
       "Bash(HUSKY=0 git commit -m \"docs: add W2 planning document for App Shell & Render Host\n\n- Incorporate smart background simulation approach (render pause + sim continues)\n- Define BackgroundSim system with 2Hz CustomEvent-based architecture  \n- Plan PixiJS integration with battery-efficient visibility handling\n- Include object pooling, HUD system, and performance harness\n- Establish W3-compatible bg-tick event contract\n- Balance concise code with readability per user feedback\")",
       "Bash(timeout 10s npm run dev)",
-      "Bash(npm run test:*)"
+      "Bash(npm run test:*)",
+      "Bash(git reset:*)"
     ],
     "deny": []
   }
