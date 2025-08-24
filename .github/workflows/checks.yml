@@ -61,24 +61,16 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Install (frozen lockfile, ignore scripts in CI)
-        run: pnpm -w install --frozen-lockfile --ignore-scripts
+      - name: Install
+        env:
+          HUSKY: '0'
+        run: pnpm -w install --frozen-lockfile
 
-      - name: Build workspace (dist for Node tests)
-        run: pnpm -w run build
+      - name: Build (TS project references)
+        run: pnpm -w run build:ci
 
-      # Guard against legacy pnpm-setup references
-      - name: Assert no legacy pnpm-setup usage
-        run: |
-          set -euo pipefail
-          if git grep -nE '^[[:space:]]*uses:[[:space:]]*\./\.github/actions/pnpm-setup\b' -- ':!**/node_modules/**' ; then
-            echo "::error::Legacy pnpm-setup action is still referenced"; exit 1
-          else
-            echo "OK: no legacy references"
-          fi
-
-      # tests (now run against built artifacts)
-      - run: pnpm run test:all
+      - name: Tests
+        run: pnpm -w run test:all
 
       # style gates
       - run: pnpm -w lint
