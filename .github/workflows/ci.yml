@@ -56,7 +56,9 @@ jobs:
         run: pnpm -w install --frozen-lockfile
 
       - name: Build (TS project references)
-        run: pnpm -w run build:ci
+        run: |
+          pnpm -w run clean
+          pnpm -w run build:ci
 
       - name: Tests
         run: pnpm -w run test:all
@@ -107,7 +109,9 @@ jobs:
         run: pnpm -w install --frozen-lockfile
 
       - name: Build (TS project references)
-        run: pnpm -w run build:ci
+        run: |
+          pnpm -w run clean
+          pnpm -w run build:ci
 
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
