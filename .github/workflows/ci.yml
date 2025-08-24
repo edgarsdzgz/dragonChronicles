@@ -23,8 +23,8 @@ env:
   LIGHTHOUSE_MIN_A11Y: '0.95'
 
 jobs:
-  install:
-    name: Install (frozen lockfile)
+  build:
+    name: Build All Packages
     runs-on: ubuntu-latest
     env:
       # Prevent Husky/prepare from running in CI
@@ -74,10 +74,22 @@ jobs:
       - name: Install deps (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
 
+      - name: Build workspace (all packages)
+        run: pnpm -w run build
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: |
+            packages/*/dist/
+            apps/*/dist/
+          retention-days: 1
+
   lint-type:
     name: Lint & Typecheck
     runs-on: ubuntu-latest
-    needs: install
+    needs: build
     env:
       # Prevent Husky/prepare from running in CI
       HUSKY: '0'
@@ -106,15 +118,6 @@ jobs:
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works & where it lives
-        run: |
-          set -euo pipefail
-          echo "PATH=$PATH"
-          command -v pnpm
-          type -a pnpm
-          pnpm --version
-          pnpm config get store-dir || true
-
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -123,8 +126,14 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Restore node_modules from install job
+      - name: Install deps (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: .
 
       - name: ESLint
         run: pnpm -w run lint --if-present
@@ -141,7 +150,7 @@ jobs:
   unit-tests:
     name: Unit/Integration Tests
     runs-on: ubuntu-latest
-    needs: install
+    needs: build
     env:
       # Optional: faster installs, keeps cache clean
       PNPM_CACHE_DIR: ~/.pnpm-store
@@ -168,15 +177,6 @@ jobs:
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works & where it lives
-        run: |
-          set -euo pipefail
-          echo "PATH=$PATH"
-          command -v pnpm
-          type -a pnpm
-          pnpm --version
-          pnpm config get store-dir || true
-
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -185,18 +185,24 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Restore node_modules from install job
+      - name: Install deps (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
         env:
           HUSKY: 0
 
-      - name: Run tests (Node.js + Vitest)
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: .
+
+      - name: Run tests (Node.js + Vitest) against built artifacts
         run: pnpm -w run test:all --if-present
         env:
           CI: true
           HUSKY: 1  # Enable Husky for test-precommit-e2e
 
-  build:
+  build-web:
     name: Build (web)
     runs-on: ubuntu-latest
     needs: [lint-type, unit-tests]
@@ -228,15 +234,6 @@ jobs:
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works & where it lives
-        run: |
-          set -euo pipefail
-          echo "PATH=$PATH"
-          command -v pnpm
-          type -a pnpm
-          pnpm --version
-          pnpm config get store-dir || true
-
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -245,14 +242,16 @@ jobs:
           restore-keys: |
             pnpm-store-${{ runner.os }}-
 
-      - name: Restore node_modules from install job
+      - name: Install deps (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
 
-      # Build TypeScript packages first
-      - name: Build TypeScript packages
-        run: pnpm -w run build --if-present
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: .
 
-      # If your web app package name differs, adjust filter
+      # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
         run: pnpm --filter @draconia/web build --if-present
 
@@ -265,7 +264,7 @@ jobs:
   lighthouse:
     name: Lighthouse (a11y gate)
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-web
     if: github.ref == 'refs/heads/main'
 
     steps:
@@ -311,7 +310,7 @@ jobs:
     name: Deploy to GitHub Pages
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: [build, lighthouse]
+    needs: [build-web, lighthouse]
 
     environment:
       name: github-pages

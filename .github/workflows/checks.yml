@@ -64,6 +64,9 @@ jobs:
       - name: Install (frozen lockfile, ignore scripts in CI)
         run: pnpm -w install --frozen-lockfile --ignore-scripts
 
+      - name: Build workspace (dist for Node tests)
+        run: pnpm -w run build
+
       # Guard against legacy pnpm-setup references
       - name: Assert no legacy pnpm-setup usage
         run: |
@@ -74,7 +77,7 @@ jobs:
             echo "OK: no legacy references"
           fi
 
-      # tests
+      # tests (now run against built artifacts)
       - run: pnpm run test:all
 
       # style gates

@@ -8,7 +8,7 @@
   "prettier": "./configs/prettier/.prettierrc.cjs",
   "eslintConfig": "./configs/eslint/.eslintrc.cjs",
   "scripts": {
-    "build": "npx tsc -b",
+    "build": "pnpm -w -r build",
     "clean": "git clean -xfd -e node_modules -e .pnpm-store",
     "typecheck": "tsc -b --pretty false --noEmit",
     "list": "pnpm -w list --depth -1",
@@ -17,6 +17,7 @@
     "test:integration": "node tests/test-integration-graph.mjs",
     "test:e2e": "node tests/test-e2e-build.mjs",
     "test:ts-strict": "node tests/test-ts-strict.mjs",
+    "pretest:node": "pnpm -w build",
     "test:node": "node tests/run-all-pretty.mjs",
     "test:vitest": "vitest run --config configs/vitest/vitest.config.ts --reporter=dot --reporter=default",
     "test:vitest:json": "npx vitest run --config configs/vitest/vitest.config.ts --reporter=json --outputFile tests/.artifacts/vitest.json",
