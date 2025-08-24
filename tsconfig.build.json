@@ -6,7 +6,8 @@
     { "path": "./packages/logger" },
     { "path": "./packages/db" },
     { "path": "./packages/sim" },
-    { "path": "./apps/sandbox" }
+    { "path": "./apps/sandbox" },
+    { "path": "./apps/web" }
   ],
   "compilerOptions": {
     "disableSourceOfProjectReferenceRedirect": true,
