@@ -67,9 +67,16 @@ jobs:
       # Guard against legacy pnpm-setup references
       - name: Assert no legacy pnpm-setup usage
         run: |
-          if git grep -n "./.github/actions/pnpm-setup" -- ':!**/node_modules/**' 2>/dev/null; then
-            echo "Legacy pnpm-setup still referenced"; exit 1; 
+          set -euo pipefail
+          # Only flag true usages like:  uses: ./.github/actions/pnpm-setup
+          if git grep -nE 'uses:\s+\.\/\.github\/actions\/pnpm-setup' -- \
+               ':!**/node_modules/**' \
+               ':!**/.github/workflows/checks.yml'
+          then
+            echo 'Legacy pnpm-setup still referenced'
+            exit 1
           fi
+          echo 'OK — no legacy pnpm-setup usage'
 
       # tests
       - run: pnpm run test:all
