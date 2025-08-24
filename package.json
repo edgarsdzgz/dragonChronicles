@@ -8,7 +8,7 @@
   "prettier": "./configs/prettier/.prettierrc.cjs",
   "eslintConfig": "./configs/eslint/.eslintrc.cjs",
   "scripts": {
-    "clean": "rm -rf dist packages/*/dist apps/*/dist || true",
+    "clean": "rm -rf dist packages/*/dist apps/*/dist && find . -name 'tsconfig.tsbuildinfo' -delete || true",
     "build": "tsc -b",
     "build:ci": "tsc -b --pretty false",
     "typecheck": "tsc -b --pretty false --noEmit",
