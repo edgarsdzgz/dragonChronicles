@@ -46,11 +46,10 @@ jobs:
           reporter: github-pr-check
           fail_level: error         # <- replace fail_on_error
 
-      - name: Setup Node (20) with pnpm cache
+      - name: Setup Node (20)
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
       - name: Enable pnpm via Corepack (matches packageManager)
         run: |
