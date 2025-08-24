@@ -41,25 +41,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (20) with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
-      - name: Enable pnpm via Corepack
+      - name: Enable pnpm via Corepack (matches packageManager)
         run: |
+          set -euo pipefail
+          node -v
+          corepack --version
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works
+      - name: Verify pnpm works & where it lives
         run: |
-          set -e
-          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          set -euo pipefail
+          echo "PATH=$PATH"
+          command -v pnpm
+          type -a pnpm
           pnpm --version
+          pnpm config get store-dir || true
 
-      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -90,25 +94,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (20) with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
-      - name: Enable pnpm via Corepack
+      - name: Enable pnpm via Corepack (matches packageManager)
         run: |
+          set -euo pipefail
+          node -v
+          corepack --version
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works
+      - name: Verify pnpm works & where it lives
         run: |
-          set -e
-          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          set -euo pipefail
+          echo "PATH=$PATH"
+          command -v pnpm
+          type -a pnpm
           pnpm --version
+          pnpm config get store-dir || true
 
-      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -149,25 +157,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (20) with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
-      - name: Enable pnpm via Corepack
+      - name: Enable pnpm via Corepack (matches packageManager)
         run: |
+          set -euo pipefail
+          node -v
+          corepack --version
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works
+      - name: Verify pnpm works & where it lives
         run: |
-          set -e
-          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          set -euo pipefail
+          echo "PATH=$PATH"
+          command -v pnpm
+          type -a pnpm
           pnpm --version
+          pnpm config get store-dir || true
 
-      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
@@ -206,25 +218,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (20) with pnpm cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      # Enable pnpm via Corepack (ships with Node 20+, more reliable than pnpm action)
-      - name: Enable pnpm via Corepack
+      - name: Enable pnpm via Corepack (matches packageManager)
         run: |
+          set -euo pipefail
+          node -v
+          corepack --version
           corepack enable
           corepack prepare pnpm@9.15.9 --activate
 
-      - name: Verify pnpm works
+      - name: Verify pnpm works & where it lives
         run: |
-          set -e
-          command -v pnpm || { echo "pnpm missing from PATH" >&2; exit 1; }
+          set -euo pipefail
+          echo "PATH=$PATH"
+          command -v pnpm
+          type -a pnpm
           pnpm --version
+          pnpm config get store-dir || true
 
-      # Simple pnpm store cache (more reliable than dynamic store path)
       - name: Restore pnpm store cache
         uses: actions/cache@v4
         with:
