@@ -8,7 +8,7 @@
 import { db } from './db.js';
 import type { SaveV1, SaveRowV1, ProfileV1, MetaRow } from './schema.v1.js';
 import { validateSaveV1, validateSaveRowV1, validateMetaRow } from './schema.v1.js';
-import { generateChecksum } from './codec.js';
+import { generateChecksum, generateChecksumSync } from './codec.js';
 
 // ============================================================================
 // Metadata Keys
@@ -24,28 +24,37 @@ const META_KEYS = {
 // ============================================================================
 
 /**
- * Gets the active save data for a profile
+ * Gets the active save row for a profile
  *
- * @param profileId - Profile ID to get save data for
- * @returns Save data or null if not found
+ * @param profileId - Profile ID to get save row for
+ * @returns Save row or null if not found
  */
-export async function getActiveSave(profileId: string): Promise<SaveV1 | null> {
+export async function getActiveSave(profileId: string): Promise<SaveRowV1 | null> {
   try {
     // Get the active save pointer for this profile
     const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
-    if (!pointer) return null;
+
+    if (!pointer) {
+      return null;
+    }
 
     const pointers = JSON.parse(pointer.value) as Record<string, number>;
     const saveId = pointers[profileId];
-    if (!saveId) return null;
+
+    if (!saveId) {
+      return null;
+    }
 
     // Get the actual save data
     const saveRow = await db.saves.get(saveId);
-    if (!saveRow) return null;
+
+    if (!saveRow) {
+      return null;
+    }
 
     // Validate and return
     const validatedRow = validateSaveRowV1(saveRow);
-    return validatedRow.data;
+    return validatedRow;
   } catch (error) {
     console.error('Failed to get active save:', error);
     return null;
@@ -64,61 +73,66 @@ export async function putSaveAtomic(
   profileId: string,
   saveData: SaveV1,
   keepBackups: number = 3,
+  providedChecksum?: string,
 ): Promise<number> {
-  return await db.transaction('rw', [db.saves, db.meta], async () => {
-    try {
-      // Validate save data
-      const validatedData = validateSaveV1(saveData);
+  try {
+    // Validate save data first
+    const validatedData = validateSaveV1(saveData);
 
-      // Generate checksum
-      const jsonString = JSON.stringify(validatedData, null, 0);
-      const checksum = await generateChecksum(jsonString);
+    // Generate checksum (use provided checksum if available, otherwise generate sync)
+    const jsonString = JSON.stringify(validatedData, null, 0);
+    const checksum = providedChecksum || generateChecksumSync(jsonString);
 
-      // Create new save row
-      const newSaveRow: Omit<SaveRowV1, 'id'> = {
-        profileId,
-        version: 1,
-        data: validatedData,
-        createdAt: Date.now(),
-        checksum,
-      };
+    // Create new save row
+    const newSaveRow: Omit<SaveRowV1, 'id'> = {
+      profileId,
+      version: 1,
+      data: validatedData,
+      createdAt: Date.now(),
+      checksum,
+    };
 
+    // Use transaction without async function
+    const result = await db.transaction('rw', [db.saves, db.meta], () => {
       // Insert new save row
-      const saveId = await db.saves.add(newSaveRow);
+      return db.saves.add(newSaveRow).then((saveId) => {
+        // Update profile pointer atomically
+        return db.meta.get(META_KEYS.PROFILE_POINTERS).then((pointer) => {
+          const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
+          pointers[profileId] = saveId;
 
-      // Update profile pointer atomically (inline within transaction)
-      const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
-      const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
-      pointers[profileId] = saveId;
+          const metaRow: MetaRow = {
+            key: META_KEYS.PROFILE_POINTERS,
+            value: JSON.stringify(pointers),
+            updatedAt: Date.now(),
+          };
 
-      const metaRow: MetaRow = {
-        key: META_KEYS.PROFILE_POINTERS,
-        value: JSON.stringify(pointers),
-        updatedAt: Date.now(),
-      };
-      await db.meta.put(metaRow);
+          return db.meta.put(metaRow).then(() => {
+            // Prune old backups (exclude the current save from pruning)
+            return db.saves
+              .where('profileId')
+              .equals(profileId)
+              .reverse()
+              .sortBy('createdAt')
+              .then((saves) => {
+                // Filter out the current save from pruning
+                const savesToPrune = saves.filter((save) => save.id !== saveId);
+                const savesToDelete = savesToPrune.slice(keepBackups - 1); // -1 because we want to keep the current save
 
-      // Prune old backups (inline within transaction)
-      const saves = await db.saves
-        .where('profileId')
-        .equals(profileId)
-        .reverse()
-        .sortBy('createdAt');
-
-      const savesToKeep = saves.slice(0, keepBackups);
-      const savesToDelete = saves.slice(keepBackups);
-
-      for (const save of savesToDelete) {
-        await db.saves.delete(save.id!);
-      }
-
-      return saveId;
-    } catch (error) {
-      throw new Error(
-        `Atomic save failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      );
-    }
-  });
+                const deletePromises = savesToDelete.map((save) => db.saves.delete(save.id!));
+                return Promise.all(deletePromises).then(() => saveId);
+              });
+          });
+        });
+      });
+    });
+    return result;
+  } catch (error) {
+    console.error('putSaveAtomic failed:', error);
+    throw new Error(
+      `Atomic save failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
+  }
 }
 
 /**

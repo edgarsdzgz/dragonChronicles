@@ -45,9 +45,9 @@ describe('Atomic Write Operations', () => {
     it('should write save data atomically', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = await generateChecksum(save);
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save, 3, checksum);
 
       // Verify save was written
       const savedSave = await getActiveSave('test-profile-1');
@@ -59,7 +59,7 @@ describe('Atomic Write Operations', () => {
     it('should update active profile pointer', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = await generateChecksum(save);
 
       await putSaveAtomic('test-profile-1', save, checksum);
 
@@ -80,7 +80,7 @@ describe('Atomic Write Operations', () => {
             progress: { ...profile.progress, land: i + 1 },
           },
         ]);
-        const checksum = generateChecksum(save);
+        const checksum = await generateChecksum(save);
         await putSaveAtomic('test-profile-1', save, checksum);
       }
 
@@ -100,8 +100,8 @@ describe('Atomic Write Operations', () => {
       const save1 = createTestSave([profile1]);
       const save2 = createTestSave([profile2]);
 
-      const checksum1 = generateChecksum(save1);
-      const checksum2 = generateChecksum(save2);
+      const checksum1 = await generateChecksum(save1);
+      const checksum2 = await generateChecksum(save2);
 
       // Write both saves concurrently
       await Promise.all([
@@ -120,7 +120,7 @@ describe('Atomic Write Operations', () => {
     it('should maintain data integrity during transaction failures', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = await generateChecksum(save);
 
       // Write initial save
       await putSaveAtomic('test-profile-1', save, checksum);
