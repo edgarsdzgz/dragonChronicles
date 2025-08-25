@@ -16,6 +16,17 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    env:
+      # Prevent Husky/prepare from running in CI
+      HUSKY: '0'
+      # Optional: faster installs, keeps cache clean
+      PNPM_CACHE_DIR: ~/.pnpm-store
+    
+    # Force bash everywhere so scripts behave consistently
+    defaults:
+      run:
+        shell: bash
+        
     steps:
       - name: Checkout (fetch all history + base ref)
         uses: actions/checkout@v4
@@ -35,18 +46,38 @@ jobs:
           reporter: github-pr-check
           fail_level: error         # <- replace fail_on_error
 
-      # Set up pnpm — DO NOT set "version" here when you have packageManager in package.json
-      - uses: pnpm/action-setup@v4
-        with:
-          run_install: false        # we'll install after Node is set up
-
-      - uses: actions/setup-node@v4
+      - name: Setup Node (20)
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
 
-      - run: pnpm -v                # debug: should print 9.x from package.json
-      - run: pnpm install --frozen-lockfile
+      - name: Enable pnpm via Corepack (matches packageManager)
+        run: |
+          set -euo pipefail
+          node -v
+          corepack --version
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
+
+      - name: Verify pnpm works & where it lives
+        run: |
+          set -euo pipefail
+          echo "PATH=$PATH"
+          command -v pnpm
+          type -a pnpm
+          pnpm --version
+          pnpm config get store-dir || true
+
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-store-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-${{ runner.os }}-
+
+      - name: Install (frozen lockfile, ignore scripts in CI)
+        run: pnpm -w install --frozen-lockfile --ignore-scripts
       - run: pnpm run docs:lint
       - run: pnpm run docs:links
 

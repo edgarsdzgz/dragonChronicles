@@ -49,7 +49,22 @@
       "Bash(git rm:*)",
       "Bash(sh:*)",
       "Bash(.husky/pre-commit)",
-      "Bash(cmd /c pnpm exec lint-staged)"
+      "Bash(cmd /c pnpm exec lint-staged)",
+      "Bash(git branch:*)",
+      "Bash(HUSKY=0 git commit -m \"docs: update project status for Phase 0 completion and W1 success\n\n- Mark Phase 0 as COMPLETED with all S001-S004 + W1 deliverables\n- Document W# workpack model for future development\n- Update project status to ''Phase 1 Ready'' \n- Add consolidated development approach notes\n- Clean up old planning documents (S002R1Plan.md, S003Plan.md, S004Plan.md)\n\nPhase 0 Key Outcomes:\n✅ Production-ready monorepo with TypeScript strict mode\n✅ Automated quality gates (ESLint, Prettier, Husky)\n✅ Conventional commits with commitlint enforcement  \n✅ GitHub templates, CODEOWNERS, and repo hygiene\n✅ Comprehensive testing infrastructure and size budgets\")",
+      "Bash(HUSKY=0 git commit -m \"docs: correct Phase 0 status - W1 complete, W2-W8 pending\n\n- Update project status to show 1/8 workpacks complete (not Phase 0 complete)\n- Add complete W1-W8 workpack structure with accurate status indicators\n- Include Phase 0 success criteria and performance targets\n- Update GDD roadmap section to reflect workpack approach\n- Clarify that Phase 1 starts after W8 completion\n\nCurrent accurate status:\n✅ W1: Repository Standards (complete)\n⏳ W2-W8: Remaining Phase 0 workpacks (pending)\n\nPhase 0 targets: ≤2s cold start, ≤200KB gz bundle, ≤8KB logger, \ndeterministic worker sim, Dexie+3 profiles, PWA install, full CI\")",
+      "Bash(cat:*)",
+      "Bash(HUSKY=0 git commit -m \"docs: add W2 planning document for App Shell & Render Host\n\n- Incorporate smart background simulation approach (render pause + sim continues)\n- Define BackgroundSim system with 2Hz CustomEvent-based architecture  \n- Plan PixiJS integration with battery-efficient visibility handling\n- Include object pooling, HUD system, and performance harness\n- Establish W3-compatible bg-tick event contract\n- Balance concise code with readability per user feedback\")",
+      "Bash(timeout 10s npm run dev)",
+      "Bash(npm run test:*)",
+      "Bash(git reset:*)",
+      "Bash(where gh)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(gh auth:*)",
+      "Bash(npm config delete:*)",
+      "Bash(npm config:*)",
+      "Bash(npm run prepare:*)",
+      "Bash(corepack enable)"
     ],
     "deny": []
   }

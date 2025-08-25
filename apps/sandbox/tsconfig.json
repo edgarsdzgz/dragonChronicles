@@ -5,13 +5,19 @@
     "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
     "target": "ES2022",
     "strict": true,
     "skipLibCheck": true,
-    "paths": {}
+    "noResolve": false
   },
-  "references": [{ "path": "../../packages/logger" }, { "path": "../../packages/sim" }],
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/logger" },
+    { "path": "../../packages/db" },
+    { "path": "../../packages/sim" }
+  ],
   "include": ["src"]
 }
