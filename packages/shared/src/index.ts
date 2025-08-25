@@ -35,3 +35,9 @@ export type Seed = {
   /** Low 32 bits of the seed */
   readonly lo: number;
 };
+
+// Export protocol v1 for worker-UI communication
+export * from './protocol.js';
+
+// Export deterministic RNG
+export * from './rng.js';

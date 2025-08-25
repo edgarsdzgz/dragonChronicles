@@ -6,7 +6,7 @@
 import { DRACONIA_VERSION } from '../../../packages/shared/dist/index.js';
 import { helloLog } from '../../../packages/logger/dist/index.js';
 import { makeProfile } from '../../../packages/db/dist/index.js';
-import { simulateTick } from '../../../packages/sim/dist/index.js';
+import { createInitial, step, getStats } from '../../../packages/sim/dist/index.js';
 
 /**
  * Integration test that exercises all workspace packages
@@ -16,8 +16,10 @@ function runIntegrationTest() {
   // Create a test profile
   const testProfile = makeProfile('Aster');
 
-  // Run a single simulation tick
-  const simulationResult = simulateTick(0);
+  // Run a single simulation step
+  const initialState = createInitial(12345n);
+  const nextState = step(initialState, 16.67);
+  const simulationResult = getStats(nextState);
 
   // Generate the integration test output
   const output = {
