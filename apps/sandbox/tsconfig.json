@@ -9,8 +9,7 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022",
     "strict": true,
-    "skipLibCheck": true,
-    "paths": {}
+    "skipLibCheck": true
   },
   "references": [
     { "path": "../../packages/shared" },
