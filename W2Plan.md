@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # W2 Planning Document — P0-W2 App Shell & Render Host
 
 ## Issue Analysis
