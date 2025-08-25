@@ -36,7 +36,7 @@ export function createBackgroundSim(ticker: Ticker = realTicker): BgSimHandle {
     },
     isRunning() {
       return stop !== null;
-    }
+    },
   };
 }
 
