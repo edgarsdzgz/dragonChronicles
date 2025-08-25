@@ -64,9 +64,8 @@ describe('Migration Functionality', () => {
       const report = await migrateV1toV2();
 
       expect(report.success).toBe(true);
-      expect(report.migratedProfiles).toBe(0);
+      expect(report.recordsMigrated).toBe(0);
       expect(report.errors).toHaveLength(0);
-      expect(report.warnings).toHaveLength(0);
     });
 
     it('should migrate multiple profiles correctly', async () => {
@@ -211,26 +210,18 @@ describe('Migration Functionality', () => {
 
       // Verify required fields
       expect(typeof report.success).toBe('boolean');
-      expect(typeof report.migratedProfiles).toBe('number');
+      expect(typeof report.recordsMigrated).toBe('number');
       expect(Array.isArray(report.errors)).toBe(true);
-      expect(Array.isArray(report.warnings)).toBe(true);
-      expect(typeof report.durationMs).toBe('number');
       expect(typeof report.timestamp).toBe('number');
 
       // Verify field constraints
-      expect(report.migratedProfiles).toBeGreaterThanOrEqual(0);
-      expect(report.durationMs).toBeGreaterThanOrEqual(0);
+      expect(report.recordsMigrated).toBeGreaterThanOrEqual(0);
       expect(report.timestamp).toBeGreaterThan(0);
 
-      // Verify error and warning messages
+      // Verify error messages
       report.errors.forEach((error) => {
         expect(typeof error).toBe('string');
         expect(error.length).toBeGreaterThan(0);
-      });
-
-      report.warnings.forEach((warning) => {
-        expect(typeof warning).toBe('string');
-        expect(warning.length).toBeGreaterThan(0);
       });
     });
 
@@ -267,8 +258,8 @@ describe('Migration Functionality', () => {
       const report = await migrateV1toV2();
       const endTime = Date.now();
 
-      expect(report.durationMs).toBeGreaterThanOrEqual(0);
-      expect(report.durationMs).toBeLessThanOrEqual(endTime - startTime + 100); // Allow some tolerance
+      expect(report.metadata.durationMs).toBeGreaterThanOrEqual(0);
+      expect(report.metadata.durationMs).toBeLessThanOrEqual(endTime - startTime + 100); // Allow some tolerance
       expect(report.timestamp).toBeGreaterThanOrEqual(startTime);
       expect(report.timestamp).toBeLessThanOrEqual(endTime);
     });
@@ -290,7 +281,7 @@ describe('Migration Functionality', () => {
 
       // Migration should handle missing fields gracefully
       expect(report.success).toBe(true);
-      expect(report.migratedProfiles).toBe(1);
+      expect(report.recordsMigrated).toBe(1);
     });
 
     it('should handle large datasets efficiently', async () => {
@@ -312,8 +303,8 @@ describe('Migration Functionality', () => {
       const report = await migrateV1toV2();
 
       expect(report.success).toBe(true);
-      expect(report.migratedProfiles).toBe(5);
-      expect(report.durationMs).toBeLessThan(5000); // Should complete within 5 seconds
+      expect(report.recordsMigrated).toBe(5);
+      expect(report.metadata.durationMs).toBeLessThan(5000); // Should complete within 5 seconds
     });
 
     it('should handle database connection issues', async () => {

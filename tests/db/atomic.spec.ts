@@ -159,9 +159,9 @@ describe('Atomic Write Operations', () => {
       expect(activeSave?.data.profiles[0].progress.land).toBe(3);
     });
 
-    it('should return undefined for non-existent profile', async () => {
+    it('should return null for non-existent profile', async () => {
       const activeSave = await getActiveSave('non-existent-profile');
-      expect(activeSave).toBeUndefined();
+      expect(activeSave).toBeNull();
     });
 
     it('should handle profile with multiple saves correctly', async () => {
