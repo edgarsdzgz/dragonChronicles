@@ -240,21 +240,27 @@ export function createBrowserLogger(opts: { capBytes?: number; capEntries?: numb
 
 ## 11) Architecture Notes
 
-### 11.1 Worker protocol (sim thread)
+### 11.1 Worker protocol (sim thread) - W3 IMPLEMENTED
 
 ```ts
-// messages.ts
+// Protocol v1 - W3 Implementation
 export type SimToUI =
-  | { type: 'tick'; now: number; stats: { fps: number; enemies: number; proj: number } }
-  | { type: 'drop'; arcana: number }
-  | { type: 'death'; reason: 'hp0'; retreatM: number };
+  | { t: 'ready'; version: number }
+  | { t: 'tick'; now: number; dtMs: number; mode: SimMode; stats: SimStats }
+  | { t: 'bgCovered'; coveredMs: number }
+  | { t: 'log'; level: 'info'|'warn'|'error'; msg: string }
+  | { t: 'fatal'; reason: string };
 
 export type UIToSim =
-  | { type: 'start' }
-  | { type: 'stop' }
-  | { type: 'reverse' }
-  | { type: 'ability'; id: string }
-  | { type: 'offlineSim'; elapsedMs: number };
+  | { t: 'boot'; version: number; seed: number }
+  | { t: 'start'; mode: SimMode }
+  | { t: 'stop' }
+  | { t: 'setMode'; mode: SimMode }
+  | { t: 'offline'; elapsedMs: number }
+  | { t: 'ability'; id: string };
+
+// W3 Features: Fixed-timestep clock (16.67ms), PCG32 RNG, auto-recovery, 
+// visibility-aware mode switching (fg/bg), offline time accounting
 ```
 
 ### 11.2 Pixi inside Svelte
@@ -289,8 +295,8 @@ export type UIToSim =
 "Less thrash, bigger chunks, green pipeline."
 
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
-- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
-- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
