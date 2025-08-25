@@ -7,6 +7,12 @@
   },
   "prettier": "./configs/prettier/.prettierrc.cjs",
   "eslintConfig": "./configs/eslint/.eslintrc.cjs",
+  "imports": {
+    "@draconia/shared": "./packages/shared/dist/index.js",
+    "@draconia/logger": "./packages/logger/dist/index.js",
+    "@draconia/db": "./packages/db/dist/index.js",
+    "@draconia/sim": "./packages/sim/dist/index.js"
+  },
   "scripts": {
     "clean": "rm -rf dist packages/*/dist apps/*/dist && find . -name 'tsconfig.tsbuildinfo' -delete || true",
     "build": "tsc -b",
