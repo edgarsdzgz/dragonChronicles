@@ -7,18 +7,19 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 ## Project Status
 
 **Version**: 2.0.0 (In Development)  
-**Phase**: Phase 0 (1/8 workpacks complete - W1 foundation established)  
-**Architecture**: TypeScript Monorepo with Strict Mode Enforcement  
-**Workpack Model**: 8-workpack Phase 0 approach (W1 complete, W2-W8 pending)
+**Phase**: Phase 0 (3/8 workpacks complete - W1-W3 foundation established)  
+**Architecture**: TypeScript Monorepo with Worker Simulation & Strict Mode Enforcement  
+**Workpack Model**: 8-workpack Phase 0 approach (W1-W3 complete, W4-W8 pending)
 
 ## Key Metrics
 
 ### Test Coverage
 
-- **Unit Tests**: ✅ Shared utilities and constants
-- **Integration Tests**: ✅ Cross-package communication
+- **Unit Tests**: ✅ Shared utilities, constants, and simulation components
+- **Integration Tests**: ✅ Cross-package communication and worker protocol
 - **E2E Tests**: ✅ Full build pipeline and CLI contracts
 - **TypeScript Strict Gate**: ✅ Type safety enforcement
+- **Worker Simulation**: ✅ Protocol v1, RNG, fixed-timestep clock, auto-recovery
 
 ### Documentation Status
 
@@ -39,12 +40,13 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 
 ```
 packages/           # Shared libraries
-├── shared/        # Common utilities, constants
+├── shared/        # Common utilities, constants, protocol v1, RNG
 ├── logger/        # Structured logging system
-├── db/           # Database layer (IndexedDB)
-└── sim/          # Game simulation engine
+├── db/           # Database layer (IndexedDB) - W4 in progress
+└── sim/          # Game simulation engine (W3 complete)
 
 apps/              # Applications
+├── web/          # SvelteKit web app with PixiJS renderer
 └── sandbox/      # CLI testing and contracts
 
 tests/             # Test infrastructure
@@ -52,7 +54,8 @@ tests/             # Test infrastructure
 ├── test-unit-*.mjs     # Unit tests
 ├── test-integration-*.mjs  # Integration tests
 ├── test-e2e-*.mjs      # End-to-end tests
-└── test-ts-strict.mjs  # TypeScript enforcement
+├── test-ts-strict.mjs  # TypeScript enforcement
+└── sim/              # Worker simulation tests
 ```
 
 ### Technology Stack
@@ -95,15 +98,15 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 **Workpack Structure**: 8 comprehensive workpacks delivering complete functionality blocks
 
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
-- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
-- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
 - ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Current Status**: 1/8 workpacks complete. W1 established production-ready foundation with TypeScript strict mode, automated quality gates, and development standards.
+**Current Status**: 3/8 workpacks complete. W1-W3 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, and worker simulation harness.
 
 ### Phase 0 Success Criteria
 
@@ -137,4 +140,4 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 ---
 
-Last updated: 2025-08-23
+Last updated: 2025-08-25

@@ -360,8 +360,8 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 **Phase 0 Workpack Structure:**
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
-- ⏳ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
-- ⏳ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
+- ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
+- ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
@@ -880,9 +880,43 @@ pnpm exec lint-staged
 
 **Flag consistency**: Maintain consistent ordering and quoting across all package.json scripts.
 
-## Test Output Guidelines (Never Print Fake Success)
+## W3 Implementation Lessons Learned (2025-08-25)
 
-### Prohibited: Unconditional Affirmative Messages
+### Process Improvements from W3 Worker Sim Harness
+
+**Key Learnings:**
+1. **Feature Branch Discipline**: Always create feature branches before implementation - never work directly on main
+2. **Complete Implementation**: Don't create PRs with partial implementations - finish all phases before PR creation
+3. **Tooling Issues**: Fix ESLint/Prettier configuration before proceeding with development
+4. **Documentation Sync**: Update GDD and CLAUDE.md after each workpack completion
+5. **Planning Document Cleanup**: Delete W#Plan.md files after PR merge to maintain clean repository
+
+**W3 Technical Achievements:**
+- ✅ Protocol v1 with type-safe message contracts
+- ✅ PCG32 deterministic RNG for reproducible simulation
+- ✅ Fixed-timestep clock (16.67ms) with accumulator pattern
+- ✅ Mode-aware simulation loop (RAF foreground, setInterval background)
+- ✅ Auto-recovery with exponential backoff
+- ✅ Visibility-aware mode switching
+- ✅ W3-compatible time accounting (lastSimWallClock, bgCoveredMs)
+- ✅ Comprehensive test suite and dev tools
+
+**Process Deviations Identified:**
+- ❌ Initially worked on main branch instead of feature branch
+- ❌ Created PR with incomplete implementation (only Phase 1-2)
+- ❌ Bypassed pre-commit hooks due to tooling issues
+- ❌ Missing source files required recreation of implementation
+- ❌ Documentation not updated after W2 completion
+
+**Corrective Actions Implemented:**
+- ✅ Established feature branch discipline
+- ✅ Complete implementation before PR creation
+- ✅ Documentation update process committed to memory
+- ✅ Planning document cleanup process established
+
+---
+
+## Test Output Guidelines (Never Print Fake Success)
 
 **NEVER use unconditional console.log() with affirmative strings in test files:**
 

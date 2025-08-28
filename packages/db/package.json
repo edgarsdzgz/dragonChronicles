@@ -1,30 +1,18 @@
 {
   "name": "@draconia/db",
-  "version": "0.0.0-phase0",
+  "version": "0.0.1",
+  "private": true,
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "sideEffects": false,
+  "exports": { ".": "./src/index.ts" },
   "scripts": {
-    "build": "npx tsc -b",
-    "clean": "rimraf dist",
-    "echo-ok": "echo ok"
+    "build": "tsc",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@draconia/shared": "workspace:*"
+    "dexie": "^4.2.0",
+    "zod": "^4.1.1"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "rimraf": "^5.0.5"
+    "typescript": "^5.0.0"
   }
 }

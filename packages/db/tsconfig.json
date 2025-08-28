@@ -3,17 +3,22 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
     "rootDir": "src",
     "outDir": "dist",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
     "strict": true,
     "skipLibCheck": true,
-    "sourceMap": false
+    "allowJs": true,
+    "checkJs": false,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
   },
-  "include": ["src"],
-  "references": [{ "path": "../shared" }]
+  "references": [
+    { "path": "../shared" }
+  ],
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "dist"]
 }
