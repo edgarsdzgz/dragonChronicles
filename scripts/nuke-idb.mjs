@@ -7,7 +7,7 @@
  * for testing purposes. Use with caution!
  */
 
-import { db, initializeDatabase, closeDatabase } from '../packages/db/src/db.js';
+import { db, initializeDatabase, closeDatabase } from '../packages/db/dist/db.js';
 
 async function nukeIndexedDB() {
   console.log('🗑️  Nuking Draconia Chronicles IndexedDB...');

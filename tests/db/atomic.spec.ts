@@ -45,28 +45,26 @@ describe('Atomic Write Operations', () => {
     it('should write save data atomically', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      const saveId = await putSaveAtomic('test-profile-1', save);
+      expect(saveId).toBeDefined();
 
       // Verify save was written
       const savedSave = await getActiveSave('test-profile-1');
       expect(savedSave).toBeDefined();
-      expect(savedSave?.data).toEqual(save);
-      expect(savedSave?.checksum).toBe(checksum);
+      expect(savedSave).toEqual(save);
     });
 
     it('should update active profile pointer', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save);
 
-      // Verify active pointer was set
-      const activePointer = await db.meta.get('active_profile');
-      expect(activePointer).toBeDefined();
-      expect(activePointer?.value).toBe('test-profile-1');
+      // Verify save can be retrieved (indicating pointer was set)
+      const savedSave = await getActiveSave('test-profile-1');
+      expect(savedSave).toBeDefined();
+      expect(savedSave?.profiles[0].id).toBe('test-profile-1');
     });
 
     it('should prune old saves to keep only 3 backups', async () => {

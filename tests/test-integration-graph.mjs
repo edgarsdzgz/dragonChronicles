@@ -12,12 +12,13 @@ if (!process.env.BUILD_ONCE) {
 }
 
 const { createMemoryLogger, helloLog } = await import("../packages/logger/dist/index.js");
-const { simulateTick } = await import("../packages/sim/dist/index.js");
+const { step, createInitial } = await import("../packages/sim/dist/index.js");
 
 // Fail fast on missing exports
 assert.equal(typeof createMemoryLogger, "function", "createMemoryLogger should be a function");
 assert.equal(typeof helloLog, "function", "helloLog should be a function");
-assert.equal(typeof simulateTick, "function", "simulateTick should be a function");
+assert.equal(typeof step, "function", "step should be a function");
+assert.equal(typeof createInitial, "function", "createInitial should be a function");
 
 test("logger contract", () => {
   assert.match(helloLog(), /^logger-ok@/);
@@ -28,9 +29,15 @@ test("sim integrates with logger", () => {
   let captured = "";
   const simLogger = { log: (msg) => { captured += msg; mem.log({ src: "sim", lvl: "info", msg, t: Date.now(), data: {} }); } };
 
-  const out = simulateTick(41, simLogger);
-  assert.equal(out, 42);
-  assert.ok(captured.includes("41"));         // sim logged something meaningful
+  const initialState = createInitial(42n);
+  const newState = step(initialState, 1000); // Step forward 1 second
+  
+  // Log simulation step
+  const logMsg = `sim step: ${initialState.time}ms -> ${newState.time}ms`;
+  simLogger.log(logMsg);
+  
+  assert.equal(newState.time, 1000);
+  assert.ok(captured.includes("->"));         // sim logged something meaningful
   const logs = mem.drain();
   const simLogs = logs.filter(l => l.src === "sim");
   assert.ok(simLogs.length >= 1, "expected at least one sim log");

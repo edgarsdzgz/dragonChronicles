@@ -6,7 +6,6 @@
  */
 
 import type { ProfileV1 } from './schema.v1.js';
-import { validateProfileV1 } from './schema.v1.js';
 
 /**
  * User profile data structure (legacy interface)
