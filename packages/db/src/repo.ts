@@ -92,45 +92,43 @@ export async function putSaveAtomic(
       checksum,
     };
 
-    // Use transaction without async function
-    const result = await db.transaction('rw', [db.saves, db.meta], () => {
+    // Use flattened async/await for better readability and performance
+    const result = await db.transaction('rw', [db.saves, db.meta], async () => {
       // Insert new save row
-      return db.saves.add(newSaveRow).then((saveId) => {
-        // Update profile pointer atomically
-        return db.meta.get(META_KEYS.PROFILE_POINTERS).then((pointer) => {
-          const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
-          pointers[profileId] = saveId;
+      const saveId = await db.saves.add(newSaveRow);
 
-          const metaRow: MetaRow = {
-            key: META_KEYS.PROFILE_POINTERS,
-            value: JSON.stringify(pointers),
-            updatedAt: Date.now(),
-          };
+      // Update profile pointer atomically
+      const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
+      const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
+      pointers[profileId] = saveId;
 
-          return db.meta.put(metaRow).then(() => {
-            // Prune old backups (exclude the current save from pruning)
-            return db.saves
-              .where('profileId')
-              .equals(profileId)
-              .reverse()
-              .sortBy('createdAt')
-              .then((saves) => {
-                // Filter out the current save from pruning
-                const savesToPrune = saves.filter((save) => save.id !== saveId);
-                // We want to keep 'keepBackups' saves total (including current save)
-                // So if we have at least (keepBackups - 1) saves to prune, delete the oldest ones
-                const savesToDelete =
-                  savesToPrune.length >= keepBackups - 1
-                    ? savesToPrune.slice(0, savesToPrune.length - (keepBackups - 1))
-                    : [];
+      const metaRow: MetaRow = {
+        key: META_KEYS.PROFILE_POINTERS,
+        value: JSON.stringify(pointers),
+        updatedAt: Date.now(),
+      };
 
-                const deletePromises = savesToDelete.map((save) => db.saves.delete(save.id!));
-                return Promise.all(deletePromises).then(() => saveId);
-              });
-          });
-        });
-      });
+      await db.meta.put(metaRow);
+
+      // Optimized backup pruning with single query
+      if (keepBackups > 1) {
+        const saves = await db.saves
+          .where('profileId')
+          .equals(profileId)
+          .reverse()
+          .sortBy('createdAt');
+
+        // Filter and limit in memory for now (Dexie doesn't support .limit() on queries)
+        const savesToDelete = saves.filter((save) => save.id !== saveId).slice(0, keepBackups - 1);
+
+        if (savesToDelete.length > 0) {
+          await db.saves.bulkDelete(savesToDelete.map((save) => save.id!));
+        }
+      }
+
+      return saveId;
     });
+
     return result;
   } catch (error) {
     console.error('putSaveAtomic failed:', error);
