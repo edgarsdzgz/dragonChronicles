@@ -37,6 +37,7 @@ Operational procedures and setup guides:
 
 - [Local Development](./runbooks/local-dev.md) - Clone to running tests
 - [CI/CD](./runbooks/ci.md) - Continuous integration execution
+- [PR Cleanup](./runbooks/pr-cleanup.md) - Post-merge cleanup workflow
 
 ### 🎨 UI
 
