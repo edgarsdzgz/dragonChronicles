@@ -8,17 +8,10 @@ export default defineConfig({
     },
   },
   test: {
-    // jsdom gives us document/window for the background/HUD tests
-    environment: 'jsdom',
-    environmentOptions: {
-      jsdom: {
-        pretendToBeVisual: true,
-        // Enable IndexedDB for db tests
-        resources: 'usable',
-      },
-    },
+    // Use Node.js environment for db tests since IndexedDB is not available in jsdom
+    environment: 'node',
     globals: true,
-    include: ['tests/render/**/*.spec.ts', 'tests/db/**/*.spec.ts'],
+    include: ['tests/db/**/*.spec.ts'],
     fakeTimers: {
       toFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'Date'],
     },
@@ -29,5 +22,7 @@ export default defineConfig({
       reporter: ['text-summary', 'lcov'],
       exclude: ['**/node_modules/**', 'tests/**'],
     },
+    // Setup IndexedDB polyfill for Node.js environment
+    setupFiles: ['tests/db/setup.ts'],
   },
 });

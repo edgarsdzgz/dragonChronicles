@@ -1,1 +1,1119 @@
-{"numTotalTestSuites":19,"numPassedTestSuites":19,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":38,"numPassedTests":38,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"startTime":1756048929369,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["","background sim toggle by visibility"],"fullName":" background sim toggle by visibility emits bg-tick events at ~2Hz when started","status":"passed","title":"emits bg-tick events at ~2Hz when started","duration":11,"failureMessages":[]},{"ancestorTitles":["","background sim toggle by visibility"],"fullName":" background sim toggle by visibility stops emitting when stopped","status":"passed","title":"stops emitting when stopped","duration":1,"failureMessages":[]},{"ancestorTitles":["","background sim toggle by visibility"],"fullName":" background sim toggle by visibility only ticks when document is visible","status":"passed","title":"only ticks when document is visible","duration":2,"failureMessages":[]}],"startTime":1756048931090,"endTime":1756048931104,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/background-toggle.spec.ts"},{"assertionResults":[{"ancestorTitles":["","background sim contract"],"fullName":" background sim contract exposes a stable bg-tick event name for listeners","status":"passed","title":"exposes a stable bg-tick event name for listeners","duration":2,"failureMessages":[]},{"ancestorTitles":["","anti-regression guard"],"fullName":" anti-regression guard never exceeds intended low frequency in hidden mode (doc test)","status":"passed","title":"never exceeds intended low frequency in hidden mode (doc test)","duration":1,"failureMessages":[]}],"startTime":1756048931074,"endTime":1756048931077,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/background.spec.ts"},{"assertionResults":[{"ancestorTitles":["","displayPool reset semantics"],"fullName":" displayPool reset semantics validates sprite reset properties","status":"passed","title":"validates sprite reset properties","duration":1,"failureMessages":[]},{"ancestorTitles":["","displayPool reset semantics"],"fullName":" displayPool reset semantics handles sprites without parent gracefully","status":"passed","title":"handles sprites without parent gracefully","duration":2,"failureMessages":[]}],"startTime":1756048931071,"endTime":1756048931074,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/displayPool.spec.ts"},{"assertionResults":[{"ancestorTitles":["","clampDPR"],"fullName":" clampDPR clamps to [1,2] by default","status":"passed","title":"clamps to [1,2] by default","duration":1,"failureMessages":[]},{"ancestorTitles":["","clampDPR"],"fullName":" clampDPR respects custom min/max bounds","status":"passed","title":"respects custom min/max bounds","duration":0,"failureMessages":[]},{"ancestorTitles":["","clampDPR"],"fullName":" clampDPR uses fallback when devicePixelRatio is undefined","status":"passed","title":"uses fallback when devicePixelRatio is undefined","duration":0,"failureMessages":[]}],"startTime":1756048931082,"endTime":1756048931084,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/dpr.spec.ts"},{"assertionResults":[{"ancestorTitles":["","HUD flag logic"],"fullName":" HUD flag logic detects hud=1 in query parameters","status":"passed","title":"detects hud=1 in query parameters","duration":3,"failureMessages":[]},{"ancestorTitles":["","HUD flag logic"],"fullName":" HUD flag logic parses different hud values correctly","status":"passed","title":"parses different hud values correctly","duration":1,"failureMessages":[]},{"ancestorTitles":["","HUD decoupled from Pixi ticker"],"fullName":" HUD decoupled from Pixi ticker HUD/layout does not import Pixi ticker directly","status":"passed","title":"HUD/layout does not import Pixi ticker directly","duration":1,"failureMessages":[]}],"startTime":1756048931077,"endTime":1756048931082,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/hud.spec.ts"},{"assertionResults":[{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/pixi/app.ts exists","status":"passed","title":"apps/web/src/lib/pixi/app.ts exists","duration":2,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/pixi/dpr.ts exists","status":"passed","title":"apps/web/src/lib/pixi/dpr.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/pixi/hud.ts exists","status":"passed","title":"apps/web/src/lib/pixi/hud.ts exists","duration":1,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/sim/background.ts exists","status":"passed","title":"apps/web/src/lib/sim/background.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/pool/pool.ts exists","status":"passed","title":"apps/web/src/lib/pool/pool.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/pool/displayPool.ts exists","status":"passed","title":"apps/web/src/lib/pool/displayPool.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/lib/stores/flags.ts exists","status":"passed","title":"apps/web/src/lib/stores/flags.ts exists","duration":1,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/routes/+layout.svelte exists","status":"passed","title":"apps/web/src/routes/+layout.svelte exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/routes/+layout.ts exists","status":"passed","title":"apps/web/src/routes/+layout.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/routes/+page.svelte exists","status":"passed","title":"apps/web/src/routes/+page.svelte exists","duration":1,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/routes/dev/pool/+page.svelte exists","status":"passed","title":"apps/web/src/routes/dev/pool/+page.svelte exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/svelte.config.js exists","status":"passed","title":"apps/web/svelte.config.js exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/vite.config.ts exists","status":"passed","title":"apps/web/vite.config.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/app.html exists","status":"passed","title":"apps/web/src/app.html exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/src/app.d.ts exists","status":"passed","title":"apps/web/src/app.d.ts exists","duration":1,"failureMessages":[]},{"ancestorTitles":["","Required W2 file presence"],"fullName":" Required W2 file presence apps/web/package.json exists","status":"passed","title":"apps/web/package.json exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required test files presence"],"fullName":" Required test files presence tests/render/dpr.spec.ts exists","status":"passed","title":"tests/render/dpr.spec.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required test files presence"],"fullName":" Required test files presence tests/render/pool.spec.ts exists","status":"passed","title":"tests/render/pool.spec.ts exists","duration":1,"failureMessages":[]},{"ancestorTitles":["","Required test files presence"],"fullName":" Required test files presence tests/render/ticker.spec.ts exists","status":"passed","title":"tests/render/ticker.spec.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required test files presence"],"fullName":" Required test files presence tests/render/background.spec.ts exists","status":"passed","title":"tests/render/background.spec.ts exists","duration":0,"failureMessages":[]},{"ancestorTitles":["","Required test files presence"],"fullName":" Required test files presence configs/vitest/vitest.config.ts exists","status":"passed","title":"configs/vitest/vitest.config.ts exists","duration":0,"failureMessages":[]}],"startTime":1756048931079,"endTime":1756048931086,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/paths.spec.ts"},{"assertionResults":[{"ancestorTitles":["","pool"],"fullName":" pool reuses instances","status":"passed","title":"reuses instances","duration":2,"failureMessages":[]},{"ancestorTitles":["","pool"],"fullName":" pool tracks pool size and usage correctly","status":"passed","title":"tracks pool size and usage correctly","duration":0,"failureMessages":[]}],"startTime":1756048931082,"endTime":1756048931084,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/pool.spec.ts"},{"assertionResults":[{"ancestorTitles":["","visibility policy"],"fullName":" visibility policy stops rendering when hidden and continues sim","status":"passed","title":"stops rendering when hidden and continues sim","duration":2,"failureMessages":[]},{"ancestorTitles":["","visibility policy"],"fullName":" visibility policy starts rendering when visible","status":"passed","title":"starts rendering when visible","duration":1,"failureMessages":[]}],"startTime":1756048931071,"endTime":1756048931074,"status":"passed","message":"","name":"C:/Users/ediaz/Coding_Projects/dragonIdler/tests/render/ticker.spec.ts"}]}
+{
+  "numTotalTestSuites": 44,
+  "numPassedTestSuites": 44,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 108,
+  "numPassedTests": 64,
+  "numFailedTests": 44,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "startTime": 1756415167837,
+  "success": false,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "background sim toggle by visibility"],
+          "fullName": " background sim toggle by visibility emits bg-tick events at ~2Hz when started",
+          "status": "passed",
+          "title": "emits bg-tick events at ~2Hz when started",
+          "duration": 5,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "background sim toggle by visibility"],
+          "fullName": " background sim toggle by visibility stops emitting when stopped",
+          "status": "passed",
+          "title": "stops emitting when stopped",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "background sim toggle by visibility"],
+          "fullName": " background sim toggle by visibility only ticks when document is visible",
+          "status": "passed",
+          "title": "only ticks when document is visible",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415169530,
+      "endTime": 1756415169538,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/background-toggle.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "background sim contract"],
+          "fullName": " background sim contract exposes a stable bg-tick event name for listeners",
+          "status": "passed",
+          "title": "exposes a stable bg-tick event name for listeners",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "anti-regression guard"],
+          "fullName": " anti-regression guard never exceeds intended low frequency in hidden mode (doc test)",
+          "status": "passed",
+          "title": "never exceeds intended low frequency in hidden mode (doc test)",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415170734,
+      "endTime": 1756415170737,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/background.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "displayPool reset semantics"],
+          "fullName": " displayPool reset semantics validates sprite reset properties",
+          "status": "passed",
+          "title": "validates sprite reset properties",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "displayPool reset semantics"],
+          "fullName": " displayPool reset semantics handles sprites without parent gracefully",
+          "status": "passed",
+          "title": "handles sprites without parent gracefully",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415169485,
+      "endTime": 1756415169489,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/displayPool.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "clampDPR"],
+          "fullName": " clampDPR clamps to [1,2] by default",
+          "status": "passed",
+          "title": "clamps to [1,2] by default",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "clampDPR"],
+          "fullName": " clampDPR respects custom min/max bounds",
+          "status": "passed",
+          "title": "respects custom min/max bounds",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "clampDPR"],
+          "fullName": " clampDPR uses fallback when devicePixelRatio is undefined",
+          "status": "passed",
+          "title": "uses fallback when devicePixelRatio is undefined",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415170799,
+      "endTime": 1756415170801,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/dpr.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "HUD flag logic"],
+          "fullName": " HUD flag logic detects hud=1 in query parameters",
+          "status": "passed",
+          "title": "detects hud=1 in query parameters",
+          "duration": 5,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "HUD flag logic"],
+          "fullName": " HUD flag logic parses different hud values correctly",
+          "status": "passed",
+          "title": "parses different hud values correctly",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "HUD decoupled from Pixi ticker"],
+          "fullName": " HUD decoupled from Pixi ticker HUD/layout does not import Pixi ticker directly",
+          "status": "passed",
+          "title": "HUD/layout does not import Pixi ticker directly",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415169490,
+      "endTime": 1756415169498,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/hud.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/pixi/app.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/pixi/app.ts exists",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/pixi/dpr.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/pixi/dpr.ts exists",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/pixi/hud.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/pixi/hud.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/sim/background.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/sim/background.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/pool/pool.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/pool/pool.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/pool/displayPool.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/pool/displayPool.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/lib/stores/flags.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/lib/stores/flags.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/routes/+layout.svelte exists",
+          "status": "passed",
+          "title": "apps/web/src/routes/+layout.svelte exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/routes/+layout.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/routes/+layout.ts exists",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/routes/+page.svelte exists",
+          "status": "passed",
+          "title": "apps/web/src/routes/+page.svelte exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/routes/dev/pool/+page.svelte exists",
+          "status": "passed",
+          "title": "apps/web/src/routes/dev/pool/+page.svelte exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/svelte.config.js exists",
+          "status": "passed",
+          "title": "apps/web/svelte.config.js exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/vite.config.ts exists",
+          "status": "passed",
+          "title": "apps/web/vite.config.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/app.html exists",
+          "status": "passed",
+          "title": "apps/web/src/app.html exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/src/app.d.ts exists",
+          "status": "passed",
+          "title": "apps/web/src/app.d.ts exists",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required W2 file presence"],
+          "fullName": " Required W2 file presence apps/web/package.json exists",
+          "status": "passed",
+          "title": "apps/web/package.json exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required test files presence"],
+          "fullName": " Required test files presence tests/render/dpr.spec.ts exists",
+          "status": "passed",
+          "title": "tests/render/dpr.spec.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required test files presence"],
+          "fullName": " Required test files presence tests/render/pool.spec.ts exists",
+          "status": "passed",
+          "title": "tests/render/pool.spec.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required test files presence"],
+          "fullName": " Required test files presence tests/render/ticker.spec.ts exists",
+          "status": "passed",
+          "title": "tests/render/ticker.spec.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required test files presence"],
+          "fullName": " Required test files presence tests/render/background.spec.ts exists",
+          "status": "passed",
+          "title": "tests/render/background.spec.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Required test files presence"],
+          "fullName": " Required test files presence configs/vitest/vitest.config.ts exists",
+          "status": "passed",
+          "title": "configs/vitest/vitest.config.ts exists",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415170523,
+      "endTime": 1756415170527,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/paths.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "pool"],
+          "fullName": " pool reuses instances",
+          "status": "passed",
+          "title": "reuses instances",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "pool"],
+          "fullName": " pool tracks pool size and usage correctly",
+          "status": "passed",
+          "title": "tracks pool size and usage correctly",
+          "duration": 0,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415170559,
+      "endTime": 1756415170562,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/pool.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "visibility policy"],
+          "fullName": " visibility policy stops rendering when hidden and continues sim",
+          "status": "passed",
+          "title": "stops rendering when hidden and continues sim",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "visibility policy"],
+          "fullName": " visibility policy starts rendering when visible",
+          "status": "passed",
+          "title": "starts rendering when visible",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415170883,
+      "endTime": 1756415170886,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/render/ticker.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
+          "fullName": " Atomic Write Operations putSaveAtomic should write save data atomically",
+          "status": "failed",
+          "title": "should write save data atomically",
+          "duration": 18,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
+          "fullName": " Atomic Write Operations putSaveAtomic should update active profile pointer",
+          "status": "failed",
+          "title": "should update active profile pointer",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
+          "fullName": " Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
+          "status": "failed",
+          "title": "should prune old saves to keep only 3 backups",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
+          "fullName": " Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
+          "status": "failed",
+          "title": "should handle concurrent writes to different profiles",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
+          "fullName": " Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
+          "status": "failed",
+          "title": "should maintain data integrity during transaction failures",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
+          "fullName": " Atomic Write Operations getActiveSave should return the most recent save for a profile",
+          "status": "failed",
+          "title": "should return the most recent save for a profile",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
+          "fullName": " Atomic Write Operations getActiveSave should return undefined for non-existent profile",
+          "status": "failed",
+          "title": "should return undefined for non-existent profile",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
+          "fullName": " Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
+          "status": "failed",
+          "title": "should handle profile with multiple saves correctly",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
+          "fullName": " Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
+          "status": "failed",
+          "title": "should maintain referential integrity between saves and meta tables",
+          "duration": 0,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
+          "fullName": " Atomic Write Operations Database consistency should handle database corruption gracefully",
+          "status": "failed",
+          "title": "should handle database corruption gracefully",
+          "duration": 4,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": " Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
+          "status": "failed",
+          "title": "should preserve W3 time accounting fields during atomic writes",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": " Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
+          "status": "failed",
+          "title": "should handle W3 time accounting updates correctly",
+          "duration": 0,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        }
+      ],
+      "startTime": 1756415169620,
+      "endTime": 1756415169654,
+      "status": "failed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/atomic.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
+          "fullName": " Export/Import Functionality exportAllProfiles should export all profiles with correct format",
+          "status": "failed",
+          "title": "should export all profiles with correct format",
+          "duration": 16,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
+          "fullName": " Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
+          "status": "failed",
+          "title": "should include W3 time accounting fields in export",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
+          "fullName": " Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
+          "status": "failed",
+          "title": "should generate valid checksum for export data",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
+          "fullName": " Export/Import Functionality exportAllProfiles should handle empty database gracefully",
+          "status": "failed",
+          "title": "should handle empty database gracefully",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
+          "fullName": " Export/Import Functionality importFromBlob should import valid export data correctly",
+          "status": "failed",
+          "title": "should import valid export data correctly",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
+          "fullName": " Export/Import Functionality importFromBlob should validate checksum during import",
+          "status": "failed",
+          "title": "should validate checksum during import",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
+          "fullName": " Export/Import Functionality importFromBlob should reject import with wrong file version",
+          "status": "failed",
+          "title": "should reject import with wrong file version",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
+          "fullName": " Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
+          "status": "failed",
+          "title": "should handle corrupted export data gracefully",
+          "duration": 4,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
+          "fullName": " Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
+          "status": "failed",
+          "title": "should preserve W3 time accounting during import",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": " Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
+          "status": "failed",
+          "title": "should maintain data integrity through export-import cycle",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": " Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
+          "status": "failed",
+          "title": "should preserve all profile data during round-trip",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
+          "fullName": " Export/Import Functionality Codec functions should encode and validate export data correctly",
+          "status": "failed",
+          "title": "should encode and validate export data correctly",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
+          "fullName": " Export/Import Functionality Codec functions should detect tampered export data",
+          "status": "failed",
+          "title": "should detect tampered export data",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
+          "fullName": " Export/Import Functionality Codec functions should handle checksum generation consistently",
+          "status": "failed",
+          "title": "should handle checksum generation consistently",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
+          "fullName": " Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
+          "status": "failed",
+          "title": "should handle multiple profile pointers correctly",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
+          "fullName": " Export/Import Functionality Multiple profile handling should maintain profile independence during import",
+          "status": "failed",
+          "title": "should maintain profile independence during import",
+          "duration": 0,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        }
+      ],
+      "startTime": 1756415169623,
+      "endTime": 1756415169659,
+      "status": "failed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/export-import.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should generate structured migration report",
+          "status": "failed",
+          "title": "should generate structured migration report",
+          "duration": 19,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should handle empty database gracefully",
+          "status": "failed",
+          "title": "should handle empty database gracefully",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should migrate multiple profiles correctly",
+          "status": "failed",
+          "title": "should migrate multiple profiles correctly",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should preserve W3 time accounting during migration",
+          "status": "failed",
+          "title": "should preserve W3 time accounting during migration",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should handle migration errors gracefully",
+          "status": "failed",
+          "title": "should handle migration errors gracefully",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should generate warnings for non-critical issues",
+          "status": "failed",
+          "title": "should generate warnings for non-critical issues",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should maintain data integrity during migration",
+          "status": "failed",
+          "title": "should maintain data integrity during migration",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "migrateV1toV2"],
+          "fullName": " Migration Functionality migrateV1toV2 should handle concurrent migration attempts",
+          "status": "failed",
+          "title": "should handle concurrent migration attempts",
+          "duration": 3,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "MigrationReport structure"],
+          "fullName": " Migration Functionality MigrationReport structure should have correct report structure",
+          "status": "failed",
+          "title": "should have correct report structure",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "MigrationReport structure"],
+          "fullName": " Migration Functionality MigrationReport structure should include detailed error information",
+          "status": "failed",
+          "title": "should include detailed error information",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "MigrationReport structure"],
+          "fullName": " Migration Functionality MigrationReport structure should include performance metrics",
+          "status": "failed",
+          "title": "should include performance metrics",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "Migration edge cases"],
+          "fullName": " Migration Functionality Migration edge cases should handle profiles with missing optional fields",
+          "status": "failed",
+          "title": "should handle profiles with missing optional fields",
+          "duration": 2,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "Migration edge cases"],
+          "fullName": " Migration Functionality Migration edge cases should handle large datasets efficiently",
+          "status": "failed",
+          "title": "should handle large datasets efficiently",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "Migration edge cases"],
+          "fullName": " Migration Functionality Migration edge cases should handle database connection issues",
+          "status": "failed",
+          "title": "should handle database connection issues",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "Migration validation"],
+          "fullName": " Migration Functionality Migration validation should validate migration results",
+          "status": "failed",
+          "title": "should validate migration results",
+          "duration": 1,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        },
+        {
+          "ancestorTitles": ["", "Migration Functionality", "Migration validation"],
+          "fullName": " Migration Functionality Migration validation should maintain referential integrity after migration",
+          "status": "failed",
+          "title": "should maintain referential integrity after migration",
+          "duration": 0,
+          "failureMessages": [
+            "Database initialization failed: IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb"
+          ],
+          "location": { "line": 67, "column": 11 }
+        }
+      ],
+      "startTime": 1756415169634,
+      "endTime": 1756415169678,
+      "status": "failed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/migrate.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should validate a complete valid profile",
+          "status": "passed",
+          "title": "should validate a complete valid profile",
+          "duration": 7,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
+          "status": "passed",
+          "title": "should reject profile with missing W3 time accounting fields",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
+          "status": "passed",
+          "title": "should reject profile with invalid W3 time accounting",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid name length",
+          "status": "passed",
+          "title": "should reject profile with invalid name length",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should reject profile with negative progress values",
+          "status": "passed",
+          "title": "should reject profile with negative progress values",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
+          "fullName": " Schema Validation ProfileV1 validation should reject profile with non-integer values",
+          "status": "passed",
+          "title": "should reject profile with non-integer values",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
+          "fullName": " Schema Validation SaveV1 validation should validate a complete valid save",
+          "status": "passed",
+          "title": "should validate a complete valid save",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
+          "fullName": " Schema Validation SaveV1 validation should reject save with wrong version",
+          "status": "passed",
+          "title": "should reject save with wrong version",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
+          "fullName": " Schema Validation SaveV1 validation should reject save with no profiles",
+          "status": "passed",
+          "title": "should reject save with no profiles",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
+          "fullName": " Schema Validation SaveV1 validation should reject save with too many profiles",
+          "status": "passed",
+          "title": "should reject save with too many profiles",
+          "duration": 2,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
+          "fullName": " Schema Validation SaveV1 validation should reject save with invalid profile",
+          "status": "passed",
+          "title": "should reject save with invalid profile",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
+          "fullName": " Schema Validation ExportFileV1 validation should validate a complete valid export file",
+          "status": "passed",
+          "title": "should validate a complete valid export file",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
+          "fullName": " Schema Validation ExportFileV1 validation should reject export with wrong file version",
+          "status": "passed",
+          "title": "should reject export with wrong file version",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
+          "fullName": " Schema Validation ExportFileV1 validation should reject export with empty checksum",
+          "status": "passed",
+          "title": "should reject export with empty checksum",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
+          "fullName": " Schema Validation ExportFileV1 validation should reject export with invalid data",
+          "status": "passed",
+          "title": "should reject export with invalid data",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate a complete valid save row",
+          "status": "passed",
+          "title": "should validate a complete valid save row",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate save row with optional id",
+          "status": "passed",
+          "title": "should validate save row with optional id",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should reject save row with invalid profile id",
+          "status": "passed",
+          "title": "should reject save row with invalid profile id",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate a complete valid meta row",
+          "status": "passed",
+          "title": "should validate a complete valid meta row",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should reject meta row with empty key",
+          "status": "passed",
+          "title": "should reject meta row with empty key",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate a complete valid log row",
+          "status": "passed",
+          "title": "should validate a complete valid log row",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate log row with optional id",
+          "status": "passed",
+          "title": "should validate log row with optional id",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should validate log row with optional data",
+          "status": "passed",
+          "title": "should validate log row with optional data",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should reject log row with invalid level",
+          "status": "passed",
+          "title": "should reject log row with invalid level",
+          "duration": 1,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should reject log row with invalid source",
+          "status": "passed",
+          "title": "should reject log row with invalid source",
+          "duration": 0,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
+          "fullName": " Schema Validation Database row validation should reject log row with empty message",
+          "status": "passed",
+          "title": "should reject log row with empty message",
+          "duration": 1,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1756415169578,
+      "endTime": 1756415169609,
+      "status": "passed",
+      "message": "",
+      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/schema.spec.ts"
+    }
+  ]
+}

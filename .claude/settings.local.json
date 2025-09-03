@@ -64,7 +64,9 @@
       "Bash(npm config delete:*)",
       "Bash(npm config:*)",
       "Bash(npm run prepare:*)",
-      "Bash(corepack enable)"
+      "Bash(corepack enable)",
+      "Bash(git pull:*)",
+      "Bash(gh issue:*)"
     ],
     "deny": []
   }
