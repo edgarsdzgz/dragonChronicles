@@ -6,13 +6,15 @@
 
 ## Overview
 
-The structured logging system provides a production-ready, high-performance logging infrastructure for Draconia Chronicles v2.0.0. It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer management, Dexie persistence, and comprehensive PII redaction.
+The structured logging system provides a production-ready, high-performance logging infrastructure for
+Draconia Chronicles v2.0.0. It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
+management, Dexie persistence, and comprehensive PII redaction.
 
 ## Architecture
 
 ### Core Components
 
-```
+```text
 @draconia/logger/
 ├── types.ts           # Core interfaces and types
 ├── index.ts           # Main entry point and exports
@@ -77,7 +79,7 @@ const logger = createLogger({
 
 ## Configuration
 
-### Memory Management
+### Memory Configuration
 
 ```typescript
 // 2MB memory cap, 10k entries
@@ -302,7 +304,8 @@ pnpm run test:vitest:render # Render tests (JSDOM)
 
 ### Migration Path
 
-The current v1 implementation provides a stable foundation for future enhancements while maintaining backward compatibility through the core `Logger` interface.
+The current v1 implementation provides a stable foundation for future enhancements while maintaining
+backward compatibility through the core `Logger` interface.
 
 ## Related Documentation
 

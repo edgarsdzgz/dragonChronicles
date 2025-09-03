@@ -8,7 +8,7 @@
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1756874120444,
+  "startTime": 1756875042245,
   "success": true,
   "testResults": [
     {
@@ -18,7 +18,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should write save data atomically",
           "status": "passed",
           "title": "should write save data atomically",
-          "duration": 40,
+          "duration": 37,
           "failureMessages": []
         },
         {
@@ -26,7 +26,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should update active profile pointer",
           "status": "passed",
           "title": "should update active profile pointer",
-          "duration": 7,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -34,7 +34,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
           "status": "passed",
           "title": "should prune old saves to keep only 3 backups",
-          "duration": 16,
+          "duration": 13,
           "failureMessages": []
         },
         {
@@ -42,7 +42,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
           "status": "passed",
           "title": "should handle concurrent writes to different profiles",
-          "duration": 9,
+          "duration": 8,
           "failureMessages": []
         },
         {
@@ -50,7 +50,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
           "status": "passed",
           "title": "should maintain data integrity during transaction failures",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -90,7 +90,7 @@
           "fullName": " Atomic Write Operations Database consistency should handle database corruption gracefully",
           "status": "passed",
           "title": "should handle database corruption gracefully",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -98,7 +98,7 @@
           "fullName": " Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
           "status": "passed",
           "title": "should preserve W3 time accounting fields during atomic writes",
-          "duration": 8,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -106,12 +106,12 @@
           "fullName": " Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
           "status": "passed",
           "title": "should handle W3 time accounting updates correctly",
-          "duration": 5,
+          "duration": 4,
           "failureMessages": []
         }
       ],
-      "startTime": 1756874121366,
-      "endTime": 1756874121478,
+      "startTime": 1756875043180,
+      "endTime": 1756875043281,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/atomic.spec.ts"
@@ -123,7 +123,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should export all profiles with correct format",
           "status": "passed",
           "title": "should export all profiles with correct format",
-          "duration": 45,
+          "duration": 43,
           "failureMessages": []
         },
         {
@@ -131,7 +131,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
           "status": "passed",
           "title": "should include W3 time accounting fields in export",
-          "duration": 8,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -139,7 +139,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
           "status": "passed",
           "title": "should generate valid checksum for export data",
-          "duration": 7,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -147,7 +147,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should handle empty database gracefully",
           "status": "passed",
           "title": "should handle empty database gracefully",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -155,7 +155,7 @@
           "fullName": " Export/Import Functionality importFromBlob should import valid export data correctly",
           "status": "passed",
           "title": "should import valid export data correctly",
-          "duration": 15,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -187,7 +187,7 @@
           "fullName": " Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
           "status": "passed",
           "title": "should preserve W3 time accounting during import",
-          "duration": 6,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -195,7 +195,7 @@
           "fullName": " Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
           "status": "passed",
           "title": "should maintain data integrity through export-import cycle",
-          "duration": 12,
+          "duration": 13,
           "failureMessages": []
         },
         {
@@ -203,7 +203,7 @@
           "fullName": " Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
           "status": "passed",
           "title": "should preserve all profile data during round-trip",
-          "duration": 8,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -211,7 +211,7 @@
           "fullName": " Export/Import Functionality Codec functions should encode and validate export data correctly",
           "status": "passed",
           "title": "should encode and validate export data correctly",
-          "duration": 3,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -219,7 +219,7 @@
           "fullName": " Export/Import Functionality Codec functions should detect tampered export data",
           "status": "passed",
           "title": "should detect tampered export data",
-          "duration": 5,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -235,7 +235,7 @@
           "fullName": " Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
           "status": "passed",
           "title": "should handle multiple profile pointers correctly",
-          "duration": 13,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -247,8 +247,8 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1756874121369,
-      "endTime": 1756874121516,
+      "startTime": 1756875043182,
+      "endTime": 1756875043323,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/export-import.spec.ts"
@@ -260,7 +260,7 @@
           "fullName": " Migration System Database Version Management should return version 1 for new database",
           "status": "passed",
           "title": "should return version 1 for new database",
-          "duration": 26,
+          "duration": 23,
           "failureMessages": []
         },
         {
@@ -268,7 +268,7 @@
           "fullName": " Migration System Database Version Management should track database version in meta table",
           "status": "passed",
           "title": "should track database version in meta table",
-          "duration": 5,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -276,7 +276,7 @@
           "fullName": " Migration System Database Version Management should handle missing version gracefully",
           "status": "passed",
           "title": "should handle missing version gracefully",
-          "duration": 3,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -284,7 +284,7 @@
           "fullName": " Migration System Migration Status should return correct migration status for fresh database",
           "status": "passed",
           "title": "should return correct migration status for fresh database",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -292,7 +292,7 @@
           "fullName": " Migration System Migration Status should handle database with version set",
           "status": "passed",
           "title": "should handle database with version set",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -300,7 +300,7 @@
           "fullName": " Migration System Migration Execution should handle no migrations needed",
           "status": "passed",
           "title": "should handle no migrations needed",
-          "duration": 4,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -316,7 +316,7 @@
           "fullName": " Migration System Migration Execution should handle migration with existing data",
           "status": "passed",
           "title": "should handle migration with existing data",
-          "duration": 17,
+          "duration": 13,
           "failureMessages": []
         },
         {
@@ -324,7 +324,7 @@
           "fullName": " Migration System Migration Validation should validate empty database successfully",
           "status": "passed",
           "title": "should validate empty database successfully",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -332,7 +332,7 @@
           "fullName": " Migration System Migration Validation should validate valid save data",
           "status": "passed",
           "title": "should validate valid save data",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -340,7 +340,7 @@
           "fullName": " Migration System Migration Validation should detect invalid save data structure",
           "status": "passed",
           "title": "should detect invalid save data structure",
-          "duration": 3,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -372,7 +372,7 @@
           "fullName": " Migration System Migration Backup should store backup in meta table",
           "status": "passed",
           "title": "should store backup in meta table",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -380,7 +380,7 @@
           "fullName": " Migration System Migration Backup should not backup other backups",
           "status": "passed",
           "title": "should not backup other backups",
-          "duration": 5,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -388,7 +388,7 @@
           "fullName": " Migration System Integration Tests should handle complete migration workflow",
           "status": "passed",
           "title": "should handle complete migration workflow",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -400,8 +400,8 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1756874121366,
-      "endTime": 1756874121472,
+      "startTime": 1756875043181,
+      "endTime": 1756875043280,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/migrate.spec.ts"
@@ -445,7 +445,7 @@
           "fullName": " Schema Validation ProfileV1 validation should reject profile with negative progress values",
           "status": "passed",
           "title": "should reject profile with negative progress values",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -453,7 +453,7 @@
           "fullName": " Schema Validation ProfileV1 validation should reject profile with non-integer values",
           "status": "passed",
           "title": "should reject profile with non-integer values",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -469,7 +469,7 @@
           "fullName": " Schema Validation SaveV1 validation should reject save with wrong version",
           "status": "passed",
           "title": "should reject save with wrong version",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -477,7 +477,7 @@
           "fullName": " Schema Validation SaveV1 validation should reject save with no profiles",
           "status": "passed",
           "title": "should reject save with no profiles",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -501,7 +501,7 @@
           "fullName": " Schema Validation ExportFileV1 validation should validate a complete valid export file",
           "status": "passed",
           "title": "should validate a complete valid export file",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -517,7 +517,7 @@
           "fullName": " Schema Validation ExportFileV1 validation should reject export with empty checksum",
           "status": "passed",
           "title": "should reject export with empty checksum",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -525,7 +525,7 @@
           "fullName": " Schema Validation ExportFileV1 validation should reject export with invalid data",
           "status": "passed",
           "title": "should reject export with invalid data",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -581,7 +581,7 @@
           "fullName": " Schema Validation Database row validation should validate log row with optional id",
           "status": "passed",
           "title": "should validate log row with optional id",
-          "duration": 2,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -597,7 +597,7 @@
           "fullName": " Schema Validation Database row validation should reject log row with invalid level",
           "status": "passed",
           "title": "should reject log row with invalid level",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -605,7 +605,7 @@
           "fullName": " Schema Validation Database row validation should reject log row with invalid source",
           "status": "passed",
           "title": "should reject log row with invalid source",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -613,12 +613,12 @@
           "fullName": " Schema Validation Database row validation should reject log row with empty message",
           "status": "passed",
           "title": "should reject log row with empty message",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         }
       ],
-      "startTime": 1756874121327,
-      "endTime": 1756874121351,
+      "startTime": 1756875043138,
+      "endTime": 1756875043161,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/schema.spec.ts"
