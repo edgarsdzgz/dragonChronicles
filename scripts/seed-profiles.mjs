@@ -7,15 +7,14 @@
  * for testing and development purposes.
  */
 
-import { db, initializeDatabase, closeDatabase } from '../packages/db/src/db.js';
-import { putSaveAtomic } from '../packages/db/src/repo.js';
-import { generateChecksum } from '../packages/db/src/codec.js';
-import type { SaveV1, ProfileV1 } from '../packages/db/src/schema.v1.js';
+import { db, initializeDatabase, closeDatabase } from '../packages/db/dist/db.js';
+import { putSaveAtomic } from '../packages/db/dist/repo.js';
+import { generateChecksum } from '../packages/db/dist/codec.js';
 
 /**
  * Create a sample profile with realistic game data
  */
-function createSampleProfile(id: string, name: string, progress: number): ProfileV1 {
+function createSampleProfile(id, name, progress) {
   const now = Date.now();
   const playtimeHours = Math.floor(Math.random() * 50) + 10; // 10-60 hours
   const deaths = Math.floor(Math.random() * 20) + 1; // 1-20 deaths

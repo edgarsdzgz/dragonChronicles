@@ -1,12 +1,11 @@
 /**
  * Profile utility functions
- * 
+ *
  * Provides profile creation and management functions for backward compatibility
  * with existing code that expects makeProfile functionality.
  */
 
 import type { ProfileV1 } from './schema.v1.js';
-import { validateProfileV1 } from './schema.v1.js';
 
 /**
  * User profile data structure (legacy interface)
@@ -81,30 +80,30 @@ export function convertToProfileV1(profile: Profile): ProfileV1 {
     progress: {
       land: 0,
       ward: 0,
-      distanceM: 0
+      distanceM: 0,
     },
     currencies: {
       arcana: 0,
-      gold: 0
+      gold: 0,
     },
     enchants: {
       firepower: 0,
       scales: 0,
-      tier: 0
+      tier: 0,
     },
     stats: {
       playtimeS: 0,
       deaths: 0,
-      totalDistanceM: 0
+      totalDistanceM: 0,
     },
     leaderboard: {
       highestWard: 0,
-      fastestBossS: 0
+      fastestBossS: 0,
     },
     sim: {
       lastSimWallClock: Date.now(),
-      bgCoveredMs: 0
-    }
+      bgCoveredMs: 0,
+    },
   };
 }
 
@@ -117,6 +116,6 @@ export function convertFromProfileV1(profileV1: ProfileV1): Profile {
   return {
     id: profileV1.id,
     name: profileV1.name,
-    createdAt: profileV1.createdAt
+    createdAt: profileV1.createdAt,
   };
 }

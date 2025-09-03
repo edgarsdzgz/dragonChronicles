@@ -8,6 +8,18 @@ import 'fake-indexeddb/auto';
 
 // Auto import handles the polyfill automatically
 
+// Mock CustomEvent for Node.js environment (required by Dexie)
+if (typeof global.CustomEvent === 'undefined') {
+  global.CustomEvent = class CustomEvent<T = any> extends Event {
+    readonly detail: T;
+
+    constructor(type: string, eventInitDict?: CustomEventInit<T>) {
+      super(type, eventInitDict);
+      this.detail = eventInitDict?.detail as T;
+    }
+  } as any;
+}
+
 // Mock Blob for Node.js environment
 if (typeof global.Blob === 'undefined') {
   global.Blob = class Blob {

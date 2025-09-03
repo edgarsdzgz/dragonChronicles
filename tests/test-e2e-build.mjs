@@ -27,7 +27,9 @@ test("sandbox JSON contract", () => {
   const txt = r.stdout.trim();
   assert.ok(txt.startsWith("{") && txt.endsWith("}"), "stdout not JSON");
   const j = JSON.parse(txt);
-  assert.equal(j.tick, 1);
+  assert.equal(typeof j.tick, "object", "tick should be simulation stats object");
+  assert.equal(typeof j.tick.enemies, "number", "tick.enemies should be number");
+  assert.equal(typeof j.tick.proj, "number", "tick.proj should be number");
   assert.match(j.hello, /^logger-ok@/);
   assert.equal(typeof j.profile.id, "string");
 });
