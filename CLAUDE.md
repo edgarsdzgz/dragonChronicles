@@ -352,6 +352,134 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 - Use "Related to #X" for issues that are connected but not directly resolved
 - Include issue numbers in commit messages when relevant
 
+## Versioning Strategy & Guidelines
+
+### Current Version: 0.5.0-alpha
+
+**Version Numbering Rationale:**
+- **0.x.x**: Pre-1.0 development phase
+- **0.5.0**: Reflects Phase 0 progress (5/8 workpacks complete)
+- **-alpha**: Indicates incomplete feature set, not ready for general use
+
+### Version Progression Path
+
+**Phase 0 (Current)**: 0.5.0-alpha → 0.8.0-alpha
+- W1-W5: ✅ Complete (foundation established)
+- W6-W8: ⏳ Pending (PWA, CI/CD, Dev UX)
+
+**Phase 1**: 0.8.0-alpha → 0.9.0-alpha  
+- Core gameplay loop implementation
+- Shooter-idle mechanics, combat, progression
+
+**Phase 2**: 0.9.0-alpha → 0.9.5-alpha
+- UI/UX development and refinement
+- Accessibility and performance optimization
+
+**Phase 3**: 0.9.5-alpha → 0.9.9-alpha
+- Performance optimization and advanced features
+- Meta systems and automation
+
+**Phase 4**: 0.9.9-alpha → 0.10.0-alpha
+- Player documentation and release preparation
+- Final polish and launch readiness
+
+**Extended Alpha Development**: 0.10.0-alpha → 0.15.0-alpha
+- Gameplay balancing and tuning
+- Content expansion and refinement
+- Performance optimization
+- Bug fixes and polish
+
+**Beta Phase**: 0.15.0-alpha → 0.20.0-beta
+- Feature freeze
+- Extensive testing and feedback
+- Performance optimization
+- Bug fixes and stability
+
+**Release Candidate**: 0.20.0-beta → 0.25.0-rc
+- Final testing and validation
+- Documentation completion
+- Release preparation
+
+**Full Release**: 0.25.0-rc → 1.0.0
+- Production deployment
+- Player launch
+
+**Total Development Scope**: 4 core phases + extended alpha + beta + RC = comprehensive development cycle
+
+### Version Update Rules
+
+**When to Update Version Numbers:**
+
+1. **Workpack Completion**: Increment minor version (0.5.0 → 0.6.0)
+   - W6 complete: 0.6.0-alpha
+   - W7 complete: 0.7.0-alpha  
+   - W8 complete: 0.8.0-alpha
+
+2. **Phase Completion**: Increment minor version (0.8.0 → 0.9.0)
+   - Phase 0 complete: 0.8.0-alpha
+   - Phase 1 complete: 0.9.0-alpha
+
+3. **Extended Alpha Development**: Increment minor version (0.10.0 → 0.15.0)
+   - Major gameplay milestones: 0.10.0 → 0.11.0 → 0.12.0
+   - Content expansions: 0.12.0 → 0.13.0 → 0.14.0
+   - Final alpha polish: 0.14.0 → 0.15.0
+
+4. **Beta Phase**: Transition to beta (0.15.0-alpha → 0.15.0-beta)
+   - Beta iterations: 0.15.0-beta → 0.16.0-beta → 0.20.0-beta
+   - Feature freeze and stability focus
+
+5. **Release Candidate**: Transition to RC (0.20.0-beta → 0.20.0-rc)
+   - RC iterations: 0.20.0-rc → 0.25.0-rc
+   - Final validation and release prep
+
+6. **Full Release**: 0.25.0-rc → 1.0.0
+   - Production deployment and player launch
+
+**Note**: This extended timeline provides realistic space for proper development, testing, and refinement before release.
+
+### Alpha Status Guidelines
+
+**What Alpha Means:**
+- ✅ **Foundation Complete**: Infrastructure, testing, persistence, logging
+- ❌ **Gameplay Incomplete**: Core game loop not implemented
+- ❌ **Not User Ready**: Missing essential game features
+- ❌ **Breaking Changes**: API may change between versions
+
+**Alpha Development Rules:**
+1. **No Breaking Changes**: Maintain API compatibility within alpha versions
+2. **Documentation Required**: All changes must update relevant docs
+3. **Test Coverage**: New features require comprehensive testing
+4. **Performance Budgets**: Respect established performance targets
+
+### Documentation Update Requirements
+
+**Version Changes Require Updates To:**
+1. **GDD**: Update version number and status
+2. **Overview README**: Update project status and version
+3. **Changelog**: Add new version entry with changes
+4. **CLAUDE.md**: Update versioning guidelines if needed
+5. **Package.json**: Update version numbers across workspace
+
+**Example Version Update Process:**
+```bash
+# 1. Update version numbers
+find . -name "package.json" -exec sed -i 's/"version": "0.5.0"/"version": "0.6.0"/g' {} \;
+
+# 2. Update documentation
+# - GDD version and status
+# - Overview README version
+# - Changelog new version entry
+
+# 3. Commit version bump
+git add -A
+git commit -m "chore: bump version to 0.6.0-alpha (W6 complete)"
+
+# 4. Tag release
+git tag -a v0.6.0-alpha -m "Release 0.6.0-alpha: PWA & Update UX"
+```
+
+---
+
 ## Issue Implementation Workflow
 
 ### Workpack Model (W# Issues)
@@ -362,8 +490,8 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
-- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
-- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
 - ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)

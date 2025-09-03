@@ -30,7 +30,7 @@ test("sandbox JSON contract", () => {
   assert.equal(typeof j.tick, "object", "tick should be simulation stats object");
   assert.equal(typeof j.tick.enemies, "number", "tick.enemies should be number");
   assert.equal(typeof j.tick.proj, "number", "tick.proj should be number");
-  assert.match(j.hello, /^logger-ok@/);
+  assert.equal(j.logger, 'ok', 'logger should be ok');
   assert.equal(typeof j.profile.id, "string");
 });
 

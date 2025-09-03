@@ -8,17 +8,12 @@ export default defineConfig({
     },
   },
   test: {
-    // jsdom gives us document/window for the background/HUD tests
-    environment: 'jsdom',
-    environmentOptions: {
-      jsdom: {
-        pretendToBeVisual: true,
-        // Enable IndexedDB for db tests
-        resources: 'usable',
-      },
-    },
+    // Use Node.js environment for tests that don't need DOM
+    environment: 'node',
     globals: true,
-    include: ['tests/render/**/*.spec.ts', 'tests/db/**/*.spec.ts'],
+    include: ['tests/**/*.{test,spec}.{js,ts,mjs}'],
+    exclude: ['tests/render/**/*.spec.ts'], // Exclude render tests (need jsdom)
+    setupFiles: ['tests/setup-global.ts'], // Global setup for all tests
     fakeTimers: {
       toFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'Date'],
     },

@@ -6,10 +6,10 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 
 ## Project Status
 
-**Version**: 2.0.0 (In Development)  
-**Phase**: Phase 0 (3/8 workpacks complete - W1-W3 foundation established)  
-**Architecture**: TypeScript Monorepo with Worker Simulation & Strict Mode Enforcement  
-**Workpack Model**: 8-workpack Phase 0 approach (W1-W3 complete, W4-W8 pending)
+**Version**: 0.5.0-alpha (Phase 0 Foundation in Progress)  
+**Phase**: Phase 0 (5/8 workpacks complete - W1-W5 foundation established)  
+**Architecture**: TypeScript Monorepo with Worker Simulation, Strict Mode Enforcement & Persistence  
+**Workpack Model**: 8-workpack Phase 0 approach (W1-W4 complete, W5-W8 pending)
 
 ## Key Metrics
 
@@ -20,10 +20,12 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 - **E2E Tests**: ✅ Full build pipeline and CLI contracts
 - **TypeScript Strict Gate**: ✅ Type safety enforcement
 - **Worker Simulation**: ✅ Protocol v1, RNG, fixed-timestep clock, auto-recovery
+- **Database Persistence**: ✅ Dexie schema, Zod validation, atomic writes, export/import
+- **Structured Logging**: ✅ Ring buffer with Dexie persistence, PII redaction, performance monitoring
 
 ### Documentation Status
 
-- **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md), [TypeScript](/docs/engineering/typescript.md))
+- **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md), [TypeScript](/docs/engineering/typescript.md), [Database Persistence](/docs/engineering/database-persistence.md))
 - **Architectural Decisions**: ✅ ADRs 0001-0002 documented
 - **Runbooks**: ✅ [Local Development](/docs/runbooks/local-dev.md), [CI/CD](/docs/runbooks/ci.md)
 - **Player Documentation**: ❌ Not yet implemented
@@ -33,6 +35,7 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 - **TypeScript Strict Mode**: ✅ Enforced across all packages
 - **Build System**: ✅ Incremental compilation with project references
 - **Test Optimization**: ✅ BUILD_ONCE pattern reduces build time 3x
+- **Database Layer**: ✅ Atomic writes, data validation, migration scaffolding
 
 ## Architecture Summary
 
@@ -41,8 +44,8 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 ```
 packages/           # Shared libraries
 ├── shared/        # Common utilities, constants, protocol v1, RNG
-├── logger/        # Structured logging system
-├── db/           # Database layer (IndexedDB) - W4 in progress
+├── logger/        # Structured logging system (W5 complete ✅)
+├── db/           # Database layer (IndexedDB) - W4 complete ✅
 └── sim/          # Game simulation engine (W3 complete)
 
 apps/              # Applications
@@ -100,19 +103,19 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
-- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
-- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
 - ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Current Status**: 3/8 workpacks complete. W1-W3 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, and worker simulation harness.
+**Current Status**: 5/8 workpacks complete. W1-W5 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, worker simulation harness, robust persistence layer, and structured logging infrastructure.
 
 ### Phase 0 Success Criteria
 
 - Base app cold start ≤ 2s desktop; base JS bundle ≤ 200 KB gz; logger layer ≤ 8 KB gz
 - Deterministic worker sim (≥60fps desktop with UI disconnected)
-- Dexie v1 schema + migrations scaffold; 3 profiles; export/import proven
+- Dexie v1 schema + migrations scaffold; 3 profiles; export/import proven ✅
 - Structured JSON logging; 2 MB / 10k rolling buffer; export; no PII beyond dragon name
 - PWA installs; update toast on SW waiting
 - CI gates: typecheck, unit, integration, Playwright smoke, Lighthouse a11y
@@ -120,9 +123,23 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 ### Future Phases
 
 - **Phase 1**: Core Game Loop Implementation (after W8 completion)
-- **Phase 2**: UI/UX Development and Polish  
+  - Shooter-idle mechanics, combat, progression, enchants
+- **Phase 2**: UI/UX Development and Polish
+  - User interface refinement and accessibility
 - **Phase 3**: Performance Optimization and Advanced Features
+  - Meta systems, automation, and performance tuning
 - **Phase 4**: Player Documentation and Release Preparation
+  - Final polish, player guides, and launch readiness
+
+**Extended Development Timeline**:
+
+- **Core GDD Implementation**: 4 phases (0.5.0-alpha → 0.10.0-alpha)
+- **Extended Alpha Development**: Gameplay refinement and content expansion (0.10.0-alpha → 0.15.0-alpha)
+- **Beta Phase**: Feature freeze and stability focus (0.15.0-alpha → 0.20.0-beta)
+- **Release Candidate**: Final validation and release prep (0.20.0-beta → 0.25.0-rc)
+- **Full Release**: Production deployment (0.25.0-rc → 1.0.0)
+
+**Total Development Scope**: Comprehensive development cycle with proper alpha, beta, and RC phases before release
 
 ## Links and Resources
 
@@ -140,4 +157,4 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 ---
 
-Last updated: 2025-08-25
+Last updated: 2025-08-28

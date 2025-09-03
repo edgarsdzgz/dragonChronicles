@@ -2,7 +2,7 @@
 
 # 🐉 Draconia Chronicles v2 — Game Design Document (GDD)
 
-**Version:** 2025-08-18 • **Owner:** Draconia Team • **Status:** MVP in progress (Shooter‑Idle focus)  
+**Version:** 0.5.0-alpha • **Owner:** Draconia Team • **Status:** Phase 0 Foundation in Progress (Shooter‑Idle focus)  
 **Stack:** TypeScript • SvelteKit • PixiJS (WebGL) • Web Workers • Dexie (IndexedDB) • Workbox PWA
 
 > This GDD follows modern best practices for clarity, being a **living document**, scoped to
@@ -248,7 +248,7 @@ export type SimToUI =
   | { t: 'ready'; version: number }
   | { t: 'tick'; now: number; dtMs: number; mode: SimMode; stats: SimStats }
   | { t: 'bgCovered'; coveredMs: number }
-  | { t: 'log'; level: 'info'|'warn'|'error'; msg: string }
+  | { t: 'log'; level: 'info' | 'warn' | 'error'; msg: string }
   | { t: 'fatal'; reason: string };
 
 export type UIToSim =
@@ -259,7 +259,7 @@ export type UIToSim =
   | { t: 'offline'; elapsedMs: number }
   | { t: 'ability'; id: string };
 
-// W3 Features: Fixed-timestep clock (16.67ms), PCG32 RNG, auto-recovery, 
+// W3 Features: Fixed-timestep clock (16.67ms), PCG32 RNG, auto-recovery,
 // visibility-aware mode switching (fg/bg), offline time accounting
 ```
 
@@ -297,13 +297,23 @@ export type UIToSim =
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
-- ⏳ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
-- ⏳ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
+- ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
+- ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
 - ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
 **Phase 0 Success Criteria**: Base app cold start ≤ 2s; bundle ≤ 200 KB gz; logger ≤ 8 KB gz; deterministic worker sim ≥60fps; Dexie v1 + 3 profiles; structured logging with export; PWA install + update toast; full CI pipeline.
+
+**Version 1.0.0 Criteria**: Complete ALL 4 phases + extended alpha development + beta phase + release candidate phase with all success criteria met. This represents the complete implementation of the GDD vision plus comprehensive testing, balancing, and refinement.
+
+**Development Timeline**:
+
+- **Phase 0-4**: Core GDD implementation (0.5.0-alpha → 0.10.0-alpha)
+- **Extended Alpha**: Gameplay refinement and content expansion (0.10.0-alpha → 0.15.0-alpha)
+- **Beta Phase**: Feature freeze and stability (0.15.0-alpha → 0.20.0-beta)
+- **Release Candidate**: Final validation (0.20.0-beta → 0.25.0-rc)
+- **Full Release**: Production deployment (0.25.0-rc → 1.0.0)
 
 **Phase 1+ — Game Content (After Phase 0)**
 

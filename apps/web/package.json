@@ -9,7 +9,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "pixi.js": "^8.4.1"
+    "pixi.js": "^8.4.1",
+    "@draconia/logger": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.0",

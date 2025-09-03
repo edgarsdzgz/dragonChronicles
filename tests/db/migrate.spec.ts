@@ -17,19 +17,23 @@ import {
 import { putSaveAtomic } from '../../packages/db/src/repo.js';
 import { generateChecksum } from '../../packages/db/src/codec.js';
 import type { SaveV1, ProfileV1 } from '../../packages/db/src/schema.v1.js';
-import { clearDatabase } from './setup.js';
+// Database clearing handled by global setup
 
 describe('Migration System', () => {
   beforeEach(async () => {
     // Initialize fresh database for each test
     await initializeDatabase();
     // Clear all data for proper test isolation
-    await clearDatabase();
+    await db.saves.clear();
+    await db.meta.clear();
+    await db.logs.clear();
   });
 
   afterEach(async () => {
     // Clean up database after each test
-    await clearDatabase();
+    await db.saves.clear();
+    await db.meta.clear();
+    await db.logs.clear();
     await closeDatabase();
   });
 
