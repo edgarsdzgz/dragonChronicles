@@ -83,6 +83,18 @@ try {
   secIntegration.fail('logger↔sim wiring', err);
 }
 
+// W5 Logger Integration Tests
+try {
+  const loggerIntegrationResult = run('node', ['tests/test-logger-integration.mjs'], { BUILD_ONCE: '1' });
+  if (loggerIntegrationResult.status === 0) {
+    secIntegration.pass('W5 logger integration');
+  } else {
+    secIntegration.fail('W5 logger integration', loggerIntegrationResult.stderr);
+  }
+} catch (err) {
+  secIntegration.fail('W5 logger integration', err);
+}
+
 // E2E tests section
 const secE2E = r.section('E2E Tests');
 try {

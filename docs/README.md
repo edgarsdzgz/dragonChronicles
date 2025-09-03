@@ -18,6 +18,8 @@ Development standards, policies, and technical guidelines:
 
 - [Testing Strategy](./engineering/testing.md) - Test layers, runner behavior, execution guide
 - [TypeScript Standards](./engineering/typescript.md) - Strict mode policy, examples, best practices
+- [Database Persistence](./engineering/database-persistence.md) - Dexie integration, schema design, atomic operations
+- [Structured Logging](./engineering/structured-logging.md) - Ring buffer, Dexie sink, PII redaction, performance monitoring
 
 ### 🏛️ Architectural Decision Records (ADRs)
 

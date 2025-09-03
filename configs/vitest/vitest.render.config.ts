@@ -8,11 +8,18 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'node',
+    // Use jsdom for render tests that need DOM access
+    environment: 'jsdom',
+    environmentOptions: {
+      jsdom: {
+        pretendToBeVisual: true,
+        // Enable IndexedDB for db tests
+        resources: 'usable',
+      },
+    },
     globals: true,
-    include: ['tests/db/**/*.spec.ts'],
-    // Use global setup with absolute path
-    setupFiles: [resolve(__dirname, '../../tests/setup-global.ts')],
+    include: ['tests/render/**/*.spec.ts'],
+    setupFiles: ['tests/setup-global.ts'], // Still use our global setup
     fakeTimers: {
       toFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'Date'],
     },

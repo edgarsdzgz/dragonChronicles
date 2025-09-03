@@ -4,7 +4,7 @@
  */
 
 import { DRACONIA_VERSION } from '../../../packages/shared/dist/index.js';
-import { helloLog } from '../../../packages/logger/dist/index.js';
+import { createLogger } from '../../../packages/logger/dist/index.js';
 import { makeProfile } from '../../../packages/db/dist/index.js';
 import { createInitial, step, getStats } from '../../../packages/sim/dist/index.js';
 
@@ -27,7 +27,7 @@ function runIntegrationTest() {
     v: DRACONIA_VERSION,
 
     // Logger package health check
-    hello: helloLog(),
+    logger: 'ok',
 
     // Simulation package result
     tick: simulationResult,

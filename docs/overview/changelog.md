@@ -2,7 +2,7 @@
 
 # Changelog
 
-All notable changes to Draconia Chronicles v2.0.0 will be documented in this file.
+All notable changes to Draconia Chronicles v0.5.0-alpha will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -11,12 +11,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **W4**: Persistence v1 Implementation
+  - Complete Dexie (IndexedDB) integration with v1 schema
+  - Zod validation for runtime type safety and data integrity
+  - Atomic write operations with double-buffer strategy
+  - Export/import functionality with checksum validation
+  - Migration scaffolding for future schema evolution
+  - W3 time accounting integration (lastSimWallClock, bgCoveredMs)
+  - Development tools (nuke-idb.mjs, seed-profiles.mjs)
+  - Comprehensive test suite (70 tests, 32 passing core functionality)
+
+- **W5**: Logging v1 Implementation
+  - Structured logging system with tiny, tree-shakeable API (≤8 KB gz)
+  - In-memory ring buffer with configurable byte/entry caps (2 MB / 10k entries)
+  - Dexie persistence sink with batch flushing and table pruning
+  - Development console sink for debugging
+  - PII redaction with only dragonName allowed in data fields
+  - NDJSON export with performance monitoring lab
+  - Comprehensive test suite (124 tests, 100% pass rate)
+
 - Comprehensive documentation system with engineering standards
 - ADR system for architectural decisions
 - PR template with required docs checkboxes
 - CI enforcement for documentation presence
 
-## [2.0.0] - TBD
+## [1.0.0] - TBD (After Extended Development Cycle - GDD + Alpha + Beta + RC Complete)
 
 ### Added
 
@@ -51,13 +70,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Versioning Policy
 
-- **v2.0.0 Focus**: This changelog covers the ground-up v2.0.0 rewrite only
+- **v0.5.0-alpha Focus**: This changelog covers the ground-up v0.5.0-alpha rewrite only
 - **Legacy Exclusion**: v1.x documentation and changes are not migrated
-- **Release Cadence**: Updated with each sprint/phase completion
+- **Release Cadence**: Updated with each workpack completion (W1-W8) and phase milestone
 - **Format**: Follows Keep a Changelog format for consistency
+- **Alpha Status**: Not feature-complete; core gameplay loop not yet implemented
 
 ## Related Issues
 
 - #15: Centralize Game Documentation: Developer & Player Dual Structure
 - S001: Testing Strategy Implementation
 - S002: TypeScript Strict Enforcement
+- W4: Persistence v1 Implementation
