@@ -8,17 +8,21 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { db, initializeDatabase, closeDatabase } from '../../packages/db/src/db.js';
 import { putSaveAtomic, getActiveSave } from '../../packages/db/src/repo.js';
-import { generateChecksum } from '../../packages/db/src/codec.js';
+import { generateChecksumSync } from '../../packages/db/src/codec.js';
 import type { SaveV1, ProfileV1 } from '../../packages/db/src/schema.v1.js';
+import { clearDatabase } from './setup.js';
 
 describe('Atomic Write Operations', () => {
   beforeEach(async () => {
     // Initialize fresh database for each test
     await initializeDatabase();
+    // Clear all data for proper test isolation
+    await clearDatabase();
   });
 
   afterEach(async () => {
     // Clean up database after each test
+    await clearDatabase();
     await closeDatabase();
   });
 
@@ -52,7 +56,7 @@ describe('Atomic Write Operations', () => {
       // Verify save was written
       const savedSave = await getActiveSave('test-profile-1');
       expect(savedSave).toBeDefined();
-      expect(savedSave).toEqual(save);
+      expect(savedSave?.data).toEqual(save);
     });
 
     it('should update active profile pointer', async () => {
@@ -64,7 +68,7 @@ describe('Atomic Write Operations', () => {
       // Verify save can be retrieved (indicating pointer was set)
       const savedSave = await getActiveSave('test-profile-1');
       expect(savedSave).toBeDefined();
-      expect(savedSave?.profiles[0].id).toBe('test-profile-1');
+      expect(savedSave?.data.profiles[0].id).toBe('test-profile-1');
     });
 
     it('should prune old saves to keep only 3 backups', async () => {
@@ -78,8 +82,8 @@ describe('Atomic Write Operations', () => {
             progress: { ...profile.progress, land: i + 1 },
           },
         ]);
-        const checksum = generateChecksum(save);
-        await putSaveAtomic('test-profile-1', save, checksum);
+        const checksum = generateChecksumSync(JSON.stringify(save));
+        await putSaveAtomic('test-profile-1', save, 3, checksum);
       }
 
       // Verify only 3 saves remain
@@ -98,8 +102,8 @@ describe('Atomic Write Operations', () => {
       const save1 = createTestSave([profile1]);
       const save2 = createTestSave([profile2]);
 
-      const checksum1 = generateChecksum(save1);
-      const checksum2 = generateChecksum(save2);
+      const checksum1 = generateChecksumSync(JSON.stringify(save1));
+      const checksum2 = generateChecksumSync(JSON.stringify(save2));
 
       // Write both saves concurrently
       await Promise.all([
@@ -118,7 +122,7 @@ describe('Atomic Write Operations', () => {
     it('should maintain data integrity during transaction failures', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = generateChecksumSync(JSON.stringify(save));
 
       // Write initial save
       await putSaveAtomic('test-profile-1', save, checksum);
@@ -148,8 +152,8 @@ describe('Atomic Write Operations', () => {
             progress: { ...profile.progress, land: i + 1 },
           },
         ]);
-        const checksum = generateChecksum(save);
-        await putSaveAtomic('test-profile-1', save, checksum);
+        const checksum = generateChecksumSync(JSON.stringify(save));
+        await putSaveAtomic('test-profile-1', save, 3, checksum);
       }
 
       const activeSave = await getActiveSave('test-profile-1');
@@ -157,9 +161,9 @@ describe('Atomic Write Operations', () => {
       expect(activeSave?.data.profiles[0].progress.land).toBe(3);
     });
 
-    it('should return undefined for non-existent profile', async () => {
+    it('should return null for non-existent profile', async () => {
       const activeSave = await getActiveSave('non-existent-profile');
-      expect(activeSave).toBeUndefined();
+      expect(activeSave).toBeNull();
     });
 
     it('should handle profile with multiple saves correctly', async () => {
@@ -175,8 +179,8 @@ describe('Atomic Write Operations', () => {
           },
         ]);
         saves.push(save);
-        const checksum = generateChecksum(save);
-        await putSaveAtomic('test-profile-1', save, checksum);
+        const checksum = generateChecksumSync(JSON.stringify(save));
+        await putSaveAtomic('test-profile-1', save, 3, checksum);
       }
 
       const activeSave = await getActiveSave('test-profile-1');
@@ -190,18 +194,19 @@ describe('Atomic Write Operations', () => {
     it('should maintain referential integrity between saves and meta tables', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = generateChecksumSync(JSON.stringify(save));
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save, 3, checksum);
 
       // Verify save exists
       const saves = await db.saves.where('profileId').equals('test-profile-1').toArray();
       expect(saves).toHaveLength(1);
 
       // Verify meta entry exists
-      const metaEntry = await db.meta.get('active_profile');
+      const metaEntry = await db.meta.get('profile_pointers');
       expect(metaEntry).toBeDefined();
-      expect(metaEntry?.value).toBe('test-profile-1');
+      const pointers = JSON.parse(metaEntry?.value || '{}');
+      expect(pointers['test-profile-1']).toBeDefined();
 
       // Verify the save referenced by meta actually exists
       const referencedSave = await db.saves.get(saves[0].id!);
@@ -211,16 +216,16 @@ describe('Atomic Write Operations', () => {
     it('should handle database corruption gracefully', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = generateChecksumSync(JSON.stringify(save));
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save, 3, checksum);
 
       // Simulate corruption by deleting the save but keeping the meta entry
       await db.saves.where('profileId').equals('test-profile-1').delete();
 
-      // Should handle gracefully and return undefined
+      // Should handle gracefully and return null
       const activeSave = await getActiveSave('test-profile-1');
-      expect(activeSave).toBeUndefined();
+      expect(activeSave).toBeNull();
     });
   });
 
@@ -236,9 +241,9 @@ describe('Atomic Write Operations', () => {
       };
 
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = generateChecksumSync(JSON.stringify(save));
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save, 3, checksum);
 
       const savedSave = await getActiveSave('test-profile-1');
       expect(savedSave?.data.profiles[0].sim.lastSimWallClock).toBe(wallClock);
@@ -248,9 +253,9 @@ describe('Atomic Write Operations', () => {
     it('should handle W3 time accounting updates correctly', async () => {
       const profile = createTestProfile('test-profile-1', 'Test Dragon');
       const save = createTestSave([profile]);
-      const checksum = generateChecksum(save);
+      const checksum = generateChecksumSync(JSON.stringify(save));
 
-      await putSaveAtomic('test-profile-1', save, checksum);
+      await putSaveAtomic('test-profile-1', save, 3, checksum);
 
       // Update W3 time accounting
       const updatedProfile = {
@@ -261,9 +266,9 @@ describe('Atomic Write Operations', () => {
         },
       };
       const updatedSave = createTestSave([updatedProfile]);
-      const updatedChecksum = generateChecksum(updatedSave);
+      const updatedChecksum = generateChecksumSync(JSON.stringify(updatedSave));
 
-      await putSaveAtomic('test-profile-1', updatedSave, updatedChecksum);
+      await putSaveAtomic('test-profile-1', updatedSave, 3, updatedChecksum);
 
       const savedSave = await getActiveSave('test-profile-1');
       expect(savedSave?.data.profiles[0].sim.bgCoveredMs).toBe(10000);

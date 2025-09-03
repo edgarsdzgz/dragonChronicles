@@ -5,8 +5,8 @@
  * for export/import functionality with tamper detection.
  */
 
-import type { SaveV1, ExportFileV1 } from './schema.v1.js';
-import { validateSaveV1, validateExportFileV1 } from './schema.v1.js';
+import type { SaveV1, ExportDataV1, ExportFileV1 } from './schema.v1.js';
+import { validateSaveV1, validateExportDataV1, validateExportFileV1 } from './schema.v1.js';
 
 // ============================================================================
 // Checksum Generation
@@ -85,10 +85,11 @@ export async function validateChecksum(data: string, expectedChecksum: string): 
  * @param saveData - Save data to encode
  * @returns ExportFileV1 with checksum validation
  */
-export async function encodeExportV1(saveData: SaveV1): Promise<ExportFileV1> {
+export async function encodeExportV1(saveData: SaveV1 | ExportDataV1): Promise<ExportFileV1> {
   try {
-    // Validate save data
-    const validatedData = validateSaveV1(saveData);
+    // Validate save data (use ExportDataV1 validation for empty profiles)
+    const validatedData =
+      saveData.profiles.length === 0 ? validateExportDataV1(saveData) : validateSaveV1(saveData);
 
     // Create export structure
     const exportData: Omit<ExportFileV1, 'checksum'> = {

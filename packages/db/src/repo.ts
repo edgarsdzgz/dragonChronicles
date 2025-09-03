@@ -117,7 +117,12 @@ export async function putSaveAtomic(
               .then((saves) => {
                 // Filter out the current save from pruning
                 const savesToPrune = saves.filter((save) => save.id !== saveId);
-                const savesToDelete = savesToPrune.slice(keepBackups - 1); // -1 because we want to keep the current save
+                // We want to keep 'keepBackups' saves total (including current save)
+                // So if we have at least (keepBackups - 1) saves to prune, delete the oldest ones
+                const savesToDelete =
+                  savesToPrune.length >= keepBackups - 1
+                    ? savesToPrune.slice(0, savesToPrune.length - (keepBackups - 1))
+                    : [];
 
                 const deletePromises = savesToDelete.map((save) => db.saves.delete(save.id!));
                 return Promise.all(deletePromises).then(() => saveId);

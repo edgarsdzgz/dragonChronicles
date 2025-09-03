@@ -1,6 +1,6 @@
 /**
  * Schema v1 types and Zod validators
- * 
+ *
  * Defines the data structures for save data, profiles, and export formats
  * with comprehensive Zod validation for runtime type safety.
  */
@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 /**
  * W3-compatible time accounting fields
- * 
+ *
  * Critical for preventing double-counting of background simulation time
  * when offline simulation is applied.
  */
@@ -130,7 +130,7 @@ export interface ExportFileV1 {
  */
 export const W3TimeAccountingSchema = z.object({
   lastSimWallClock: z.number().int().min(0),
-  bgCoveredMs: z.number().int().min(0)
+  bgCoveredMs: z.number().int().min(0),
 });
 
 /**
@@ -139,7 +139,7 @@ export const W3TimeAccountingSchema = z.object({
 export const ProfileProgressSchema = z.object({
   land: z.number().int().min(0),
   ward: z.number().int().min(0),
-  distanceM: z.number().int().min(0)
+  distanceM: z.number().int().min(0),
 });
 
 /**
@@ -147,7 +147,7 @@ export const ProfileProgressSchema = z.object({
  */
 export const ProfileCurrenciesSchema = z.object({
   arcana: z.number().int().min(0),
-  gold: z.number().int().min(0)
+  gold: z.number().int().min(0),
 });
 
 /**
@@ -156,7 +156,7 @@ export const ProfileCurrenciesSchema = z.object({
 export const ProfileEnchantsSchema = z.object({
   firepower: z.number().int().min(0),
   scales: z.number().int().min(0),
-  tier: z.number().int().min(0)
+  tier: z.number().int().min(0),
 });
 
 /**
@@ -165,7 +165,7 @@ export const ProfileEnchantsSchema = z.object({
 export const ProfileStatsSchema = z.object({
   playtimeS: z.number().int().min(0),
   deaths: z.number().int().min(0),
-  totalDistanceM: z.number().int().min(0)
+  totalDistanceM: z.number().int().min(0),
 });
 
 /**
@@ -173,7 +173,7 @@ export const ProfileStatsSchema = z.object({
  */
 export const ProfileLeaderboardSchema = z.object({
   highestWard: z.number().int().min(0),
-  fastestBossS: z.number().int().min(0)
+  fastestBossS: z.number().int().min(0),
 });
 
 /**
@@ -189,24 +189,38 @@ export const ProfileV1Schema = z.object({
   enchants: ProfileEnchantsSchema,
   stats: ProfileStatsSchema,
   leaderboard: ProfileLeaderboardSchema,
-  sim: W3TimeAccountingSchema
+  sim: W3TimeAccountingSchema,
 });
 
 /**
  * Settings schema
  */
 export const SettingsSchema = z.object({
-  a11yReducedMotion: z.boolean()
+  a11yReducedMotion: z.boolean(),
 });
 
 /**
- * Complete save data schema
+ * Complete save data schema (requires at least 1 profile)
  */
 export const SaveV1Schema = z.object({
   version: z.literal(1),
   profiles: z.array(ProfileV1Schema).min(1).max(6),
-  settings: SettingsSchema
+  settings: SettingsSchema,
 });
+
+/**
+ * Export data schema (allows empty profiles for empty database exports)
+ */
+export const ExportDataV1Schema = z.object({
+  version: z.literal(1),
+  profiles: z.array(ProfileV1Schema).min(0).max(6),
+  settings: SettingsSchema,
+});
+
+/**
+ * Export data type (allows empty profiles for empty database exports)
+ */
+export type ExportDataV1 = z.infer<typeof ExportDataV1Schema>;
 
 /**
  * Save row schema
@@ -217,7 +231,7 @@ export const SaveRowV1Schema = z.object({
   version: z.literal(1),
   data: SaveV1Schema,
   createdAt: z.number().int().min(0),
-  checksum: z.string().min(1)
+  checksum: z.string().min(1),
 });
 
 /**
@@ -226,7 +240,7 @@ export const SaveRowV1Schema = z.object({
 export const MetaRowSchema = z.object({
   key: z.string().min(1),
   value: z.string(),
-  updatedAt: z.number().int().min(0)
+  updatedAt: z.number().int().min(0),
 });
 
 /**
@@ -239,7 +253,7 @@ export const LogRowSchema = z.object({
   source: z.enum(['ui', 'worker', 'render', 'net']),
   message: z.string().min(1),
   data: z.record(z.string(), z.unknown()).optional(),
-  profileId: z.string().min(1).optional()
+  profileId: z.string().min(1).optional(),
 });
 
 /**
@@ -249,7 +263,7 @@ export const ExportFileV1Schema = z.object({
   fileVersion: z.literal(1),
   exportedAt: z.number().int().min(0),
   checksum: z.string().min(1),
-  data: SaveV1Schema
+  data: SaveV1Schema,
 });
 
 // ============================================================================
@@ -261,6 +275,13 @@ export const ExportFileV1Schema = z.object({
  */
 export function validateSaveV1(data: unknown): SaveV1 {
   return SaveV1Schema.parse(data);
+}
+
+/**
+ * Validates export data (allows empty profiles)
+ */
+export function validateExportDataV1(data: unknown): ExportDataV1 {
+  return ExportDataV1Schema.parse(data);
 }
 
 /**
@@ -284,7 +305,7 @@ export function validateSaveRowV1(data: unknown): SaveRowV1 {
   const parsed = SaveRowV1Schema.parse(data);
   return {
     ...parsed,
-    id: parsed.id || undefined
+    id: parsed.id || undefined,
   };
 }
 
@@ -302,6 +323,6 @@ export function validateLogRow(data: unknown): LogRow {
   const parsed = LogRowSchema.parse(data);
   return {
     ...parsed,
-    id: parsed.id || undefined
+    id: parsed.id || undefined,
   };
 }

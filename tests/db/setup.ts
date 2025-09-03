@@ -61,3 +61,19 @@ if (typeof global.crypto === 'undefined') {
     },
   } as any;
 }
+
+/**
+ * Clear all database data between tests for proper isolation
+ */
+export async function clearDatabase(): Promise<void> {
+  const { db } = await import('../../packages/db/src/db.js');
+
+  try {
+    await db.saves.clear();
+    await db.meta.clear();
+    await db.logs.clear();
+  } catch (error) {
+    console.warn('Failed to clear database:', error);
+    // Don't throw - clearing errors shouldn't break tests
+  }
+}
