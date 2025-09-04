@@ -9,7 +9,7 @@
   onMount(async () => {
     handle = await mountPixi(canvas);
   });
-  
+
   onDestroy(() => handle?.destroy());
 </script>
 

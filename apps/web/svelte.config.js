@@ -8,8 +8,8 @@ const config = {
     adapter: adapter(),
     paths: { base },
     prerender: { entries: ['*'] },
-    alias: { $lib: 'src/lib' }
-  }
+    alias: { $lib: 'src/lib' },
+  },
 };
 
 export default config;
