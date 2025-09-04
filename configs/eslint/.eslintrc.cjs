@@ -1,5 +1,4 @@
 module.exports = {
-  root: true,
   extends: [
     '@eslint/js',
     'eslint:recommended',
@@ -59,16 +58,60 @@ module.exports = {
       }
     },
     {
+      // Browser environment for logger (uses document, window)
+      files: ['packages/logger/**/*.ts'],
+      env: {
+        node: true,
+        browser: true,
+        es2022: true
+      },
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        performance: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly'
+      }
+    },
+    {
+      // Browser environment for sim (uses performance, requestAnimationFrame, etc.)
+      files: ['packages/sim/**/*.ts'],
+      env: {
+        node: true,
+        browser: true,
+        es2022: true
+      },
+      globals: {
+        performance: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly'
+      }
+    },
+    {
       // Test files environment
       files: ['tests/**/*.{ts,js,mjs}'],
       env: {
         node: true,
+        browser: true,
         es2022: true
       },
       globals: {
         Blob: 'readonly',
         crypto: 'readonly',
-        CustomEvent: 'readonly'
+        CustomEvent: 'readonly',
+        performance: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        URL: 'readonly',
+        TextEncoder: 'readonly',
+        TextDecoder: 'readonly',
+        Event: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly'
       }
     }
   ]

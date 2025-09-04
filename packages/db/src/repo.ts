@@ -6,9 +6,9 @@
  */
 
 import { db } from './db.js';
-import type { SaveV1, SaveRowV1, ProfileV1, MetaRow } from './schema.v1.js';
-import { validateSaveV1, validateSaveRowV1, validateMetaRow } from './schema.v1.js';
-import { generateChecksum, generateChecksumSync } from './codec.js';
+import type { SaveV1, SaveRowV1, MetaRow } from './schema.v1.js';
+import { validateSaveV1, validateSaveRowV1 } from './schema.v1.js';
+import { generateChecksumSync } from './codec.js';
 
 // ============================================================================
 // Metadata Keys
@@ -92,45 +92,42 @@ export async function putSaveAtomic(
       checksum,
     };
 
-    // Use transaction without async function
-    const result = await db.transaction('rw', [db.saves, db.meta], () => {
+    // Use flattened async/await for better readability and performance
+    const result = await db.transaction('rw', [db.saves, db.meta], async () => {
       // Insert new save row
-      return db.saves.add(newSaveRow).then((saveId) => {
-        // Update profile pointer atomically
-        return db.meta.get(META_KEYS.PROFILE_POINTERS).then((pointer) => {
-          const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
-          pointers[profileId] = saveId;
+      const saveId = await db.saves.add(newSaveRow);
 
-          const metaRow: MetaRow = {
-            key: META_KEYS.PROFILE_POINTERS,
-            value: JSON.stringify(pointers),
-            updatedAt: Date.now(),
-          };
+      // Update profile pointer atomically
+      const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
+      const pointers: Record<string, number> = pointer ? JSON.parse(pointer.value) : {};
+      pointers[profileId] = saveId;
 
-          return db.meta.put(metaRow).then(() => {
-            // Prune old backups (exclude the current save from pruning)
-            return db.saves
-              .where('profileId')
-              .equals(profileId)
-              .reverse()
-              .sortBy('createdAt')
-              .then((saves) => {
-                // Filter out the current save from pruning
-                const savesToPrune = saves.filter((save) => save.id !== saveId);
-                // We want to keep 'keepBackups' saves total (including current save)
-                // So if we have at least (keepBackups - 1) saves to prune, delete the oldest ones
-                const savesToDelete =
-                  savesToPrune.length >= keepBackups - 1
-                    ? savesToPrune.slice(0, savesToPrune.length - (keepBackups - 1))
-                    : [];
+      const metaRow: MetaRow = {
+        key: META_KEYS.PROFILE_POINTERS,
+        value: JSON.stringify(pointers),
+        updatedAt: Date.now(),
+      };
 
-                const deletePromises = savesToDelete.map((save) => db.saves.delete(save.id!));
-                return Promise.all(deletePromises).then(() => saveId);
-              });
-          });
-        });
-      });
+      await db.meta.put(metaRow);
+
+      // Optimized backup pruning with single query
+      if (keepBackups > 1) {
+        const saves = await db.saves
+          .where('profileId')
+          .equals(profileId)
+          .reverse()
+          .sortBy('createdAt');
+
+        // Keep only the most recent keepBackups saves (including the current one)
+        if (saves.length > keepBackups) {
+          const savesToDelete = saves.slice(keepBackups);
+          await db.saves.bulkDelete(savesToDelete.map((save) => save.id!));
+        }
+      }
+
+      return saveId;
     });
+
     return result;
   } catch (error) {
     console.error('putSaveAtomic failed:', error);
@@ -199,7 +196,7 @@ export async function getAllProfileIds(): Promise<string[]> {
  * @param profileId - Profile ID
  * @param saveId - Save row ID to point to
  */
-async function updateProfilePointer(profileId: string, saveId: number): Promise<void> {
+async function _updateProfilePointer(profileId: string, saveId: number): Promise<void> {
   try {
     // Get current pointers
     const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
@@ -252,13 +249,13 @@ export async function getActiveSaveId(profileId: string): Promise<number | null>
  * @param profileId - Profile ID to prune backups for
  * @param keepCount - Number of backups to keep
  */
-async function pruneBackups(profileId: string, keepCount: number): Promise<void> {
+async function _pruneBackups(profileId: string, keepCount: number): Promise<void> {
   try {
     // Get all saves for this profile, sorted by creation time (newest first)
     const saves = await db.saves.where('profileId').equals(profileId).reverse().sortBy('createdAt');
 
     // Keep the most recent saves
-    const savesToKeep = saves.slice(0, keepCount);
+    const _savesToKeep = saves.slice(0, keepCount);
     const savesToDelete = saves.slice(keepCount);
 
     // Delete old saves
