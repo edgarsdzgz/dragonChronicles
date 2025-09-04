@@ -118,10 +118,9 @@ export async function putSaveAtomic(
           .reverse()
           .sortBy('createdAt');
 
-        // Filter and limit in memory for now (Dexie doesn't support .limit() on queries)
-        const savesToDelete = saves.filter((save) => save.id !== saveId).slice(0, keepBackups - 1);
-
-        if (savesToDelete.length > 0) {
+        // Keep only the most recent keepBackups saves (including the current one)
+        if (saves.length > keepBackups) {
+          const savesToDelete = saves.slice(keepBackups);
           await db.saves.bulkDelete(savesToDelete.map((save) => save.id!));
         }
       }
