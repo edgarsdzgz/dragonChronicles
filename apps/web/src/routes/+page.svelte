@@ -15,13 +15,13 @@
   });
 </script>
 
-<svelte:fragment slot="hud">
+{#if $hudEnabled}
   <div
     style="position:absolute; top:8px; left:8px; padding:6px 10px; background:rgba(0,0,0,.55); color:#fff; font:12px/1.2 system-ui; border-radius:6px;"
   >
     HUD on — FPS: {fps}
   </div>
-</svelte:fragment>
+{/if}
 
 {#if !$hudEnabled}
   <div
