@@ -2,6 +2,8 @@
   import { onMount, onDestroy } from 'svelte';
   import { mountPixi } from '$lib/pixi/app';
   import { hudEnabled } from '$lib/stores/flags';
+  import UpdateToast from '$lib/pwa/UpdateToast.svelte';
+  import InstallPrompt from '$lib/pwa/InstallPrompt.svelte';
 
   let canvas: HTMLCanvasElement;
   let handle: Awaited<ReturnType<typeof mountPixi>> | null = null;
@@ -9,7 +11,7 @@
   onMount(async () => {
     handle = await mountPixi(canvas);
   });
-  
+
   onDestroy(() => handle?.destroy());
 </script>
 
@@ -19,5 +21,11 @@
     <slot name="hud" />
   {/if}
 </div>
+
+<!-- PWA Update Toast -->
+<UpdateToast />
+
+<!-- PWA Install Prompt -->
+<InstallPrompt />
 
 <slot />
