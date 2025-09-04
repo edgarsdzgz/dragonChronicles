@@ -54,12 +54,29 @@
     "test:lint:workspace": "node scripts/test-lint-workspace.mjs",
     "test:lint:e2e": "node scripts/test-precommit-e2e.mjs",
     "test:lint:all": "pnpm run test:lint:unit && pnpm run test:lint:workspace && pnpm run test:lint:e2e",
-    "size:check": "node scripts/size-budgets.mjs"
+    "size:check": "node scripts/size-budgets.mjs",
+    "bundle:analyze": "node scripts/bundle-analyzer.mjs",
+    "bundle:optimize": "node scripts/bundle-optimizer.mjs",
+    "bundle:imports": "node scripts/bundle-import-analyzer.mjs",
+    "bundle:size": "node scripts/bundle-size-analyzer.mjs",
+    "bundle:advanced": "node scripts/advanced-bundle-analyzer.mjs",
+    "test:phase6": "node scripts/phase6-performance-test.mjs",
+    "analyze:tree-shaking": "node scripts/advanced-tree-shaking.mjs",
+    "analyze:preloading": "node scripts/bundle-preloading-strategies.mjs",
+    "implement:phase7": "node scripts/implement-tree-shaking-optimizations.mjs",
+    "implement:phase8": "node scripts/implement-preloading-strategies-simple.mjs",
+    "performance:monitor": "node scripts/performance-monitor.mjs",
+    "optimize:backup": "node -e \"import('./packages/db/dist/backup-manager.js').then(m => console.log('Backup manager loaded:', Object.keys(m)))\"",
+    "test:optimizations": "pnpm run build:ci && pnpm run test:node && pnpm run bundle:analyze && pnpm run bundle:optimize && pnpm run performance:monitor",
+    "validate:tree-shaking": "node scripts/validate-tree-shaking.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.33.0",
+    "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.27.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@types/node": "^20.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.33.0",
@@ -75,6 +92,7 @@
     "svelte-eslint-parser": "^1.3.1",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.40.0",
+    "vite": "^4.5.0",
     "vitest": "^1.6.0"
   },
   "lint-staged": {
