@@ -5,8 +5,8 @@
     "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "target": "ESNext",
     "strict": true,
     "skipLibCheck": true,
@@ -16,9 +16,7 @@
     "verbatimModuleSyntax": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"]
   },
-  "references": [
-    { "path": "../shared" }
-  ],
+  "references": [{ "path": "../shared" }],
   "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": ["node_modules", "dist"]
 }

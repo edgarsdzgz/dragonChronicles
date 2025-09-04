@@ -1,4 +1,4 @@
-import type { LogEvent } from './types';
+import type { LogEvent } from './types.js';
 
 // Only dragon name is allowed as player-typed PII per policy.
 // Strategy: remove suspicious fields from `data` (e.g. raw input text), unless whitelisted.

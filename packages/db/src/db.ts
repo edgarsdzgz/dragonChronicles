@@ -5,7 +5,7 @@
  * for Draconia Chronicles persistence layer.
  */
 
-import Dexie, { type Table } from 'dexie';
+import { Dexie, type Table } from 'dexie';
 import type { SaveRowV1, MetaRow, LogRow } from './schema.v1.js';
 
 /**

@@ -1,4 +1,4 @@
-import type { LogEvent } from '../types';
+import type { LogEvent } from '../types.js';
 import { db, type LogRow } from '@draconia/db'; // W4 tables
 
 export type DexieSink = {

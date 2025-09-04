@@ -46,6 +46,53 @@ When reporting work completion:
 3. **Provide specific details** - Include exact commands, file paths, and error messages
 4. **Focus on blockers** - Clearly identify what still needs to be resolved
 
+### Module Resolution and Package Exports
+
+When working with workspace packages, ensure proper module resolution:
+
+1. **Package Exports**: Always point to built files, not source files
+
+   ```json
+   // ✅ Correct - points to built files
+   "exports": {
+     ".": {
+       "types": "./dist/index.d.ts",
+       "import": "./dist/index.js",
+       "require": "./dist/index.js"
+     }
+   }
+
+   // ❌ Incorrect - points to source files
+   "exports": {
+     ".": "./src/index.ts"
+   }
+   ```
+
+2. **Import Extensions**: Use `.js` extensions in TypeScript files for NodeNext resolution
+
+   ```typescript
+   // ✅ Correct
+   import { db } from './db.js';
+
+   // ❌ Incorrect
+   import { db } from './db';
+   ```
+
+3. **Module Resolution**: Use `NodeNext` for consistent resolution across packages
+   ```json
+   // ✅ Correct
+   "compilerOptions": {
+     "moduleResolution": "NodeNext"
+   }
+   ```
+
+### Documentation and Planning Standards
+
+1. **Documentation Location** - All documentation must be created and organized in the `/docs/` folder
+2. **Planning Documents** - All new planning documents (workpack plans, feature plans, etc.) go in `/docs/` folder
+3. **File Organization** - Use appropriate subdirectories within `/docs/` for different types of documentation
+4. **Cross-References** - All documentation should be properly cross-referenced and indexed
+
 ### Build and Test Standards
 
 1. **BUILD_ONCE pattern** - All test files should check `!process.env.BUILD_ONCE` before running builds

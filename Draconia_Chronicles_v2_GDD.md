@@ -299,7 +299,7 @@ export type UIToSim =
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
-- ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
+- ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast) + Code Optimization (8-phase framework, performance improvements)
 - ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
@@ -319,7 +319,7 @@ export type UIToSim =
 
 - **Core Game Loop**: Shooter-idle mechanics, combat, progression, enchants
 - **Meta Systems**: Market/city, collections, automation
-- **Polish & Launch**: Performance optimization, accessibility, documentation
+- **Polish & Launch**: Performance optimization (see [docs/optimization/](./docs/optimization/)), accessibility, documentation
 
 ---
 

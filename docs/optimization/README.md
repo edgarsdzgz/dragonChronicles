@@ -7,6 +7,8 @@ This directory contains documentation for the comprehensive 8-phase code optimiz
 - **[OPTIMIZATION_JOURNEY_SUMMARY.md](./OPTIMIZATION_JOURNEY_SUMMARY.md)** - Complete summary of the optimization journey
 - **[OPTIMIZATION_BLUEPRINT.md](./OPTIMIZATION_BLUEPRINT.md)** - Reusable blueprint for future optimization efforts
 - **[CODE_OPTIMIZATION_GUIDE.md](./CODE_OPTIMIZATION_GUIDE.md)** - Comprehensive optimization guide and reference
+- **[OPTIMIZATION_SUMMARY.md](./OPTIMIZATION_SUMMARY.md)** - Detailed implementation summary of completed optimizations
+- **[ISSUE_CodeReview_Optimization.md](./ISSUE_CodeReview_Optimization.md)** - Original optimization issue and planning document
 
 ## 🎯 Key Achievements
 

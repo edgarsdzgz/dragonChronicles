@@ -1,4 +1,4 @@
-import type { Logger } from './types';
+import type { Logger } from './types.js';
 
 export function attachExportButton(el: HTMLElement, logger: Logger) {
   el.addEventListener('click', async () => {

@@ -1,10 +1,10 @@
-import type { Logger, LogEvent } from './types';
-import { approxJsonBytesFast } from './util/bytes-optimized';
-import { toNDJSON } from './util/ndjson';
-import { createConsoleSink } from './sinks/console';
-import { createDexieSink, type DexieSink } from './sinks/dexie';
-import { redactEvent } from './redact';
-import { CircularBuffer } from './circular-buffer';
+import type { Logger, LogEvent } from './types.js';
+import { approxJsonBytesFast } from './util/bytes-optimized.js';
+import { toNDJSON } from './util/ndjson.js';
+import { createConsoleSink } from './sinks/console.js';
+import { createDexieSink, type DexieSink } from './sinks/dexie.js';
+import { redactEvent } from './redact.js';
+import { CircularBuffer } from './circular-buffer.js';
 
 type Options = {
   maxBytes?: number; // default 2MB
