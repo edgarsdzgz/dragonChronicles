@@ -6,9 +6,6 @@
 			],
 			"$lib/*": [
 				"../src/lib/*"
-			],
-			"$app/types": [
-				"./types/index.d.ts"
 			]
 		},
 		"rootDirs": [
@@ -41,12 +38,6 @@
 		"../tests/**/*.svelte"
 	],
 	"exclude": [
-		"../node_modules/**",
-		"../src/service-worker.js",
-		"../src/service-worker/**/*.js",
-		"../src/service-worker.ts",
-		"../src/service-worker/**/*.ts",
-		"../src/service-worker.d.ts",
-		"../src/service-worker/**/*.d.ts"
+		"../node_modules/**"
 	]
 }

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { onDestroy } from 'svelte';
   import { logger } from '$lib/logging/logger';
 
@@ -8,7 +8,7 @@
   let produced = 0,
     dropped = 0;
   let startTs = 0;
-  let handle: any;
+  let handle;
 
   function start() {
     running = true;

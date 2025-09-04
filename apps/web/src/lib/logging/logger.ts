@@ -1,5 +1,4 @@
-import { createLogger } from '@draconia/logger';
-import { createDexieSink } from '@draconia/logger/src/sinks/dexie';
+import { createLogger, createDexieSink } from '@draconia/logger';
 
 export const logger = createLogger({
   maxBytes: 2 * 1024 * 1024,

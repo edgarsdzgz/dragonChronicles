@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { onMount } from 'svelte';
   import { hudEnabled } from '$lib/stores/flags';
   import { FpsCounter } from '$lib/pixi/hud';

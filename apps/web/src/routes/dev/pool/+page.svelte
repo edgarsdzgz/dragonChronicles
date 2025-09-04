@@ -3,12 +3,12 @@
   import { Application, Graphics } from 'pixi.js';
   import { createSpritePool } from '$lib/pool/displayPool';
 
-  let canvas: HTMLCanvasElement;
-  let app: Application;
+  let canvas;
+  let app;
   let spawned = 0;
   const pool = createSpritePool(undefined, 200);
 
-  function spawn(n: number) {
+  function spawn(n) {
     for (let i = 0; i < n; i++) {
       const g = new Graphics().circle(Math.random() * 6 + 2).fill(0xffffff * Math.random());
       const sprite = pool.acquire();
@@ -23,7 +23,7 @@
   function recycleAll() {
     // remove all children and return to pool
     for (const c of [...app.stage.children]) {
-      if ('texture' in c) pool.release(c as any);
+              if ('texture' in c) pool.release(c);
       app.stage.removeChild(c);
     }
     spawned = 0;
