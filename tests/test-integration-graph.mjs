@@ -48,8 +48,8 @@ if (!process.env.BUILD_ONCE) {
 
 console.log("Importing packages...");
 
-const { createLogger } = await import("../packages/logger/dist/index.js");
-const { step, createInitial } = await import("../packages/sim/dist/index.js");
+const { createLogger } = await import("../packages/logger/src/index.js");
+const { step, createInitial } = await import("../packages/sim/src/index.js");
 
 console.log("Packages imported successfully");
 
