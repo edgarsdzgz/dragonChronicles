@@ -25,11 +25,17 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm i -g pnpm@9
+      - name: Enable pnpm via Corepack (matches packageManager)
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack prepare pnpm@9.15.9 --activate
+          pnpm -v
 
       - name: Install deps
-        run: pnpm i --frozen-lockfile
+        env:
+          HUSKY: '0'
+        run: pnpm -w install --frozen-lockfile
 
       - name: Build (Pages base path)
         env:
