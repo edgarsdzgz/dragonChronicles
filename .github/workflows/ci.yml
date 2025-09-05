@@ -113,7 +113,9 @@ jobs:
       - name: Install
         env:
           HUSKY: '0'
-        run: pnpm -w install
+        run: |
+          echo "Installing with hoisted node_modules structure for CI"
+          pnpm -w install --config.node-linker=hoisted
 
       - name: Build (TS project references)
         run: |
@@ -133,29 +135,14 @@ jobs:
           rm -rf apps/web/.svelte-kit
           rm -rf apps/web/node_modules/.vite
 
-      # Force pixi.js availability for Vite resolution
-      - name: Ensure pixi.js is available for Vite
+      # Verify hoisted structure worked
+      - name: Verify hoisted node_modules structure
         run: |
-          echo "=== Debugging pnpm store structure ==="
-          echo "Looking for pixi.js in pnpm store:"
-          find node_modules/.pnpm -name "pixi.js" -type d 2>/dev/null || echo "No pixi.js found in .pnpm"
-          echo "Listing .pnpm directory structure:"
-          ls -la node_modules/.pnpm/ | head -10
-          echo "=== Creating symlink for pixi.js ==="
-          mkdir -p node_modules
-          # Find the actual pixi.js path in pnpm store
-          PIXI_PATH=$(find node_modules/.pnpm -name "pixi.js" -type d | head -1)
-          if [ -n "$PIXI_PATH" ]; then
-            echo "Found pixi.js at: $PIXI_PATH"
-            ln -sf "$PIXI_PATH" node_modules/pixi.js
-            echo "Created symlink: node_modules/pixi.js -> $PIXI_PATH"
-          else
-            echo "ERROR: Could not find pixi.js in pnpm store"
-            echo "Available packages in .pnpm:"
-            ls node_modules/.pnpm/ | grep -i pixi || echo "No pixi packages found"
-          fi
-          echo "Verifying pixi.js is now available:"
-          ls -la node_modules/pixi.js/ 2>/dev/null || echo "pixi.js still not available"
+          echo "=== Verifying hoisted structure ==="
+          echo "Checking if pixi.js is now hoisted:"
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js still not hoisted"
+          echo "Checking node_modules structure:"
+          ls node_modules/ | grep -E "(pixi|eventemitter)" || echo "No pixi-related packages found in root"
 
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
