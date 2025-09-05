@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist packages/*/dist apps/*/dist && find . -name 'tsconfig.tsbuildinfo' -delete || true",
     "build": "tsc -b",
-    "build:ci": "pnpm --filter @draconia/shared run build && pnpm --filter @draconia/logger run build && pnpm --filter @draconia/db run build && pnpm --filter @draconia/sim run build && pnpm --filter @draconia/sandbox run build",
+    "build:ci": "pnpm --filter @draconia/shared run build && pnpm --filter @draconia/db run build && pnpm --filter @draconia/logger run build && pnpm --filter @draconia/sim run build && pnpm --filter @draconia/sandbox run build",
     "typecheck": "tsc -b --pretty false --noEmit",
     "list": "pnpm -w list --depth -1",
     "dev:sandbox": "pnpm --filter @draconia/sandbox run dev",
