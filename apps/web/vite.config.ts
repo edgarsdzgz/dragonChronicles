@@ -7,6 +7,10 @@ export default defineConfig({
   build: {
     target: 'es2021',
   },
+  resolve: {
+    // Required for PNPM workspace structure
+    preserveSymlinks: true
+  },
   optimizeDeps: {
     // Help Vite handle PNPM workspace dependencies
     include: ['pixi.js']
