@@ -48,10 +48,21 @@ if (!process.env.BUILD_ONCE) {
 
 console.log("Importing packages...");
 
-const { createLogger } = await import("../packages/logger/src/index.js");
-const { step, createInitial } = await import("../packages/sim/src/index.js");
+let createLogger, step, createInitial;
 
-console.log("Packages imported successfully");
+try {
+  const loggerModule = await import("../packages/logger/dist/index.js");
+  createLogger = loggerModule.createLogger;
+  
+  const simModule = await import("../packages/sim/dist/index.js");
+  step = simModule.step;
+  createInitial = simModule.createInitial;
+
+  console.log("Packages imported successfully");
+} catch (error) {
+  console.error("Import failed:", error);
+  process.exit(1);
+}
 
 // Fail fast on missing exports
 assert.equal(typeof createLogger, "function", "createLogger should be a function");
@@ -93,4 +104,9 @@ test("sim integrates with logger", () => {
 
 console.log("All tests registered, running...");
 
-await run();
+try {
+  await run();
+} catch (error) {
+  console.error("Test runner failed:", error);
+  process.exit(1);
+}

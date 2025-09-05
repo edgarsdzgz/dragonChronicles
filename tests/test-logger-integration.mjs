@@ -15,9 +15,15 @@ if (!process.env.BUILD_ONCE) {
 
 console.log("Importing packages...");
 
-const { createLogger } = await import("../packages/logger/src/index.js");
-
-console.log("Packages imported successfully");
+let createLogger;
+try {
+  const loggerModule = await import("../packages/logger/dist/index.js");
+  createLogger = loggerModule.createLogger;
+  console.log("Packages imported successfully");
+} catch (error) {
+  console.error("Import failed:", error);
+  process.exit(1);
+}
 
 // Fail fast on missing exports
 assert.equal(typeof createLogger, "function", "createLogger should be a function");
