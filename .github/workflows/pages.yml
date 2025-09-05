@@ -35,9 +35,9 @@ jobs:
           HUSKY: '0'
         run: |
           echo "Installing workspace dependencies..."
-          pnpm -w install --frozen-lockfile
+          pnpm -w install
           echo "Linking workspace packages..."
-          pnpm -w install --frozen-lockfile --force
+          pnpm -w install --force
 
       - name: Build workspace dependencies
         run: pnpm -w run build:ci

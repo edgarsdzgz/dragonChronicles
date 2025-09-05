@@ -54,7 +54,7 @@ jobs:
           HUSKY: '0'
         run: |
           echo "Installing workspace dependencies..."
-          pnpm -w install --frozen-lockfile
+          pnpm -w install
 
       - name: Build (TS project references)
         run: |
@@ -113,7 +113,7 @@ jobs:
       - name: Install
         env:
           HUSKY: '0'
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm -w install
 
       - name: Build (TS project references)
         run: |
