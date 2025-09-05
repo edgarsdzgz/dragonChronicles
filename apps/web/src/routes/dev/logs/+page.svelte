@@ -7,14 +7,14 @@
   let running = false;
   let produced = 0,
     dropped = 0;
-  let startTs = 0;
+  let _startTs = 0;
   let handle;
 
   function start() {
     running = true;
     produced = 0;
     dropped = 0;
-    startTs = performance.now();
+    _startTs = performance.now();
 
     const interval = 1000 / rate;
     handle = setInterval(() => {

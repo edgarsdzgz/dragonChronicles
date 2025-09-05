@@ -126,7 +126,7 @@ export class CircularBuffer<T> {
   /**
    * Iterate over items without removing them
    */
-  forEach(callback: (item: T, index: number) => void): void {
+  forEach(callback: (_item: T, _index: number) => void): void {
     if (this.size === 0) return;
 
     let current = this.head;
@@ -142,7 +142,7 @@ export class CircularBuffer<T> {
   /**
    * Map items to new array without removing them
    */
-  map<U>(callback: (item: T, index: number) => U): U[] {
+  map<U>(callback: (_item: T, _index: number) => U): U[] {
     if (this.size === 0) return [];
 
     const result: U[] = [];

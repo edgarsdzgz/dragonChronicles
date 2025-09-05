@@ -43,6 +43,7 @@ export default [
         __filename: 'readonly',
         Buffer: 'readonly',
         global: 'readonly',
+        NodeJS: 'readonly',
       },
     },
   },
@@ -75,6 +76,7 @@ export default [
         crypto: 'readonly',
         indexedDB: 'readonly',
         CustomEvent: 'readonly',
+        CustomEventInit: 'readonly',
         Event: 'readonly',
         TextEncoder: 'readonly',
         TextDecoder: 'readonly',
@@ -107,6 +109,7 @@ export default [
         __filename: 'readonly',
         Buffer: 'readonly',
         global: 'readonly',
+        NodeJS: 'readonly',
         // Browser globals for tests
         window: 'readonly',
         document: 'readonly',
@@ -130,6 +133,7 @@ export default [
         crypto: 'readonly',
         indexedDB: 'readonly',
         CustomEvent: 'readonly',
+        CustomEventInit: 'readonly',
         Event: 'readonly',
         TextEncoder: 'readonly',
         TextDecoder: 'readonly',
@@ -154,7 +158,11 @@ export default [
     files: ['**/*.{js,mjs,cjs,jsx}'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_', 
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true
+      }],
     },
   },
 
@@ -173,18 +181,22 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-        args: 'after-used'
-      }],
+      '@typescript-eslint/no-unused-vars': 'off', // Use base ESLint rule instead
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
 
   // 5) Svelte recommended (flat)
   ...svelte.configs['flat/recommended'],
+
+  // 5.5) Svelte files - fix unused vars
+  {
+    files: ['**/*.svelte'],
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
+  },
 
   // 6) Svelte TS-in-script + projectService for packages only
   {
@@ -217,12 +229,8 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off', // config files often need any
-      '@typescript-eslint/no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-        args: 'after-used'
-      }],
+      '@typescript-eslint/no-unused-vars': 'off', // Use base ESLint rule instead
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 
@@ -241,12 +249,8 @@ export default [
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off', // test files often need any
-      '@typescript-eslint/no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-        args: 'after-used'
-      }],
+      '@typescript-eslint/no-unused-vars': 'off', // Use base ESLint rule instead
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 

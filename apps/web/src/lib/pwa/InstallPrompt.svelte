@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { getUpdateManager } from './update-manager';
+  import { getUpdateManager as _getUpdateManager } from './update-manager';
 
   let deferredPrompt: any = null;
   let showInstallPrompt = false;

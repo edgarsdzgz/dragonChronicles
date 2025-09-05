@@ -310,7 +310,7 @@ export async function validateExportBlob(blob: Blob): Promise<{
     result.details.fileVersion = exportData.fileVersion;
     result.details.exportedAt = exportData.exportedAt;
     result.details.totalProfiles = saveData.data.profiles.length;
-    result.details.profileIds = saveData.data.profiles.map((p: any) => p.id);
+    result.details.profileIds = saveData.data.profiles.map((p: { id: string }) => p.id);
   } catch (error) {
     result.errors.push(
       `Validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,

@@ -32,11 +32,11 @@ export type SimToUI =
   | { t: 'fatal'; reason: string };
 
 // Type guards for message validation
-export function isUIToSim(msg: any): msg is UIToSim {
+export function isUIToSim(msg: unknown): msg is UIToSim {
   return typeof msg === 'object' && msg !== null && 't' in msg;
 }
 
-export function isSimToUI(msg: any): msg is SimToUI {
+export function isSimToUI(msg: unknown): msg is SimToUI {
   return typeof msg === 'object' && msg !== null && 't' in msg;
 }
 

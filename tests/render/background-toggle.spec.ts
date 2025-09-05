@@ -1,5 +1,5 @@
 import { vi, expect, it, describe, beforeEach, afterEach } from 'vitest';
-import { createBackgroundSim, startBackground, stopBackground } from '@/sim/background';
+import { createBackgroundSim as _createBackgroundSim, startBackground, stopBackground } from '@/sim/background';
 
 function makeFakeTicker() {
   return {

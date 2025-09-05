@@ -15,8 +15,8 @@
 export class DatabaseError extends Error {
   constructor(
     message: string,
-    public readonly operation: string,
-    public readonly context?: Record<string, unknown>
+    public readonly _operation: string,
+    public readonly _context?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'DatabaseError';
@@ -178,7 +178,7 @@ export class MigrationPathError extends MigrationError {
     message: string,
     fromVersion: number,
     toVersion: number,
-    public readonly missingVersions?: number[]
+    public readonly _missingVersions?: number[]
   ) {
     super(message, fromVersion, toVersion);
     this.name = 'MigrationPathError';

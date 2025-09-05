@@ -145,12 +145,12 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Log service worker events for debugging
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (_event) => {
   console.log('Service Worker: Installing...');
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (_event) => {
   console.log('Service Worker: Activating...');
 });
 

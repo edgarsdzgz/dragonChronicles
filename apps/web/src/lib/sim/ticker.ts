@@ -1,5 +1,5 @@
 export interface Ticker {
-  start(periodMs: number, cb: () => void): () => void;
+  start(_periodMs: number, _cb: () => void): () => void;
 }
 
 export const realTicker: Ticker = {

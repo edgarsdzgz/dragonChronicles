@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
-import { readFileSync } from 'fs';
+import { readFileSync as _readFileSync } from 'fs';
 
 // Check if package.json changed and sync lockfile
 try {

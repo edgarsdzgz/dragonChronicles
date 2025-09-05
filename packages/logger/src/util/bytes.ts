@@ -23,9 +23,9 @@ export function approxJsonBytes(obj: unknown, limit = 1 << 20): number {
       seen.add(v as object);
       const isArr = Array.isArray(v);
       bytes += isArr ? 2 : 2; // [] or {}
-      for (const k in v as any) {
+      for (const k in v as Record<string, unknown>) {
         bytes += k.length + 3; // "k":
-        stack.push((v as any)[k]);
+        stack.push((v as Record<string, unknown>)[k]);
       }
     }
 

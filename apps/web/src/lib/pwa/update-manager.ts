@@ -14,7 +14,7 @@ export class UpdateManager {
   private updateAvailable = false;
   private installing = false;
   private installed = false;
-  private updateCallbacks: ((info: UpdateInfo) => void)[] = [];
+  private updateCallbacks: ((_info: UpdateInfo) => void)[] = [];
 
   constructor() {
     this.initializeServiceWorker();
@@ -102,7 +102,7 @@ export class UpdateManager {
   /**
    * Subscribe to update events
    */
-  onUpdate(callback: (info: UpdateInfo) => void): () => void {
+  onUpdate(callback: (_info: UpdateInfo) => void): () => void {
     this.updateCallbacks.push(callback);
     
     // Return unsubscribe function

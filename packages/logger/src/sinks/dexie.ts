@@ -2,13 +2,13 @@ import type { LogEvent } from '../types.js';
 import { db, type LogRow } from '@draconia/db'; // W4 tables
 
 export type DexieSink = {
-  enqueue(e: LogEvent): void;
+  enqueue(_e: LogEvent): void;
   clear(): Promise<void>;
 };
 
 export function createDexieSink(batchMs = 1000, maxRows = 10_000): DexieSink {
   let buf: LogEvent[] = [];
-  let timer: any = null;
+  let timer: NodeJS.Timeout | null = null;
 
   const flush = async () => {
     const items = buf;

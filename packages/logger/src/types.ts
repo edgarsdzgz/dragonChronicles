@@ -13,8 +13,8 @@ export type LogEvent = {
 };
 
 export interface Logger {
-  log(e: LogEvent): void;
+  log(_e: LogEvent): void;
   exportNDJSON(): Promise<Blob>;
   clear(): Promise<void>;
-  enableConsole(enable: boolean): void;
+  enableConsole(_enable: boolean): void;
 }

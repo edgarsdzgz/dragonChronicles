@@ -20,9 +20,9 @@ const expect = (actual) => ({
   toBeGreaterThanOrEqual: (expected) => assert.ok(actual >= expected, `${actual} should be >= ${expected}`),
   toBeLessThanOrEqual: (expected) => assert.ok(actual <= expected, `${actual} should be <= ${expected}`),
   toBeInstanceOf: (expected) => assert.ok(actual instanceof expected),
-  toHaveProperty: (prop) => assert.ok(actual.hasOwnProperty(prop)),
+  toHaveProperty: (prop) => assert.ok(Object.prototype.hasOwnProperty.call(actual, prop)),
   not: {
-    toThrow: (fn) => {
+    toThrow: (_fn) => {
       try { 
         if (typeof actual === 'function') actual(); 
         else actual;
@@ -34,15 +34,15 @@ const expect = (actual) => ({
 });
 
 // Mock vi for fake timers
-const vi = {
+const _vi = {
   useFakeTimers: () => {},
   useRealTimers: () => {},
-  advanceTimersByTime: (ms) => {},
+  advanceTimersByTime: (_ms) => {},
   fn: () => ({ mock: { calls: [] }, mockClear: () => {} })
 };
 
-const beforeEach = (fn) => fn();
-const afterEach = (fn) => fn();
+const _beforeEach = (_fn) => {};
+const _afterEach = (_fn) => {};
 
 // DPR tests
 describe('clampDPR', () => {

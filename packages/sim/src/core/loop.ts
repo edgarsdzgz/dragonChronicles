@@ -18,7 +18,7 @@ import type { SimMode } from '@draconia/shared';
 export class SimLoop {
   private clock = new StepClock();
   private rafId: number | null = null;
-  private tId: any = null;
+  private tId: NodeJS.Timeout | null = null;
   private mode: SimMode = 'fg';
   private isRunning = false;
 
@@ -28,8 +28,8 @@ export class SimLoop {
    * @param onBeat - Function called when simulation produces output (throttled)
    */
   constructor(
-    private onStep: (dt: number) => void,
-    private onBeat: (covered: number, mode: SimMode) => void
+    private _onStep: (_dt: number) => void,
+    private _onBeat: (_covered: number, _mode: SimMode) => void
   ) {}
 
   /**

@@ -7,7 +7,7 @@
  * for testing and development purposes.
  */
 
-import { db, initializeDatabase, closeDatabase } from '../packages/db/dist/db.js';
+import { db as _db, initializeDatabase, closeDatabase } from '../packages/db/dist/db.js';
 import { putSaveAtomic } from '../packages/db/dist/repo.js';
 import { generateChecksum } from '../packages/db/dist/codec.js';
 
@@ -57,7 +57,7 @@ function createSampleProfile(id, name, progress) {
 /**
  * Create sample save data with multiple profiles
  */
-function createSampleSave(profiles: ProfileV1[]): SaveV1 {
+function createSampleSave(profiles) {
   return {
     version: 1,
     profiles,

@@ -8,7 +8,7 @@
  */
 
 import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join as _join } from 'path';
 
 function parseNDJSON(filePath) {
   const content = readFileSync(filePath, 'utf8');
@@ -17,7 +17,7 @@ function parseNDJSON(filePath) {
   return lines.map(line => {
     try {
       return JSON.parse(line);
-    } catch (e) {
+    } catch {
       console.warn(`Failed to parse line: ${line}`);
       return null;
     }

@@ -21,7 +21,7 @@ export class StepClock {
    * Creates a new step clock
    * @param now - Function to get current time (default: performance.now)
    */
-  constructor(private now: () => number = () => performance.now()) {}
+  constructor(private _now: () => number = () => performance.now()) {}
 
   /**
    * Advances the clock and executes simulation steps
@@ -29,8 +29,8 @@ export class StepClock {
    * @param maxStepsPerFrame - Maximum steps to run per frame (prevents spiral of death)
    * @returns Information about the frame execution
    */
-  tick(stepFn: (dt: number) => void, maxStepsPerFrame = 5): { ran: number; acc: number } {
-    const n = this.now();
+  tick(stepFn: (_dt: number) => void, maxStepsPerFrame = 5): { ran: number; acc: number } {
+    const n = this._now();
 
     // Initialize last time on first call
     if (this.last === 0) {
