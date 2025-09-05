@@ -120,6 +120,13 @@ jobs:
           pnpm -w run clean
           pnpm -w run build:ci
 
+      - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
+        run: |
+          mkdir -p apps/web/node_modules/@draconia
+          cp -r packages/shared apps/web/node_modules/@draconia/shared
+          cp -r packages/db apps/web/node_modules/@draconia/db
+          cp -r packages/logger apps/web/node_modules/@draconia/logger
+
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
         env:
