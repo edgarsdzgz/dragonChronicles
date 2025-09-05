@@ -22,4 +22,10 @@ export default defineConfig({
       '@draconia/db': resolve(__dirname, '../../packages/db/dist/index.js'),
     },
   },
+  build: {
+    target: 'es2021',
+    rollupOptions: {
+      external: [], // Ensure pixi.js and other deps are bundled, not externalized
+    },
+  },
 });
