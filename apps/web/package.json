@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@draconia/logger": "workspace:*",
-    "@sveltejs/vite-plugin-svelte": "3.1.2",
+    "@sveltejs/vite-plugin-svelte": "^2.5.0",
     "pixi.js": "^8.4.1",
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",
@@ -18,13 +18,13 @@
     "workbox-window": "^7.3.0"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^3.0.0",
-    "@sveltejs/kit": "^2.5.0",
+    "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.30.0",
     "@types/node": "^20.0.0",
     "canvas": "^3.2.0",
     "svelte": "^4.2.0",
     "typescript": "^5.9.2",
-    "vite": "^5.4.19",
+    "vite": "^4.5.0",
     "vitest": "^1.6.0"
   }
 }
