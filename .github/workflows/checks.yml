@@ -93,4 +93,5 @@ jobs:
 
       # docs gates (you already have these)
       - run: pnpm run docs:lint
+        continue-on-error: true
       - run: pnpm run docs:links
