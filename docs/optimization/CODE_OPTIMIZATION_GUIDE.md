@@ -7,15 +7,15 @@
 ## 📖 **Table of Contents**
 
 1. [Introduction](#-introduction)
-2. [Performance Optimization Techniques](#performance-optimization-techniques)
+2. [Performance Optimization Techniques](#-performance-optimization-techniques)
 3. [Memory Management](#memory-management)
-4. [Data Structure Optimization](#data-structure-optimization)
+4. [Data Structure Optimization](#-data-structure-optimization)
 5. [Database Optimization](#database-optimization)
 6. [Bundle Optimization](#bundle-optimization)
-7. [Error Handling Optimization](#error-handling-optimization)
-8. [Testing and Validation](#testing-and-validation)
-9. [Tools and Resources](#tools-and-resources)
-10. [Best Practices](#best-practices)
+7. [Error Handling Optimization](#-error-handling-optimization)
+8. [Testing and Validation](#-testing-and-validation)
+9. [Tools and Resources](#-tools-and-resources)
+10. [Best Practices](#-best-practices)
 
 ## 🎯 **Introduction**
 
