@@ -127,11 +127,24 @@ jobs:
           cp -r packages/db apps/web/node_modules/@draconia/db
           cp -r packages/logger apps/web/node_modules/@draconia/logger
 
+      # Clear Vite cache to ensure fresh configuration
+      - name: Clear Vite cache
+        run: |
+          rm -rf apps/web/.svelte-kit
+          rm -rf apps/web/node_modules/.vite
+
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
         env:
           BASE_PATH: /${{ github.event.repository.name }}
-        run: pnpm --filter @draconia/web build
+        run: |
+          echo "=== Debugging Vite Configuration ==="
+          echo "Checking if pixi.js is hoisted:"
+          ls -la node_modules/pixi.js/ 2>/dev/null || echo "pixi.js not hoisted to root"
+          echo "Checking Vite config:"
+          cat apps/web/vite.config.ts
+          echo "=== Starting Build ==="
+          pnpm --filter @draconia/web build
 
       - name: Upload dist artifact (for previews/tests)
         uses: actions/upload-artifact@v4
