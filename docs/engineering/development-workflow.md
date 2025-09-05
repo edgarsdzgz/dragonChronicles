@@ -93,7 +93,7 @@ check_file "apps/web/src/lib/pwa/update-manager.ts" 150
 
 #### Required Format
 
-```
+```text
 type(scope): description
 
 [optional body]
@@ -264,7 +264,7 @@ git commit -m "feat: add PWA manifest and service worker"
 
 ## 🔍 Verification Checklist
 
-### Before Committing
+### Pre-Commit Checklist
 
 - [ ] All changes are staged correctly
 - [ ] Commit message accurately describes changes
@@ -349,4 +349,5 @@ git commit -m "feat: add PWA manifest and service worker"
 
 ---
 
-**This workflow ensures reliable, high-quality development while preventing the types of workflow failures that can lead to lost work and project delays.**
+**This workflow ensures reliable, high-quality development while preventing the types of
+workflow failures that can lead to lost work and project delays.**

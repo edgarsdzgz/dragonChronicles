@@ -7,7 +7,8 @@ This directory contains comprehensive engineering documentation for the Draconia
 ### Core Engineering Practices
 
 - **[Development Practices](./dev-practices.md)** - Key development practices and guidelines
-- **[Development Workflow](./development-workflow.md)** - Development workflow, safeguards, and best practices
+- **[Development Workflow](./development-workflow.md)** - Development workflow, safeguards, and
+  best practices
 - **[TypeScript](./typescript.md)** - TypeScript configuration and best practices
 - **[Testing](./testing.md)** - Testing strategy and implementation
 
@@ -154,4 +155,5 @@ This directory contains comprehensive engineering documentation for the Draconia
 
 ---
 
-**This engineering documentation provides the foundation for maintaining high-quality, performant, and maintainable code throughout the Draconia Chronicles project.**
+**This engineering documentation provides the foundation for maintaining high-quality,
+performant, and maintainable code throughout the Draconia Chronicles project.**

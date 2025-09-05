@@ -6,7 +6,7 @@
 
 ## 📖 **Table of Contents**
 
-1. [Introduction](#introduction)
+1. [Introduction](#-introduction)
 2. [Performance Optimization Techniques](#performance-optimization-techniques)
 3. [Memory Management](#memory-management)
 4. [Data Structure Optimization](#data-structure-optimization)
