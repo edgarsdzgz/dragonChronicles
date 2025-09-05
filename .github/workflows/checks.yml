@@ -67,6 +67,11 @@ jobs:
           cat pnpm-workspace.yaml || echo "Cannot read pnpm-workspace.yaml"
           echo "Checking package.json workspace field:"
           cat package.json | grep -A 5 -B 5 "workspace" || echo "No workspace field in package.json"
+          echo "Checking if workspace packages exist:"
+          ls -la packages/ || echo "No packages directory"
+          ls -la apps/ || echo "No apps directory"
+          echo "Checking individual package.json files:"
+          find packages -name "package.json" -exec echo "=== {} ===" \; -exec cat {} \; || echo "No package.json files in packages"
           echo "Installing workspace dependencies..."
           pnpm -w install
           echo "Verifying workspace links:"
