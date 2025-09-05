@@ -36,6 +36,9 @@ jobs:
           HUSKY: '0'
         run: pnpm -w install --frozen-lockfile
 
+      - name: Build workspace dependencies
+        run: pnpm -w run build:ci
+
       - name: Build (Pages base path)
         env:
           BASE_PATH: /${{ github.event.repository.name }}
