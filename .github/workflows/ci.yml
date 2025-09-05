@@ -128,7 +128,7 @@ jobs:
       - name: Build SvelteKit (adapter-static)
         env:
           BASE_PATH: /${{ github.event.repository.name }}
-        run: pnpm --filter @draconia/web build --if-present
+        run: pnpm --filter @draconia/web build
 
       - name: Upload dist artifact (for previews/tests)
         uses: actions/upload-artifact@v4

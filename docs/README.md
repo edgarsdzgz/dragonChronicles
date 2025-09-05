@@ -57,8 +57,6 @@ Performance optimization framework and implementation:
 
 Current and future workpack planning documents:
 
-- [W7 Plan](./W7Plan.md) - CI/CD & Previews planning document
-
 ### 🎨 UI
 
 Design specifications, wireframes, and visual guidelines.
