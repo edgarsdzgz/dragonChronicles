@@ -38,7 +38,7 @@ export class PCG32 {
     this.state = oldstate * 6364136223846793005n + this.inc;
     const xorshifted = Number(((oldstate >> 18n) ^ oldstate) >> 27n);
     const rot = Number(oldstate >> 59n);
-    return ((xorshifted >> rot) | (xorshifted << ((-rot) & 31))) >>> 0;
+    return ((xorshifted >> rot) | (xorshifted << (-rot & 31))) >>> 0;
   }
 
   /**
@@ -51,12 +51,12 @@ export class PCG32 {
     const range = max - min + 1;
     const maxValue = 0x1_0000_0000;
     const threshold = maxValue - (maxValue % range);
-    
+
     let value: number;
     do {
       value = this.next();
     } while (value >= threshold);
-    
+
     return min + (value % range);
   }
 

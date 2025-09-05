@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const required = [
   'apps/web/src/lib/pixi/app.ts',
-  'apps/web/src/lib/pixi/dpr.ts', 
+  'apps/web/src/lib/pixi/dpr.ts',
   'apps/web/src/lib/pixi/hud.ts',
   'apps/web/src/lib/sim/background.ts',
   'apps/web/src/lib/pool/pool.ts',
@@ -34,7 +34,7 @@ describe('Required W2 file presence', () => {
 describe('Required test files presence', () => {
   const testFiles = [
     'tests/render/dpr.spec.ts',
-    'tests/render/pool.spec.ts', 
+    'tests/render/pool.spec.ts',
     'tests/render/ticker.spec.ts',
     'tests/render/background.spec.ts',
     'configs/vitest/vitest.config.ts',

@@ -129,6 +129,7 @@ node tests/run-all.mjs  # Builds once, runs all tests
 **Problem:** CI fails with `pnpm install --frozen-lockfile` errors when lockfile and package.json specs don't match.
 
 **Symptoms:**
+
 - "Lockfile has vitest: '^1.6.1' but package.json has vitest: '^1.6.0'"
 - Missing specifiers in lockfile vs package.json
 - CI blocks on dependency verification
@@ -141,7 +142,7 @@ node tests/run-all.mjs  # Builds once, runs all tests
 # ✅ CORRECT - from repo root
 pnpm -w install
 
-# ✅ CORRECT - adding dependencies 
+# ✅ CORRECT - adding dependencies
 pnpm -w add -D vitest@^1.6.1 --filter ./apps/web
 
 # ❌ WRONG - local installs cause drift
@@ -190,6 +191,7 @@ git add pnpm-lock.yaml
 **When CI fails on frozen lockfile:**
 
 1. Sync lockfile immediately:
+
    ```bash
    pnpm -w install --lockfile-only
    git add pnpm-lock.yaml
@@ -357,6 +359,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Current Version: 0.5.0-alpha
 
 **Version Numbering Rationale:**
+
 - **0.x.x**: Pre-1.0 development phase
 - **0.5.0**: Reflects Phase 0 progress (5/8 workpacks complete)
 - **-alpha**: Indicates incomplete feature set, not ready for general use
@@ -364,43 +367,52 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Version Progression Path
 
 **Phase 0 (Current)**: 0.5.0-alpha → 0.8.0-alpha
+
 - W1-W5: ✅ Complete (foundation established)
 - W6-W8: ⏳ Pending (PWA, CI/CD, Dev UX)
 
-**Phase 1**: 0.8.0-alpha → 0.9.0-alpha  
+**Phase 1**: 0.8.0-alpha → 0.9.0-alpha
+
 - Core gameplay loop implementation
 - Shooter-idle mechanics, combat, progression
 
 **Phase 2**: 0.9.0-alpha → 0.9.5-alpha
+
 - UI/UX development and refinement
 - Accessibility and performance optimization
 
 **Phase 3**: 0.9.5-alpha → 0.9.9-alpha
+
 - Performance optimization and advanced features
 - Meta systems and automation
 
 **Phase 4**: 0.9.9-alpha → 0.10.0-alpha
+
 - Player documentation and release preparation
 - Final polish and launch readiness
 
 **Extended Alpha Development**: 0.10.0-alpha → 0.15.0-alpha
+
 - Gameplay balancing and tuning
 - Content expansion and refinement
 - Performance optimization
 - Bug fixes and polish
 
 **Beta Phase**: 0.15.0-alpha → 0.20.0-beta
+
 - Feature freeze
 - Extensive testing and feedback
 - Performance optimization
 - Bug fixes and stability
 
 **Release Candidate**: 0.20.0-beta → 0.25.0-rc
+
 - Final testing and validation
 - Documentation completion
 - Release preparation
 
 **Full Release**: 0.25.0-rc → 1.0.0
+
 - Production deployment
 - Player launch
 
@@ -412,7 +424,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 1. **Workpack Completion**: Increment minor version (0.5.0 → 0.6.0)
    - W6 complete: 0.6.0-alpha
-   - W7 complete: 0.7.0-alpha  
+   - W7 complete: 0.7.0-alpha
    - W8 complete: 0.8.0-alpha
 
 2. **Phase Completion**: Increment minor version (0.8.0 → 0.9.0)
@@ -440,12 +452,14 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Alpha Status Guidelines
 
 **What Alpha Means:**
+
 - ✅ **Foundation Complete**: Infrastructure, testing, persistence, logging
 - ❌ **Gameplay Incomplete**: Core game loop not implemented
 - ❌ **Not User Ready**: Missing essential game features
 - ❌ **Breaking Changes**: API may change between versions
 
 **Alpha Development Rules:**
+
 1. **No Breaking Changes**: Maintain API compatibility within alpha versions
 2. **Documentation Required**: All changes must update relevant docs
 3. **Test Coverage**: New features require comprehensive testing
@@ -454,6 +468,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Documentation Update Requirements
 
 **Version Changes Require Updates To:**
+
 1. **GDD**: Update version number and status
 2. **Overview README**: Update project status and version
 3. **Changelog**: Add new version entry with changes
@@ -461,6 +476,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 5. **Package.json**: Update version numbers across workspace
 
 **Example Version Update Process:**
+
 ```bash
 # 1. Update version numbers
 find . -name "package.json" -exec sed -i 's/"version": "0.5.0"/"version": "0.6.0"/g' {} \;
@@ -487,6 +503,7 @@ git tag -a v0.6.0-alpha -m "Release 0.6.0-alpha: PWA & Update UX"
 **Phase 0 uses the W# workpack model**: 8 comprehensive workpacks delivering complete functionality blocks instead of granular stories.
 
 **Phase 0 Workpack Structure:**
+
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
@@ -1013,6 +1030,7 @@ pnpm exec lint-staged
 ### Process Improvements from W3 Worker Sim Harness
 
 **Key Learnings:**
+
 1. **Feature Branch Discipline**: Always create feature branches before implementation - never work directly on main
 2. **Complete Implementation**: Don't create PRs with partial implementations - finish all phases before PR creation
 3. **Tooling Issues**: Fix ESLint/Prettier configuration before proceeding with development
@@ -1020,6 +1038,7 @@ pnpm exec lint-staged
 5. **Planning Document Cleanup**: Delete W#Plan.md files after PR merge to maintain clean repository
 
 **W3 Technical Achievements:**
+
 - ✅ Protocol v1 with type-safe message contracts
 - ✅ PCG32 deterministic RNG for reproducible simulation
 - ✅ Fixed-timestep clock (16.67ms) with accumulator pattern
@@ -1030,6 +1049,7 @@ pnpm exec lint-staged
 - ✅ Comprehensive test suite and dev tools
 
 **Process Deviations Identified:**
+
 - ❌ Initially worked on main branch instead of feature branch
 - ❌ Created PR with incomplete implementation (only Phase 1-2)
 - ❌ Bypassed pre-commit hooks due to tooling issues
@@ -1037,6 +1057,7 @@ pnpm exec lint-staged
 - ❌ Documentation not updated after W2 completion
 
 **Corrective Actions Implemented:**
+
 - ✅ Established feature branch discipline
 - ✅ Complete implementation before PR creation
 - ✅ Documentation update process committed to memory

@@ -5,10 +5,14 @@ export interface Pool<T> {
   inUse(): number;
 }
 
-export function createPool<T>(factory: () => T, reset: (_t: T) => void = () => {}, initial = 0): Pool<T> {
+export function createPool<T>(
+  factory: () => T,
+  reset: (_t: T) => void = () => {},
+  initial = 0,
+): Pool<T> {
   const free: T[] = [];
   let created = 0;
-  
+
   // Pre-populate with initial objects
   for (let i = 0; i < initial; i++) {
     const obj = factory();
@@ -30,12 +34,12 @@ export function createPool<T>(factory: () => T, reset: (_t: T) => void = () => {
       reset(obj);
       free.push(obj);
     },
-    size() { 
-      return created; 
+    size() {
+      return created;
     },
-    inUse() { 
-      return created - free.length; 
-    }
+    inUse() {
+      return created - free.length;
+    },
   };
 }
 
@@ -47,7 +51,7 @@ export class PoolImpl<T> {
   constructor(
     private _create: () => T,
     private _reset: (_t: T) => void = () => {},
-    private _max = Infinity
+    private _max = Infinity,
   ) {}
 
   get(): T {
@@ -60,7 +64,7 @@ export class PoolImpl<T> {
     if (this.free.length < this._max) this.free.push(obj);
   }
 
-  stats() { 
-    return { created: this.created, free: this.free.length }; 
+  stats() {
+    return { created: this.created, free: this.free.length };
   }
 }

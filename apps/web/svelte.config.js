@@ -8,7 +8,7 @@ const config = {
   preprocess: preprocess(),
   kit: {
     adapter: adapter({
-      strict: false
+      strict: false,
     }),
     paths: { base },
     prerender: { entries: ['*'] },

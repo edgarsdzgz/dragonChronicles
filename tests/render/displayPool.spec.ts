@@ -8,9 +8,23 @@ describe('displayPool reset semantics', () => {
       visible: false,
       alpha: 0.77,
       rotation: 2.2,
-      scale: { x: 9, y: 9, set: function(x: number, y?: number) { this.x = x; this.y = y ?? x; } },
-      position: { x: 999, y: -999, set: function(x: number, y: number) { this.x = x; this.y = y; } },
-      parent: { some: 'container', removeChild: () => {} }
+      scale: {
+        x: 9,
+        y: 9,
+        set: function (x: number, y?: number) {
+          this.x = x;
+          this.y = y ?? x;
+        },
+      },
+      position: {
+        x: 999,
+        y: -999,
+        set: function (x: number, y: number) {
+          this.x = x;
+          this.y = y;
+        },
+      },
+      parent: { some: 'container', removeChild: () => {} },
     };
 
     // Mock reset function (what displayPool.release should do)
@@ -45,9 +59,23 @@ describe('displayPool reset semantics', () => {
       visible: true,
       alpha: 0.5,
       rotation: 1,
-      scale: { x: 2, y: 2, set: function(x: number, y?: number) { this.x = x; this.y = y ?? x; } },
-      position: { x: 100, y: 200, set: function(x: number, y: number) { this.x = x; this.y = y; } },
-      parent: null
+      scale: {
+        x: 2,
+        y: 2,
+        set: function (x: number, y?: number) {
+          this.x = x;
+          this.y = y ?? x;
+        },
+      },
+      position: {
+        x: 100,
+        y: 200,
+        set: function (x: number, y: number) {
+          this.x = x;
+          this.y = y;
+        },
+      },
+      parent: null,
     };
 
     const resetSprite = (sprite: typeof mockSprite) => {

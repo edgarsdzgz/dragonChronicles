@@ -28,7 +28,7 @@ export function createInitial(seed: bigint): SimState {
     enemies: 0,
     proj: 0,
     seed,
-    time: 0
+    time: 0,
   };
 }
 
@@ -46,7 +46,7 @@ export function step(state: SimState, dtMs: number): SimState {
     ...state,
     time: state.time + dtMs,
     enemies: state.enemies + Math.floor(dtMs / 1000), // +1 enemy per second
-    proj: state.proj + Math.floor(dtMs / 500)         // +1 projectile per 0.5 seconds
+    proj: state.proj + Math.floor(dtMs / 500), // +1 projectile per 0.5 seconds
   };
 }
 
@@ -58,7 +58,7 @@ export function step(state: SimState, dtMs: number): SimState {
 export function getStats(state: SimState): { enemies: number; proj: number } {
   return {
     enemies: state.enemies,
-    proj: state.proj
+    proj: state.proj,
   };
 }
 

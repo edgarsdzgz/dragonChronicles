@@ -11,7 +11,7 @@ export class FpsCounter {
     if (dt >= 1000) {
       const fps = (this.frames * 1000) / dt;
       const out = { fps, frames: this.frames, timeMs: dt };
-      this.frames = 0; 
+      this.frames = 0;
       this.last = now;
       return out;
     }

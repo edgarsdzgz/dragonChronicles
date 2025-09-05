@@ -7,7 +7,7 @@ describe('HUD flag logic', () => {
     const url1 = new URL('https://example.test/?hud=1');
     const url2 = new URL('https://example.test/?other=value');
     const url3 = new URL('https://example.test/?hud=1&other=value');
-    
+
     expect(url1.searchParams.get('hud')).toBe('1');
     expect(url2.searchParams.get('hud')).toBe(null);
     expect(url3.searchParams.get('hud')).toBe('1');
@@ -17,7 +17,7 @@ describe('HUD flag logic', () => {
     const url1 = new URL('https://example.test/?hud=0');
     const url2 = new URL('https://example.test/?hud=true');
     const url3 = new URL('https://example.test/?hud=1');
-    
+
     // Only hud=1 should enable the HUD
     expect(url1.searchParams.get('hud') === '1').toBe(false);
     expect(url2.searchParams.get('hud') === '1').toBe(false);
@@ -35,7 +35,7 @@ describe('HUD decoupled from Pixi ticker', () => {
     ].filter(fs.existsSync);
 
     const badPatterns = [/from\s+['"]pixi.*ticker['"]/, /PIXI\.\s*ticker/i, /app\.ticker\./];
-    
+
     for (const p of hudPaths) {
       const src = fs.readFileSync(p, 'utf8');
       for (const pat of badPatterns) {

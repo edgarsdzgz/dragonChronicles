@@ -33,8 +33,8 @@ registerRoute(
           maxEntries: 50,
         }),
       ],
-    })
-  )
+    }),
+  ),
 );
 
 // Cache images with CacheFirst strategy
@@ -51,7 +51,7 @@ registerRoute(
         maxEntries: 100,
       }),
     ],
-  })
+  }),
 );
 
 // Cache fonts with CacheFirst strategy
@@ -68,14 +68,12 @@ registerRoute(
         maxEntries: 30,
       }),
     ],
-  })
+  }),
 );
 
 // Cache JavaScript and CSS with StaleWhileRevalidate
 registerRoute(
-  ({ request }) => 
-    request.destination === 'script' || 
-    request.destination === 'style',
+  ({ request }) => request.destination === 'script' || request.destination === 'style',
   new StaleWhileRevalidate({
     cacheName: 'static-resources',
     plugins: [
@@ -87,7 +85,7 @@ registerRoute(
         maxEntries: 50,
       }),
     ],
-  })
+  }),
 );
 
 // Cache API responses with NetworkFirst for dynamic content
@@ -104,7 +102,7 @@ registerRoute(
         maxEntries: 50,
       }),
     ],
-  })
+  }),
 );
 
 // Handle service worker updates
@@ -122,7 +120,7 @@ self.addEventListener('activate', (event) => {
       self.clients.claim(),
       // Clean up old caches
       cleanupOutdatedCaches(),
-    ])
+    ]),
   );
 });
 
@@ -139,7 +137,7 @@ self.addEventListener('fetch', (event) => {
       fetch(event.request).catch(() => {
         // Return the precached index.html for offline navigation
         return caches.match('/index.html');
-      })
+      }),
     );
   }
 });
@@ -173,21 +171,17 @@ self.addEventListener('push', (event) => {
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
-        primaryKey: 1
-      }
+        primaryKey: 1,
+      },
     };
-    
-    event.waitUntil(
-      self.registration.showNotification(data.title, options)
-    );
+
+    event.waitUntil(self.registration.showNotification(data.title, options));
   }
 });
 
 // Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
-  event.waitUntil(
-    clients.openWindow('/')
-  );
+
+  event.waitUntil(clients.openWindow('/'));
 });

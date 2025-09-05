@@ -31,7 +31,7 @@ export class SimLoop {
     // eslint-disable-next-line no-unused-vars
     private onStep: (_dt: number) => void,
     // eslint-disable-next-line no-unused-vars
-    private onBeat: (_covered: number, _mode: SimMode) => void
+    private onBeat: (_covered: number, _mode: SimMode) => void,
   ) {}
 
   /**

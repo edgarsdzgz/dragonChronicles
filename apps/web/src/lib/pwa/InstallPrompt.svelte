@@ -6,19 +6,21 @@
   let showInstallPrompt = false;
   let isInstalled = false;
 
-    onMount(() => {
+  onMount(() => {
     // Only run in browser environment
     if (typeof window === 'undefined') return;
-    
+
     // Listen for the beforeinstallprompt event
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    
+
     // Check if app is already installed
     window.addEventListener('appinstalled', handleAppInstalled);
-    
+
     // Check if running as PWA
-    if (window.matchMedia('(display-mode: standalone)').matches || 
-        (window.navigator as any).standalone === true) {
+    if (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone === true
+    ) {
       isInstalled = true;
     }
   });
@@ -32,10 +34,10 @@
   function handleBeforeInstallPrompt(event: Event) {
     // Prevent the mini-infobar from appearing on mobile
     event.preventDefault();
-    
+
     // Stash the event so it can be triggered later
     deferredPrompt = event;
-    
+
     // Show the install prompt
     showInstallPrompt = true;
   }
@@ -54,16 +56,16 @@
 
     // Show the install prompt
     deferredPrompt.prompt();
-    
+
     // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');
     } else {
       console.log('User dismissed the install prompt');
     }
-    
+
     // Clear the deferredPrompt
     deferredPrompt = null;
     showInstallPrompt = false;
@@ -75,11 +77,25 @@
 </script>
 
 {#if showInstallPrompt && !isInstalled}
-  <div class="install-prompt" role="dialog" aria-labelledby="install-title" aria-describedby="install-description">
+  <div
+    class="install-prompt"
+    role="dialog"
+    aria-labelledby="install-title"
+    aria-describedby="install-description"
+  >
     <div class="install-prompt__content">
       <div class="install-prompt__icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="currentColor"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
+            fill="currentColor"
+          />
         </svg>
       </div>
       <div class="install-prompt__text">
@@ -89,14 +105,14 @@
         </div>
       </div>
       <div class="install-prompt__actions">
-        <button 
+        <button
           class="install-prompt__button install-prompt__button--primary"
           on:click={handleInstallClick}
           aria-label="Install Draconia Chronicles"
         >
           Install
         </button>
-        <button 
+        <button
           class="install-prompt__button install-prompt__button--secondary"
           on:click={handleDismiss}
           aria-label="Dismiss install prompt"

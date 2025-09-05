@@ -12,6 +12,6 @@ export function createSpritePool(tex?: Texture, initial = 0): Pool<Sprite> {
       s.position.set(0, 0);
       s.parent?.removeChild(s);
     },
-    initial
+    initial,
   );
 }

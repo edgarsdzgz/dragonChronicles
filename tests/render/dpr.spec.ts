@@ -10,8 +10,8 @@ describe('clampDPR', () => {
 
   it('respects custom min/max bounds', () => {
     expect(clampDPR(1.5, 2, 4)).toBe(2); // below min
-    expect(clampDPR(3, 2, 4)).toBe(3);   // within range
-    expect(clampDPR(5, 2, 4)).toBe(4);   // above max
+    expect(clampDPR(3, 2, 4)).toBe(3); // within range
+    expect(clampDPR(5, 2, 4)).toBe(4); // above max
   });
 
   it('uses fallback when devicePixelRatio is undefined', () => {

@@ -5524,15 +5524,13 @@ function ts(s) {
     o = /struct\s+(\w+)\s*{([^}]+)}/g,
     a = /(\w+)\s*:\s*([\w\<\>]+)/g,
     h = /struct\s+(\w+)/,
-    l = s
-      .match(t)
-      ?.map((u) => ({
-        group: parseInt(u.match(e)[1], 10),
-        binding: parseInt(u.match(i)[1], 10),
-        name: u.match(r)[2],
-        isUniform: u.match(r)[1] === '<uniform>',
-        type: u.match(n)[1],
-      }));
+    l = s.match(t)?.map((u) => ({
+      group: parseInt(u.match(e)[1], 10),
+      binding: parseInt(u.match(i)[1], 10),
+      name: u.match(r)[2],
+      isUniform: u.match(r)[1] === '<uniform>',
+      type: u.match(n)[1],
+    }));
   if (!l) return { groups: [], structs: [] };
   const c =
     s
