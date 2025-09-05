@@ -1,0 +1,9 @@
+{
+  "ci": {
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["warn", { "minScore": 0.95 }]
+      }
+    }
+  }
+}

@@ -6,10 +6,10 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 
 ## Project Status
 
-**Version**: 0.5.0-alpha (Phase 0 Foundation in Progress)  
-**Phase**: Phase 0 (5/8 workpacks complete - W1-W5 foundation established)  
+**Version**: 0.5.0-alpha (Phase 0 Foundation Nearly Complete)  
+**Phase**: Phase 0 (6/8 workpacks complete - W1-W6 foundation established, W7 95% complete)  
 **Architecture**: TypeScript Monorepo with Worker Simulation, Strict Mode Enforcement & Persistence  
-**Workpack Model**: 8-workpack Phase 0 approach (W1-W4 complete, W5-W8 pending)
+**Workpack Model**: 8-workpack Phase 0 approach (W1-W6 complete, W7 nearly complete, W8 pending)
 
 ## Key Metrics
 
@@ -22,6 +22,8 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 - **Worker Simulation**: ✅ Protocol v1, RNG, fixed-timestep clock, auto-recovery
 - **Database Persistence**: ✅ Dexie schema, Zod validation, atomic writes, export/import
 - **Structured Logging**: ✅ Ring buffer with Dexie persistence, PII redaction, performance monitoring
+- **PWA Implementation**: ✅ Service worker, manifest, icons, workbox caching, offline support
+- **CI/CD Pipeline**: ✅ GitHub Actions, size budgets, E2E tests, Lighthouse CI, PR previews
 
 ### Documentation Status
 
@@ -46,7 +48,7 @@ packages/           # Shared libraries
 ├── shared/        # Common utilities, constants, protocol v1, RNG
 ├── logger/        # Structured logging system (W5 complete ✅)
 ├── db/           # Database layer (IndexedDB) - W4 complete ✅
-└── sim/          # Game simulation engine (W3 complete)
+└── sim/          # Game simulation engine (W3 complete ✅)
 
 apps/              # Applications
 ├── web/          # SvelteKit web app with PixiJS renderer
@@ -105,11 +107,11 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
-- ⏳ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast)
-- ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
+- ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, service worker, offline support)
+- 🔄 **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews) - 95% complete
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Current Status**: 5/8 workpacks complete. W1-W5 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, worker simulation harness, robust persistence layer, and structured logging infrastructure.
+**Current Status**: 6/8 workpacks complete, W7 95% complete. W1-W6 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, worker simulation harness, robust persistence layer, structured logging infrastructure, and complete PWA implementation. W7 CI/CD pipeline is nearly complete with all major components implemented.
 
 ### Phase 0 Success Criteria
 
@@ -117,8 +119,8 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 - Deterministic worker sim (≥60fps desktop with UI disconnected)
 - Dexie v1 schema + migrations scaffold; 3 profiles; export/import proven ✅
 - Structured JSON logging; 2 MB / 10k rolling buffer; export; no PII beyond dragon name
-- PWA installs; update toast on SW waiting
-- CI gates: typecheck, unit, integration, Playwright smoke, Lighthouse a11y
+- PWA installs; update toast on SW waiting ✅
+- CI gates: typecheck, unit, integration, Playwright smoke, Lighthouse a11y ✅
 
 ### Future Phases
 

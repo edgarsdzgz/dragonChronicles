@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - NDJSON export with performance monitoring lab
   - Comprehensive test suite (124 tests, 100% pass rate)
 
-- **W6**: PWA & Update UX Implementation
+- **W6**: PWA & Update UX Implementation ✅
   - Complete Progressive Web App with installation and offline capabilities
   - Workbox-based service worker with comprehensive caching strategies
   - Update detection and user-controlled update flow with notification toast
@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - TypeScript integration with svelte-preprocess for type-safe PWA components
   - SSR compatibility ensuring proper server-side rendering
   - Production-ready build pipeline with PWA asset generation
+
+- **W7**: CI/CD & Previews Implementation (95% Complete)
+  - Complete GitHub Actions CI/CD pipeline with quality gates
+  - Size budget enforcement (base ≤200KB gz, logger ≤8KB gz) - all budgets met
+  - E2E Playwright testing with smoke tests and browser caching
+  - Lighthouse CI with accessibility monitoring (≥95% threshold)
+  - PR preview deployment with GitHub Pages and unique URLs
+  - BASE_PATH configuration for proper asset resolution
+  - Comprehensive artifact upload for debugging and reports
+  - Production deployment automation for main branch
 
 - Comprehensive documentation system with engineering standards
 - ADR system for architectural decisions

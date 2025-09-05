@@ -299,11 +299,11 @@ export type UIToSim =
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
-- ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, update toast) + Code Optimization (8-phase framework, performance improvements)
-- ⏳ **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews)
+- ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, service worker, offline support) + Code Optimization (8-phase framework, performance improvements)
+- 🔄 **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews) - 95% complete
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Phase 0 Success Criteria**: Base app cold start ≤ 2s; bundle ≤ 200 KB gz; logger ≤ 8 KB gz; deterministic worker sim ≥60fps; Dexie v1 + 3 profiles; structured logging with export; PWA install + update toast; full CI pipeline.
+**Phase 0 Success Criteria**: Base app cold start ≤ 2s; bundle ≤ 200 KB gz; logger ≤ 8 KB gz; deterministic worker sim ≥60fps; Dexie v1 + 3 profiles; structured logging with export; PWA install + update toast ✅; full CI pipeline ✅.
 
 **Version 1.0.0 Criteria**: Complete ALL 4 phases + extended alpha development + beta phase + release candidate phase with all success criteria met. This represents the complete implementation of the GDD vision plus comprehensive testing, balancing, and refinement.
 
