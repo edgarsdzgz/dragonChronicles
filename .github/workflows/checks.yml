@@ -54,6 +54,14 @@ jobs:
         env:
           HUSKY: '0'
         run: |
+          echo "=== DEBUGGING WORKSPACE LINKING ==="
+          echo "Current directory: $(pwd)"
+          echo "Contents of .npmrc:"
+          cat .npmrc || echo "No .npmrc file found"
+          echo "pnpm config list:"
+          pnpm config list
+          echo "pnpm workspace info:"
+          pnpm -w list --depth=0 || echo "Workspace list failed"
           echo "Installing workspace dependencies..."
           pnpm -w install
           echo "Verifying workspace links:"
