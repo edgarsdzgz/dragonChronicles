@@ -62,6 +62,11 @@ jobs:
           pnpm config list
           echo "pnpm workspace info:"
           pnpm -w list --depth=0 || echo "Workspace list failed"
+          echo "Checking workspace config:"
+          ls -la pnpm-workspace.yaml || echo "No pnpm-workspace.yaml found"
+          cat pnpm-workspace.yaml || echo "Cannot read pnpm-workspace.yaml"
+          echo "Checking package.json workspace field:"
+          cat package.json | grep -A 5 -B 5 "workspace" || echo "No workspace field in package.json"
           echo "Installing workspace dependencies..."
           pnpm -w install
           echo "Verifying workspace links:"
