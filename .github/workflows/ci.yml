@@ -55,6 +55,12 @@ jobs:
           HUSKY: '0'
         run: pnpm -w install --frozen-lockfile
 
+      - name: Verify workspace dependencies
+        run: |
+          pnpm -w list --depth -1
+          echo "Workspace packages:"
+          ls -la packages/
+
       - name: Build (TS project references)
         run: |
           pnpm -w run clean
