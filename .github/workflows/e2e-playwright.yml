@@ -62,6 +62,12 @@ jobs:
           ls -la apps/web/node_modules/@draconia/
           echo "Testing @draconia/logger resolution:"
           cd apps/web && node -e "console.log('@draconia/logger resolved to:', require.resolve('@draconia/logger'))"
+          
+          echo "=== CHECKING PIXI.JS ==="
+          echo "Checking if pixi.js is still resolvable:"
+          cd apps/web && node -e "console.log('pixi.js resolved to:', require.resolve('pixi.js'))" || echo "pixi.js NOT resolvable"
+          echo "Listing apps/web/node_modules contents:"
+          ls -la apps/web/node_modules/ | head -10
 
       - name: Build (Pages base path)
         env:
