@@ -49,24 +49,16 @@ jobs:
           version: 9.15.9
           run_install: false
 
-      - name: Install and Link workspace dependencies
+      - name: Install workspace dependencies
         env:
           HUSKY: '0'
         run: |
-          echo "Installing and linking workspace dependencies..."
+          echo "Installing workspace dependencies..."
           pnpm -w install
-          echo "Explicitly linking workspace packages..."
-          cd packages/logger && pnpm link @draconia/db || echo "Link failed"
-          cd ../db && pnpm link || echo "Link failed"
           echo "Verifying workspace links:"
           ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
           echo "Testing @draconia/db resolution:"
           node -e "console.log('@draconia/db available:', require.resolve('@draconia/db'))" || echo "@draconia/db not resolvable"
-          echo "Creating symlink manually if needed:"
-          mkdir -p packages/logger/node_modules/@draconia
-          ln -sf ../../../db packages/logger/node_modules/@draconia/db || echo "Symlink failed"
-          echo "Final verification:"
-          ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
 
       - name: Build (TS project references)
         run: |
