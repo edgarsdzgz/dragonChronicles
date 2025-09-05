@@ -14,6 +14,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@draconia/shared": "workspace:*",
     "dexie": "^4.2.0",
     "zod": "^4.1.1"
   },
