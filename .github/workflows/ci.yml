@@ -55,15 +55,13 @@ jobs:
           HUSKY: '0'
         run: pnpm -w install --frozen-lockfile
 
-      - name: Verify workspace dependencies
+      - name: Link workspace dependencies
         run: |
-          echo "Workspace packages:"
-          ls -la packages/
-          echo "Checking workspace links:"
-          pnpm -w list --depth -1
-          echo "Checking node_modules links:"
+          echo "Linking workspace dependencies..."
+          pnpm -w install
+          echo "Verifying workspace links:"
           ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
-          echo "Checking if @draconia/db is available:"
+          echo "Testing @draconia/db resolution:"
           node -e "console.log('@draconia/db available:', require.resolve('@draconia/db'))" || echo "@draconia/db not resolvable"
 
       - name: Build (TS project references)
