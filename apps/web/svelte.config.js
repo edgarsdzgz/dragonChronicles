@@ -1,11 +1,11 @@
 import adapter from '@sveltejs/adapter-static';
-import preprocess from 'svelte-preprocess';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 const base = process.env.BASE_PATH || ''; // set to '/dragonChronicles' on GH Pages
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  preprocess: preprocess(),
+  preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
       strict: false,
