@@ -27,47 +27,23 @@ jobs:
         env:
           HUSKY: '0'
         run: |
-          echo "=== DEBUGGING WORKSPACE LINKING ==="
-          echo "Current working directory: $(pwd)"
-          echo "Checking workspace config:"
-          cat pnpm-workspace.yaml
-          echo "Installing with workspace recreation:"
-          rm -rf node_modules apps/*/node_modules packages/*/node_modules || true
-          pnpm -w install --shamefully-hoist=false --link-workspace-packages=true
-          echo "=== CHECKING WORKSPACE LINKS ==="
-          ls -la apps/web/node_modules/@draconia/ || echo "No @draconia links in web app"
-          echo "=== TESTING MODULE RESOLUTION ==="
-          cd apps/web && node -e "console.log('@draconia/logger:', require.resolve('@draconia/logger'))" || echo "@draconia/logger not resolvable from web app"
+          echo "Installing workspace dependencies with hoisted structure..."
+          pnpm -w install --config.node-linker=hoisted
 
       - name: Build workspace dependencies
         run: pnpm -w run build:ci
 
       - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
         run: |
-          echo "=== COPYING WORKSPACE PACKAGES ==="
-          # Create @draconia namespace directory in web app
           mkdir -p apps/web/node_modules/@draconia
-          
-          # Copy built packages to where Vite expects them
-          echo "Copying @draconia/shared..."
           cp -r packages/shared apps/web/node_modules/@draconia/shared
-          
-          echo "Copying @draconia/db..."
           cp -r packages/db apps/web/node_modules/@draconia/db
-          
-          echo "Copying @draconia/logger..."
           cp -r packages/logger apps/web/node_modules/@draconia/logger
-          
-          echo "=== VERIFYING COPIED PACKAGES ==="
-          ls -la apps/web/node_modules/@draconia/
-          echo "Testing @draconia/logger resolution:"
-          cd apps/web && node -e "console.log('@draconia/logger resolved to:', require.resolve('@draconia/logger'))"
-          
-          echo "=== CHECKING PIXI.JS ==="
-          echo "Checking if pixi.js is still resolvable:"
-          cd apps/web && node -e "console.log('pixi.js resolved to:', require.resolve('pixi.js'))" || echo "pixi.js NOT resolvable"
-          echo "Listing apps/web/node_modules contents:"
-          ls -la apps/web/node_modules/ | head -10
+
+      - name: Verify hoisted structure for E2E
+        run: |
+          echo "=== Verifying hoisted structure for E2E ==="
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
 
       - name: Build (Pages base path)
         env:

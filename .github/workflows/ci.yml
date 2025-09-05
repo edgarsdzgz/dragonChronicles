@@ -142,7 +142,7 @@ jobs:
           echo "Checking if pixi.js is now hoisted:"
           ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js still not hoisted"
           echo "Checking node_modules structure:"
-          ls node_modules/ | grep -E "(pixi|eventemitter)" || echo "No pixi-related packages found in root"
+          find node_modules/ -maxdepth 1 -name "*pixi*" -o -name "*eventemitter*" | head -5 || echo "No pixi-related packages found in root"
 
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)

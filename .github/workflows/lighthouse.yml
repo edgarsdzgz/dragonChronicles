@@ -26,7 +26,9 @@ jobs:
       - name: Install deps
         env:
           HUSKY: '0'
-        run: pnpm -w install
+        run: |
+          echo "Installing workspace dependencies with hoisted structure..."
+          pnpm -w install --config.node-linker=hoisted
 
       - name: Build workspace dependencies
         run: pnpm -w run build:ci
@@ -37,6 +39,11 @@ jobs:
           cp -r packages/shared apps/web/node_modules/@draconia/shared
           cp -r packages/db apps/web/node_modules/@draconia/db
           cp -r packages/logger apps/web/node_modules/@draconia/logger
+
+      - name: Verify hoisted structure for Lighthouse
+        run: |
+          echo "=== Verifying hoisted structure for Lighthouse ==="
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
 
       - name: Build (Pages base path)
         env:
