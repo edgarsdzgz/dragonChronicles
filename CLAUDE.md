@@ -1244,3 +1244,65 @@ find docs -name "*.md" -exec fix_file {} \;
 - Complete session documentation: `docs/engineering/ci-workflow-debugging-session.md`
 - All fixes documented with root causes and solutions
 - Automation scripts created for future use
+
+## New Memory Rules (September 5, 2025)
+
+### Automation Preference for Repetitive Tasks
+**When manual attempts fail repeatedly (3+ times), create automation scripts instead of continuing manual attempts.** This saves tokens and thinking time while ensuring consistent results.
+
+Example: Instead of manually editing markdown line length issues repeatedly, create a bash script to automate the fix.
+
+### Sequential Problem Solving Approach
+**Focus on one issue at a time with a slow and steady approach.** This allows better control over what is being tested, broken, and fixed, preventing cascading failures.
+
+## Current Session Status (Updated - September 5, 2025)
+
+### Workflow Status: 4/6 Passing ✅
+
+- ✅ **CI** - Fixed prettier formatting issues in CLAUDE.md
+- ✅ **Checks** - Fixed prettier formatting issues in CLAUDE.md  
+- ✅ **Lighthouse** - Was already working
+- ✅ **Docs** - Fixed markdownlint issues (MD051, MD024, MD013, MD022, MD031, MD032)
+
+### Remaining Issues
+
+- ❌ **Pages Deploys** - Environment protection rules fix applied but still failing
+- ❌ **E2E Smoke** - Playwright configuration issue (`chromium` project not found)
+
+### Critical Discovery: Previously Passing Workflows Started Failing
+
+**Root Cause**: Adding CLAUDE.md to repository without proper formatting
+- **Problem**: CLAUDE.md was previously ignored, now checked by Prettier
+- **Solution**: Applied `pnpm run format --write CLAUDE.md`
+- **Status**: ✅ FIXED - CI and Checks workflows now passing
+
+### Key Solutions Applied
+
+1. **PNPM Hoisting**: Used `pnpm -w install --config.node-linker=hoisted` for CI environments
+2. **Module Resolution**: Added `main` and `types` fields to `packages/db/package.json`
+3. **Vite/Rollup**: Added `ssr.noExternal: ['pixi.js']` to prevent externalization
+4. **Markdownlint**: Systematic fixes for link fragments and duplicate headings
+5. **GitHub Pages**: Added `feat/w7-cicd-previews` to environment allowed branches
+6. **Prettier Formatting**: Fixed CLAUDE.md formatting issues
+
+### Next Steps for Continuation
+
+1. **Check Pages Deploys status**: `gh run list --limit 5`
+2. **If Pages Deploys passes**: Move to E2E Smoke workflow
+3. **If Pages Deploys fails**: Check deployment logs with `gh run view [RUN_ID] --log-failed`
+4. **E2E Smoke**: Investigate Playwright configuration and browser installation
+
+### Documentation
+
+- Complete session documentation: `docs/engineering/ci-workflow-debugging-session.md`
+- Quick reference guide: `docs/engineering/quick-reference-continuation.md`
+- Complete handoff document: `docs/engineering/session-handoff-complete.md`
+- All fixes documented with root causes and solutions
+- Automation scripts created for future use
+
+### Automation Scripts Available
+
+- `scripts/fix-line-length-final.sh` - Fixes markdown line length issues
+- `scripts/fix-docs-markdownlint.sh` - Comprehensive markdownlint fixes
+- `scripts/fix-remaining-markdownlint.sh` - Targeted markdownlint fixes
+- `scripts/fix-final-markdownlint.sh` - Final markdownlint cleanup
