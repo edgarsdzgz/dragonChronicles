@@ -54,16 +54,24 @@ jobs:
           HUSKY: '0'
         run: |
           echo "Installing workspace dependencies..."
-          pnpm -w install
+          pnpm -w install --frozen-lockfile
+          echo "Linking workspace packages..."
+          pnpm -w install --frozen-lockfile --force
           echo "Verifying workspace links:"
           ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
           echo "Testing @draconia/db resolution:"
           node -e "console.log('@draconia/db available:', require.resolve('@draconia/db'))" || echo "@draconia/db not resolvable"
 
+      - name: Pre-build integrity check
+        run: node scripts/pre-build-check.mjs
+
       - name: Build (TS project references)
         run: |
           pnpm -w run clean
           pnpm -w run build:ci
+
+      - name: Post-build integrity check
+        run: node scripts/workspace-integrity-check.mjs
 
       - name: Tests
         run: pnpm -w run test:all

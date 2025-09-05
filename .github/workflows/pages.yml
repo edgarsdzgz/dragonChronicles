@@ -33,7 +33,11 @@ jobs:
       - name: Install deps
         env:
           HUSKY: '0'
-        run: pnpm -w install
+        run: |
+          echo "Installing workspace dependencies..."
+          pnpm -w install --frozen-lockfile
+          echo "Linking workspace packages..."
+          pnpm -w install --frozen-lockfile --force
 
       - name: Build workspace dependencies
         run: pnpm -w run build:ci
