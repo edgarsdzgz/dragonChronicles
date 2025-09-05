@@ -57,9 +57,14 @@ jobs:
 
       - name: Verify workspace dependencies
         run: |
-          pnpm -w list --depth -1
           echo "Workspace packages:"
           ls -la packages/
+          echo "Checking workspace links:"
+          pnpm -w list --depth -1
+          echo "Checking node_modules links:"
+          ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
+          echo "Checking if @draconia/db is available:"
+          node -e "console.log('@draconia/db available:', require.resolve('@draconia/db'))" || echo "@draconia/db not resolvable"
 
       - name: Build (TS project references)
         run: |
