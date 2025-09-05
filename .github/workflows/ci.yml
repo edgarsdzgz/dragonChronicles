@@ -181,7 +181,7 @@ jobs:
 
       - name: Stop server
         if: always()
-        run: kill $(cat server.pid) || true
+        run: kill "$(cat server.pid)" || true
 
   deploy:
     name: Deploy to GitHub Pages
