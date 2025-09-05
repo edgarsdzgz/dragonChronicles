@@ -43,12 +43,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable pnpm via Corepack (matches packageManager)
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.9 --activate
-          pnpm -v
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
 
       - name: Install and Link workspace dependencies
         env:
@@ -116,12 +115,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable pnpm via Corepack (matches packageManager)
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.9 --activate
-          pnpm -v
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
 
       - name: Install
         env:
