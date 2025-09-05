@@ -1125,3 +1125,81 @@ assert.ok(condition, 'descriptive error message');
 // (assertions will throw and prevent reaching this line)
 if (process.env.VERBOSE) console.log('All validations passed');
 ```
+
+## Automation Principles (2025-09-05)
+
+### Always Automate Repetitive Tasks
+
+**When encountering repetitive, manual tasks that follow a simple pattern, ALWAYS create a bash script to automate them.**
+
+**Benefits:**
+- ⏱️ **Saves Time**: No manual repetition of the same task
+- 🧠 **Saves Thinking Tokens**: No need to think through each instance
+- 🎯 **Improves Accuracy**: Consistent application of rules across all instances
+- 🔄 **Enables Reusability**: Scripts can be used again for similar tasks
+- 📝 **Documents Process**: Scripts serve as documentation of the solution
+
+**Examples of Tasks That Should Be Automated:**
+- Fixing many markdown line length violations
+- Bulk find/replace operations across multiple files
+- Formatting issues that affect many files
+- Any task that follows a simple, repeatable pattern
+- Mass file modifications with consistent rules
+
+**Script Creation Process:**
+1. **Identify the Pattern**: What is the repetitive task?
+2. **Create the Script**: Write a bash script that handles the pattern
+3. **Test the Script**: Verify it works on a subset of files
+4. **Apply Broadly**: Run the script on all affected files
+5. **Commit the Script**: Save it for future use
+
+**Example: Markdown Line Length Fixer**
+```bash
+#!/bin/bash
+# Fixes markdown line length issues by breaking long lines at word boundaries
+
+MAX_LINE_LENGTH=100
+
+fix_file() {
+    local file="$1"
+    # Break lines longer than MAX_LINE_LENGTH at word boundaries
+    # ... implementation details
+}
+
+# Apply to all markdown files
+find docs -name "*.md" -exec fix_file {} \;
+```
+
+**Key Principle**: If you find yourself doing the same manual task more than 3 times, create a script to automate it.
+
+## CI/CD Workflow Debugging Patterns (2025-09-05)
+
+### Systematic Workflow Debugging Approach
+
+**When debugging CI/CD workflow failures, follow this systematic approach:**
+
+1. **Identify the Pattern**: Look for common failure modes across workflows
+2. **Apply Consistent Solutions**: Use the same fix across all affected workflows
+3. **Add Verification Steps**: Include debugging output to confirm fixes work
+4. **Document the Solution**: Update guidelines for future reference
+
+**Example: PNPM Hoisting Issues**
+- **Problem**: `pixi.js` resolution failures in multiple workflows
+- **Root Cause**: Inconsistent `node_modules` structure between local and CI
+- **Solution**: Apply `--config.node-linker=hoisted` to all workflows
+- **Verification**: Add steps to confirm `pixi.js` is properly hoisted
+
+**Workflow Fix Pattern:**
+```yaml
+- name: Install deps
+  run: |
+    echo "Installing with hoisted node_modules structure..."
+    pnpm -w install --config.node-linker=hoisted
+
+- name: Verify hoisted structure
+  run: |
+    echo "Checking if pixi.js is hoisted:"
+    ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
+```
+
+**Key Principle**: When one workflow fix works, apply it consistently across all similar workflows.

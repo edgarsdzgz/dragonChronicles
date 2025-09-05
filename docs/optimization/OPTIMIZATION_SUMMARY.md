@@ -93,14 +93,14 @@ class CircularBuffer<T> {
 ```typescript
 // Before: Nested promise chains
 return db.saves.add(newSaveRow).then((saveId) => {
-  return db.meta.get(META_KEYS.PROFILE_POINTERS).then((pointer) => {
+  return db.meta.get(META * KEYS.PROFILE * POINTERS).then((pointer) => {
     // ... complex nesting
   });
 });
 
 // After: Clean async/await
 const saveId = await db.saves.add(newSaveRow);
-const pointer = await db.meta.get(META_KEYS.PROFILE_POINTERS);
+const pointer = await db.meta.get(META * KEYS.PROFILE * POINTERS);
 // ... clean, readable code
 ```
 
@@ -226,7 +226,8 @@ export function approxJsonBytesFast(obj: unknown): number {
 
 ## 🎉 **Conclusion**
 
-This optimization session has successfully implemented **all Phase 1 high-priority improvements** with measurable performance gains and maintained high test coverage. The codebase is now significantly more performant, maintainable, and robust.
+This optimization session has successfully implemented **all Phase 1 high-priority improvements**
+with measurable performance gains and maintained high test coverage. The codebase is now significantly more performant, maintainable, and robust.
 
 **Key Achievements**:
 
@@ -236,7 +237,8 @@ This optimization session has successfully implemented **all Phase 1 high-priori
 - ✅ Maintained all existing functionality while improving performance
 - ✅ All optimizations tested and validated
 
-The foundation is now set for Phase 2 optimizations, which will focus on database query optimization, memory management improvements, and bundle optimization.
+The foundation is now set for Phase 2 optimizations, which will focus on database query
+optimization, memory management improvements, and bundle optimization.
 
 ---
 

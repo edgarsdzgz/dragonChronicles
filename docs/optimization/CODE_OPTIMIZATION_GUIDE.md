@@ -19,7 +19,9 @@
 
 ## 🎯 **Introduction**
 
-This guide provides comprehensive techniques and strategies for optimizing the Draconia Chronicles codebase. It covers performance optimization, memory management, data structures, database operations, bundle optimization, and error handling.
+This guide provides comprehensive techniques and strategies for optimizing the Draconia Chronicles
+codebase. It covers performance optimization, memory management, data structures, database
+operations, bundle optimization, and error handling.
 
 ### **Optimization Principles**
 
@@ -619,4 +621,5 @@ async function loadTestDatabase() {
 
 ---
 
-**This guide should be updated regularly as new optimization techniques and best practices are discovered.**
+**This guide should be updated regularly as new optimization techniques and best practices are
+discovered.**

@@ -1,14 +1,20 @@
 # Code Optimization Documentation
 
-This directory contains documentation for the comprehensive 8-phase code optimization framework implemented for Draconia Chronicles.
+This directory contains documentation for the comprehensive 8-phase code optimization framework
+implemented for Draconia Chronicles.
 
 ## 📚 Documentation Overview
 
-- **[OPTIMIZATION_JOURNEY_SUMMARY.md](./OPTIMIZATION_JOURNEY_SUMMARY.md)** - Complete summary of the optimization journey
-- **[OPTIMIZATION_BLUEPRINT.md](./OPTIMIZATION_BLUEPRINT.md)** - Reusable blueprint for future optimization efforts
-- **[CODE_OPTIMIZATION_GUIDE.md](./CODE_OPTIMIZATION_GUIDE.md)** - Comprehensive optimization guide and reference
-- **[OPTIMIZATION_SUMMARY.md](./OPTIMIZATION_SUMMARY.md)** - Detailed implementation summary of completed optimizations
-- **[ISSUE_CodeReview_Optimization.md](./ISSUE_CodeReview_Optimization.md)** - Original optimization issue and planning document
+- **[OPTIMIZATION*JOURNEY*SUMMARY.md](./OPTIMIZATION*JOURNEY*SUMMARY.md)** - Complete summary of the
+  optimization journey
+- **[OPTIMIZATION\*BLUEPRINT.md](./OPTIMIZATION*BLUEPRINT.md)** - Reusable blueprint for future
+  optimization efforts
+- **[CODE*OPTIMIZATION*GUIDE.md](./CODE*OPTIMIZATION*GUIDE.md)** - Comprehensive optimization guide
+  and reference
+- **[OPTIMIZATION\*SUMMARY.md](./OPTIMIZATION*SUMMARY.md)** - Detailed implementation summary of
+  completed optimizations
+- **[ISSUE*CodeReview*Optimization.md](./ISSUE*CodeReview*Optimization.md)** - Original optimization
+  issue and planning document
 
 ## 🎯 Key Achievements
 
@@ -47,4 +53,5 @@ This directory contains documentation for the comprehensive 8-phase code optimiz
 
 ---
 
-_This optimization framework establishes sustainable performance practices and provides a solid foundation for future development work._
+_This optimization framework establishes sustainable performance practices and provides a solid
+foundation for future development work._
