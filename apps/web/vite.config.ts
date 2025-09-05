@@ -15,6 +15,10 @@ export default defineConfig({
     // Help Vite handle PNPM workspace dependencies
     include: ['pixi.js'],
   },
+  ssr: {
+    // Prevent pixi.js from being externalized during SSR build
+    noExternal: ['pixi.js'],
+  },
   define: {
     // Ensure Workbox manifest is available
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
