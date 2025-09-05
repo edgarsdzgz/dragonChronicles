@@ -3,10 +3,10 @@
  * @description Validates that all packages work together and produces a JSON contract for E2E testing
  */
 
-import { DRACONIA_VERSION } from '@draconia/shared';
-import { createLogger as _createLogger } from '@draconia/logger';
-import { makeProfile } from '@draconia/db';
-import { createInitial, step, getStats } from '@draconia/sim';
+import { DRACONIA_VERSION } from '../../../packages/shared/dist/index.js';
+import { createLogger as _createLogger } from '../../../packages/logger/dist/index.js';
+import { makeProfile } from '../../../packages/db/dist/index.js';
+import { createInitial, step, getStats } from '../../../packages/sim/dist/index.js';
 
 /**
  * Integration test that exercises all workspace packages

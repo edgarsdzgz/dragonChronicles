@@ -1,5 +1,5 @@
 import type { LogEvent } from '../types.js';
-import { db, type LogRow } from '@draconia/db'; // W4 tables
+import { db, type LogRow } from '../../../db/dist/index.js'; // W4 tables
 
 export type DexieSink = {
   enqueue(_e: LogEvent): void;
