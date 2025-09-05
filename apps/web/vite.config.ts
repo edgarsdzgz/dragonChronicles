@@ -7,11 +7,9 @@ export default defineConfig({
   build: {
     target: 'es2021',
   },
-  resolve: {
-    // Help Vite find packages in PNPM workspace structure
-    alias: {
-      'pixi.js': 'pixi.js/lib/index.mjs'
-    }
+  optimizeDeps: {
+    // Help Vite handle PNPM workspace dependencies
+    include: ['pixi.js']
   },
   define: {
     // Ensure Workbox manifest is available
