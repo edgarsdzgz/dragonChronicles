@@ -1,24 +1,28 @@
 #!/bin/bash
 
-# Simple Markdown Line Length Fixer
-# Focus on specific files with known issues
+# Comprehensive Markdown Fixer
+# Fixes line length, emphasis style, and other markdownlint issues
 
 set -euo pipefail
 
 MAX_LINE_LENGTH=100
 
-echo "🔧 Fixing markdown line lengths..."
+echo "🔧 Fixing all markdown issues..."
 
-# Function to break long lines
+# Function to fix all markdown issues
 fix_file() {
     local file="$1"
     echo "Processing: $file"
     
     # Create a temporary file
     local temp_file=$(mktemp)
+    local changes=0
     
     # Process each line
     while IFS= read -r line || [ -n "$line" ]; do
+        local original_line="$line"
+        
+        # Fix line length
         if [ ${#line} -gt $MAX_LINE_LENGTH ]; then
             echo "  Breaking line: ${#line} chars"
             
@@ -42,22 +46,38 @@ fix_file() {
             if [ -n "$remaining" ]; then
                 echo "$remaining" >> "$temp_file"
             fi
+            ((changes++))
         else
+            # Fix emphasis style (underscore to asterisk)
+            line=$(echo "$line" | sed 's/__\([^_]*\)__/\*\*\1\*\*/g')
+            line=$(echo "$line" | sed 's/_\([^_]*\)_/\*\1\*/g')
+            
+            # Fix emphasis as heading (convert to proper headings)
+            if echo "$line" | grep -q "^[[:space:]]*\*\*[^*]*\*\*[[:space:]]*$"; then
+                line=$(echo "$line" | sed 's/^[[:space:]]*\*\*\([^*]*\)\*\*[[:space:]]*$/### \1/')
+                ((changes++))
+            fi
+            
             echo "$line" >> "$temp_file"
         fi
     done < "$file"
     
     # Replace original file
     mv "$temp_file" "$file"
-    echo "  ✅ Fixed"
+    
+    if [ $changes -gt 0 ]; then
+        echo "  ✅ Fixed $changes issues"
+    else
+        echo "  ✅ No issues found"
+    fi
 }
 
-# Fix the specific files mentioned in the error
-fix_file "docs/engineering/development-workflow.md"
+# Fix all files with remaining issues
 fix_file "docs/optimization/CODE_OPTIMIZATION_GUIDE.md"
 fix_file "docs/optimization/ISSUE_CodeReview_Optimization.md"
+fix_file "docs/optimization/OPTIMIZATION_BLUEPRINT.md"
+fix_file "docs/optimization/OPTIMIZATION_JOURNEY_SUMMARY.md"
+fix_file "docs/optimization/OPTIMIZATION_SUMMARY.md"
 fix_file "docs/optimization/README.md"
-fix_file "docs/README.md"
-fix_file "docs/runbooks/pr-cleanup.md"
 
-echo "🎉 Done!"
+echo "🎉 All markdown issues fixed!"

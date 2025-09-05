@@ -11,3 +11,6 @@ LEGACY_v*/**
 # lockfiles, etc (belt-and-suspenders)
 **/*.lock
 pnpm-lock.yaml
+
+# comprehensive debugging session documentation
+docs/engineering/ci-workflow-debugging-session.md
