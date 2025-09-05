@@ -79,6 +79,7 @@ jobs:
 
       - name: Docs lint (markdownlint) - optional
         run: pnpm -w run docs:lint
+        continue-on-error: true
 
       - name: Size budgets (gate)
         env:
