@@ -133,6 +133,17 @@ jobs:
           rm -rf apps/web/.svelte-kit
           rm -rf apps/web/node_modules/.vite
 
+      # Force pixi.js availability for Vite resolution
+      - name: Ensure pixi.js is available for Vite
+        run: |
+          echo "Creating symlink for pixi.js to ensure Vite can find it"
+          mkdir -p node_modules
+          if [ ! -L "node_modules/pixi.js" ] && [ ! -d "node_modules/pixi.js" ]; then
+            ln -sf ../node_modules/.pnpm/pixi.js@8.13.1/node_modules/pixi.js node_modules/pixi.js
+          fi
+          echo "Verifying pixi.js is now available:"
+          ls -la node_modules/pixi.js/ 2>/dev/null || echo "pixi.js still not available"
+
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
         env:
