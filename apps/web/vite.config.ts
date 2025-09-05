@@ -9,11 +9,11 @@ export default defineConfig({
   },
   resolve: {
     // Required for PNPM workspace structure
-    preserveSymlinks: true
+    preserveSymlinks: true,
   },
   optimizeDeps: {
     // Help Vite handle PNPM workspace dependencies
-    include: ['pixi.js']
+    include: ['pixi.js'],
   },
   define: {
     // Ensure Workbox manifest is available
