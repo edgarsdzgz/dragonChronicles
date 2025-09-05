@@ -1,0 +1,50 @@
+name: Lighthouse (warn)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm i -g pnpm@9
+
+      - name: Install deps
+        run: pnpm i --frozen-lockfile
+
+      - name: Build (Pages base path)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm --filter @draconia/web build
+
+      - name: Start preview server
+        run: pnpm --filter @draconia/web preview &
+
+      - name: Wait for server
+        run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
+
+      - name: Lighthouse CI (warn only)
+        uses: treosh/lighthouse-ci-action@v11
+        continue-on-error: true
+        with:
+          urls: |
+            http://127.0.0.1:4173/${{ github.event.repository.name }}/
+            http://127.0.0.1:4173/${{ github.event.repository.name }}/dev/pool
+          configPath: .lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Post summary
+        run: echo "Lighthouse run complete (non-blocking). See artifacts for reports."

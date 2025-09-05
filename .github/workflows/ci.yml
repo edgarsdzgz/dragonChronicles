@@ -75,6 +75,12 @@ jobs:
       - name: Docs lint (markdownlint) - optional
         run: pnpm -w run docs:lint
 
+      - name: Size budgets (gate)
+        env:
+          BUDGET_BASE_KB: 200
+          BUDGET_LOGGER_KB: 8
+        run: pnpm run size:check
+
   build-web:
     name: Build (web)
     runs-on: ubuntu-latest
@@ -115,7 +121,15 @@ jobs:
 
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
         run: pnpm --filter @draconia/web build --if-present
+
+      - name: Upload dist artifact (for previews/tests)
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/build/**/*
 
       - name: Upload static site artifact for GH Pages
         if: github.ref == 'refs/heads/main'

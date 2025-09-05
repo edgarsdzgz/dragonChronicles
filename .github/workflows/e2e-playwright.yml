@@ -1,0 +1,56 @@
+name: E2E Smoke (Playwright)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm i -g pnpm@9
+
+      - name: Install deps
+        run: pnpm i --frozen-lockfile
+
+      - name: Build (Pages base path)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm --filter @draconia/web build
+
+      - name: Install Playwright browsers (cached)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json','**/pnpm-lock.yaml') }}
+
+      - run: npx playwright install --with-deps
+
+      - name: Start preview server
+        run: pnpm --filter @draconia/web preview &
+
+      - name: Wait for server
+        run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
+
+      - name: Run smoke tests (Chromium only)
+        env:
+          BASE_URL: http://127.0.0.1:4173/${{ github.event.repository.name }}
+        run: npx playwright test --project=chromium --reporter=line
+
+      - name: Upload Playwright report (on fail)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report

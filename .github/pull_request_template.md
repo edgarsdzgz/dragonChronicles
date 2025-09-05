@@ -15,6 +15,10 @@ Brief description of the changes made.
 - [ ] Tests pass (`pnpm run test:all`)
 - [ ] Manual testing completed
 
+## Preview URL
+
+🔍 **Preview deployed**: [Preview URL will be posted here automatically]
+
 ## Screenshots/Logs
 
 (If applicable, attach screenshots or logs)
