@@ -37,7 +37,7 @@ operations, bundle optimization, and error handling.
 
 #### **Time Complexity Improvements**
 
-**Before: O(n) Linear Operations**
+### Before: O(n) Linear Operations
 
 ```typescript
 // Inefficient: O(n) shift operation
@@ -53,7 +53,7 @@ class LogBuffer {
 }
 ```
 
-**After: O(1) Constant Operations**
+### After: O(1) Constant Operations
 
 ```typescript
 // Efficient: O(1) circular buffer
@@ -78,7 +78,7 @@ class CircularBuffer<T> {
 
 #### **Space Complexity Optimization**
 
-**Before: Recursive with Stack Overhead**
+### Before: Recursive with Stack Overhead
 
 ```typescript
 // Inefficient: Recursive with WeakSet overhead
@@ -89,7 +89,7 @@ function calculateSize(obj: unknown, seen = new WeakSet()): number {
 }
 ```
 
-**After: Iterative with Minimal Overhead**
+### After: Iterative with Minimal Overhead
 
 ```typescript
 // Efficient: Iterative approach
