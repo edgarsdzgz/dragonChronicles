@@ -26,7 +26,13 @@ jobs:
       - name: Install deps
         env:
           HUSKY: '0'
-        run: pnpm -w install
+        run: |
+          echo "=== DEBUGGING WORKSPACE LINKING ==="
+          pnpm -w install
+          echo "=== CHECKING WORKSPACE LINKS ==="
+          ls -la apps/web/node_modules/@draconia/ || echo "No @draconia links in web app"
+          echo "=== TESTING MODULE RESOLUTION ==="
+          cd apps/web && node -e "console.log('@draconia/logger:', require.resolve('@draconia/logger'))" || echo "@draconia/logger not resolvable from web app"
 
       - name: Build workspace dependencies
         run: pnpm -w run build:ci
