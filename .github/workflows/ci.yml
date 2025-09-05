@@ -63,6 +63,11 @@ jobs:
           ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
           echo "Testing @draconia/db resolution:"
           node -e "console.log('@draconia/db available:', require.resolve('@draconia/db'))" || echo "@draconia/db not resolvable"
+          echo "Creating symlink manually if needed:"
+          mkdir -p packages/logger/node_modules/@draconia
+          ln -sf ../../../db packages/logger/node_modules/@draconia/db || echo "Symlink failed"
+          echo "Final verification:"
+          ls -la packages/logger/node_modules/@draconia/ || echo "No @draconia links found"
 
       - name: Build (TS project references)
         run: |
