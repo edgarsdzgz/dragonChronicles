@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "rm -rf dist packages/*/dist apps/*/dist && find . -name 'tsconfig.tsbuildinfo' -delete || true",
     "build": "tsc -b",
-    "build:ci": "pnpm --filter @draconia/shared run build && pnpm --filter @draconia/db run build && pnpm --filter @draconia/logger run build && pnpm --filter @draconia/sim run build && pnpm --filter @draconia/sandbox run build",
+    "build:ci": "tsc -b --force",
     "typecheck": "tsc -b --pretty false --noEmit",
     "list": "pnpm -w list --depth -1",
     "dev:sandbox": "pnpm --filter @draconia/sandbox run dev",
@@ -68,7 +68,9 @@
     "performance:monitor": "node scripts/performance-monitor.mjs",
     "optimize:backup": "node -e \"import('./packages/db/dist/backup-manager.js').then(m => console.log('Backup manager loaded:', Object.keys(m)))\"",
     "test:optimizations": "pnpm run build:ci && pnpm run test:node && pnpm run bundle:analyze && pnpm run bundle:optimize && pnpm run performance:monitor",
-    "validate:tree-shaking": "node scripts/validate-tree-shaking.mjs"
+    "validate:tree-shaking": "node scripts/validate-tree-shaking.mjs",
+    "workspace:check": "node scripts/workspace-integrity-check.mjs",
+    "workspace:health": "pnpm run workspace:check && pnpm -w list --depth -1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
