@@ -28,7 +28,12 @@ jobs:
           HUSKY: '0'
         run: |
           echo "=== DEBUGGING WORKSPACE LINKING ==="
-          pnpm -w install
+          echo "Current working directory: $(pwd)"
+          echo "Checking workspace config:"
+          cat pnpm-workspace.yaml
+          echo "Installing with workspace recreation:"
+          rm -rf node_modules apps/*/node_modules packages/*/node_modules || true
+          pnpm -w install --shamefully-hoist=false --link-workspace-packages=true
           echo "=== CHECKING WORKSPACE LINKS ==="
           ls -la apps/web/node_modules/@draconia/ || echo "No @draconia links in web app"
           echo "=== TESTING MODULE RESOLUTION ==="
