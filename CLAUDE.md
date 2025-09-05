@@ -1133,6 +1133,7 @@ if (process.env.VERBOSE) console.log('All validations passed');
 **When encountering repetitive, manual tasks that follow a simple pattern, ALWAYS create a bash script to automate them.**
 
 **Benefits:**
+
 - ⏱️ **Saves Time**: No manual repetition of the same task
 - 🧠 **Saves Thinking Tokens**: No need to think through each instance
 - 🎯 **Improves Accuracy**: Consistent application of rules across all instances
@@ -1140,6 +1141,7 @@ if (process.env.VERBOSE) console.log('All validations passed');
 - 📝 **Documents Process**: Scripts serve as documentation of the solution
 
 **Examples of Tasks That Should Be Automated:**
+
 - Fixing many markdown line length violations
 - Bulk find/replace operations across multiple files
 - Formatting issues that affect many files
@@ -1147,6 +1149,7 @@ if (process.env.VERBOSE) console.log('All validations passed');
 - Mass file modifications with consistent rules
 
 **Script Creation Process:**
+
 1. **Identify the Pattern**: What is the repetitive task?
 2. **Create the Script**: Write a bash script that handles the pattern
 3. **Test the Script**: Verify it works on a subset of files
@@ -1154,6 +1157,7 @@ if (process.env.VERBOSE) console.log('All validations passed');
 5. **Commit the Script**: Save it for future use
 
 **Example: Markdown Line Length Fixer**
+
 ```bash
 #!/bin/bash
 # Fixes markdown line length issues by breaking long lines at word boundaries
@@ -1184,12 +1188,14 @@ find docs -name "*.md" -exec fix_file {} \;
 4. **Document the Solution**: Update guidelines for future reference
 
 **Example: PNPM Hoisting Issues**
+
 - **Problem**: `pixi.js` resolution failures in multiple workflows
 - **Root Cause**: Inconsistent `node_modules` structure between local and CI
 - **Solution**: Apply `--config.node-linker=hoisted` to all workflows
 - **Verification**: Add steps to confirm `pixi.js` is properly hoisted
 
 **Workflow Fix Pattern:**
+
 ```yaml
 - name: Install deps
   run: |
