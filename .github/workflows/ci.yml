@@ -50,14 +50,11 @@ jobs:
           corepack prepare pnpm@9.15.9 --activate
           pnpm -v
 
-      - name: Install
+      - name: Install and Link workspace dependencies
         env:
           HUSKY: '0'
-        run: pnpm -w install --frozen-lockfile
-
-      - name: Link workspace dependencies
         run: |
-          echo "Linking workspace dependencies..."
+          echo "Installing and linking workspace dependencies..."
           pnpm -w install
           echo "Explicitly linking workspace packages..."
           cd packages/logger && pnpm link @draconia/db || echo "Link failed"
