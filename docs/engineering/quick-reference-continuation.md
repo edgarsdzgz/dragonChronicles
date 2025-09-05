@@ -3,6 +3,7 @@
 ## 🚀 Immediate Actions for New Machine
 
 ### 1. Check Current Status
+
 ```bash
 # Check workflow status
 gh run list --limit 5
@@ -12,6 +13,7 @@ gh run view [LATEST_PAGES_RUN_ID] --log
 ```
 
 ### 2. If Pages Deploys is Still Failing
+
 ```bash
 # Check deployment logs
 gh run view [RUN_ID] --log-failed
@@ -21,7 +23,9 @@ gh api repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-br
 ```
 
 ### 3. If Pages Deploys is Passing ✅
+
 Move to E2E Smoke workflow:
+
 ```bash
 # Check E2E workflow logs
 gh run view [E2E_RUN_ID] --log
@@ -32,6 +36,7 @@ gh run view [E2E_RUN_ID] --log
 ## 🔧 Key Commands
 
 ### Workflow Management
+
 ```bash
 gh run list --limit 10
 gh run view [RUN_ID] --log
@@ -39,6 +44,7 @@ gh run view [RUN_ID] --log-failed
 ```
 
 ### Local Testing
+
 ```bash
 pnpm run docs:lint
 pnpm run build
@@ -46,6 +52,7 @@ pnpm run test
 ```
 
 ### Git Operations
+
 ```bash
 git status
 git log --oneline -5
@@ -55,15 +62,19 @@ git push origin feat/w7-cicd-previews
 ## 📋 Current State Summary
 
 ### ✅ FIXED (4/6 workflows)
+
 - **CI**: Prettier formatting issues resolved
 - **Checks**: Linting issues resolved
 - **Lighthouse**: Was already working
 - **Docs**: Markdownlint issues resolved (MD051, MD024)
 
-### 🔄 IN PROGRESS  
-- **Pages Deploys**: Environment protection rules fix applied, deployment succeeds but PR comment fails due to permissions
+### 🔄 IN PROGRESS
+
+- **Pages Deploys**: Environment protection rules fix applied, deployment succeeds but PR comment
+  fails due to permissions
 
 ### ❌ REMAINING
+
 - **E2E Smoke**: Playwright configuration issue
 
 ## 🎯 Next Steps Priority
