@@ -1248,11 +1248,13 @@ find docs -name "*.md" -exec fix_file {} \;
 ## New Memory Rules (September 5, 2025)
 
 ### Automation Preference for Repetitive Tasks
+
 **When manual attempts fail repeatedly (3+ times), create automation scripts instead of continuing manual attempts.** This saves tokens and thinking time while ensuring consistent results.
 
 Example: Instead of manually editing markdown line length issues repeatedly, create a bash script to automate the fix.
 
 ### Sequential Problem Solving Approach
+
 **Focus on one issue at a time with a slow and steady approach.** This allows better control over what is being tested, broken, and fixed, preventing cascading failures.
 
 ## Current Session Status (Updated - September 5, 2025)
@@ -1260,7 +1262,7 @@ Example: Instead of manually editing markdown line length issues repeatedly, cre
 ### Workflow Status: 4/6 Passing ✅
 
 - ✅ **CI** - Fixed prettier formatting issues in CLAUDE.md
-- ✅ **Checks** - Fixed prettier formatting issues in CLAUDE.md  
+- ✅ **Checks** - Fixed prettier formatting issues in CLAUDE.md
 - ✅ **Lighthouse** - Was already working
 - ✅ **Docs** - Fixed markdownlint issues (MD051, MD024, MD013, MD022, MD031, MD032)
 
@@ -1272,6 +1274,7 @@ Example: Instead of manually editing markdown line length issues repeatedly, cre
 ### Critical Discovery: Previously Passing Workflows Started Failing
 
 **Root Cause**: Adding CLAUDE.md to repository without proper formatting
+
 - **Problem**: CLAUDE.md was previously ignored, now checked by Prettier
 - **Solution**: Applied `pnpm run format --write CLAUDE.md`
 - **Status**: ✅ FIXED - CI and Checks workflows now passing
