@@ -21,7 +21,8 @@ export class StepClock {
    * Creates a new step clock
    * @param now - Function to get current time (default: performance.now)
    */
-  constructor(private _now: () => number = () => performance.now()) {}
+  // eslint-disable-next-line no-unused-vars
+  constructor(private now: () => number = () => performance.now()) {}
 
   /**
    * Advances the clock and executes simulation steps
@@ -30,7 +31,7 @@ export class StepClock {
    * @returns Information about the frame execution
    */
   tick(stepFn: (_dt: number) => void, maxStepsPerFrame = 5): { ran: number; acc: number } {
-    const n = this._now();
+    const n = this.now();
 
     // Initialize last time on first call
     if (this.last === 0) {

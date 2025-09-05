@@ -28,8 +28,10 @@ export class SimLoop {
    * @param onBeat - Function called when simulation produces output (throttled)
    */
   constructor(
-    private _onStep: (_dt: number) => void,
-    private _onBeat: (_covered: number, _mode: SimMode) => void
+    // eslint-disable-next-line no-unused-vars
+    private onStep: (_dt: number) => void,
+    // eslint-disable-next-line no-unused-vars
+    private onBeat: (_covered: number, _mode: SimMode) => void
   ) {}
 
   /**

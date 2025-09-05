@@ -15,8 +15,10 @@
 export class DatabaseError extends Error {
   constructor(
     message: string,
-    public readonly _operation: string,
-    public readonly _context?: Record<string, unknown>
+    // eslint-disable-next-line no-unused-vars
+    public readonly operation: string,
+    // eslint-disable-next-line no-unused-vars
+    public readonly context?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'DatabaseError';
@@ -178,7 +180,8 @@ export class MigrationPathError extends MigrationError {
     message: string,
     fromVersion: number,
     toVersion: number,
-    public readonly _missingVersions?: number[]
+    // eslint-disable-next-line no-unused-vars
+    public readonly missingVersions?: number[]
   ) {
     super(message, fromVersion, toVersion);
     this.name = 'MigrationPathError';
