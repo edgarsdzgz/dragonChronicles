@@ -2,12 +2,13 @@
 
 # ADR NNN: <Title>
 
-**Date**: YYYY-MM-DD (Use UTC ISO dates)  
+**Date**: YYYY-MM-DD (Use UTC ISO dates)
 **Status**: Proposed | Accepted | Superseded by ADR NNN
 
 ## Context
 
-(Why this decision was needed - what problem, constraint, or requirement drove the need for a decision)
+(Why this decision was needed - what problem, constraint, or requirement drove the need for a
+decision)
 
 ## Decision
 
@@ -29,4 +30,5 @@
 
 ## Template Example
 
-See [ADR-0001: Testing Strategy](./0001-testing-strategy.md) for a concrete example of this template in use.
+See [ADR-0001: Testing Strategy](./0001-testing-strategy.md) for a concrete example of this template
+in use.

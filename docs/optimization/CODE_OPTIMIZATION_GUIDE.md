@@ -1,7 +1,7 @@
 # Code Optimization Guide for Draconia Chronicles
 
-**Version**: 1.0  
-**Date**: September 3, 2025  
+**Version**: 1.0
+**Date**: September 3, 2025
 **Purpose**: Comprehensive guide for optimizing code performance and maintainability
 
 ## 📖 **Table of Contents**
@@ -51,7 +51,7 @@ class LogBuffer {
     }
   }
 }
-```
+```text
 
 ### After: O(1) Constant Operations
 
@@ -74,7 +74,7 @@ class CircularBuffer<T> {
     }
   }
 }
-```
+```text
 
 #### **Space Complexity Optimization**
 
@@ -87,7 +87,7 @@ function calculateSize(obj: unknown, seen = new WeakSet()): number {
   seen.add(obj);
   // ... recursive calculation
 }
-```
+```text
 
 ### After: Iterative with Minimal Overhead
 
@@ -106,7 +106,7 @@ function calculateSizeFast(obj: unknown): number {
     // ... fast object estimation
   }
 }
-```
+```text
 
 ### **Function Optimization**
 
@@ -123,7 +123,7 @@ const memoizedCalculation = (() => {
     return result;
   };
 })();
-```
+```text
 
 #### **Debouncing and Throttling**
 
@@ -139,7 +139,7 @@ function debounce<T extends (...args: any[]) => any>(
     timeout = setTimeout(() => func(...args), wait);
   };
 }
-```
+```text
 
 ## 🧠 **Memory Management**
 
@@ -163,7 +163,7 @@ class Component {
     this.cleanup = [];
   }
 }
-```
+```text
 
 #### **Object Pool Pattern**
 
@@ -185,7 +185,7 @@ class ObjectPool<T> {
     this.pool.push(obj);
   }
 }
-```
+```text
 
 ### **Memory Usage Monitoring**
 
@@ -201,7 +201,7 @@ function logMemoryUsage(label: string) {
     });
   }
 }
-```
+```text
 
 ## 📊 **Data Structure Optimization**
 
@@ -251,7 +251,7 @@ export class CircularBuffer<T> {
     return result;
   }
 }
-```
+```text
 
 ### **Efficient Data Processing**
 
@@ -273,7 +273,7 @@ function processBatch<T, R>(items: T[], processor: (item: T) => R, batchSize = 1
 
   return results;
 }
-```
+```text
 
 ## 🗄️ **Database Optimization**
 
@@ -294,7 +294,7 @@ function saveData(data: SaveData) {
     });
   });
 }
-```
+```text
 
 #### **After: Clean Async/Await**
 
@@ -308,7 +308,7 @@ async function saveData(data: SaveData): Promise<number> {
   await db.saves.delete(oldSaveId);
   return saveId;
 }
-```
+```text
 
 ### **Query Optimization**
 
@@ -335,7 +335,7 @@ class OptimizedRepository {
     });
   }
 }
-```
+```text
 
 ## 📦 **Bundle Optimization**
 
@@ -356,7 +356,7 @@ const routes = [
     component: lazy(() => import('./Settings')),
   },
 ];
-```
+```text
 
 ### **Tree Shaking Optimization**
 
@@ -374,7 +374,7 @@ export { functionC } from './moduleC';
 export * from './core';
 export * from './utils';
 export * from './types';
-```
+```text
 
 ### **Bundle Analysis**
 
@@ -393,7 +393,7 @@ function analyzeBundle() {
 
   return stats;
 }
-```
+```text
 
 ## 🚨 **Error Handling Optimization**
 
@@ -423,7 +423,7 @@ export class DatabaseError extends Error {
     return msg;
   }
 }
-```
+```text
 
 ### **Error Recovery**
 
@@ -453,7 +453,7 @@ async function withRetry<T>(
 
   throw lastError!;
 }
-```
+```text
 
 ### **Performance Monitoring**
 
@@ -491,7 +491,7 @@ function withPerformanceMonitoring<T>(
       throw error;
     });
 }
-```
+```text
 
 ## 🧪 **Testing and Validation**
 
@@ -528,7 +528,7 @@ describe('Performance Tests', () => {
     expect(memoryIncrease).toBeLessThan(1024 * 1024); // < 1MB increase
   });
 });
-```
+```text
 
 ### **Load Testing**
 
@@ -552,7 +552,7 @@ async function loadTestDatabase() {
   console.log(`Database load test: ${opsPerSecond.toFixed(2)} ops/sec`);
   return opsPerSecond;
 }
-```
+```text
 
 ## 🛠️ **Tools and Resources**
 

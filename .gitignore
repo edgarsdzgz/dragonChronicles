@@ -4,3 +4,25 @@ dist/
 .cache/
 .DS_Store
 *.log
+
+# Backup files (NEVER create these in a Git repository)
+*.backup
+*.bak
+*.old
+*.tmp
+*.temp
+
+# Temporary files from scripts (NEVER create these in a Git repository)
+sed*
+temp*
+tmp*
+
+# IDE temporary files
+*.swp
+*.swo
+*~
+
+# OS temporary files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

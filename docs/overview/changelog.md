@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - E2E Playwright testing with smoke tests and browser caching
   - Lighthouse CI with accessibility monitoring (≥95% threshold)
   - PR preview deployment with GitHub Pages and unique URLs
-  - BASE_PATH configuration for proper asset resolution
+  - BASE*PATH configuration for proper asset resolution
   - Comprehensive artifact upload for debugging and reports
   - Production deployment automation for main branch
 
@@ -61,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **S001**: Testing Strategy Implementation
   - Custom tiny-runner test infrastructure
-  - BUILD_ONCE optimization for faster test execution
+  - BUILD*ONCE optimization for faster test execution
   - Unit, integration, and E2E test layers
   - TypeScript strict gate enforcement
 

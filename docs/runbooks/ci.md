@@ -2,53 +2,61 @@
 
 # CI/CD Execution
 
-This runbook describes how Continuous Integration (CI) executes tests and documentation checks for Draconia Chronicles v2.0.0.
+This runbook describes how Continuous Integration (CI) executes tests and documentation checks for
+Draconia Chronicles v2.0.0.
 
 ## Current CI Status
 
-⚠️ **Note**: Full CI/CD pipeline is not yet implemented. This document describes the intended CI execution patterns for future implementation.
+⚠️ **Note**: Full CI/CD pipeline is not yet implemented. This document describes the intended CI
+execution patterns for future implementation.
 
 ## Test Execution in CI
 
 ### Test Command
 
 ```bash
+
 # Full test suite with build optimization
+
 pnpm run test:all
-```
+```text
 
 ### Expected Execution Flow
 
 1. **Dependencies**: `pnpm install`
 2. **Build**: `tsc -b` (full workspace build)
-3. **Unit Tests**: `BUILD_ONCE=1 node tests/test-unit-shared.mjs`
-4. **Integration Tests**: `BUILD_ONCE=1 node tests/test-integration-graph.mjs`
-5. **E2E Tests**: `BUILD_ONCE=1 node tests/test-e2e-build.mjs`
+3. **Unit Tests**: `BUILD*ONCE=1 node tests/test-unit-shared.mjs`
+4. **Integration Tests**: `BUILD*ONCE=1 node tests/test-integration-graph.mjs`
+5. **E2E Tests**: `BUILD*ONCE=1 node tests/test-e2e-build.mjs`
 6. **TypeScript Strict Gate**: `node tests/test-ts-strict.mjs`
 
 ### Expected Output
 
-```
+```text
 ok - 2 passed
 ok - 2 passed
 ok - 3 passed
 ok - 2 passed
-```
+```text
 
 ## Documentation Checks in CI
 
 ### Planned Documentation Validation
 
 ```bash
+
 # Markdown linting (when CI is implemented)
+
 pnpm run docs:lint
 
 # Link validation (when CI is implemented)
+
 pnpm run docs:links
 
 # Docs presence check (when CI is implemented)
+
 pnpm run docs:check
-```
+```text
 
 ### Documentation Requirements
 
@@ -62,12 +70,15 @@ pnpm run docs:check
 ### TypeScript Compilation
 
 ```bash
+
 # Type checking without emit
+
 pnpm run typecheck
 
 # Full build with artifacts
+
 pnpm run build
-```
+```text
 
 ### Artifact Validation
 
@@ -77,9 +88,9 @@ pnpm run build
 
 ## Performance Considerations
 
-### BUILD_ONCE Optimization
+### BUILD*ONCE Optimization
 
-CI uses `BUILD_ONCE=1` environment variable to optimize test execution:
+CI uses `BUILD*ONCE=1` environment variable to optimize test execution:
 
 - Single workspace build: `tsc -b`
 - Skip rebuilds in individual tests
@@ -90,34 +101,36 @@ CI uses `BUILD_ONCE=1` environment variable to optimize test execution:
 Planned optimization for CI pipeline:
 
 ```bash
+
 # Run tests in parallel when CI supports it
+
 pnpm run test:unit & pnpm run test:integration & pnpm run test:e2e & wait
-```
+```text
 
 ## Failure Scenarios
 
 ### Test Failures
 
-**Exit Code**: 1  
+**Exit Code**: 1
 **Action**: Block PR merge, require fixes
 
-```
+```text
 FAIL - 1 failed, 1 passed
-```
+```text
 
 ### Build Failures
 
-**Exit Code**: Non-zero from `tsc -b`  
+**Exit Code**: Non-zero from `tsc -b`
 **Action**: Block PR merge, fix TypeScript errors
 
 ### Documentation Failures
 
-**Exit Code**: 1 from docs checks  
+**Exit Code**: 1 from docs checks
 **Action**: Block PR merge, require docs updates
 
 ### Strict Gate Failures
 
-**Exit Code**: 1 from TypeScript strict enforcement  
+**Exit Code**: 1 from TypeScript strict enforcement
 **Action**: Block PR merge, fix type violations
 
 ## CI Configuration (Future Implementation)
@@ -125,17 +138,22 @@ FAIL - 1 failed, 1 passed
 ### GitHub Actions (Planned)
 
 ```yaml
+
 # .github/workflows/ci.yml (future implementation)
+
 name: CI
-on: [push, pull_request]
+on: [push, pull*request]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+
         with:
           node-version: '18.17'
+
       - run: corepack enable
       - run: pnpm install
       - run: pnpm run build
@@ -143,7 +161,8 @@ jobs:
       - run: pnpm run docs:lint
       - run: pnpm run docs:links
       - run: pnpm run docs:check
-```
+
+```text
 
 ### Required Checks (Planned)
 
@@ -158,15 +177,18 @@ jobs:
 Until CI is implemented, simulate locally:
 
 ```bash
+
 # Full CI simulation
+
 pnpm install
 pnpm run build
 pnpm run test:all
 node scripts/check-docs-presence.mjs
 
 # Expected: All commands exit with code 0
+
 echo $? # Should show 0 for success
-```
+```text
 
 ### Pre-PR Checklist
 

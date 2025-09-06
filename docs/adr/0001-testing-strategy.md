@@ -2,7 +2,7 @@
 
 # ADR 0001: Testing Strategy
 
-**Date**: 2025-08-18  
+**Date**: 2025-08-18
 **Status**: Accepted
 
 ## Context
@@ -38,7 +38,7 @@ architecture:
 
 ### Execution Commands
 
-- `pnpm run test:all` - Run all tests with BUILD_ONCE=1 optimization
+- `pnpm run test:all` - Run all tests with BUILD*ONCE=1 optimization
 - `pnpm run test:unit` - Unit tests only
 - `pnpm run test:integration` - Integration tests only
 - `pnpm run test:e2e` - End-to-end tests only
@@ -70,5 +70,5 @@ architecture:
 
 - All PRs must pass `pnpm run test:all`
 - Test files follow pattern: `tests/test-*.mjs`
-- BUILD_ONCE=1 environment variable optimizes multi-test execution
+- BUILD*ONCE=1 environment variable optimizes multi-test execution
 - Tests use `require.resolve("typescript/bin/tsc")` for robust binary resolution

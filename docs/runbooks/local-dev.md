@@ -2,7 +2,8 @@
 
 # Local Development Setup
 
-This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone to running tests.
+This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone
+to running tests.
 
 ## Prerequisites
 
@@ -13,16 +14,20 @@ This runbook covers setting up Draconia Chronicles v2.0.0 for local development,
 ## Quick Start (5 minutes)
 
 ```bash
+
 # 1. Clone repository
+
 git clone https://github.com/edgarsdzgz/dragonChronicles.git
 cd dragonChronicles
 
 # 2. Install dependencies
+
 pnpm install
 
 # 3. Run tests (includes build optimization)
+
 node tests/run-all.mjs
-```
+```text
 
 **Expected output**: `ok - 2 passed` (for each test file)
 
@@ -35,18 +40,22 @@ git clone https://github.com/edgarsdzgz/dragonChronicles.git
 cd dragonChronicles
 
 # Verify you're on the correct branch
+
 git branch --show-current
-```
+```text
 
 ### 2. Dependency Installation
 
 ```bash
+
 # Install all workspace dependencies
+
 pnpm install
 
 # Verify installation
+
 pnpm list --depth=0
-```
+```text
 
 **Troubleshooting**:
 
@@ -56,30 +65,36 @@ pnpm list --depth=0
 ### 3. TypeScript Compilation
 
 ```bash
+
 # Build all packages and apps
+
 pnpm run build
 
 # Verify artifacts exist
+
 ls packages/*/dist
 ls apps/*/dist
-```
+```text
 
 ### 4. Test Execution
 
 ```bash
+
 # Run all tests (cross-platform driver with build-once optimization)
+
 node tests/run-all.mjs
 
 # Run individual test suites (if needed)
+
 pnpm run test:unit          # Unit tests
 pnpm run test:integration   # Integration tests
 pnpm run test:e2e          # End-to-end tests
 pnpm run test:ts-strict    # TypeScript strict gate
-```
+```text
 
 ## Workspace Structure
 
-```
+```text
 dragonChronicles/
 ├── packages/           # Shared libraries
 │   ├── shared/        # Common utilities
@@ -91,7 +106,7 @@ dragonChronicles/
 ├── tests/             # Test files
 ├── docs/              # Documentation
 └── scripts/           # Build/utility scripts
-```
+```text
 
 ## Development Workflow
 
@@ -127,15 +142,19 @@ dragonChronicles/
 ### Testing Changes
 
 ```bash
+
 # Quick test during development
+
 node tests/test-unit-shared.mjs
 
 # Full test suite (cross-platform, optimized)
+
 node tests/run-all.mjs
 
 # With verbose TypeScript output
+
 node tests/test-ts-strict.mjs
-```
+```text
 
 ## Package Scripts Reference
 
@@ -145,7 +164,7 @@ node tests/test-ts-strict.mjs
 pnpm run build        # Build all packages and apps
 pnpm run clean        # Clean all build artifacts
 pnpm run typecheck    # Type checking without emit
-```
+```text
 
 ### Test Scripts
 
@@ -155,14 +174,14 @@ pnpm run test:unit         # Unit tests only
 pnpm run test:integration  # Integration tests only
 pnpm run test:e2e         # End-to-end tests only
 pnpm run test:ts-strict   # TypeScript strict enforcement
-```
+```text
 
 ### Development Scripts
 
 ```bash
 pnpm run dev:sandbox   # Run sandbox app in dev mode
 pnpm run list         # List all workspace packages
-```
+```text
 
 ## Common Issues and Solutions
 
@@ -171,54 +190,67 @@ pnpm run list         # List all workspace packages
 **Issue**: `tsc -b` fails with compilation errors
 
 ```bash
+
 # Solution: Check specific package errors
+
 pnpm run typecheck
 
 # Clean and rebuild
+
 pnpm run clean
 pnpm run build
-```
+```text
 
 **Issue**: Missing `dist/` directories
 
 ```bash
+
 # Solution: Ensure build completed successfully
+
 pnpm run build
 ls packages/*/dist  # Should show compiled output
-```
+```text
 
 ### Test Failures
 
 **Issue**: Tests report failures but errors aren't clear
 
 ```bash
+
 # Solution: Run individual test files for detailed output
+
 node tests/test-unit-shared.mjs
 node tests/test-integration-graph.mjs
-```
+```text
 
 **Issue**: Individual tests failing after changes
 
 ```bash
+
 # Solution: Use the driver for reliable cross-platform testing
+
 node tests/run-all.mjs
 
 # Or build manually first
+
 pnpm run build
 BUILD_ONCE=1 node tests/test-unit-shared.mjs
-```
+```text
 
 ### TypeScript Issues
 
 **Issue**: Strict mode violations (TS7006, TS7031)
 
 ```bash
+
 # Solution: Check specific errors
+
 pnpm run test:ts-strict
 
 # See TypeScript documentation for fixes
+
 cat docs/engineering/typescript.md
-```
+```text
 
 **Issue**: Module resolution errors
 
@@ -245,34 +277,45 @@ cat docs/engineering/typescript.md
 ### Faster Builds
 
 ```bash
+
 # Use TypeScript build mode for incremental compilation
+
 pnpm run build
 
 # Use the driver for build-once optimization
+
 node tests/run-all.mjs
-```
+```text
 
 ### Faster Tests
 
 ```bash
+
 # Run all tests with driver (fastest, cross-platform)
+
 node tests/run-all.mjs
 
 # Run specific test categories if needed
+
 pnpm run test:unit      # Fastest
 pnpm run test:ts-strict # Fast (no runtime execution)
 pnpm run test:e2e      # Slowest (full builds)
-```
+```text
 
 ### Development Mode
 
 ```bash
+
 # Watch mode for sandbox development
+
 pnpm run dev:sandbox
 
 # Monitor file changes and rebuild automatically
+
+
 # (Future: Add watch scripts when needed)
-```
+
+```text
 
 ## Documentation Integration
 

@@ -22,19 +22,22 @@ implementation.
 ```bash
 git checkout main
 git pull origin main
-```
+```text
 
 **Why**: Ensure we have the latest merged changes and are on the correct branch.
 
 ### 2. Delete Local Feature Branch
 
 ```bash
+
 # For completed feature branches
+
 git branch -d feat/p0-s00X-<description>
 
 # If branch has unmerged changes (force delete)
+
 git branch -D feat/p0-s00X-<description>
-```
+```text
 
 **Why**: Clean up local branches to prevent confusion and maintain clean repository state.
 
@@ -42,7 +45,7 @@ git branch -D feat/p0-s00X-<description>
 
 ```bash
 git push origin --delete feat/p0-s00X-<description>
-```
+```text
 
 **Why**: Remove remote branches to prevent clutter and ensure no one accidentally works on completed
 features.
@@ -61,7 +64,7 @@ features.
 git branch -a          # Should show only main and any active branches
 git status             # Should be clean
 git log --oneline -5   # Verify latest commits are from main
-```
+```text
 
 **Why**: Ensure we're in a clean state ready for next issue.
 
@@ -109,7 +112,7 @@ Before considering cleanup complete, verify:
 
 ```bash
 git branch -D feat/p0-s00X-<description>
-```
+```text
 
 ### Issue: Remote branch deletion fails
 
@@ -118,7 +121,7 @@ git branch -D feat/p0-s00X-<description>
 ```bash
 git ls-remote --heads origin | grep feat/p0-s00X
 git push origin --delete feat/p0-s00X-<description>
-```
+```text
 
 ### Issue: Documentation out of sync
 

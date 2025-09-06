@@ -6,9 +6,9 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 
 ## Project Status
 
-**Version**: 0.5.0-alpha (Phase 0 Foundation Nearly Complete)  
-**Phase**: Phase 0 (6/8 workpacks complete - W1-W6 foundation established, W7 95% complete)  
-**Architecture**: TypeScript Monorepo with Worker Simulation, Strict Mode Enforcement & Persistence  
+**Version**: 0.5.0-alpha (Phase 0 Foundation Nearly Complete)
+**Phase**: Phase 0 (6/8 workpacks complete - W1-W6 foundation established, W7 95% complete)
+**Architecture**: TypeScript Monorepo with Worker Simulation, Strict Mode Enforcement & Persistence
 **Workpack Model**: 8-workpack Phase 0 approach (W1-W6 complete, W7 nearly complete, W8 pending)
 
 ## Key Metrics
@@ -21,13 +21,20 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 - **TypeScript Strict Gate**: ✅ Type safety enforcement
 - **Worker Simulation**: ✅ Protocol v1, RNG, fixed-timestep clock, auto-recovery
 - **Database Persistence**: ✅ Dexie schema, Zod validation, atomic writes, export/import
-- **Structured Logging**: ✅ Ring buffer with Dexie persistence, PII redaction, performance monitoring
+- **Structured Logging**: ✅ Ring buffer with Dexie persistence, PII redaction, performance
+
+monitoring
+
 - **PWA Implementation**: ✅ Service worker, manifest, icons, workbox caching, offline support
 - **CI/CD Pipeline**: ✅ GitHub Actions, size budgets, E2E tests, Lighthouse CI, PR previews
 
 ### Documentation Status
 
-- **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md), [TypeScript](/docs/engineering/typescript.md), [Database Persistence](/docs/engineering/database-persistence.md))
+- **Engineering Standards**: ✅ Complete ([Testing](/docs/engineering/testing.md),
+
+[TypeScript](/docs/engineering/typescript.md), [Database
+Persistence](/docs/engineering/database-persistence.md))
+
 - **Architectural Decisions**: ✅ ADRs 0001-0002 documented
 - **Runbooks**: ✅ [Local Development](/docs/runbooks/local-dev.md), [CI/CD](/docs/runbooks/ci.md)
 - **Player Documentation**: ❌ Not yet implemented
@@ -36,14 +43,14 @@ Product summaries, architecture overviews, and project status for Draconia Chron
 
 - **TypeScript Strict Mode**: ✅ Enforced across all packages
 - **Build System**: ✅ Incremental compilation with project references
-- **Test Optimization**: ✅ BUILD_ONCE pattern reduces build time 3x
+- **Test Optimization**: ✅ BUILD*ONCE pattern reduces build time 3x
 - **Database Layer**: ✅ Atomic writes, data validation, migration scaffolding
 
 ## Architecture Summary
 
 ### Monorepo Structure
 
-```
+```text
 packages/           # Shared libraries
 ├── shared/        # Common utilities, constants, protocol v1, RNG
 ├── logger/        # Structured logging system (W5 complete ✅)
@@ -55,13 +62,13 @@ apps/              # Applications
 └── sandbox/      # CLI testing and contracts
 
 tests/             # Test infrastructure
-├── _tiny-runner.mjs    # Custom test runner
+├── *tiny-runner.mjs    # Custom test runner
 ├── test-unit-*.mjs     # Unit tests
 ├── test-integration-*.mjs  # Integration tests
 ├── test-e2e-*.mjs      # End-to-end tests
 ├── test-ts-strict.mjs  # TypeScript enforcement
 └── sim/              # Worker simulation tests
-```
+```text
 
 ### Technology Stack
 
@@ -83,18 +90,18 @@ tests/             # Test infrastructure
 
 ### Performance Optimizations
 
-- **BUILD_ONCE**: Reduces test execution time by building once, testing multiple times
+- **BUILD*ONCE**: Reduces test execution time by building once, testing multiple times
 - **Incremental Builds**: TypeScript project references for faster compilation
 - **Robust Tooling**: `require.resolve()` for reliable binary resolution
 
 ## Game Design Overview
 
-**Genre**: Shooter-Idle  
-**Core Loop**: Combat → Arcana → Enchants → Progression  
-**Architecture**: PWA with offline-first design  
+**Genre**: Shooter-Idle
+**Core Loop**: Combat → Arcana → Enchants → Progression
+**Architecture**: PWA with offline-first design
 **Platform**: Desktop/Mobile browsers with installable PWA
 
-For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_v2_GDD.md).
+For complete game design, see [Draconia Chronicles v2 GDD](/Draconia*Chronicles*v2*GDD.md).
 
 ## Next Milestones
 
@@ -102,16 +109,25 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 **Workpack Structure**: 8 comprehensive workpacks delivering complete functionality blocks
 
-- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
+- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint,
+
+templates)
+
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
 - ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
 - ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
 - ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, service worker, offline support)
-- 🔄 **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews) - 95% complete
+- 🔄 **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews) -
+
+95% complete
+
 - ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
 
-**Current Status**: 6/8 workpacks complete, W7 95% complete. W1-W6 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, worker simulation harness, robust persistence layer, structured logging infrastructure, and complete PWA implementation. W7 CI/CD pipeline is nearly complete with all major components implemented.
+**Current Status**: 6/8 workpacks complete, W7 95% complete. W1-W6 established production-ready
+foundation with TypeScript strict mode, automated quality gates, development standards, worker
+simulation harness, robust persistence layer, structured logging infrastructure, and complete PWA
+implementation. W7 CI/CD pipeline is nearly complete with all major components implemented.
 
 ### Phase 0 Success Criteria
 
@@ -136,12 +152,16 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 **Extended Development Timeline**:
 
 - **Core GDD Implementation**: 4 phases (0.5.0-alpha → 0.10.0-alpha)
-- **Extended Alpha Development**: Gameplay refinement and content expansion (0.10.0-alpha → 0.15.0-alpha)
+- **Extended Alpha Development**: Gameplay refinement and content expansion (0.10.0-alpha →
+
+0.15.0-alpha)
+
 - **Beta Phase**: Feature freeze and stability focus (0.15.0-alpha → 0.20.0-beta)
 - **Release Candidate**: Final validation and release prep (0.20.0-beta → 0.25.0-rc)
 - **Full Release**: Production deployment (0.25.0-rc → 1.0.0)
 
-**Total Development Scope**: Comprehensive development cycle with proper alpha, beta, and RC phases before release
+**Total Development Scope**: Comprehensive development cycle with proper alpha, beta, and RC phases
+before release
 
 ## Links and Resources
 
@@ -153,7 +173,7 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 ### External Resources
 
-- [Game Design Document](/Draconia_Chronicles_v2_GDD.md) - Complete game design
+- [Game Design Document](/Draconia*Chronicles*v2_GDD.md) - Complete game design
 - [Project Repository](https://github.com/edgarsdzgz/dragonChronicles) - Source code and issues
 - [Development Guidelines](/CLAUDE.md) - Development processes and standards
 

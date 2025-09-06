@@ -5,15 +5,20 @@ implemented for Draconia Chronicles.
 
 ## 📚 Documentation Overview
 
-- **[OPTIMIZATION*JOURNEY*SUMMARY.md](./OPTIMIZATION*JOURNEY*SUMMARY.md)** - Complete summary of the
-  optimization journey
-- **[OPTIMIZATION\*BLUEPRINT.md](./OPTIMIZATION*BLUEPRINT.md)** - Reusable blueprint for future
+- **[Optimization Guide](./optimization-guide.md)** - Complete optimization journey, implementation
+
+results, and future roadmap
+
+- **[OPTIMIZATION*BLUEPRINT.md](./OPTIMIZATION*BLUEPRINT.md)** - Reusable blueprint for future
+
   optimization efforts
+
 - **[CODE*OPTIMIZATION*GUIDE.md](./CODE*OPTIMIZATION*GUIDE.md)** - Comprehensive optimization guide
+
   and reference
-- **[OPTIMIZATION\*SUMMARY.md](./OPTIMIZATION*SUMMARY.md)** - Detailed implementation summary of
-  completed optimizations
+
 - **[ISSUE*CodeReview*Optimization.md](./ISSUE*CodeReview*Optimization.md)** - Original optimization
+
   issue and planning document
 
 ## 🎯 Key Achievements

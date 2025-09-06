@@ -2,10 +2,10 @@
 
 ## Issue Type
 
-**Type**: Code Quality & Performance Optimization  
-**Priority**: High  
-**Assignee**: Senior Developer  
-**Estimated Effort**: 3-5 days  
+**Type**: Code Quality & Performance Optimization
+**Priority**: High
+**Assignee**: Senior Developer
+**Estimated Effort**: 3-5 days
 **Dependencies**: W4 and W5 completed ✅
 
 ## Summary
