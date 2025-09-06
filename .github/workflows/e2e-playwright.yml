@@ -75,15 +75,12 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Checking for build output directory..."
           
-          # Check for both possible build output directories
+          # Check for build output directory (now configured to use 'dist')
           if [ -d "apps/web/dist" ]; then
             echo "✅ Found dist directory"
             BUILD_DIR="apps/web/dist"
-          elif [ -d "apps/web/build" ]; then
-            echo "✅ Found build directory"
-            BUILD_DIR="apps/web/build"
           else
-            echo "❌ Build failed - no build output directory found"
+            echo "❌ Build failed - no dist directory found"
             echo "Checking apps/web directory structure:"
             ls -la apps/web/ || echo "apps/web directory not found"
             exit 1
@@ -91,25 +88,20 @@ jobs:
           
           echo "Build directory contents:"
           ls -la "$BUILD_DIR/"
-          echo "Checking for SvelteKit build output..."
+          echo "Checking for build output..."
           
-          # Check for SvelteKit-specific files
-          if [ -f "$BUILD_DIR/manifest.json" ] && [ -d "$BUILD_DIR/_app" ]; then
-            echo "✅ SvelteKit build output found"
-            echo "Manifest file size: $(wc -c < "$BUILD_DIR/manifest.json") bytes"
-            echo "_app directory contents:"
-            ls -la "$BUILD_DIR/_app/"
-            echo "Checking for entry point..."
-            if [ -f "$BUILD_DIR/_app/immutable/entry/start.js" ] || [ -f "$BUILD_DIR/_app/immutable/entry/app.js" ]; then
-              echo "✅ SvelteKit entry point found"
-            else
-              echo "⚠️  SvelteKit entry point not found, but build structure looks correct"
-            fi
-          elif [ -f "$BUILD_DIR/index.html" ]; then
-            echo "✅ Traditional index.html found"
+          # Check for index.html (now that we're using static adapter with fallback)
+          if [ -f "$BUILD_DIR/index.html" ]; then
+            echo "✅ index.html found"
             echo "File size: $(wc -c < "$BUILD_DIR/index.html") bytes"
+            echo "Checking for additional assets..."
+            if [ -d "$BUILD_DIR/_app" ]; then
+              echo "✅ SvelteKit _app directory found"
+              echo "_app directory contents:"
+              ls -la "$BUILD_DIR/_app/"
+            fi
           else
-            echo "❌ No recognizable build output found"
+            echo "❌ index.html not found in build output"
             echo "Available files:"
             find "$BUILD_DIR" -type f -name "*.html" -o -name "*.js" -o -name "*.json" | head -10
             exit 1
