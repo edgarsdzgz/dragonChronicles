@@ -9,7 +9,7 @@ export function load() {
     details: {
       timestamp: new Date().toISOString(),
       purpose: 'Testing error boundary functionality',
-      component: 'dev/boom test page'
-    }
+      component: 'dev/boom test page',
+    },
   });
 }

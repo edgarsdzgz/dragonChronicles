@@ -14,30 +14,34 @@
   onMount(() => {
     // Generate detailed error information for debugging
     if (error) {
-      errorDetails = JSON.stringify({
-        message: error.message,
-        stack: error.stack,
-        id: error.id,
-        timestamp: new Date().toISOString(),
-        url: $page.url.toString(),
-        userAgent: navigator.userAgent,
-        viewport: {
-          width: window.innerWidth,
-          height: window.innerHeight
-        }
-      }, null, 2);
+      errorDetails = JSON.stringify(
+        {
+          message: error.message,
+          stack: error.stack,
+          id: error.id,
+          timestamp: new Date().toISOString(),
+          url: $page.url.toString(),
+          userAgent: navigator.userAgent,
+          viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+          },
+        },
+        null,
+        2,
+      );
     }
   });
 
   // Export logs as NDJSON
   async function exportLogs() {
     if (isExporting) return;
-    
+
     isExporting = true;
     try {
       // Use the existing logger's exportNDJSON method
       const blob = await logger.exportNDJSON();
-      
+
       // Create and download the file
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -75,10 +79,17 @@
   <div class="error-content">
     <!-- Error Icon -->
     <div class="error-icon">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="15" y1="9" x2="9" y2="15"/>
-        <line x1="9" y1="9" x2="15" y2="15"/>
+      <svg
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="15" y1="9" x2="9" y2="15" />
+        <line x1="9" y1="9" x2="15" y2="15" />
       </svg>
     </div>
 
@@ -98,27 +109,48 @@
     <!-- Action Buttons -->
     <div class="error-actions">
       <button class="btn btn-primary" on:click={reloadPage}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="23,4 23,10 17,10"/>
-          <polyline points="1,20 1,14 7,14"/>
-          <path d="M20.49,9A9,9,0,0,0,5.64,5.64L1,10m22,4L18.36,18.36A9,9,0,0,1,3.51,15"/>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="23,4 23,10 17,10" />
+          <polyline points="1,20 1,14 7,14" />
+          <path d="M20.49,9A9,9,0,0,0,5.64,5.64L1,10m22,4L18.36,18.36A9,9,0,0,1,3.51,15" />
         </svg>
         Reload Page
       </button>
 
       <button class="btn btn-secondary" on:click={goHome}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3,9L12,2L21,9V20A2,2,0,0,1,19,22H5A2,2,0,0,1,3,20Z"/>
-          <polyline points="9,22 9,12 15,12 15,22"/>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3,9L12,2L21,9V20A2,2,0,0,1,19,22H5A2,2,0,0,1,3,20Z" />
+          <polyline points="9,22 9,12 15,12 15,22" />
         </svg>
         Go Home
       </button>
 
       <button class="btn btn-outline" on:click={exportLogs} disabled={isExporting}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21,15V19A2,2,0,0,1,19,21H5A2,2,0,0,1,3,19V15"/>
-          <polyline points="7,10 12,15 17,10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21,15V19A2,2,0,0,1,19,21H5A2,2,0,0,1,3,19V15" />
+          <polyline points="7,10 12,15 17,10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
         {isExporting ? 'Exporting...' : 'Download Logs'}
       </button>
