@@ -9,6 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  pull-requests: write
 
 concurrency:
   group: "pages"
@@ -76,13 +77,20 @@ jobs:
       - name: Comment PR with preview URL
         if: ${{ github.event_name == 'pull_request' }}
         uses: actions/github-script@v7
+        continue-on-error: true
         with:
           script: |
-            const url = process.env.DEPLOY_URL || '${{ steps.deployment.outputs.page_url }}';
-            const body = `🔍 **Preview deployed**: ${url}\n\n(BASE_PATH set to /${{ github.event.repository.name }})`;
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body
-            });
+            try {
+              const url = process.env.DEPLOY_URL || '${{ steps.deployment.outputs.page_url }}';
+              const body = `🔍 **Preview deployed**: ${url}\n\n(BASE_PATH set to /${{ github.event.repository.name }})`;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+              console.log('✅ PR comment posted successfully');
+            } catch (error) {
+              console.log('⚠️ Failed to post PR comment:', error.message);
+              console.log('Deployment was successful, but comment failed');
+            }
