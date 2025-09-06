@@ -49,7 +49,7 @@
       URL.revokeObjectURL(url);
     } catch (exportError) {
       console.error('Failed to export logs:', exportError);
-      // eslint-disable-next-line no-alert
+      // eslint-disable-next-line no-undef
       alert('Failed to export logs. Check console for details.');
     } finally {
       isExporting = false;
