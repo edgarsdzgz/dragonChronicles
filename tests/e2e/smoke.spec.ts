@@ -8,11 +8,13 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     // Check that the page title is set
     const title = await page.title();
@@ -30,11 +32,13 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     // Check for basic HTML structure
     const html = await page.locator('html');
@@ -65,11 +69,13 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     // Filter out 404 errors for missing resources (common in static builds)
     const filteredErrors = consoleErrors.filter(error => 

@@ -8,11 +8,13 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     // Check that the page loads without errors
     const title = await page.title();
@@ -36,11 +38,13 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     // Try to navigate to a non-existent page
     await page.goto('/non-existent-page');
@@ -56,11 +60,13 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     const body = await page.locator('body');
     await expect(body).toBeVisible();
@@ -70,11 +76,13 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    // Wait for SvelteKit to remove the preload data attribute
+    // Wait for the page to be fully loaded (more robust approach)
     await page.waitForFunction(() => {
-      const body = document.body;
-      return !body.hasAttribute('data-sveltekit-preload-data');
+      return document.readyState === 'complete';
     }, { timeout: 10000 });
+    
+    // Additional wait for SvelteKit hydration
+    await page.waitForTimeout(2000);
     
     await expect(body).toBeVisible();
   });
