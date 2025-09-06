@@ -58,6 +58,17 @@ jobs:
 
       - run: npx playwright install --with-deps
 
+      - name: Kill any existing server on port 4173
+        run: |
+          echo "Checking for existing processes on port 4173..."
+          if lsof -i :4173 >/dev/null 2>&1; then
+            echo "Found existing process on port 4173, killing it..."
+            lsof -ti :4173 | xargs kill -9 || true
+            sleep 2
+          else
+            echo "No existing process found on port 4173"
+          fi
+
       - name: Start preview server
         run: pnpm --filter @draconia/web preview &
 
@@ -88,3 +99,14 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
+
+      - name: Cleanup - Kill preview server
+        if: always()
+        run: |
+          echo "Cleaning up preview server..."
+          if lsof -i :4173 >/dev/null 2>&1; then
+            echo "Killing preview server on port 4173..."
+            lsof -ti :4173 | xargs kill -9 || true
+          else
+            echo "No preview server found on port 4173"
+          fi
