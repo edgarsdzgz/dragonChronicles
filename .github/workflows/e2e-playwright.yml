@@ -122,7 +122,7 @@ jobs:
           cd apps/web
           echo "Changed to apps/web directory: $(pwd)"
           echo "Starting vite preview server on port 4173..."
-          pnpm preview --host --strictPort --port 4173 &
+          pnpm preview &
           echo "Preview server started in background"
           echo "Waiting 3 seconds for server to initialize..."
           sleep 3
