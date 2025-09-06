@@ -323,6 +323,4 @@ git push origin feat/w7-cicd-previews
 
 - Implement pre-commit hooks for formatting
 
-- Add workflow status monitoring and alerting
-
 
