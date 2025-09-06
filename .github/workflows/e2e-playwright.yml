@@ -73,7 +73,26 @@ jobs:
         run: pnpm --filter @draconia/web preview &
 
       - name: Wait for server
-        run: npx wait-on http://127.0.0.1:4173/
+        run: |
+          echo "Waiting for server to be ready..."
+          for i in {1..30}; do
+            echo "Attempt $i/30: Testing server connectivity..."
+            if curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
+              echo "✅ Server is ready!"
+              break
+            else
+              echo "Server not ready yet, waiting 2 seconds..."
+              sleep 2
+            fi
+          done
+          
+          # Final check
+          if ! curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
+            echo "❌ Server failed to start after 60 seconds"
+            echo "Checking what's running on port 4173:"
+            lsof -i :4173 || echo "Nothing found on port 4173"
+            exit 1
+          fi
 
       - name: Debug - List files and check config
         run: |
