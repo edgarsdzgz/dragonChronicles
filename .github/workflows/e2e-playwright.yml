@@ -62,7 +62,7 @@ jobs:
         run: pnpm --filter @draconia/web preview &
 
       - name: Wait for server
-        run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
+        run: npx wait-on http://127.0.0.1:4173/
 
       - name: Debug - List files and check config
         run: |
@@ -79,7 +79,7 @@ jobs:
 
       - name: Run smoke tests (Chromium only)
         env:
-          BASE_URL: http://127.0.0.1:4173/${{ github.event.repository.name }}
+          BASE_URL: http://127.0.0.1:4173
         run: npx playwright test --config=configs/playwright.config.ts --project=chromium --reporter=line
 
       - name: Upload Playwright report (on fail)
