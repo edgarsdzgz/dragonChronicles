@@ -24,7 +24,7 @@
     {#if import.meta.env.DEV}
       <div style="margin-top:4px; font-size:10px; opacity:0.8;">
         Active flags: 
-        {#each Object.entries($appFlags) as [key, value]}
+        {#each Object.entries($appFlags) as [key, value] (key)}
           {#if value === true}
             <span style="color:#4ade80;">{getFlagDisplayName(key)}</span>
           {/if}

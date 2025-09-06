@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
 """
-Comprehensive Markdown Linter and Fixer
-Handles all common markdownlint violations with automatic fixes.
+Universal Markdown Fixer Script
 
-Supports:
-- MD013: Line length (100 chars)
+Purpose: Comprehensive markdown linting fixer that handles all common markdownlint violations
+Usage: python scripts/fix-markdown-universal.py [file1] [file2] ... [directory] [--max-length N]
+
+Features:
+- File-agnostic: Works with any markdown file or directory
+- Comprehensive: Fixes all common markdownlint violations
+- Intelligent: Smart line breaking with context awareness
+- Safe: Preserves content while fixing formatting issues
+
+Fixes:
+- MD013: Line length (configurable, default 100 chars)
 - MD022: Blank lines around headings
-- MD024: Duplicate headings
+- MD024: Duplicate headings (adds unique identifiers)
 - MD031: Blank lines around fenced code blocks
 - MD032: Blank lines around lists
-- MD040: Fenced code blocks language specification
-- MD051: Link fragments validation
-- MD034: Bare URLs
-- MD007: Unordered list indentation
-- MD005: List indentation consistency
-- MD029: Ordered list item prefix
+- MD040: Language specification for fenced code blocks
+- MD009: Trailing spaces
+- MD012: Multiple consecutive blank lines
+- MD007/MD005: List indentation consistency
+- MD029: Ordered list item prefix consistency
+- MD034: Bare URLs (wraps in angle brackets)
 - MD047: Files should end with single newline
+- MD049: Emphasis style consistency (underscore to asterisk)
 """
 
 import argparse
@@ -26,8 +35,8 @@ from pathlib import Path
 from typing import List, Dict, Tuple, Optional
 
 
-class MarkdownLinter:
-    """Comprehensive markdown linter and fixer."""
+class UniversalMarkdownFixer:
+    """Universal markdown linter and fixer with comprehensive rule support."""
     
     def __init__(self, max_line_length: int = 100):
         self.max_line_length = max_line_length
@@ -55,19 +64,14 @@ class MarkdownLinter:
     
     def _fix_all_violations(self, content: str) -> str:
         """Apply all fixes to markdown content."""
-        lines = content.split('\n')
-        fixed_lines = []
+        # Remove trailing spaces first
+        content = self._fix_trailing_spaces(content)
         
-        for i, line in enumerate(lines):
-            # Fix line length (MD013)
-            if len(line) > self.max_line_length:
-                line = self._fix_line_length(line)
-                self.fixes_applied += 1
-            
-            fixed_lines.append(line)
+        # Fix multiple consecutive blank lines
+        content = self._fix_multiple_blank_lines(content)
         
-        # Join lines and apply structural fixes
-        content = '\n'.join(fixed_lines)
+        # Fix line length issues
+        content = self._fix_line_length(content)
         
         # Fix structural issues
         content = self._fix_blank_lines_around_headings(content)
@@ -78,44 +82,80 @@ class MarkdownLinter:
         content = self._fix_list_indentation(content)
         content = self._fix_ordered_list_prefixes(content)
         content = self._fix_bare_urls(content)
+        content = self._fix_emphasis_style(content)
         content = self._fix_file_ending(content)
         
         return content
     
-    def _fix_line_length(self, line: str) -> str:
-        """Fix line length by breaking at appropriate points."""
-        if len(line) <= self.max_line_length:
-            return line
+    def _fix_trailing_spaces(self, content: str) -> str:
+        """Fix MD009: Trailing spaces."""
+        lines = content.split('\n')
+        fixed_lines = []
         
-        # Don't break URLs, code blocks, or special lines
-        if (line.startswith('http') or 
-            line.startswith('```') or 
-            line.startswith('#') or
-            line.strip().startswith('-') or
-            line.strip().startswith('*') or
-            line.strip().startswith('1.')):
-            return line
+        for line in lines:
+            # Remove trailing spaces
+            fixed_lines.append(line.rstrip())
         
-        # Break at sentence boundaries
-        if '. ' in line:
-            parts = line.split('. ')
-            result = parts[0] + '.'
-            for part in parts[1:]:
-                if len(result + '. ' + part) <= self.max_line_length:
-                    result += '. ' + part
-                else:
-                    result += '.\n' + part
-            return result
+        return '\n'.join(fixed_lines)
+    
+    def _fix_multiple_blank_lines(self, content: str) -> str:
+        """Fix MD012: Multiple consecutive blank lines."""
+        # Replace multiple consecutive blank lines with single blank line
+        content = re.sub(r'\n\s*\n\s*\n+', '\n\n', content)
+        return content
+    
+    def _fix_line_length(self, content: str) -> str:
+        """Fix MD013: Line length by breaking at appropriate points."""
+        lines = content.split('\n')
+        fixed_lines = []
         
-        # Break at word boundaries
-        words = line.split()
-        result = words[0]
-        for word in words[1:]:
-            if len(result + ' ' + word) <= self.max_line_length:
-                result += ' ' + word
+        for line in lines:
+            if len(line) <= self.max_line_length:
+                fixed_lines.append(line)
             else:
-                result += '\n' + word
-        return result
+                # Don't break URLs, code blocks, or special lines
+                if (line.startswith('http') or 
+                    line.startswith('```') or 
+                    line.startswith('#') or
+                    line.strip().startswith('-') or
+                    line.strip().startswith('*') or
+                    line.strip().startswith('1.') or
+                    line.strip().startswith('2.') or
+                    line.strip().startswith('3.') or
+                    line.strip().startswith('4.') or
+                    line.strip().startswith('5.') or
+                    line.strip().startswith('6.') or
+                    line.strip().startswith('7.') or
+                    line.strip().startswith('8.') or
+                    line.strip().startswith('9.')):
+                    fixed_lines.append(line)
+                    continue
+                
+                # Break at sentence boundaries first
+                if '. ' in line:
+                    parts = line.split('. ')
+                    result = parts[0] + '.'
+                    for part in parts[1:]:
+                        if len(result + '. ' + part) <= self.max_line_length:
+                            result += '. ' + part
+                        else:
+                            result += '.\n' + part
+                    fixed_lines.append(result)
+                    self.fixes_applied += 1
+                    continue
+                
+                # Break at word boundaries
+                words = line.split()
+                result = words[0]
+                for word in words[1:]:
+                    if len(result + ' ' + word) <= self.max_line_length:
+                        result += ' ' + word
+                    else:
+                        result += '\n' + word
+                fixed_lines.append(result)
+                self.fixes_applied += 1
+        
+        return '\n'.join(fixed_lines)
     
     def _fix_blank_lines_around_headings(self, content: str) -> str:
         """Fix MD022: Blank lines around headings."""
@@ -326,6 +366,21 @@ class MarkdownLinter:
         
         return '\n'.join(fixed_lines)
     
+    def _fix_emphasis_style(self, content: str) -> str:
+        """Fix MD049: Emphasis style consistency (underscore to asterisk)."""
+        lines = content.split('\n')
+        fixed_lines = []
+        
+        for line in lines:
+            # Convert underscore emphasis to asterisk emphasis
+            # Strong emphasis: __text__ -> **text**
+            line = re.sub(r'__([^_]+)__', r'**\1**', line)
+            # Emphasis: _text_ -> *text*
+            line = re.sub(r'_([^_]+)_', r'*\1*', line)
+            fixed_lines.append(line)
+        
+        return '\n'.join(fixed_lines)
+    
     def _fix_file_ending(self, content: str) -> str:
         """Fix MD047: Files should end with a single newline."""
         # Remove trailing whitespace and ensure single newline at end
@@ -371,16 +426,31 @@ class MarkdownLinter:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Comprehensive Markdown Linter and Fixer")
+    parser = argparse.ArgumentParser(
+        description="Universal Markdown Fixer - Comprehensive markdownlint violation fixer",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python scripts/fix-markdown-universal.py file.md
+  python scripts/fix-markdown-universal.py docs/ file1.md file2.md
+  python scripts/fix-markdown-universal.py --max-length 120 docs/
+  python scripts/fix-markdown-universal.py docs/ --max-length 100
+        """
+    )
     parser.add_argument("paths", nargs="+", help="Files or directories to process")
-    parser.add_argument("--max-line-length", type=int, default=100, help="Maximum line length (default: 100)")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would be fixed without making changes")
+    parser.add_argument("--max-length", type=int, default=100, 
+                       help="Maximum line length (default: 100)")
+    parser.add_argument("--dry-run", action="store_true", 
+                       help="Show what would be fixed without making changes")
     
     args = parser.parse_args()
     
-    linter = MarkdownLinter(max_line_length=args.max_line_length)
+    fixer = UniversalMarkdownFixer(max_line_length=args.max_length)
     
-    print("🔧 Comprehensive Markdown Linter")
+    print("🔧 Universal Markdown Fixer")
+    print("=" * 50)
+    print(f"Max line length: {args.max_length}")
+    print(f"Dry run: {args.dry_run}")
     print("=" * 50)
     
     total_results = {"processed": 0, "fixed": 0, "errors": 0}
@@ -392,9 +462,9 @@ def main():
             # Process single file
             if path.suffix == '.md':
                 total_results["processed"] += 1
-                linter.files_processed += 1
+                fixer.files_processed += 1
                 
-                if linter.fix_file(path):
+                if fixer.fix_file(path):
                     total_results["fixed"] += 1
                     print(f"✅ Fixed: {path}")
                 else:
@@ -404,7 +474,7 @@ def main():
         
         elif path.is_dir():
             # Process directory
-            results = linter.process_directory(path)
+            results = fixer.process_directory(path)
             total_results["processed"] += results["processed"]
             total_results["fixed"] += results["fixed"]
             total_results["errors"] += results["errors"]
@@ -418,7 +488,7 @@ def main():
     print(f"  Files processed: {total_results['processed']}")
     print(f"  Files fixed: {total_results['fixed']}")
     print(f"  Errors: {total_results['errors']}")
-    print(f"  Total fixes applied: {linter.fixes_applied}")
+    print(f"  Total fixes applied: {fixer.fixes_applied}")
     
     if total_results["errors"] > 0:
         sys.exit(1)

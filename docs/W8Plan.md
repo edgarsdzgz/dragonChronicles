@@ -1,14 +1,16 @@
 # W8 Plan: Dev UX & Docs
 
-**Workpack**: P0-W8 — Dev UX & Docs  
-**Issue**: [#33](https://github.com/edgarsdzgz/dragonChronicles/issues/33)  
-**Status**: 🚧 Planning  
-**Developer**: Edgar Diaz-Gutierrez  
-**Date**: 2025-09-06  
+**Workpack**: P0-W8 — Dev UX & Docs
+**Issue**: [#33](https://github.com/edgarsdzgz/dragonChronicles/issues/33)
+**Status**: 🚧 Planning
+**Developer**: Edgar Diaz-Gutierrez
+**Date**: 2025-09-06
 
 ## 🎯 **Objective**
 
-Implement comprehensive developer experience improvements and documentation infrastructure to support the development team and future contributors. This workpack focuses on feature flags, error handling, architectural documentation, and developer onboarding.
+Implement comprehensive developer experience improvements and documentation infrastructure to
+support the development team and future contributors. This workpack focuses on feature flags, error
+handling, architectural documentation, and developer onboarding.
 
 ## 📋 **Scope & Deliverables**
 
@@ -401,13 +403,17 @@ export interface AppFlags {
 
 - [ ] Dev menu appears with ?dev=1 and links to /dev/pool, /dev/sim, /dev/logs
 
-- [ ] Global error boundary renders on /dev/boom, includes Reload and Download logs; NDJSON export works
+- [ ] Global error boundary renders on /dev/boom, includes Reload and Download logs; NDJSON export
+
+works
 
 - [ ] ADRs 0000–0006 added with index; content reflects decisions from W1–W5
 
 - [ ] CONTRIBUTING.md enables a new dev to run the app in < 10 minutes
 
-- [ ] Security & privacy doc present; redaction and PII stance align with W5 and are referenced in CONTRIBUTING & ADR-0004
+- [ ] Security & privacy doc present; redaction and PII stance align with W5 and are referenced in
+
+CONTRIBUTING & ADR-0004
 
 - [ ] Unit + integration tests for flags and boundary pass locally
 
@@ -423,4 +429,5 @@ export interface AppFlags {
 
 ---
 
-**Next Steps**: Begin implementation with Phase 1 (Feature Flags System) following the established development workflow and testing practices.
+**Next Steps**: Begin implementation with Phase 1 (Feature Flags System) following the established
+development workflow and testing practices.
