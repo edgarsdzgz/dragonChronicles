@@ -320,7 +320,3 @@ git push origin feat/w7-cicd-previews
 ### **Process Improvements:**
 
 - Standardize automation script creation for repetitive tasks
-
-- Implement pre-commit hooks for formatting
-
-
