@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { mountPixi } from '$lib/pixi/app';
-  import { hudEnabled } from '$lib/stores/flags';
+  import { hudEnabled } from '$lib/flags/store';
   import UpdateToast from '$lib/pwa/UpdateToast.svelte';
   import InstallPrompt from '$lib/pwa/InstallPrompt.svelte';
 
