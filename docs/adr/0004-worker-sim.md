@@ -75,13 +75,13 @@ interface SimToUI {
 class SimulationWorker {
   private worker: Worker | null = null;
   private isRunning = false;
-  
+
   async start(): Promise<void> {
     this.worker = new Worker('/workers/sim.js');
     this.setupMessageHandlers();
     await this.sendMessage({ type: 'UIToSim', action: 'init' });
   }
-  
+
   private setupMessageHandlers(): void {
     this.worker?.addEventListener('message', (event) => {
       this.handleSimMessage(event.data);

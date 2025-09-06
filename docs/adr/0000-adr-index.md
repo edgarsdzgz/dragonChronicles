@@ -28,16 +28,19 @@ This index provides a comprehensive list of all Architecture Decision Records (A
 ## Decision Categories
 
 ### **Development Infrastructure**
+
 - Testing strategy and tooling
 - TypeScript strict mode enforcement
 - Monorepo structure and build system
 
 ### **Core Game Architecture**
+
 - Worker-based simulation system
 - Client-side database persistence
 - Structured logging and monitoring
 
 ### **User Experience**
+
 - Progressive Web App capabilities
 - Offline functionality
 - Performance optimization

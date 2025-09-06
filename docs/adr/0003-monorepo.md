@@ -55,6 +55,7 @@ dragonChronicles/
 ### Package Configuration
 
 Each package has its own `package.json` with:
+
 - **Scoped Names**: `@draconia/shared`, `@draconia/logger`, etc.
 - **TypeScript Config**: Extends base configuration
 - **Build Scripts**: Individual package builds

@@ -46,13 +46,13 @@ interface DatabaseSchema {
     checksum: string; // SHA-256 hash for integrity
     createdAt: number; // Unix timestamp
   };
-  
+
   meta: {
     key: string; // Primary key
     value: string; // JSON string of metadata
     updatedAt: number; // Unix timestamp
   };
-  
+
   logs: {
     id?: number;
     timestamp: number; // Unix timestamp
@@ -73,19 +73,21 @@ interface DatabaseSchema {
 // Transaction-safe save operations
 async function saveGameData(profileId: string, data: GameState): Promise<void> {
   await db.transaction('rw', [db.saves, db.meta], () => {
-    return db.saves.add({
-      profileId,
-      version: '1.0.0',
-      data: JSON.stringify(data),
-      checksum: await generateChecksum(data),
-      createdAt: Date.now(),
-    }).then((saveId) => {
-      return db.meta.put({
-        key: `active_save_${profileId}`,
-        value: JSON.stringify({ saveId, timestamp: Date.now() }),
-        updatedAt: Date.now(),
+    return db.saves
+      .add({
+        profileId,
+        version: '1.0.0',
+        data: JSON.stringify(data),
+        checksum: await generateChecksum(data),
+        createdAt: Date.now(),
+      })
+      .then((saveId) => {
+        return db.meta.put({
+          key: `active_save_${profileId}`,
+          value: JSON.stringify({ saveId, timestamp: Date.now() }),
+          updatedAt: Date.now(),
+        });
       });
-    });
   });
 }
 ```
@@ -131,7 +133,7 @@ db.version(2).stores({
 async function exportProfile(profileId: string): Promise<Blob> {
   const saves = await db.saves.where('profileId').equals(profileId).toArray();
   const meta = await db.meta.where('key').startsWith(`active_save_${profileId}`).toArray();
-  
+
   const exportData = {
     version: '1.0.0',
     profileId,
@@ -140,7 +142,7 @@ async function exportProfile(profileId: string): Promise<Blob> {
     exportedAt: Date.now(),
     checksum: await generateChecksum({ saves, meta }),
   };
-  
+
   return new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
 }
 ```

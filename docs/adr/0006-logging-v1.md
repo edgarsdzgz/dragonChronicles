@@ -31,7 +31,7 @@ Log Sources          Logger Core           Sinks
 ├── UI Thread   →    ├── Ring Buffer  →   ├── Console (dev)
 ├── Worker      →    ├── PII Redaction →  ├── Dexie (persistence)
 ├── Renderer    →    ├── Memory Caps  →   └── Export (NDJSON)
-└── Network     →    └── Performance  →   
+└── Network     →    └── Performance  →
 ```
 
 ### Core Components
@@ -40,12 +40,12 @@ Log Sources          Logger Core           Sinks
 
 ```typescript
 interface LogEvent {
-  t: number;           // Timestamp (Date.now())
-  lvl: LogLevel;       // 'debug' | 'info' | 'warn' | 'error'
-  src: LogSrc;         // 'ui' | 'worker' | 'render' | 'net'
-  msg: string;         // Human-readable message
-  mode?: SimMode;      // 'fg' | 'bg' (simulation mode)
-  profileId?: string;  // User profile ID (optional)
+  t: number; // Timestamp (Date.now())
+  lvl: LogLevel; // 'debug' | 'info' | 'warn' | 'error'
+  src: LogSrc; // 'ui' | 'worker' | 'render' | 'net'
+  msg: string; // Human-readable message
+  mode?: SimMode; // 'fg' | 'bg' (simulation mode)
+  profileId?: string; // User profile ID (optional)
   data?: Record<string, unknown>; // Structured data (optional)
 }
 ```
@@ -59,15 +59,15 @@ class RingBuffer<T> {
   private head = 0;
   private tail = 0;
   private maxSize: number;
-  
+
   constructor(maxSize: number) {
     this.maxSize = maxSize;
   }
-  
+
   push(item: T): void {
     this.buffer[this.head] = item;
     this.head = (this.head + 1) % this.maxSize;
-    
+
     if (this.head === this.tail) {
       this.tail = (this.tail + 1) % this.maxSize; // Overwrite oldest
     }
@@ -84,11 +84,11 @@ function redactPII(data: unknown): unknown {
     // Only allow dragonName as string value
     return data === 'dragonName' ? data : '[REDACTED]';
   }
-  
+
   if (Array.isArray(data)) {
     return data.map(redactPII);
   }
-  
+
   if (data && typeof data === 'object') {
     const redacted: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
@@ -96,7 +96,7 @@ function redactPII(data: unknown): unknown {
     }
     return redacted;
   }
-  
+
   return data; // Numbers, booleans, null, undefined are safe
 }
 ```
@@ -119,7 +119,7 @@ const consoleSink = {
     if (import.meta.env.DEV) {
       console[event.lvl](`[${event.src}] ${event.msg}`, event.data);
     }
-  }
+  },
 };
 
 // Dexie sink for persistence
@@ -133,7 +133,7 @@ const dexieSink = {
       data: event.data ? JSON.stringify(event.data) : undefined,
       profileId: event.profileId,
     });
-  }
+  },
 };
 ```
 
@@ -165,15 +165,19 @@ function logToWorker(event: LogEvent): void {
 // NDJSON export for analysis
 async function exportNDJSON(): Promise<Blob> {
   const logs = await db.logs.orderBy('timestamp').toArray();
-  const ndjson = logs.map(log => JSON.stringify({
-    timestamp: log.timestamp,
-    level: log.level,
-    source: log.source,
-    message: log.message,
-    data: log.data ? JSON.parse(log.data) : undefined,
-    profileId: log.profileId,
-  })).join('\n');
-  
+  const ndjson = logs
+    .map((log) =>
+      JSON.stringify({
+        timestamp: log.timestamp,
+        level: log.level,
+        source: log.source,
+        message: log.message,
+        data: log.data ? JSON.parse(log.data) : undefined,
+        profileId: log.profileId,
+      }),
+    )
+    .join('\n');
+
   return new Blob([ndjson], { type: 'application/x-ndjson' });
 }
 ```
@@ -208,19 +212,19 @@ async function exportNDJSON(): Promise<Blob> {
 ```typescript
 // Example of PII redaction
 const originalData = {
-  dragonName: 'Shadowfang',        // ✅ Allowed
-  userId: 'user123',               // ❌ Redacted
-  email: 'user@example.com',       // ❌ Redacted
-  level: 42,                       // ✅ Allowed
-  isActive: true,                  // ✅ Allowed
+  dragonName: 'Shadowfang', // ✅ Allowed
+  userId: 'user123', // ❌ Redacted
+  email: 'user@example.com', // ❌ Redacted
+  level: 42, // ✅ Allowed
+  isActive: true, // ✅ Allowed
 };
 
 const redactedData = {
-  dragonName: 'Shadowfang',        // ✅ Preserved
-  userId: '[REDACTED]',            // ❌ Redacted
-  email: '[REDACTED]',             // ❌ Redacted
-  level: 42,                       // ✅ Preserved
-  isActive: true,                  // ✅ Preserved
+  dragonName: 'Shadowfang', // ✅ Preserved
+  userId: '[REDACTED]', // ❌ Redacted
+  email: '[REDACTED]', // ❌ Redacted
+  level: 42, // ✅ Preserved
+  isActive: true, // ✅ Preserved
 };
 ```
 

@@ -167,13 +167,13 @@ Draconia Chronicles uses a comprehensive feature flag system for development and
 
 ### Flag Types
 
-| Flag | Type | Description | Default |
-|------|------|-------------|---------|
-| `hud` | boolean | Show development HUD overlay | `false` |
-| `devMenu` | boolean | Show developer navigation menu | `false` |
-| `logConsole` | boolean | Enable console logging sink (dev override) | `false` |
-| `useLegacyBgSim` | boolean | Use legacy in-page background simulation | `false` |
-| `forceMode` | string | Force simulation mode: `fg`, `bg`, or `auto` | `auto` |
+| Flag             | Type    | Description                                  | Default |
+| ---------------- | ------- | -------------------------------------------- | ------- |
+| `hud`            | boolean | Show development HUD overlay                 | `false` |
+| `devMenu`        | boolean | Show developer navigation menu               | `false` |
+| `logConsole`     | boolean | Enable console logging sink (dev override)   | `false` |
+| `useLegacyBgSim` | boolean | Use legacy in-page background simulation     | `false` |
+| `forceMode`      | string  | Force simulation mode: `fg`, `bg`, or `auto` | `auto`  |
 
 ### Using Feature Flags
 

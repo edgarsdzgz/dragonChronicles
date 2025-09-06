@@ -34,36 +34,36 @@ const BUDGETS = {
   'apps/web/build/_app/immutable/entry/app.js': {
     maxSize: '200KB',
     maxGzipSize: '60KB',
-    description: 'Main application entry point'
+    description: 'Main application entry point',
   },
-  
+
   // Shared libraries
   'packages/shared/dist/index.js': {
     maxSize: '50KB',
     maxGzipSize: '15KB',
-    description: 'Shared utilities and constants'
+    description: 'Shared utilities and constants',
   },
-  
+
   // Database layer
   'packages/db/dist/index.js': {
     maxSize: '100KB',
     maxGzipSize: '30KB',
-    description: 'Database persistence layer'
+    description: 'Database persistence layer',
   },
-  
+
   // Logging system
   'packages/logger/dist/index.js': {
     maxSize: '25KB',
     maxGzipSize: '8KB',
-    description: 'Structured logging system'
+    description: 'Structured logging system',
   },
-  
+
   // Simulation engine
   'packages/sim/dist/index.js': {
     maxSize: '75KB',
     maxGzipSize: '22KB',
-    description: 'Game simulation engine'
-  }
+    description: 'Game simulation engine',
+  },
 };
 ```
 
@@ -77,12 +77,12 @@ const PERFORMANCE_TARGETS = {
   largestContentfulPaint: 2.5, // seconds
   firstInputDelay: 100, // milliseconds
   cumulativeLayoutShift: 0.1, // CLS score
-  
+
   // Runtime performance
   frameRate: 60, // FPS
   memoryUsage: 100, // MB
   simulationLatency: 16.67, // milliseconds (60fps)
-  
+
   // Bundle performance
   totalBundleSize: 200, // KB gzipped
   criticalPathSize: 60, // KB gzipped
@@ -103,20 +103,20 @@ function validateSizeBudget(filePath: string, budget: Budget): boolean {
   const stats = statSync(filePath);
   const content = readFileSync(filePath);
   const gzipped = gzipSync(content);
-  
+
   const sizeKB = Math.round(stats.size / 1024);
   const gzipKB = Math.round(gzipped.length / 1024);
-  
+
   const sizeLimit = parseSize(budget.maxSize);
   const gzipLimit = parseSize(budget.maxGzipSize);
-  
+
   if (sizeKB > sizeLimit || gzipKB > gzipLimit) {
     console.error(`❌ Size budget exceeded for ${filePath}`);
     console.error(`  Size: ${sizeKB}KB (limit: ${sizeLimit}KB)`);
     console.error(`  Gzip: ${gzipKB}KB (limit: ${gzipLimit}KB)`);
     return false;
   }
-  
+
   console.log(`✅ Size budget met for ${filePath}`);
   return true;
 }
@@ -131,25 +131,21 @@ const bundleAnalysis = {
   validateTreeShaking: () => {
     // Ensure unused code is eliminated
     const bundleContent = readFileSync('dist/bundle.js', 'utf8');
-    const unusedPatterns = [
-      /console\.log\(/g,
-      /debugger;/g,
-      /TODO:/g
-    ];
-    
-    return unusedPatterns.every(pattern => !pattern.test(bundleContent));
+    const unusedPatterns = [/console\.log\(/g, /debugger;/g, /TODO:/g];
+
+    return unusedPatterns.every((pattern) => !pattern.test(bundleContent));
   },
-  
+
   // Dependency analysis
   analyzeDependencies: () => {
     // Identify large dependencies
     const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
     const dependencies = { ...packageJson.dependencies, ...packageJson.devDependencies };
-    
+
     return Object.entries(dependencies)
       .filter(([name, version]) => getPackageSize(name) > 50) // 50KB threshold
       .map(([name, version]) => ({ name, version, size: getPackageSize(name) }));
-  }
+  },
 };
 ```
 
@@ -159,18 +155,18 @@ const bundleAnalysis = {
 // Performance monitoring and alerting
 class PerformanceMonitor {
   private metrics: PerformanceMetrics = {};
-  
+
   startMonitoring(): void {
     // Core Web Vitals monitoring
     this.observeCoreWebVitals();
-    
+
     // Runtime performance monitoring
     this.observeRuntimePerformance();
-    
+
     // Memory usage monitoring
     this.observeMemoryUsage();
   }
-  
+
   private observeCoreWebVitals(): void {
     // First Contentful Paint
     new PerformanceObserver((list) => {
@@ -178,7 +174,7 @@ class PerformanceMonitor {
       const fcp = entries[entries.length - 1];
       this.metrics.firstContentfulPaint = fcp.startTime;
     }).observe({ entryTypes: ['paint'] });
-    
+
     // Largest Contentful Paint
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
@@ -186,25 +182,25 @@ class PerformanceMonitor {
       this.metrics.largestContentfulPaint = lcp.startTime;
     }).observe({ entryTypes: ['largest-contentful-paint'] });
   }
-  
+
   private observeRuntimePerformance(): void {
     // Frame rate monitoring
     let frameCount = 0;
     let lastTime = performance.now();
-    
+
     const measureFrameRate = () => {
       frameCount++;
       const currentTime = performance.now();
-      
+
       if (currentTime - lastTime >= 1000) {
         this.metrics.frameRate = frameCount;
         frameCount = 0;
         lastTime = currentTime;
       }
-      
+
       requestAnimationFrame(measureFrameRate);
     };
-    
+
     requestAnimationFrame(measureFrameRate);
   }
 }
@@ -243,20 +239,20 @@ const assetOptimization = {
     responsive: true, // Multiple sizes for different devices
     lazy: true, // Lazy loading for images
   },
-  
+
   // Font optimization
   fonts: {
     preload: true, // Preload critical fonts
     display: 'swap', // Font display strategy
     subset: true, // Character subsetting
   },
-  
+
   // CSS optimization
   css: {
     minify: true, // Minification
     purge: true, // Remove unused CSS
     critical: true, // Critical CSS inlining
-  }
+  },
 };
 ```
 
@@ -267,26 +263,26 @@ const assetOptimization = {
 class MemoryManager {
   private memoryLimit = 100 * 1024 * 1024; // 100MB limit
   private cleanupThreshold = 0.8; // 80% memory usage
-  
+
   startMonitoring(): void {
     setInterval(() => {
       const memoryUsage = this.getMemoryUsage();
-      
+
       if (memoryUsage > this.memoryLimit * this.cleanupThreshold) {
         this.performCleanup();
       }
     }, 5000); // Check every 5 seconds
   }
-  
+
   private performCleanup(): void {
     // Clear unused caches
     this.clearUnusedCaches();
-    
+
     // Garbage collection hint
     if (window.gc) {
       window.gc();
     }
-    
+
     // Log cleanup action
     console.log('Memory cleanup performed');
   }
