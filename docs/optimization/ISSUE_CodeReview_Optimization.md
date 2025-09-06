@@ -70,7 +70,7 @@ and maintainable.
 
 #### 4. **Test Infrastructure**
 
-- **Test runners**: `_tiny-runner.mjs`, `run-all.mjs`
+- **Test runners**: `*tiny-runner.mjs`, `run-all.mjs`
 - **Test files**: Unit, integration, and E2E tests
 - **Test utilities**: Setup files, polyfills, performance monitoring
 
@@ -179,7 +179,7 @@ and maintainable.
 
 #### 4.1 Test Runner Analysis
 
-- **Review**: `_tiny-runner.mjs`, `run-all.mjs`, performance monitoring
+- **Review**: `*tiny-runner.mjs`, `run-all.mjs`, performance monitoring
 - **Focus**: Test execution efficiency, memory usage, error handling
 - **Check**: Test isolation, cleanup procedures, performance impact
 - **Output**: Test infrastructure optimization plan
