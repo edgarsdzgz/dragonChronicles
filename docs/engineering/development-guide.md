@@ -1,27 +1,28 @@
-# Development Workflow & Safeguards
+# Development Guide: Draconia Chronicles
 
-**Date**: September 3, 2025  
-**Purpose**: Comprehensive development workflow guidelines and safeguards
+**Purpose**: Comprehensive development practices, workflow, and engineering standards
 
-## 🎯 Overview
+## 🎯 **Overview**
 
-This document outlines the development workflow, safeguards, and best practices for the Draconia
-Chronicles project. It includes lessons learned from critical workflow failures and prevention
-measures.
+This guide consolidates all development practices, workflow guidelines, and engineering standards
+for the Draconia Chronicles project. It includes lessons learned from critical workflow failures and
+prevention measures.
 
-## 🚨 Critical Workflow Lessons
+## 🚨 **Critical Workflow Lessons**
 
 ### W6 PWA Recovery Incident
 
-**Date**: September 3, 2024  
-**Issue**: Complete PWA implementation was lost due to git workflow failure  
-**Impact**: W6 PWA implementation was accidentally stashed instead of committed  
+**Date**: September 3, 2024
+**Issue**: Complete PWA implementation was lost due to git workflow failure
+**Impact**: W6 PWA implementation was accidentally stashed instead of committed
 **Resolution**: Successfully recovered from `git stash@{0}` and implemented safeguards
 
 #### Root Causes Identified
 
 1. **Workflow Failure**: Work was stashed during lint-staged automatic backup instead of being
-   committed
+
+committed
+
 2. **Misleading Commit Messages**: Commits claimed implementation without actual files
 3. **Branch Confusion**: Wrong branch was merged (planning vs implementation)
 4. **No Verification**: No automated checks to ensure implementation matches commit messages
@@ -34,7 +35,7 @@ measures.
 3. **Pre-push Hooks**: Verify implementation completeness before pushing
 4. **Pre-stash Hooks**: Warn before stashing important changes
 
-## 🛡️ Development Safeguards
+## 🛡️ **Development Safeguards**
 
 ### 1. Git Hooks
 
@@ -62,35 +63,38 @@ measures.
 
 ```bash
 #!/bin/bash
+
 # scripts/verify-implementation.sh
 
 # File existence checks
-check_file() {
+
+check*file() {
   local file="$1"
-  local expected_lines="$2"
+  local expected*lines="$2"
 
   if [[ ! -f "$file" ]]; then
     echo "❌ Missing file: $file"
     return 1
   fi
 
-  local actual_lines=$(wc -l < "$file")
-  if [[ $actual_lines -lt $expected_lines ]]; then
-    echo "❌ File too short: $file (expected $expected_lines, got $actual_lines)"
+  local actual*lines=$(wc -l < "$file")
+  if [[ $actual*lines -lt $expected*lines ]]; then
+    echo "❌ File too short: $file (expected $expected*lines, got $actual*lines)"
     return 1
   fi
 
-  echo "✅ File OK: $file ($actual_lines lines)"
+  echo "✅ File OK: $file ($actual*lines lines)"
   return 0
 }
 
 # Verify PWA implementation
-check_file "apps/web/static/manifest.json" 100
-check_file "apps/web/static/sw.js" 150
-check_file "apps/web/src/lib/pwa/InstallPrompt.svelte" 200
-check_file "apps/web/src/lib/pwa/UpdateToast.svelte" 200
+
+check*file "apps/web/static/manifest.json" 100
+check*file "apps/web/static/sw.js" 150
+check*file "apps/web/src/lib/pwa/InstallPrompt.svelte" 200
+check*file "apps/web/src/lib/pwa/UpdateToast.svelte" 200
 check_file "apps/web/src/lib/pwa/update-manager.ts" 150
-```
+```text
 
 ### 3. Commit Message Standards
 
@@ -102,7 +106,7 @@ type(scope): description
 [optional body]
 
 [optional footer]
-```
+```text
 
 #### Validation Rules
 
@@ -113,7 +117,9 @@ type(scope): description
 #### Examples
 
 ```bash
+
 # ✅ Good - accurate and complete
+
 feat(pwa): implement PWA installation prompt
 
 - Add InstallPrompt.svelte component
@@ -121,15 +127,18 @@ feat(pwa): implement PWA installation prompt
 - Add installation detection logic
 
 # ❌ Bad - claims feature without files
+
 feat(pwa): implement PWA installation prompt
 
 # ❌ Bad - incomplete implementation
+
 feat(pwa): implement PWA installation prompt
 
 - Add InstallPrompt.svelte component (incomplete)
-```
 
-## 🔄 Development Workflow
+```text
+
+## 🔄 **Development Workflow**
 
 ### 1. Feature Development
 
@@ -175,12 +184,15 @@ feat(pwa): implement PWA installation prompt
 - **All planning documents** must be created in the `/docs/` folder
 - **Workpack plans** (W7, W8, etc.) go directly in `/docs/` folder
 - **Feature plans** go in appropriate subdirectories (e.g., `/docs/engineering/`,
-  `/docs/optimization/`)
+
+`/docs/optimization/`)
+
 - **No planning documents** should be created in the root directory
 
 #### Planning Document Structure
 
 ```markdown
+
 # [Workpack/Feature] Planning Document: [Title]
 
 ## Issue Analysis
@@ -200,7 +212,8 @@ feat(pwa): implement PWA installation prompt
 - Functional requirements
 - Performance requirements
 - Quality requirements
-```
+
+```text
 
 ### 4. Commit Workflow
 
@@ -223,50 +236,62 @@ feat(pwa): implement PWA installation prompt
 2. **Run Verification**: Run implementation verification if applicable
 3. **Push Changes**: Push to remote repository
 
-## 🚫 Anti-Patterns to Avoid
+## 🚫 **Anti-Patterns to Avoid**
 
 ### 1. Stashing Important Work
 
 ```bash
+
 # ❌ Never do this with important implementation work
+
 git stash
 
 # ✅ Instead, commit the work
+
 git add .
 git commit -m "feat: implement feature X"
-```
+```text
 
 ### 2. Misleading Commit Messages
 
 ```bash
+
 # ❌ Don't claim features without implementation
+
 git commit -m "feat: implement PWA" # when no PWA files exist
 
 # ✅ Be accurate about what was actually done
+
 git commit -m "docs: add PWA planning document"
-```
+```text
 
 ### 3. Merging Wrong Branches
 
 ```bash
+
 # ❌ Don't merge planning branches as implementation
+
 git merge feat/p0-w6-pwa-update-ux  # planning branch
 
 # ✅ Merge actual implementation branches
+
 git merge feat/w6-pwa-update-ux     # implementation branch
-```
+```text
 
 ### 4. Incomplete Implementations
 
 ```bash
+
 # ❌ Don't claim complete implementation with partial work
+
 git commit -m "feat: complete PWA implementation" # when only 50% done
 
 # ✅ Be honest about implementation status
-git commit -m "feat: add PWA manifest and service worker"
-```
 
-## 🔍 Verification Checklist
+git commit -m "feat: add PWA manifest and service worker"
+```text
+
+## 🔍 **Verification Checklist**
 
 ### Pre-Commit Checklist
 
@@ -292,17 +317,18 @@ git commit -m "feat: add PWA manifest and service worker"
 - [ ] Documentation updated
 - [ ] Implementation verification passes
 
-## 🛠️ Tools and Scripts
+## 🛠️ **Tools and Scripts**
 
 ### Verification Scripts
 
 - **`scripts/verify-implementation.sh`**: Verify PWA implementation completeness
 - **`scripts/check-commit-accuracy.sh`**: Validate commit message accuracy
 - **`scripts/verify-branch.sh`**: Verify branch contains expected content
+- **`scripts/cleanup-repository.sh`**: Remove backup and temporary files
 
 ### Git Hooks
 
-- **`.git/hooks/pre-commit`**: Prevent misleading commits
+- **`.git/hooks/pre-commit`**: Prevent misleading commits and backup files
 - **`.git/hooks/pre-push`**: Verify implementation completeness
 - **`.git/hooks/pre-stash`**: Warn about important changes
 
@@ -312,7 +338,16 @@ git commit -m "feat: add PWA manifest and service worker"
 - **Husky**: Git hooks management
 - **Commitlint**: Commit message validation
 
-## 📚 Best Practices
+### Version Control Best Practices
+
+- **`docs/engineering/version-control-best-practices.md`**: Comprehensive guide for proper Git usage
+- **No Backup Files**: Never create `.backup`, `.bak`, `.old` files in repository
+- **No Temporary Files**: Never create `sed*`, `temp*`, `tmp*` files in repository
+- **Use Git Branches**: Create feature branches for experimental work
+- **Use Git Stash**: Use `git stash` for temporary changes
+- **Use Git Commits**: Commit frequently with descriptive messages
+
+## 📚 **Best Practices**
 
 ### 1. Workflow Discipline
 
@@ -335,7 +370,7 @@ git commit -m "feat: add PWA manifest and service worker"
 - **Review Code**: Always review code before merging
 - **Monitor Performance**: Ensure changes don't degrade performance
 
-## 🎯 Success Metrics
+## 🎯 **Success Metrics**
 
 ### Workflow Health
 
@@ -353,5 +388,5 @@ git commit -m "feat: add PWA manifest and service worker"
 
 ---
 
-**This workflow ensures reliable, high-quality development while preventing the types of
-workflow failures that can lead to lost work and project delays.**
+**This workflow ensures reliable, high-quality development while preventing the types of workflow
+failures that can lead to lost work and project delays.**

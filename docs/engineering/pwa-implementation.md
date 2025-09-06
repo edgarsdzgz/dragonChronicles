@@ -1,12 +1,13 @@
 # PWA Implementation Guide
 
-**Date**: September 3, 2025  
-**Status**: Complete and Production Ready  
+**Date**: September 3, 2025
+**Status**: Complete and Production Ready
 **Workpack**: W6 - PWA & Update UX
 
 ## 🎯 Overview
 
-This document provides comprehensive information about the Progressive Web App (PWA) implementation in
+This document provides comprehensive information about the Progressive Web App (PWA) implementation
+in
 Draconia Chronicles. The PWA enables offline functionality, app installation, and seamless update
 experiences.
 
@@ -23,7 +24,7 @@ import { registerRoute, NavigationRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 
 // Precache core assets
-precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(self.**WB*MANIFEST);
 
 // Handle navigation
 registerRoute(new NavigationRoute(createHandlerBoundToURL('/index.html')));
@@ -33,7 +34,7 @@ registerRoute(
   ({ request }) => request.destination === 'image',
   new CacheFirst({ cacheName: 'images' }),
 );
-```
+```text
 
 ### Update Detection Flow
 
@@ -51,23 +52,23 @@ export class UpdateManager {
 
   async applyUpdate(): Promise<void> {
     if (this.swRegistration?.waiting) {
-      this.swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      this.swRegistration.waiting.postMessage({ type: 'SKIP*WAITING' });
     }
   }
 }
-```
+```text
 
 ### PWA Manifest Structure
 
 ```json
 {
   "name": "Draconia Chronicles",
-  "short_name": "Draconia",
+  "short*name": "Draconia",
   "description": "Idle dragon shooter with offline simulation",
-  "start_url": "/",
+  "start*url": "/",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#4a90e2",
+  "background*color": "#1a1a1a",
+  "theme*color": "#4a90e2",
   "orientation": "landscape-primary",
   "scope": "/",
   "lang": "en",
@@ -99,7 +100,7 @@ export class UpdateManager {
     }
   ]
 }
-```
+```text
 
 ## 📁 File Structure
 
@@ -158,7 +159,7 @@ export class UpdateManager {
     "workbox-window": "^7.3.0"
   }
 }
-```
+```text
 
 ### Build Configuration
 
@@ -244,7 +245,7 @@ To update service worker:
 
 - [Workbox Documentation](https://developers.google.com/web/tools/workbox)
 - [PWA Builder](https://www.pwabuilder.com/)
-- [MDN PWA Guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+- [MDN PWA Guide](https://developer.mozilla.org/en-US/docs/Web/Progressive*web*apps)
 
 ### Tools
 

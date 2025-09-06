@@ -1,12 +1,13 @@
 # Structured Logging System
 
-**Workpack**: P0-W5 — Logging v1  
-**Status**: ✅ Complete  
+**Workpack**: P0-W5 — Logging v1
+**Status**: ✅ Complete
 **Package**: `@draconia/logger`
 
 ## Overview
 
-The structured logging system provides a production-ready, high-performance logging infrastructure for
+The structured logging system provides a production-ready, high-performance logging infrastructure
+for
 Draconia Chronicles v2.0.0. It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
 management, Dexie persistence, and comprehensive PII redaction.
 
@@ -27,7 +28,7 @@ management, Dexie persistence, and comprehensive PII redaction.
 │   └── ndjson.ts      # NDJSON conversion
 ├── redact.ts          # PII redaction logic
 └── export.ts          # Export button utilities
-```
+```text
 
 ### Design Principles
 
@@ -62,7 +63,7 @@ export interface Logger {
   clear(): Promise<void>;
   enableConsole(enable: boolean): void;
 }
-```
+```text
 
 ### Factory Function
 
@@ -75,7 +76,7 @@ const logger = createLogger({
   devConsole?: boolean;     // Enable console output (default: false)
   dexie?: DexieSink | null; // Dexie persistence sink (default: null)
 });
-```
+```text
 
 ## Configuration
 
@@ -85,9 +86,9 @@ const logger = createLogger({
 // 2MB memory cap, 10k entries
 const logger = createLogger({
   maxBytes: 2 * 1024 * 1024,
-  maxEntries: 10_000,
+  maxEntries: 10*000,
 });
-```
+```text
 
 ### Sink Configuration
 
@@ -95,13 +96,13 @@ const logger = createLogger({
 import { createDexieSink } from '@draconia/logger/src/sinks/dexie';
 
 // Dexie sink with 1s batch flush, 10k row cap
-const dexieSink = createDexieSink(1000, 10_000);
+const dexieSink = createDexieSink(1000, 10*000);
 
 const logger = createLogger({
   dexie: dexieSink,
   devConsole: import.meta.env.DEV,
 });
-```
+```text
 
 ## Usage Examples
 
@@ -127,7 +128,7 @@ logger.log({
   mode: 'fg',
   data: { frame: 1234, fps: 60 },
 });
-```
+```text
 
 ### Worker Integration
 
@@ -148,7 +149,7 @@ self.postMessage({
 // In main thread
 import { bindWorkerLogs } from '@/lib/logging/worker-bridge';
 bindWorkerLogs(worker);
-```
+```text
 
 ### Export and Analysis
 
@@ -162,7 +163,7 @@ const a = document.createElement('a');
 a.href = url;
 a.download = `logs-${Date.now()}.ndjson`;
 a.click();
-```
+```text
 
 ## PII Redaction
 
@@ -192,7 +193,7 @@ logger.log({
     email: 'user@example.com', // ❌ Redacted
   },
 });
-```
+```text
 
 ### Redaction Rules
 
@@ -220,7 +221,7 @@ Use the provided script to convert NDJSON to CSV:
 
 ```bash
 node scripts/logs-perf-to-csv.mjs logs.ndjson logs.csv
-```
+```text
 
 ## Integration Points
 
@@ -238,7 +239,7 @@ interface LogRow {
   data?: string; // JSON string of structured data
   profileId?: string; // User profile ID
 }
-```
+```text
 
 ### Worker Protocol
 
@@ -250,7 +251,7 @@ interface SimToUI {
   action: 'log';
   event: LogEvent;
 }
-```
+```text
 
 ## Testing
 
@@ -264,14 +265,17 @@ interface SimToUI {
 ### Test Commands
 
 ```bash
+
 # Run all tests
+
 pnpm run test:all
 
 # Run specific test categories
+
 pnpm run test:node        # Node.js tests
 pnpm run test:vitest      # Vitest tests
 pnpm run test:vitest:render # Render tests (JSDOM)
-```
+```text
 
 ## Production Considerations
 

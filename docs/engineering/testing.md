@@ -9,23 +9,23 @@ including test layers, execution patterns, and the tiny-runner implementation.
 
 ### Unit Tests
 
-**Purpose**: Test individual functions and utilities in isolation  
-**Scope**: Single package functionality, pure functions, data transformations  
-**Location**: `tests/test-unit-*.mjs`  
+**Purpose**: Test individual functions and utilities in isolation
+**Scope**: Single package functionality, pure functions, data transformations
+**Location**: `tests/test-unit-*.mjs`
 **Example**: `tests/test-unit-shared.mjs` tests the `clamp()` function and version constants
 
 **Current Implementation**:
 
 - Import from compiled `dist/` artifacts (temporary approach)
-- Build target package with `tsc -b packages/shared` (skipped with BUILD_ONCE=1)
+- Build target package with `tsc -b packages/shared` (skipped with BUILD*ONCE=1)
 - Test isolated utility functions and constants
 - Assert exact values and boundary conditions
 
 ### Integration Tests
 
-**Purpose**: Test interactions between packages and system components  
-**Scope**: Cross-package dependencies, logger integration, worker communication  
-**Location**: `tests/test-integration-*.mjs`  
+**Purpose**: Test interactions between packages and system components
+**Scope**: Cross-package dependencies, logger integration, worker communication
+**Location**: `tests/test-integration-*.mjs`
 **Example**: `tests/test-integration-graph.mjs` tests logger + simulation package interaction
 
 **Current Implementation**:
@@ -37,8 +37,8 @@ including test layers, execution patterns, and the tiny-runner implementation.
 
 ### End-to-End Tests
 
-**Purpose**: Test full build pipeline and application contracts  
-**Scope**: Complete workspace builds, CLI output, JSON contracts  
+**Purpose**: Test full build pipeline and application contracts
+**Scope**: Complete workspace builds, CLI output, JSON contracts
 **Location**: `tests/test-e2e-*.mjs`
 **Example**: `tests/test-e2e-build.mjs` builds workspace and tests sandbox CLI output
 
@@ -51,8 +51,8 @@ including test layers, execution patterns, and the tiny-runner implementation.
 
 ### TypeScript Strict Gate
 
-**Purpose**: Enforce TypeScript strict mode compliance  
-**Scope**: Type safety, implicit any detection, configuration validation  
+**Purpose**: Enforce TypeScript strict mode compliance
+**Scope**: Type safety, implicit any detection, configuration validation
 **Location**: `tests/test-ts-strict.mjs`
 **Details**: See [TypeScript Standards](./typescript.md)
 
@@ -67,14 +67,14 @@ including test layers, execution patterns, and the tiny-runner implementation.
 ### Usage Pattern
 
 ```javascript
-import { test, run } from './_tiny-runner.mjs';
+import { test, run } from './*tiny-runner.mjs';
 
 test('descriptive test name', () => {
   // Your assertions here using Node assert/strict
 });
 
 await run(); // Handles exit codes and reporting
-```
+```text
 
 ### Output Format
 
@@ -88,7 +88,7 @@ await run(); // Handles exit codes and reporting
 // DON'T: This lies about results
 assert.equal(someFunction(), expectedValue);
 console.log('UNIT(shared): ok'); // Always prints even if assert failed
-```
+```text
 
 ### ✅ Correct Pattern
 
@@ -98,7 +98,7 @@ test('function works correctly', () => {
   assert.equal(someFunction(), expectedValue);
 });
 await run(); // Prints accurate results based on test outcomes
-```
+```text
 
 ## How to Run Tests
 
@@ -106,9 +106,13 @@ await run(); // Prints accurate results based on test outcomes
 
 ```bash
 node tests/run-all.mjs
-# Driver builds once, then runs all tests with BUILD_ONCE=1
+
+# Driver builds once, then runs all tests with BUILD*ONCE=1
+
+
 # Result: ok - 2/2/3/2 passed (unit/integration/e2e/strict)
-```
+
+```text
 
 ### Individual Test Files
 
@@ -117,19 +121,22 @@ pnpm run test:unit          # Unit tests only
 pnpm run test:integration   # Integration tests only
 pnpm run test:e2e          # End-to-end tests only
 pnpm run test:ts-strict    # TypeScript strict gate only
-```
+```text
 
 ### Manual Execution
 
 ```bash
+
 # Run single test file directly
+
 node tests/test-unit-shared.mjs
 
 # With build optimization (after running driver or manual build)
-BUILD_ONCE=1 node tests/test-unit-shared.mjs
-```
 
-## BUILD_ONCE Optimization
+BUILD*ONCE=1 node tests/test-unit-shared.mjs
+```text
+
+## BUILD*ONCE Optimization
 
 ### Problem
 
@@ -144,23 +151,25 @@ Running `pnpm run test:all` triggers multiple TypeScript builds:
 Use the cross-platform driver which handles build-once optimization:
 
 ```bash
-# Driver builds once, then runs all tests with BUILD_ONCE=1
+
+# Driver builds once, then runs all tests with BUILD*ONCE=1
+
 node tests/run-all.mjs
-```
+```text
 
 ### Implementation
 
 Test files check environment variable:
 
 ```javascript
-if (process.env.BUILD_ONCE !== '1') {
+if (process.env.BUILD*ONCE !== '1') {
   const built = spawnSync('node', [tscBin, '-b', 'packages/shared'], {
     stdio: 'pipe',
     encoding: 'utf8',
   });
   assert.equal(built.status, 0, 'Build failed');
 }
-```
+```text
 
 ## Failure Triage
 
@@ -189,7 +198,7 @@ if (process.env.BUILD_ONCE !== '1') {
 
 - ✅ Custom tiny-runner with Node scripts
 - ✅ Import from compiled `dist/` artifacts
-- ✅ BUILD_ONCE optimization for performance
+- ✅ BUILD*ONCE optimization for performance
 - ✅ TypeScript strict gate enforcement
 
 ### Future Phases
@@ -226,11 +235,11 @@ if (process.env.BUILD_ONCE !== '1') {
   "test:ts-strict": "node tests/test-ts-strict.mjs",
   "test:all": "node tests/run-all.mjs"
 }
-```
+```text
 
 ### Test File Locations
 
-```
+```text
 tests/
 ├── _tiny-runner.mjs           # Test runner implementation
 ├── test-unit-shared.mjs       # Unit tests for shared package
@@ -239,6 +248,7 @@ tests/
 ├── test-ts-strict.mjs        # TypeScript strict mode gate
 ├── fixtures/strict/          # TypeScript test fixtures
 └── ts-strict/               # TypeScript gate configurations
-```
+```text
 
-See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural decision record.
+See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural decision
+record.

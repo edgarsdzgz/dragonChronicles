@@ -6,15 +6,22 @@ This directory contains comprehensive engineering documentation for the Draconia
 
 ### Core Engineering Practices
 
-- **[Development Practices](./dev-practices.md)** - Key development practices and guidelines
-- **[Development Workflow](./development-workflow.md)** - Development workflow, safeguards, and
-  best practices
+- **[Development Guide](./development-guide.md)** - Comprehensive development practices, workflow,
+
+  and engineering standards
+
+- **[LLM Guide](./llm-guide.md)** - Complete guide for LLMs working on this project
+- **[Version Control Best Practices](./version-control-best-practices.md)** - Proper Git usage and
+repository hygiene
 - **[TypeScript](./typescript.md)** - TypeScript configuration and best practices
 - **[Testing](./testing.md)** - Testing strategy and implementation
 
 ### System Architecture
 
-- **[Database Persistence](./database-persistence.md)** - Database architecture and persistence layer
+- **[Database Persistence](./database-persistence.md)** - Database architecture and persistence
+
+layer
+
 - **[Structured Logging](./structured-logging.md)** - Logging system architecture and implementation
 - **[PWA Implementation](./pwa-implementation.md)** - Progressive Web App implementation guide
 

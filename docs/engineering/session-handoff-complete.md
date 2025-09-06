@@ -89,9 +89,11 @@
 
 - **Next Steps**:
 
-  - Check latest deployment logs: `gh run view [LATEST_RUN_ID] --log-failed`
+  - Check latest deployment logs: `gh run view [LATEST*RUN*ID] --log-failed`
 
-  - Verify environment settings: `gh api repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies`
+- Verify environment settings: `gh api
+
+repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies`
 
   - May need to investigate PR comment permissions issue
 
@@ -133,7 +135,7 @@
 
 ./scripts/fix-docs-markdownlint.sh
 
-```
+```text
 
 ## 📋 **Memory Rules & Context**
 
@@ -157,7 +159,7 @@
 
 - **Documentation**: All docs in `/docs/` folder
 
-- **Maintained Files**: `v2_GDD.md`, planning markdowns, `CLAUDE.md`
+- **Maintained Files**: `v2*GDD.md`, planning markdowns, `CLAUDE.md`
 
 - **Versioning**: Beta phase planned before full release
 
@@ -175,9 +177,9 @@ gh run list --limit 5
 
 # Check Pages Deploys specifically
 
-gh run view [LATEST_PAGES_RUN_ID] --log
+gh run view [LATEST*PAGES*RUN*ID] --log
 
-```
+```text
 
 ### **2. If Pages Deploys is Still Failing**
 
@@ -185,13 +187,13 @@ gh run view [LATEST_PAGES_RUN_ID] --log
 
 # Check deployment logs
 
-gh run view [RUN_ID] --log-failed
+gh run view [RUN*ID] --log-failed
 
 # Verify environment settings
 
 gh api repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
 
-```
+```text
 
 ### **3. If Pages Deploys is Passing ✅**
 
@@ -201,11 +203,11 @@ Move to E2E Smoke workflow:
 
 # Check E2E workflow logs
 
-gh run view [E2E_RUN_ID] --log
+gh run view [E2E*RUN*ID] --log
 
 # Look for: "Project(s) 'chromium' not found"
 
-```
+```text
 
 ## 🔧 **Key Commands**
 
@@ -215,11 +217,11 @@ gh run view [E2E_RUN_ID] --log
 
 gh run list --limit 10
 
-gh run view [RUN_ID] --log
+gh run view [RUN*ID] --log
 
 gh run view [RUN_ID] --log-failed
 
-```
+```text
 
 ### **Local Testing**
 
@@ -233,7 +235,7 @@ pnpm run test
 
 pnpm run format:check
 
-```
+```text
 
 ### **Git Operations**
 
@@ -245,7 +247,7 @@ git log --oneline -5
 
 git push origin feat/w7-cicd-previews
 
-```
+```text
 
 ## 📚 **Documentation References**
 

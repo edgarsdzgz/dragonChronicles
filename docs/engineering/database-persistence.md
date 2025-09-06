@@ -2,7 +2,8 @@
 
 # Database Persistence Layer
 
-This document describes the database persistence layer implementation for Draconia Chronicles v2.0.0,
+This document describes the database persistence layer implementation for Draconia Chronicles
+v2.0.0,
 including the Dexie (IndexedDB) integration, test suite, and current implementation status.
 
 ## Architecture Overview
@@ -21,7 +22,7 @@ including the Dexie (IndexedDB) integration, test suite, and current implementat
 saves: '++id, profileId, version, createdAt'; // Save data with versioning
 meta: 'key'; // Metadata and pointers
 logs: '++id, timestamp, level, source'; // Structured logging
-```
+```text
 
 ## Implementation Status
 
@@ -47,10 +48,10 @@ logs: '++id, timestamp, level, source'; // Structured logging
 
 #### **Test Results** (Latest Run)
 
-```
+```text
 Test Files: 1 failed (1)
 Tests: 2 failed | 10 passed (12)
-```
+```text
 
 **Passing Tests (10/12)**:
 
@@ -113,17 +114,17 @@ await db.transaction('rw', [db.saves, db.meta], () => {
     });
   });
 });
-```
+```text
 
 #### **Active Profile Support**
 
 ```typescript
-const META_KEYS = {
-  ACTIVE_SAVE: 'active_save',
-  PROFILE_POINTERS: 'profile_pointers',
-  ACTIVE_PROFILE: 'active_profile', // Added
+const META*KEYS = {
+  ACTIVE*SAVE: 'active*save',
+  PROFILE*POINTERS: 'profile*pointers',
+  ACTIVE*PROFILE: 'active*profile', // Added
 } as const;
-```
+```text
 
 #### **Pruning Logic**
 
@@ -131,7 +132,7 @@ const META_KEYS = {
 // Keep the most recent saves, delete the oldest ones
 const savesToDelete =
   savesToPrune.length > keepBackups ? savesToPrune.slice(0, savesToPrune.length - keepBackups) : [];
-```
+```text
 
 ### Error Handling
 
@@ -139,39 +140,46 @@ const savesToDelete =
 
 ```typescript
 throw new Error(`Atomic save failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-```
+```text
 
 #### **Validation Integration**
 
 ```typescript
 const validatedData = validateSaveV1(saveData);
 const validatedRow = validateSaveRowV1(saveRow);
-```
+```text
 
 ## Development Workflow
 
 ### Running Tests
 
 ```bash
+
 # Run all database tests
+
 pnpm test:db
 
 # Run specific test file
+
 pnpm test:db tests/db/atomic.spec.ts
 
 # Run with verbose output
+
 pnpm test:db --reporter=verbose
-```
+```text
 
 ### Development Utilities
 
 ```bash
+
 # Clear database for testing
+
 pnpm db:nuke
 
 # Seed database with sample data
+
 pnpm db:seed
-```
+```text
 
 ### Debugging
 
@@ -217,4 +225,4 @@ pnpm db:seed
 - [Testing Strategy](./testing.md) - Overall testing approach
 - [TypeScript Standards](./typescript.md) - Type safety requirements
 - [W4Plan.md](../../W4Plan.md) - Week 4 implementation plan
-- [GDD](../../../Draconia_Chronicles_v2_GDD.md) - Game Design Document
+- [GDD](../../../Draconia*Chronicles*v2*GDD.md) - Game Design Document
