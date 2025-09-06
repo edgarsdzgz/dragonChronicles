@@ -9,6 +9,9 @@ function blank_object() {
 function run_all(fns) {
   fns.forEach(run);
 }
+function is_function(thing) {
+  return typeof thing === "function";
+}
 function safe_not_equal(a, b) {
   return a != a ? b == b : a !== b || a && typeof a === "object" || typeof a === "function";
 }
@@ -25,6 +28,7 @@ function subscribe(store, ...callbacks) {
 export {
   safe_not_equal as a,
   blank_object as b,
+  is_function as i,
   noop as n,
   run_all as r,
   subscribe as s

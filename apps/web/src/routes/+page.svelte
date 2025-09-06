@@ -1,7 +1,8 @@
 <script>
   import { onMount } from 'svelte';
-  import { hudEnabled } from '$lib/stores/flags';
+  import { hudEnabled, appFlags } from '$lib/flags/store';
   import { FpsCounter } from '$lib/pixi/hud';
+  import { getFlagDisplayName } from '$lib/flags/query';
 
   let fps = 0;
 
@@ -19,7 +20,17 @@
   <div
     style="position:absolute; top:8px; left:8px; padding:6px 10px; background:rgba(0,0,0,.55); color:#fff; font:12px/1.2 system-ui; border-radius:6px;"
   >
-    HUD on — FPS: {fps}
+    <div>HUD on — FPS: {fps}</div>
+    {#if import.meta.env.DEV}
+      <div style="margin-top:4px; font-size:10px; opacity:0.8;">
+        Active flags:
+        {#each Object.entries($appFlags) as [key, value] (key)}
+          {#if value === true}
+            <span style="color:#4ade80;">{getFlagDisplayName(key)}</span>
+          {/if}
+        {/each}
+      </div>
+    {/if}
   </div>
 {/if}
 

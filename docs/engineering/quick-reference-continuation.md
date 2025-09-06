@@ -72,6 +72,7 @@ git push origin feat/w7-cicd-previews
 
 - **Pages Deploys**: Environment protection rules fix applied, deployment succeeds but PR comment
   fails due to permissions
+  fails due to permissions
 
 ### ❌ REMAINING
 

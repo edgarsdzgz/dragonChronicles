@@ -3,6 +3,10 @@
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
 	],
+	"/dev/boom": [
+		"src/routes/dev/boom/+page.ts",
+		"src/routes/+layout.ts"
+	],
 	"/dev/logs": [
 		"src/routes/+layout.ts"
 	],
