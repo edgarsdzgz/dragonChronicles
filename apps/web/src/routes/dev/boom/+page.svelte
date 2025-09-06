@@ -7,6 +7,7 @@
   onMount(() => {
     // If somehow this component renders, redirect to home after a short delay
     setTimeout(() => {
+      // eslint-disable-next-line svelte/no-navigation-without-resolve
       goto('/');
     }, 2000);
   });
