@@ -72,27 +72,47 @@ jobs:
       - name: Verify build output exists
         run: |
           echo "=== Checking build output ==="
-          ls -la apps/web/dist/ || echo "❌ No dist directory found"
+          echo "Current directory: $(pwd)"
+          echo "Checking for apps/web/dist directory..."
+          
           if [ -d "apps/web/dist" ]; then
             echo "✅ Build output exists"
+            echo "Build directory contents:"
             ls -la apps/web/dist/
+            echo "Checking for index.html..."
+            if [ -f "apps/web/dist/index.html" ]; then
+              echo "✅ index.html found"
+              echo "File size: $(wc -c < apps/web/dist/index.html) bytes"
+            else
+              echo "❌ index.html not found in build output"
+              exit 1
+            fi
           else
-            echo "❌ Build failed - no dist directory"
+            echo "❌ Build failed - no dist directory found"
+            echo "Checking apps/web directory structure:"
+            ls -la apps/web/ || echo "apps/web directory not found"
             exit 1
           fi
 
       - name: Start preview server
         run: |
           echo "Starting preview server..."
+          echo "Current directory: $(pwd)"
           cd apps/web
+          echo "Changed to apps/web directory: $(pwd)"
+          echo "Starting vite preview server on port 4173..."
           pnpm preview --host --strictPort --port 4173 &
           echo "Preview server started in background"
+          echo "Waiting 3 seconds for server to initialize..."
+          sleep 3
+          echo "Checking if server process is running:"
+          ps aux | grep -E "(vite|preview)" | grep -v grep || echo "No preview server process found"
 
       - name: Wait for server
         run: |
           echo "Waiting for server to be ready..."
-          for i in {1..30}; do
-            echo "Attempt $i/30: Testing server connectivity..."
+          for i in {1..10}; do
+            echo "Attempt $i/10: Testing server connectivity..."
             if curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
               echo "✅ Server is ready!"
               break
@@ -104,9 +124,11 @@ jobs:
           
           # Final check
           if ! curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
-            echo "❌ Server failed to start after 60 seconds"
+            echo "❌ Server failed to start after 20 seconds"
             echo "Checking what's running on port 4173:"
             lsof -i :4173 || echo "Nothing found on port 4173"
+            echo "Checking if preview server process is running:"
+            ps aux | grep -E "(vite|preview)" | grep -v grep || echo "No preview server process found"
             exit 1
           fi
 
