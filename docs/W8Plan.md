@@ -271,10 +271,10 @@ export interface AppFlags {
 
 ## 🔗 **Related Documentation**
 
-- [W7 Plan](../W7Plan.md) - CI/CD Pipeline (completed)
-- [Development Guide](../engineering/development-guide.md) - Development practices
-- [LLM Guide](../engineering/llm-guide.md) - AI assistant processes
-- [Debugging Chronicles Index](../engineering/debugging-chronicles-index.md) - Problem-solving knowledge base
+- [Development Workflow](../engineering/development-workflow.md) - Development practices
+- [Session Handoff](../engineering/session-handoff-complete.md) - Project status and processes
+- [Testing Guide](../engineering/testing.md) - Testing strategy and implementation
+- [TypeScript Guide](../engineering/typescript.md) - TypeScript configuration and best practices
 
 ---
 
