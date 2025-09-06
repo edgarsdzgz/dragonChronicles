@@ -73,24 +73,32 @@ jobs:
         run: |
           echo "=== Checking build output ==="
           echo "Current directory: $(pwd)"
-          echo "Checking for apps/web/dist directory..."
+          echo "Checking for build output directory..."
           
+          # Check for both possible build output directories
           if [ -d "apps/web/dist" ]; then
-            echo "✅ Build output exists"
-            echo "Build directory contents:"
-            ls -la apps/web/dist/
-            echo "Checking for index.html..."
-            if [ -f "apps/web/dist/index.html" ]; then
-              echo "✅ index.html found"
-              echo "File size: $(wc -c < apps/web/dist/index.html) bytes"
-            else
-              echo "❌ index.html not found in build output"
-              exit 1
-            fi
+            echo "✅ Found dist directory"
+            BUILD_DIR="apps/web/dist"
+          elif [ -d "apps/web/build" ]; then
+            echo "✅ Found build directory"
+            BUILD_DIR="apps/web/build"
           else
-            echo "❌ Build failed - no dist directory found"
+            echo "❌ Build failed - no build output directory found"
             echo "Checking apps/web directory structure:"
             ls -la apps/web/ || echo "apps/web directory not found"
+            exit 1
+          fi
+          
+          echo "Build directory contents:"
+          ls -la "$BUILD_DIR/"
+          echo "Checking for index.html..."
+          if [ -f "$BUILD_DIR/index.html" ]; then
+            echo "✅ index.html found"
+            echo "File size: $(wc -c < "$BUILD_DIR/index.html") bytes"
+          else
+            echo "❌ index.html not found in build output"
+            echo "Available files:"
+            find "$BUILD_DIR" -type f -name "*.html" || echo "No HTML files found"
             exit 1
           fi
 
