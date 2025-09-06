@@ -1,13 +1,4 @@
 {
-  "../../node_modules/.pnpm/@sveltejs+kit@1.30.4_svelte@4.2.20_vite@4.5.14_@types+node@20.19.13_/node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
-    "file": "entries/fallbacks/error.svelte.js",
-    "imports": [
-      "_utils.js",
-      "_ssr.js"
-    ],
-    "isEntry": true,
-    "src": "../../node_modules/.pnpm/@sveltejs+kit@1.30.4_svelte@4.2.20_vite@4.5.14_@types+node@20.19.13_/node_modules/@sveltejs/kit/src/runtime/components/error.svelte"
-  },
   "../../node_modules/.pnpm/@sveltejs+kit@1.30.4_svelte@4.2.20_vite@4.5.14_@types+node@20.19.13_/node_modules/@sveltejs/kit/src/runtime/server/index.js": {
     "file": "index.js",
     "imports": [
@@ -50,6 +41,9 @@
       "_ssr.js"
     ]
   },
+  "_logger.js": {
+    "file": "chunks/logger.js"
+  },
   "_ssr.js": {
     "file": "chunks/ssr.js",
     "imports": [
@@ -83,13 +77,30 @@
     "isDynamicEntry": true,
     "src": "node_modules/pixi.js/lib/environment-webworker/webworkerAll.mjs"
   },
+  "src/routes/+error.css": {
+    "file": "_app/immutable/assets/_error.71a4d092.css",
+    "src": "src/routes/+error.css"
+  },
+  "src/routes/+error.svelte": {
+    "css": [
+      "_app/immutable/assets/_error.71a4d092.css"
+    ],
+    "file": "entries/pages/_error.svelte.js",
+    "imports": [
+      "_utils.js",
+      "_ssr.js",
+      "_logger.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/+error.svelte"
+  },
   "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout.fc62fd5e.css",
+    "file": "_app/immutable/assets/_layout.53f37b7e.css",
     "src": "src/routes/+layout.css"
   },
   "src/routes/+layout.svelte": {
     "css": [
-      "_app/immutable/assets/_layout.fc62fd5e.css"
+      "_app/immutable/assets/_layout.53f37b7e.css"
     ],
     "file": "entries/pages/_layout.svelte.js",
     "imports": [
@@ -119,10 +130,31 @@
     "isEntry": true,
     "src": "src/routes/+page.svelte"
   },
+  "src/routes/dev/boom/+page.css": {
+    "file": "_app/immutable/assets/_page.2957edbd.css",
+    "src": "src/routes/dev/boom/+page.css"
+  },
+  "src/routes/dev/boom/+page.svelte": {
+    "css": [
+      "_app/immutable/assets/_page.2957edbd.css"
+    ],
+    "file": "entries/pages/dev/boom/_page.svelte.js",
+    "imports": [
+      "_ssr.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/boom/+page.svelte"
+  },
+  "src/routes/dev/boom/+page.ts": {
+    "file": "entries/pages/dev/boom/_page.ts.js",
+    "isEntry": true,
+    "src": "src/routes/dev/boom/+page.ts"
+  },
   "src/routes/dev/logs/+page.svelte": {
     "file": "entries/pages/dev/logs/_page.svelte.js",
     "imports": [
-      "_ssr.js"
+      "_ssr.js",
+      "_logger.js"
     ],
     "isEntry": true,
     "src": "src/routes/dev/logs/+page.svelte"

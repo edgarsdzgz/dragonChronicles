@@ -1,11 +1,5 @@
 import { c as create_ssr_component, o as onDestroy, a as add_attribute, e as escape } from "../../../../chunks/ssr.js";
-import { createLogger, createDexieSink } from "@draconia/logger";
-createLogger({
-  maxBytes: 2 * 1024 * 1024,
-  maxEntries: 1e4,
-  devConsole: false,
-  dexie: createDexieSink(1e3, 1e4)
-});
+import "../../../../chunks/logger.js";
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let rate = 100;
   let seconds = 10;
