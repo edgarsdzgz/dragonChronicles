@@ -8,6 +8,9 @@
 import type { SaveV1, ExportDataV1, ExportFileV1 } from './schema.v1.js';
 import { validateSaveV1, validateExportDataV1, validateExportFileV1 } from './schema.v1.js';
 
+// Import Node.js crypto for server-side environments
+import { createHash } from 'crypto';
+
 // ============================================================================
 // Checksum Generation
 // ============================================================================
@@ -20,13 +23,22 @@ import { validateSaveV1, validateExportDataV1, validateExportFileV1 } from './sc
  */
 export async function generateChecksum(data: string): Promise<string> {
   try {
-    const encoder = new TextEncoder();
-    const dataBuffer = encoder.encode(data);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+    // Check if we're in a Node.js environment
+    if (typeof globalThis.crypto === 'undefined' || !globalThis.crypto.subtle) {
+      // Use Node.js crypto
+      const hash = createHash('sha256');
+      hash.update(data);
+      return hash.digest('hex');
+    } else {
+      // Use Web Crypto API
+      const encoder = new TextEncoder();
+      const dataBuffer = encoder.encode(data);
+      const hashBuffer = await globalThis.crypto.subtle.digest('SHA-256', dataBuffer);
 
-    // Convert to hex string
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+      // Convert to hex string
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
   } catch (error) {
     throw new Error(
       `Failed to generate checksum: ${error instanceof Error ? error.message : 'Unknown error'}`,
