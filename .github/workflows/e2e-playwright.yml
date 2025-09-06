@@ -69,8 +69,24 @@ jobs:
             echo "No existing process found on port 4173"
           fi
 
+      - name: Verify build output exists
+        run: |
+          echo "=== Checking build output ==="
+          ls -la apps/web/dist/ || echo "❌ No dist directory found"
+          if [ -d "apps/web/dist" ]; then
+            echo "✅ Build output exists"
+            ls -la apps/web/dist/
+          else
+            echo "❌ Build failed - no dist directory"
+            exit 1
+          fi
+
       - name: Start preview server
-        run: pnpm --filter @draconia/web preview &
+        run: |
+          echo "Starting preview server..."
+          cd apps/web
+          pnpm preview --host --strictPort --port 4173 &
+          echo "Preview server started in background"
 
       - name: Wait for server
         run: |
