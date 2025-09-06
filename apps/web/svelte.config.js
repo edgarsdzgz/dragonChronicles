@@ -17,6 +17,11 @@ const config = {
     paths: { base },
     prerender: { entries: ['*'] },
     alias: { $lib: 'src/lib' },
+    // Disable preloading to prevent body visibility issues in tests
+    preload: {
+      server: false,
+      client: false,
+    },
   },
 };
 
