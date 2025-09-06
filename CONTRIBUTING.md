@@ -55,7 +55,7 @@ pnpm run test:e2e         # End-to-end tests
 
 ### Project Structure
 
-```
+```text
 dragonChronicles/
 ├── packages/           # Shared libraries
 │   ├── shared/        # Common utilities, constants, protocol v1, RNG
@@ -216,7 +216,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/) for consiste
 
 ### Format
 
-```
+```text
 <type>[optional scope]: <description>
 
 [optional body]
