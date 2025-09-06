@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { db, initializeDatabase, closeDatabase } from '../../packages/db/src/db.js';
 import {
-  exportAllProfiles,
+  exportAllProfiles as _exportAllProfiles,
   exportAllProfilesToBlob,
   importFromBlob,
 } from '../../packages/db/src/export.js';

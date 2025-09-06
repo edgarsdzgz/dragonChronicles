@@ -14,9 +14,9 @@
   onMount(() => {
     // Only run in browser environment
     if (typeof window === 'undefined') return;
-    
+
     const updateManager = getUpdateManager();
-    
+
     // Subscribe to update events
     unsubscribe = updateManager.onUpdate((info) => {
       updateInfo = info;
@@ -47,23 +47,34 @@
   <div class="update-toast" role="alert" aria-live="polite">
     <div class="update-toast__content">
       <div class="update-toast__icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="currentColor"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
+            fill="currentColor"
+          />
         </svg>
       </div>
       <div class="update-toast__text">
         <div class="update-toast__title">Update Available</div>
-        <div class="update-toast__message">A new version of Draconia Chronicles is ready to install.</div>
+        <div class="update-toast__message">
+          A new version of Draconia Chronicles is ready to install.
+        </div>
       </div>
       <div class="update-toast__actions">
-        <button 
+        <button
           class="update-toast__button update-toast__button--primary"
           on:click={handleUpdate}
           aria-label="Install update"
         >
           Update
         </button>
-        <button 
+        <button
           class="update-toast__button update-toast__button--secondary"
           on:click={handleDismiss}
           aria-label="Dismiss update notification"
@@ -202,8 +213,12 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   /* Mobile responsiveness */

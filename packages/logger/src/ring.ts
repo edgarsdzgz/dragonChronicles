@@ -2,7 +2,7 @@ import type { Logger, LogEvent } from './types.js';
 import { approxJsonBytesFast } from './util/bytes-optimized.js';
 import { toNDJSON } from './util/ndjson.js';
 import { createConsoleSink } from './sinks/console.js';
-import { createDexieSink, type DexieSink } from './sinks/dexie.js';
+import { createDexieSink as _createDexieSink, type DexieSink } from './sinks/dexie.js';
 import { redactEvent } from './redact.js';
 import { CircularBuffer } from './circular-buffer.js';
 

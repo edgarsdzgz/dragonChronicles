@@ -129,6 +129,7 @@ node tests/run-all.mjs  # Builds once, runs all tests
 **Problem:** CI fails with `pnpm install --frozen-lockfile` errors when lockfile and package.json specs don't match.
 
 **Symptoms:**
+
 - "Lockfile has vitest: '^1.6.1' but package.json has vitest: '^1.6.0'"
 - Missing specifiers in lockfile vs package.json
 - CI blocks on dependency verification
@@ -141,7 +142,7 @@ node tests/run-all.mjs  # Builds once, runs all tests
 # ✅ CORRECT - from repo root
 pnpm -w install
 
-# ✅ CORRECT - adding dependencies 
+# ✅ CORRECT - adding dependencies
 pnpm -w add -D vitest@^1.6.1 --filter ./apps/web
 
 # ❌ WRONG - local installs cause drift
@@ -190,6 +191,7 @@ git add pnpm-lock.yaml
 **When CI fails on frozen lockfile:**
 
 1. Sync lockfile immediately:
+
    ```bash
    pnpm -w install --lockfile-only
    git add pnpm-lock.yaml
@@ -357,6 +359,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Current Version: 0.5.0-alpha
 
 **Version Numbering Rationale:**
+
 - **0.x.x**: Pre-1.0 development phase
 - **0.5.0**: Reflects Phase 0 progress (5/8 workpacks complete)
 - **-alpha**: Indicates incomplete feature set, not ready for general use
@@ -364,43 +367,52 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Version Progression Path
 
 **Phase 0 (Current)**: 0.5.0-alpha → 0.8.0-alpha
+
 - W1-W5: ✅ Complete (foundation established)
 - W6-W8: ⏳ Pending (PWA, CI/CD, Dev UX)
 
-**Phase 1**: 0.8.0-alpha → 0.9.0-alpha  
+**Phase 1**: 0.8.0-alpha → 0.9.0-alpha
+
 - Core gameplay loop implementation
 - Shooter-idle mechanics, combat, progression
 
 **Phase 2**: 0.9.0-alpha → 0.9.5-alpha
+
 - UI/UX development and refinement
 - Accessibility and performance optimization
 
 **Phase 3**: 0.9.5-alpha → 0.9.9-alpha
+
 - Performance optimization and advanced features
 - Meta systems and automation
 
 **Phase 4**: 0.9.9-alpha → 0.10.0-alpha
+
 - Player documentation and release preparation
 - Final polish and launch readiness
 
 **Extended Alpha Development**: 0.10.0-alpha → 0.15.0-alpha
+
 - Gameplay balancing and tuning
 - Content expansion and refinement
 - Performance optimization
 - Bug fixes and polish
 
 **Beta Phase**: 0.15.0-alpha → 0.20.0-beta
+
 - Feature freeze
 - Extensive testing and feedback
 - Performance optimization
 - Bug fixes and stability
 
 **Release Candidate**: 0.20.0-beta → 0.25.0-rc
+
 - Final testing and validation
 - Documentation completion
 - Release preparation
 
 **Full Release**: 0.25.0-rc → 1.0.0
+
 - Production deployment
 - Player launch
 
@@ -412,7 +424,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 1. **Workpack Completion**: Increment minor version (0.5.0 → 0.6.0)
    - W6 complete: 0.6.0-alpha
-   - W7 complete: 0.7.0-alpha  
+   - W7 complete: 0.7.0-alpha
    - W8 complete: 0.8.0-alpha
 
 2. **Phase Completion**: Increment minor version (0.8.0 → 0.9.0)
@@ -440,12 +452,14 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Alpha Status Guidelines
 
 **What Alpha Means:**
+
 - ✅ **Foundation Complete**: Infrastructure, testing, persistence, logging
 - ❌ **Gameplay Incomplete**: Core game loop not implemented
 - ❌ **Not User Ready**: Missing essential game features
 - ❌ **Breaking Changes**: API may change between versions
 
 **Alpha Development Rules:**
+
 1. **No Breaking Changes**: Maintain API compatibility within alpha versions
 2. **Documentation Required**: All changes must update relevant docs
 3. **Test Coverage**: New features require comprehensive testing
@@ -454,6 +468,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 ### Documentation Update Requirements
 
 **Version Changes Require Updates To:**
+
 1. **GDD**: Update version number and status
 2. **Overview README**: Update project status and version
 3. **Changelog**: Add new version entry with changes
@@ -461,6 +476,7 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 5. **Package.json**: Update version numbers across workspace
 
 **Example Version Update Process:**
+
 ```bash
 # 1. Update version numbers
 find . -name "package.json" -exec sed -i 's/"version": "0.5.0"/"version": "0.6.0"/g' {} \;
@@ -487,6 +503,7 @@ git tag -a v0.6.0-alpha -m "Release 0.6.0-alpha: PWA & Update UX"
 **Phase 0 uses the W# workpack model**: 8 comprehensive workpacks delivering complete functionality blocks instead of granular stories.
 
 **Phase 0 Workpack Structure:**
+
 - ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
 - ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
 - ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
@@ -1013,6 +1030,7 @@ pnpm exec lint-staged
 ### Process Improvements from W3 Worker Sim Harness
 
 **Key Learnings:**
+
 1. **Feature Branch Discipline**: Always create feature branches before implementation - never work directly on main
 2. **Complete Implementation**: Don't create PRs with partial implementations - finish all phases before PR creation
 3. **Tooling Issues**: Fix ESLint/Prettier configuration before proceeding with development
@@ -1020,6 +1038,7 @@ pnpm exec lint-staged
 5. **Planning Document Cleanup**: Delete W#Plan.md files after PR merge to maintain clean repository
 
 **W3 Technical Achievements:**
+
 - ✅ Protocol v1 with type-safe message contracts
 - ✅ PCG32 deterministic RNG for reproducible simulation
 - ✅ Fixed-timestep clock (16.67ms) with accumulator pattern
@@ -1030,6 +1049,7 @@ pnpm exec lint-staged
 - ✅ Comprehensive test suite and dev tools
 
 **Process Deviations Identified:**
+
 - ❌ Initially worked on main branch instead of feature branch
 - ❌ Created PR with incomplete implementation (only Phase 1-2)
 - ❌ Bypassed pre-commit hooks due to tooling issues
@@ -1037,6 +1057,7 @@ pnpm exec lint-staged
 - ❌ Documentation not updated after W2 completion
 
 **Corrective Actions Implemented:**
+
 - ✅ Established feature branch discipline
 - ✅ Complete implementation before PR creation
 - ✅ Documentation update process committed to memory
@@ -1104,3 +1125,187 @@ assert.ok(condition, 'descriptive error message');
 // (assertions will throw and prevent reaching this line)
 if (process.env.VERBOSE) console.log('All validations passed');
 ```
+
+## Automation Principles (2025-09-05)
+
+### Always Automate Repetitive Tasks
+
+**When encountering repetitive, manual tasks that follow a simple pattern, ALWAYS create a bash script to automate them.**
+
+**Benefits:**
+
+- ⏱️ **Saves Time**: No manual repetition of the same task
+- 🧠 **Saves Thinking Tokens**: No need to think through each instance
+- 🎯 **Improves Accuracy**: Consistent application of rules across all instances
+- 🔄 **Enables Reusability**: Scripts can be used again for similar tasks
+- 📝 **Documents Process**: Scripts serve as documentation of the solution
+
+**Examples of Tasks That Should Be Automated:**
+
+- Fixing many markdown line length violations
+- Bulk find/replace operations across multiple files
+- Formatting issues that affect many files
+- Any task that follows a simple, repeatable pattern
+- Mass file modifications with consistent rules
+
+**Script Creation Process:**
+
+1. **Identify the Pattern**: What is the repetitive task?
+2. **Create the Script**: Write a bash script that handles the pattern
+3. **Test the Script**: Verify it works on a subset of files
+4. **Apply Broadly**: Run the script on all affected files
+5. **Commit the Script**: Save it for future use
+
+**Example: Markdown Line Length Fixer**
+
+```bash
+#!/bin/bash
+# Fixes markdown line length issues by breaking long lines at word boundaries
+
+MAX_LINE_LENGTH=100
+
+fix_file() {
+    local file="$1"
+    # Break lines longer than MAX_LINE_LENGTH at word boundaries
+    # ... implementation details
+}
+
+# Apply to all markdown files
+find docs -name "*.md" -exec fix_file {} \;
+```
+
+**Key Principle**: If you find yourself doing the same manual task more than 3 times, create a script to automate it.
+
+## CI/CD Workflow Debugging Patterns (2025-09-05)
+
+### Systematic Workflow Debugging Approach
+
+**When debugging CI/CD workflow failures, follow this systematic approach:**
+
+1. **Identify the Pattern**: Look for common failure modes across workflows
+2. **Apply Consistent Solutions**: Use the same fix across all affected workflows
+3. **Add Verification Steps**: Include debugging output to confirm fixes work
+4. **Document the Solution**: Update guidelines for future reference
+
+**Example: PNPM Hoisting Issues**
+
+- **Problem**: `pixi.js` resolution failures in multiple workflows
+- **Root Cause**: Inconsistent `node_modules` structure between local and CI
+- **Solution**: Apply `--config.node-linker=hoisted` to all workflows
+- **Verification**: Add steps to confirm `pixi.js` is properly hoisted
+
+**Workflow Fix Pattern:**
+
+```yaml
+- name: Install deps
+  run: |
+    echo "Installing with hoisted node_modules structure..."
+    pnpm -w install --config.node-linker=hoisted
+
+- name: Verify hoisted structure
+  run: |
+    echo "Checking if pixi.js is hoisted:"
+    ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
+```
+
+**Key Principle**: When one workflow fix works, apply it consistently across all similar workflows.
+
+## Current Session Status (September 5, 2025)
+
+### Workflow Status: 4/6 Passing ✅
+
+- ✅ **CI** - Fixed prettier formatting issues
+- ✅ **Checks** - Fixed linting issues
+- ✅ **Lighthouse** - Was already working
+- ✅ **Docs** - Fixed markdownlint issues (MD051, MD024)
+
+### Remaining Issues
+
+- 🔄 **Pages Deploys** - Environment protection rules fix applied, testing in progress
+- ❌ **E2E Smoke** - Playwright configuration issue (`chromium` project not found)
+
+### Key Solutions Applied
+
+1. **PNPM Hoisting**: Used `pnpm -w install --config.node-linker=hoisted` for CI environments
+2. **Module Resolution**: Added `main` and `types` fields to `packages/db/package.json`
+3. **Vite/Rollup**: Added `ssr.noExternal: ['pixi.js']` to prevent externalization
+4. **Markdownlint**: Systematic fixes for link fragments and duplicate headings
+5. **GitHub Pages**: Added `feat/w7-cicd-previews` to environment allowed branches
+
+### Next Steps for Continuation
+
+1. **Check Pages Deploys status**: `gh run list --limit 5`
+2. **If Pages Deploys passes**: Move to E2E Smoke workflow
+3. **If Pages Deploys fails**: Check deployment logs
+4. **E2E Smoke**: Investigate Playwright configuration and browser installation
+
+### Documentation
+
+- Complete session documentation: `docs/engineering/ci-workflow-debugging-session.md`
+- All fixes documented with root causes and solutions
+- Automation scripts created for future use
+
+## New Memory Rules (September 5, 2025)
+
+### Automation Preference for Repetitive Tasks
+
+**When manual attempts fail repeatedly (3+ times), create automation scripts instead of continuing manual attempts.** This saves tokens and thinking time while ensuring consistent results.
+
+Example: Instead of manually editing markdown line length issues repeatedly, create a bash script to automate the fix.
+
+### Sequential Problem Solving Approach
+
+**Focus on one issue at a time with a slow and steady approach.** This allows better control over what is being tested, broken, and fixed, preventing cascading failures.
+
+## Current Session Status (Updated - September 5, 2025)
+
+### Workflow Status: 4/6 Passing ✅
+
+- ✅ **CI** - Fixed prettier formatting issues in CLAUDE.md
+- ✅ **Checks** - Fixed prettier formatting issues in CLAUDE.md
+- ✅ **Lighthouse** - Was already working
+- ✅ **Docs** - Fixed markdownlint issues (MD051, MD024, MD013, MD022, MD031, MD032)
+
+### Remaining Issues
+
+- ❌ **Pages Deploys** - Environment protection rules fix applied but still failing
+- ❌ **E2E Smoke** - Playwright configuration issue (`chromium` project not found)
+
+### Critical Discovery: Previously Passing Workflows Started Failing
+
+**Root Cause**: Adding CLAUDE.md to repository without proper formatting
+
+- **Problem**: CLAUDE.md was previously ignored, now checked by Prettier
+- **Solution**: Applied `pnpm run format --write CLAUDE.md`
+- **Status**: ✅ FIXED - CI and Checks workflows now passing
+
+### Key Solutions Applied
+
+1. **PNPM Hoisting**: Used `pnpm -w install --config.node-linker=hoisted` for CI environments
+2. **Module Resolution**: Added `main` and `types` fields to `packages/db/package.json`
+3. **Vite/Rollup**: Added `ssr.noExternal: ['pixi.js']` to prevent externalization
+4. **Markdownlint**: Systematic fixes for link fragments and duplicate headings
+5. **GitHub Pages**: Added `feat/w7-cicd-previews` to environment allowed branches
+6. **Prettier Formatting**: Fixed CLAUDE.md formatting issues
+
+### Next Steps for Continuation
+
+1. **Check Pages Deploys status**: `gh run list --limit 5`
+2. **If Pages Deploys passes**: Move to E2E Smoke workflow
+3. **If Pages Deploys fails**: Check deployment logs with `gh run view [RUN_ID] --log-failed`
+4. **E2E Smoke**: Investigate Playwright configuration and browser installation
+
+### Documentation
+
+- Complete session documentation: `docs/engineering/ci-workflow-debugging-session.md`
+- Quick reference guide: `docs/engineering/quick-reference-continuation.md`
+- Complete handoff document: `docs/engineering/session-handoff-complete.md`
+- All fixes documented with root causes and solutions
+- Automation scripts created for future use
+
+### Automation Scripts Available
+
+- `scripts/fix-line-length-final.sh` - Fixes markdown line length issues
+- `scripts/fix-docs-markdownlint.sh` - Comprehensive markdownlint fixes
+- `scripts/fix-remaining-markdownlint.sh` - Targeted markdownlint fixes
+- `scripts/fix-final-markdownlint.sh` - Final markdownlint cleanup

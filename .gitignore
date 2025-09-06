@@ -4,4 +4,3 @@ dist/
 .cache/
 .DS_Store
 *.log
-CLAUDE.md

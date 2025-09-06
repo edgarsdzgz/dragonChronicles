@@ -15,7 +15,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     antialias: false,
     resolution: dpr,
     autoDensity: true,
-    backgroundAlpha: 0
+    backgroundAlpha: 0,
   });
   await app.init({ resizeTo: canvas.parentElement ?? window });
 
@@ -25,10 +25,10 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   const applyVisibilityPolicy = () => {
     if (document.hidden) {
       if (!app.ticker.stopped) app.ticker.stop(); // pause rendering/GPU
-      bg.start();                                  // continue simulation (lightweight)
+      bg.start(); // continue simulation (lightweight)
     } else {
-      bg.stop();                                   // foreground sim handled by ticker/W3 later
-      if (app.ticker.stopped) app.ticker.start();  // resume rendering/GPU
+      bg.stop(); // foreground sim handled by ticker/W3 later
+      if (app.ticker.stopped) app.ticker.start(); // resume rendering/GPU
     }
   };
 
@@ -43,7 +43,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
       document.removeEventListener('visibilitychange', applyVisibilityPolicy);
       bg.stop();
       app.destroy(true, { children: true });
-    }
+    },
   };
   return handle;
 }

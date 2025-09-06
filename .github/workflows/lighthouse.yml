@@ -1,0 +1,71 @@
+name: Lighthouse (warn)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Install deps
+        env:
+          HUSKY: '0'
+        run: |
+          echo "Installing workspace dependencies with hoisted structure..."
+          pnpm -w install --config.node-linker=hoisted
+
+      - name: Build workspace dependencies
+        run: pnpm -w run build:ci
+
+      - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
+        run: |
+          mkdir -p apps/web/node_modules/@draconia
+          cp -r packages/shared apps/web/node_modules/@draconia/shared
+          cp -r packages/db apps/web/node_modules/@draconia/db
+          cp -r packages/logger apps/web/node_modules/@draconia/logger
+
+      - name: Verify hoisted structure for Lighthouse
+        run: |
+          echo "=== Verifying hoisted structure for Lighthouse ==="
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
+
+      - name: Build (Pages base path)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm --filter @draconia/web build
+
+      - name: Start preview server
+        run: pnpm --filter @draconia/web preview &
+
+      - name: Wait for server
+        run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
+
+      - name: Lighthouse CI (warn only)
+        uses: treosh/lighthouse-ci-action@v11
+        continue-on-error: true
+        with:
+          urls: |
+            http://127.0.0.1:4173/${{ github.event.repository.name }}/
+            http://127.0.0.1:4173/${{ github.event.repository.name }}/dev/pool
+          configPath: .lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Post summary
+        run: echo "Lighthouse run complete (non-blocking). See artifacts for reports."

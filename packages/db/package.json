@@ -1,8 +1,9 @@
 {
   "name": "@draconia/db",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -11,10 +12,11 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@draconia/shared": "workspace:*",
     "dexie": "^4.2.0",
     "zod": "^4.1.1"
   },

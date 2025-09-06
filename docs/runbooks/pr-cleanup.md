@@ -1,6 +1,7 @@
 # PR Cleanup Runbook
 
-**Purpose**: Ensure clean repository state after PR merges and prepare for next issue implementation.
+**Purpose**: Ensure clean repository state after PR merges and prepare for next issue
+implementation.
 
 ## When to Use This Runbook
 
@@ -43,7 +44,8 @@ git branch -D feat/p0-s00X-<description>
 git push origin --delete feat/p0-s00X-<description>
 ```
 
-**Why**: Remove remote branches to prevent clutter and ensure no one accidentally works on completed features.
+**Why**: Remove remote branches to prevent clutter and ensure no one accidentally works on completed
+features.
 
 ### 4. Clean Up Planning Documents
 

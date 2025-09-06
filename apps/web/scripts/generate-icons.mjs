@@ -32,7 +32,7 @@ function createIcon(size, isMaskable = false) {
   // Dragon silhouette (simplified)
   const centerX = size / 2;
   const centerY = size / 2;
-  const scale = size / 512;
+  const _scale = size / 512;
   
   // Dragon body (simplified geometric shape)
   ctx.fillStyle = '#4a90e2';

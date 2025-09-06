@@ -1,6 +1,6 @@
 /**
  * Simulation engine for Draconia Chronicles
- * 
+ *
  * Provides core simulation components including:
  * - Fixed-timestep clock and loop
  * - Simulation state management

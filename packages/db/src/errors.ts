@@ -1,6 +1,6 @@
 /**
  * Custom error classes for the database layer
- * 
+ *
  * Provides specific error types for different database operations
  * with detailed error messages and context information.
  */
@@ -15,8 +15,10 @@
 export class DatabaseError extends Error {
   constructor(
     message: string,
+    // eslint-disable-next-line no-unused-vars
     public readonly operation: string,
-    public readonly context?: Record<string, unknown>
+    // eslint-disable-next-line no-unused-vars
+    public readonly context?: Record<string, unknown>,
   ) {
     super(message);
     this.name = 'DatabaseError';
@@ -34,7 +36,7 @@ export class ValidationError extends DatabaseError {
   constructor(
     message: string,
     public readonly field?: string,
-    public readonly value?: unknown
+    public readonly value?: unknown,
   ) {
     super(message, 'validation', { field, value });
     this.name = 'ValidationError';
@@ -72,7 +74,7 @@ export class DatabaseOperationError extends DatabaseError {
   constructor(
     message: string,
     operation: string,
-    public readonly originalError?: Error
+    public readonly originalError?: Error,
   ) {
     super(message, operation, { originalError: originalError?.message });
     this.name = 'DatabaseOperationError';
@@ -117,7 +119,10 @@ export class DeleteOperationError extends DatabaseOperationError {
  * Error thrown when export operations fail
  */
 export class ExportError extends DatabaseError {
-  constructor(message: string, public readonly profileId?: string) {
+  constructor(
+    message: string,
+    public readonly profileId?: string,
+  ) {
     super(message, 'export', { profileId });
     this.name = 'ExportError';
   }
@@ -130,7 +135,7 @@ export class ImportError extends DatabaseError {
   constructor(
     message: string,
     public readonly profileId?: string,
-    public readonly validationErrors?: string[]
+    public readonly validationErrors?: string[],
   ) {
     super(message, 'import', { profileId, validationErrors });
     this.name = 'ImportError';
@@ -144,7 +149,7 @@ export class ChecksumError extends DatabaseError {
   constructor(
     message: string,
     public readonly expectedChecksum?: string,
-    public readonly actualChecksum?: string
+    public readonly actualChecksum?: string,
   ) {
     super(message, 'checksum_validation', { expectedChecksum, actualChecksum });
     this.name = 'ChecksumError';
@@ -163,7 +168,7 @@ export class MigrationError extends DatabaseError {
     message: string,
     public readonly fromVersion: number,
     public readonly toVersion: number,
-    public readonly migrationErrors?: string[]
+    public readonly migrationErrors?: string[],
   ) {
     super(message, 'migration', { fromVersion, toVersion, migrationErrors });
     this.name = 'MigrationError';
@@ -178,7 +183,8 @@ export class MigrationPathError extends MigrationError {
     message: string,
     fromVersion: number,
     toVersion: number,
-    public readonly missingVersions?: number[]
+    // eslint-disable-next-line no-unused-vars
+    public readonly missingVersions?: number[],
   ) {
     super(message, fromVersion, toVersion);
     this.name = 'MigrationPathError';
@@ -197,7 +203,7 @@ export class MigrationPathError extends MigrationError {
 export class ProfileError extends DatabaseError {
   constructor(
     message: string,
-    public readonly profileId: string
+    public readonly profileId: string,
   ) {
     super(message, 'profile', { profileId });
     this.name = 'ProfileError';
@@ -232,7 +238,10 @@ export class ProfileExistsError extends ProfileError {
  * Error thrown when database connection fails
  */
 export class DatabaseConnectionError extends DatabaseError {
-  constructor(message: string, public readonly originalError?: Error) {
+  constructor(
+    message: string,
+    public readonly originalError?: Error,
+  ) {
     super(message, 'connection', { originalError: originalError?.message });
     this.name = 'DatabaseConnectionError';
   }
@@ -279,17 +288,17 @@ export function isProfileError(error: unknown): error is ProfileError {
 export function createErrorMessage(
   operation: string,
   details: string,
-  context?: Record<string, unknown>
+  context?: Record<string, unknown>,
 ): string {
   let message = `Database ${operation} failed: ${details}`;
-  
+
   if (context && Object.keys(context).length > 0) {
     const contextStr = Object.entries(context)
       .map(([key, value]) => `${key}=${String(value)}`)
       .join(', ');
     message += ` (${contextStr})`;
   }
-  
+
   return message;
 }
 
@@ -299,16 +308,16 @@ export function createErrorMessage(
 export function wrapDatabaseError(
   error: unknown,
   operation: string,
-  context?: Record<string, unknown>
+  context?: Record<string, unknown>,
 ): DatabaseError {
   if (isDatabaseError(error)) {
     return error;
   }
-  
+
   const message = error instanceof Error ? error.message : String(error);
   return new DatabaseOperationError(
     createErrorMessage(operation, message, context),
     operation,
-    error instanceof Error ? error : undefined
+    error instanceof Error ? error : undefined,
   );
 }

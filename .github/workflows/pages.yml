@@ -1,0 +1,96 @@
+name: Pages Deploys (PR Preview & Main)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Install deps
+        env:
+          HUSKY: '0'
+        run: |
+          echo "Installing workspace dependencies with hoisted structure..."
+          pnpm -w install --config.node-linker=hoisted
+
+      - name: Build workspace dependencies
+        run: pnpm -w run build:ci
+
+      - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
+        run: |
+          mkdir -p apps/web/node_modules/@draconia
+          cp -r packages/shared apps/web/node_modules/@draconia/shared
+          cp -r packages/db apps/web/node_modules/@draconia/db
+          cp -r packages/logger apps/web/node_modules/@draconia/logger
+
+      - name: Verify hoisted structure for Pages
+        run: |
+          echo "=== Verifying hoisted structure for Pages ==="
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
+
+      - name: Build (Pages base path)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm --filter @draconia/web build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Comment PR with preview URL
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            try {
+              const url = process.env.DEPLOY_URL || '${{ steps.deployment.outputs.page_url }}';
+              const body = `🔍 **Preview deployed**: ${url}\n\n(BASE_PATH set to /${{ github.event.repository.name }})`;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body
+              });
+              console.log('✅ PR comment posted successfully');
+            } catch (error) {
+              console.log('⚠️ Failed to post PR comment:', error.message);
+              console.log('Deployment was successful, but comment failed');
+            }

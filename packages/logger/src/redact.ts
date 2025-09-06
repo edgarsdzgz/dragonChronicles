@@ -3,7 +3,7 @@ import type { LogEvent } from './types.js';
 // Only dragon name is allowed as player-typed PII per policy.
 // Strategy: remove suspicious fields from `data` (e.g. raw input text), unless whitelisted.
 
-const ALLOWED_ROOT_KEYS: (keyof LogEvent)[] = [
+const _ALLOWED_ROOT_KEYS: (keyof LogEvent)[] = [
   't',
   'lvl',
   'src',

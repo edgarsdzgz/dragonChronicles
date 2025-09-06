@@ -14,7 +14,7 @@ export class UpdateManager {
   private updateAvailable = false;
   private installing = false;
   private installed = false;
-  private updateCallbacks: ((info: UpdateInfo) => void)[] = [];
+  private updateCallbacks: ((_info: UpdateInfo) => void)[] = [];
 
   constructor() {
     this.initializeServiceWorker();
@@ -30,7 +30,7 @@ export class UpdateManager {
       // Register the service worker
       this.registration = await navigator.serviceWorker.register('/sw.js');
       console.log('Service Worker: Registered successfully');
-      
+
       // Handle service worker updates
       this.registration.addEventListener('updatefound', () => {
         const newWorker = this.registration?.installing;
@@ -52,7 +52,6 @@ export class UpdateManager {
         this.installing = false;
         this.notifyCallbacks();
       });
-      
     } catch (error) {
       console.error('Service Worker registration failed:', error);
     }
@@ -86,12 +85,11 @@ export class UpdateManager {
     try {
       this.installing = true;
       this.notifyCallbacks();
-      
+
       // Send skip waiting message to service worker
       if (this.registration.waiting) {
         this.registration.waiting.postMessage({ type: 'SKIP_WAITING' });
       }
-      
     } catch (error) {
       console.error('Failed to apply update:', error);
       this.installing = false;
@@ -102,9 +100,9 @@ export class UpdateManager {
   /**
    * Subscribe to update events
    */
-  onUpdate(callback: (info: UpdateInfo) => void): () => void {
+  onUpdate(callback: (_info: UpdateInfo) => void): () => void {
     this.updateCallbacks.push(callback);
-    
+
     // Return unsubscribe function
     return () => {
       const index = this.updateCallbacks.indexOf(callback);
@@ -152,7 +150,7 @@ export class UpdateManager {
 
   private notifyCallbacks(): void {
     const info = this.getUpdateInfo();
-    this.updateCallbacks.forEach(callback => callback(info));
+    this.updateCallbacks.forEach((callback) => callback(info));
   }
 }
 

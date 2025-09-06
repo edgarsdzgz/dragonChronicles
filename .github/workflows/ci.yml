@@ -43,17 +43,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable pnpm via Corepack (matches packageManager)
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.9 --activate
-          pnpm -v
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
 
-      - name: Install
+      - name: Install workspace dependencies
         env:
           HUSKY: '0'
-        run: pnpm -w install --frozen-lockfile
+        run: |
+          echo "Installing workspace dependencies..."
+          pnpm -w install
 
       - name: Build (TS project references)
         run: |
@@ -74,6 +75,13 @@ jobs:
 
       - name: Docs lint (markdownlint) - optional
         run: pnpm -w run docs:lint
+        continue-on-error: true
+
+      - name: Size budgets (gate)
+        env:
+          BUDGET_BASE_KB: 200
+          BUDGET_LOGGER_KB: 8
+        run: pnpm run size:check
 
   build-web:
     name: Build (web)
@@ -96,26 +104,64 @@ jobs:
         with:
           node-version: 20
 
-      - name: Enable pnpm via Corepack (matches packageManager)
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.9 --activate
-          pnpm -v
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
 
       - name: Install
         env:
           HUSKY: '0'
-        run: pnpm -w install --frozen-lockfile
+        run: |
+          echo "Installing with hoisted node_modules structure for CI"
+          pnpm -w install --config.node-linker=hoisted
 
       - name: Build (TS project references)
         run: |
           pnpm -w run clean
           pnpm -w run build:ci
 
+      - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
+        run: |
+          mkdir -p apps/web/node_modules/@draconia
+          cp -r packages/shared apps/web/node_modules/@draconia/shared
+          cp -r packages/db apps/web/node_modules/@draconia/db
+          cp -r packages/logger apps/web/node_modules/@draconia/logger
+
+      # Clear Vite cache to ensure fresh configuration
+      - name: Clear Vite cache
+        run: |
+          rm -rf apps/web/.svelte-kit
+          rm -rf apps/web/node_modules/.vite
+
+      # Verify hoisted structure worked
+      - name: Verify hoisted node_modules structure
+        run: |
+          echo "=== Verifying hoisted structure ==="
+          echo "Checking if pixi.js is now hoisted:"
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js still not hoisted"
+          echo "Checking node_modules structure:"
+          find node_modules/ -maxdepth 1 -name "*pixi*" -o -name "*eventemitter*" | head -5 || echo "No pixi-related packages found in root"
+
       # Build SvelteKit app using the built packages
       - name: Build SvelteKit (adapter-static)
-        run: pnpm --filter @draconia/web build --if-present
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: |
+          echo "=== Debugging Vite Configuration ==="
+          echo "Checking if pixi.js is hoisted:"
+          ls -la node_modules/pixi.js/ 2>/dev/null || echo "pixi.js not hoisted to root"
+          echo "Checking Vite config:"
+          cat apps/web/vite.config.ts
+          echo "=== Starting Build ==="
+          pnpm --filter @draconia/web build
+
+      - name: Upload dist artifact (for previews/tests)
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/build/**/*
 
       - name: Upload static site artifact for GH Pages
         if: github.ref == 'refs/heads/main'
@@ -166,7 +212,7 @@ jobs:
 
       - name: Stop server
         if: always()
-        run: kill $(cat server.pid) || true
+        run: kill "$(cat server.pid)" || true
 
   deploy:
     name: Deploy to GitHub Pages

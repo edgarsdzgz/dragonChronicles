@@ -6,7 +6,9 @@
 
 ## 🎯 Overview
 
-This document provides comprehensive information about the Progressive Web App (PWA) implementation in Draconia Chronicles. The PWA enables offline functionality, app installation, and seamless update experiences.
+This document provides comprehensive information about the Progressive Web App (PWA) implementation in
+Draconia Chronicles. The PWA enables offline functionality, app installation, and seamless update
+experiences.
 
 ## 🏗️ Architecture
 
@@ -276,4 +278,6 @@ To update service worker:
 
 ---
 
-**This PWA implementation provides a modern, offline-capable web application experience that enhances user engagement and provides reliable functionality across all devices and network conditions.**
+**This PWA implementation provides a modern, offline-capable web application experience that
+enhances user engagement and provides reliable functionality across all devices and network
+conditions.**

@@ -6,20 +6,22 @@
 
 ## 📖 **Table of Contents**
 
-1. [Introduction](#introduction)
-2. [Performance Optimization Techniques](#performance-optimization-techniques)
+1. [Introduction](#-introduction)
+2. [Performance Optimization Techniques](#-performance-optimization-techniques)
 3. [Memory Management](#memory-management)
-4. [Data Structure Optimization](#data-structure-optimization)
+4. [Data Structure Optimization](#-data-structure-optimization)
 5. [Database Optimization](#database-optimization)
 6. [Bundle Optimization](#bundle-optimization)
-7. [Error Handling Optimization](#error-handling-optimization)
-8. [Testing and Validation](#testing-and-validation)
-9. [Tools and Resources](#tools-and-resources)
-10. [Best Practices](#best-practices)
+7. [Error Handling Optimization](#-error-handling-optimization)
+8. [Testing and Validation](#-testing-and-validation)
+9. Tools and Resources
+10. [Best Practices](#-best-practices)
 
 ## 🎯 **Introduction**
 
-This guide provides comprehensive techniques and strategies for optimizing the Draconia Chronicles codebase. It covers performance optimization, memory management, data structures, database operations, bundle optimization, and error handling.
+This guide provides comprehensive techniques and strategies for optimizing the Draconia Chronicles
+codebase. It covers performance optimization, memory management, data structures, database
+operations, bundle optimization, and error handling.
 
 ### **Optimization Principles**
 
@@ -35,7 +37,7 @@ This guide provides comprehensive techniques and strategies for optimizing the D
 
 #### **Time Complexity Improvements**
 
-**Before: O(n) Linear Operations**
+### Before: O(n) Linear Operations
 
 ```typescript
 // Inefficient: O(n) shift operation
@@ -51,7 +53,7 @@ class LogBuffer {
 }
 ```
 
-**After: O(1) Constant Operations**
+### After: O(1) Constant Operations
 
 ```typescript
 // Efficient: O(1) circular buffer
@@ -76,7 +78,7 @@ class CircularBuffer<T> {
 
 #### **Space Complexity Optimization**
 
-**Before: Recursive with Stack Overhead**
+### Before: Recursive with Stack Overhead
 
 ```typescript
 // Inefficient: Recursive with WeakSet overhead
@@ -87,7 +89,7 @@ function calculateSize(obj: unknown, seen = new WeakSet()): number {
 }
 ```
 
-**After: Iterative with Minimal Overhead**
+### After: Iterative with Minimal Overhead
 
 ```typescript
 // Efficient: Iterative approach
@@ -619,4 +621,5 @@ async function loadTestDatabase() {
 
 ---
 
-**This guide should be updated regularly as new optimization techniques and best practices are discovered.**
+**This guide should be updated regularly as new optimization techniques and best practices are
+discovered.**

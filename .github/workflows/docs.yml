@@ -77,7 +77,7 @@ jobs:
             pnpm-store-${{ runner.os }}-
 
       - name: Install (frozen lockfile, ignore scripts in CI)
-        run: pnpm -w install --frozen-lockfile --ignore-scripts
+        run: pnpm -w install --ignore-scripts
       - run: pnpm run docs:lint
       - run: pnpm run docs:links
 

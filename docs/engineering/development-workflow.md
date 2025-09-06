@@ -5,7 +5,9 @@
 
 ## 🎯 Overview
 
-This document outlines the development workflow, safeguards, and best practices for the Draconia Chronicles project. It includes lessons learned from critical workflow failures and prevention measures.
+This document outlines the development workflow, safeguards, and best practices for the Draconia
+Chronicles project. It includes lessons learned from critical workflow failures and prevention
+measures.
 
 ## 🚨 Critical Workflow Lessons
 
@@ -18,7 +20,8 @@ This document outlines the development workflow, safeguards, and best practices 
 
 #### Root Causes Identified
 
-1. **Workflow Failure**: Work was stashed during lint-staged automatic backup instead of being committed
+1. **Workflow Failure**: Work was stashed during lint-staged automatic backup instead of being
+   committed
 2. **Misleading Commit Messages**: Commits claimed implementation without actual files
 3. **Branch Confusion**: Wrong branch was merged (planning vs implementation)
 4. **No Verification**: No automated checks to ensure implementation matches commit messages
@@ -93,7 +96,7 @@ check_file "apps/web/src/lib/pwa/update-manager.ts" 150
 
 #### Required Format
 
-```
+```text
 type(scope): description
 
 [optional body]
@@ -171,7 +174,8 @@ feat(pwa): implement PWA installation prompt
 
 - **All planning documents** must be created in the `/docs/` folder
 - **Workpack plans** (W7, W8, etc.) go directly in `/docs/` folder
-- **Feature plans** go in appropriate subdirectories (e.g., `/docs/engineering/`, `/docs/optimization/`)
+- **Feature plans** go in appropriate subdirectories (e.g., `/docs/engineering/`,
+  `/docs/optimization/`)
 - **No planning documents** should be created in the root directory
 
 #### Planning Document Structure
@@ -264,7 +268,7 @@ git commit -m "feat: add PWA manifest and service worker"
 
 ## 🔍 Verification Checklist
 
-### Before Committing
+### Pre-Commit Checklist
 
 - [ ] All changes are staged correctly
 - [ ] Commit message accurately describes changes
@@ -349,4 +353,5 @@ git commit -m "feat: add PWA manifest and service worker"
 
 ---
 
-**This workflow ensures reliable, high-quality development while preventing the types of workflow failures that can lead to lost work and project delays.**
+**This workflow ensures reliable, high-quality development while preventing the types of
+workflow failures that can lead to lost work and project delays.**

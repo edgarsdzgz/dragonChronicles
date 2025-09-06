@@ -1,0 +1,191 @@
+name: E2E Smoke (Playwright)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Install deps
+        env:
+          HUSKY: '0'
+        run: |
+          echo "Installing workspace dependencies with hoisted structure..."
+          pnpm -w install --config.node-linker=hoisted
+
+      - name: Build workspace dependencies
+        run: pnpm -w run build:ci
+
+      - name: Copy workspace packages for Vite resolution (GitHub Actions workaround)
+        run: |
+          mkdir -p apps/web/node_modules/@draconia
+          cp -r packages/shared apps/web/node_modules/@draconia/shared
+          cp -r packages/db apps/web/node_modules/@draconia/db
+          cp -r packages/logger apps/web/node_modules/@draconia/logger
+
+      - name: Verify hoisted structure for E2E
+        run: |
+          echo "=== Verifying hoisted structure for E2E ==="
+          ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
+
+      - name: Build (Pages base path)
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm --filter @draconia/web build
+
+      - name: Install Playwright browsers (cached)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json','**/pnpm-lock.yaml') }}
+
+      - run: npx playwright install --with-deps
+
+      - name: Kill any existing server on port 4173
+        run: |
+          echo "Checking for existing processes on port 4173..."
+          if lsof -i :4173 >/dev/null 2>&1; then
+            echo "Found existing process on port 4173, killing it..."
+            lsof -ti :4173 | xargs kill -9 || true
+            sleep 2
+          else
+            echo "No existing process found on port 4173"
+          fi
+
+      - name: Verify build output exists
+        run: |
+          echo "=== Checking build output ==="
+          echo "Current directory: $(pwd)"
+          echo "Checking for build output directory..."
+          
+          # Check for build output directory (now configured to use 'dist')
+          if [ -d "apps/web/dist" ]; then
+            echo "✅ Found dist directory"
+            BUILD_DIR="apps/web/dist"
+          else
+            echo "❌ Build failed - no dist directory found"
+            echo "Checking apps/web directory structure:"
+            ls -la apps/web/ || echo "apps/web directory not found"
+            exit 1
+          fi
+          
+          echo "Build directory contents:"
+          ls -la "$BUILD_DIR/"
+          echo "Checking for build output..."
+          
+          # Check for index.html (now that we're using static adapter with fallback)
+          if [ -f "$BUILD_DIR/index.html" ]; then
+            echo "✅ index.html found"
+            echo "File size: $(wc -c < "$BUILD_DIR/index.html") bytes"
+            echo "Checking for additional assets..."
+            if [ -d "$BUILD_DIR/_app" ]; then
+              echo "✅ SvelteKit _app directory found"
+              echo "_app directory contents:"
+              ls -la "$BUILD_DIR/_app/"
+            fi
+          else
+            echo "❌ index.html not found in build output"
+            echo "Available files:"
+            find "$BUILD_DIR" -type f -name "*.html" -o -name "*.js" -o -name "*.json" | head -10
+            exit 1
+          fi
+
+      - name: Start preview server
+        run: |
+          echo "Starting preview server..."
+          echo "Current directory: $(pwd)"
+          cd apps/web
+          echo "Changed to apps/web directory: $(pwd)"
+          echo "Checking what vite preview expects to find:"
+          echo "Looking for dist directory:"
+          ls -la dist/ 2>/dev/null || echo "No dist directory found"
+          echo "Looking for build directory:"
+          ls -la build/ 2>/dev/null || echo "No build directory found"
+          echo "Starting vite preview server on port 4173..."
+          pnpm preview &
+          echo "Preview server started in background"
+          echo "Waiting 3 seconds for server to initialize..."
+          sleep 3
+          echo "Checking if server process is running:"
+          ps aux | grep -E "(vite|preview)" | grep -v grep || echo "No preview server process found"
+          echo "Checking server logs (if any):"
+          sleep 2
+          echo "Testing server response:"
+          curl -v http://127.0.0.1:4173/ 2>&1 | head -10 || echo "Server not responding"
+
+      - name: Wait for server
+        run: |
+          echo "Waiting for server to be ready..."
+          for i in {1..10}; do
+            echo "Attempt $i/10: Testing server connectivity..."
+            if curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
+              echo "✅ Server is ready!"
+              break
+            else
+              echo "Server not ready yet, waiting 2 seconds..."
+              sleep 2
+            fi
+          done
+          
+          # Final check
+          if ! curl -f http://127.0.0.1:4173/ >/dev/null 2>&1; then
+            echo "❌ Server failed to start after 20 seconds"
+            echo "Checking what's running on port 4173:"
+            lsof -i :4173 || echo "Nothing found on port 4173"
+            echo "Checking if preview server process is running:"
+            ps aux | grep -E "(vite|preview)" | grep -v grep || echo "No preview server process found"
+            exit 1
+          fi
+
+      - name: Debug - List files and check config
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Listing tests directory ==="
+          ls -la tests/
+          echo "=== Listing e2e directory ==="
+          ls -la tests/e2e/
+          echo "=== Checking Playwright config ==="
+          cat configs/playwright.config.ts
+          echo "=== Testing Playwright list ==="
+          npx playwright test --config=configs/playwright.config.ts --list
+
+      - name: Run smoke tests (Chromium only)
+        env:
+          BASE_URL: http://127.0.0.1:4173
+        run: npx playwright test --config=configs/playwright.config.ts --project=chromium --reporter=line
+
+      - name: Upload Playwright report (on fail)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Cleanup - Kill preview server
+        if: always()
+        run: |
+          echo "Cleaning up preview server..."
+          if lsof -i :4173 >/dev/null 2>&1; then
+            echo "Killing preview server on port 4173..."
+            lsof -ti :4173 | xargs kill -9 || true
+          else
+            echo "No preview server found on port 4173"
+          fi
