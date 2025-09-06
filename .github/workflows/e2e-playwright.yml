@@ -121,6 +121,11 @@ jobs:
           echo "Current directory: $(pwd)"
           cd apps/web
           echo "Changed to apps/web directory: $(pwd)"
+          echo "Checking what vite preview expects to find:"
+          echo "Looking for dist directory:"
+          ls -la dist/ 2>/dev/null || echo "No dist directory found"
+          echo "Looking for build directory:"
+          ls -la build/ 2>/dev/null || echo "No build directory found"
           echo "Starting vite preview server on port 4173..."
           pnpm preview &
           echo "Preview server started in background"
@@ -128,6 +133,10 @@ jobs:
           sleep 3
           echo "Checking if server process is running:"
           ps aux | grep -E "(vite|preview)" | grep -v grep || echo "No preview server process found"
+          echo "Checking server logs (if any):"
+          sleep 2
+          echo "Testing server response:"
+          curl -v http://127.0.0.1:4173/ 2>&1 | head -10 || echo "Server not responding"
 
       - name: Wait for server
         run: |
