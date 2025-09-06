@@ -91,14 +91,27 @@ jobs:
           
           echo "Build directory contents:"
           ls -la "$BUILD_DIR/"
-          echo "Checking for index.html..."
-          if [ -f "$BUILD_DIR/index.html" ]; then
-            echo "✅ index.html found"
+          echo "Checking for SvelteKit build output..."
+          
+          # Check for SvelteKit-specific files
+          if [ -f "$BUILD_DIR/manifest.json" ] && [ -d "$BUILD_DIR/_app" ]; then
+            echo "✅ SvelteKit build output found"
+            echo "Manifest file size: $(wc -c < "$BUILD_DIR/manifest.json") bytes"
+            echo "_app directory contents:"
+            ls -la "$BUILD_DIR/_app/"
+            echo "Checking for entry point..."
+            if [ -f "$BUILD_DIR/_app/immutable/entry/start.js" ] || [ -f "$BUILD_DIR/_app/immutable/entry/app.js" ]; then
+              echo "✅ SvelteKit entry point found"
+            else
+              echo "⚠️  SvelteKit entry point not found, but build structure looks correct"
+            fi
+          elif [ -f "$BUILD_DIR/index.html" ]; then
+            echo "✅ Traditional index.html found"
             echo "File size: $(wc -c < "$BUILD_DIR/index.html") bytes"
           else
-            echo "❌ index.html not found in build output"
+            echo "❌ No recognizable build output found"
             echo "Available files:"
-            find "$BUILD_DIR" -type f -name "*.html" || echo "No HTML files found"
+            find "$BUILD_DIR" -type f -name "*.html" -o -name "*.js" -o -name "*.json" | head -10
             exit 1
           fi
 
