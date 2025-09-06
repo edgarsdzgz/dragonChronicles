@@ -64,7 +64,7 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
 
-      - name: Debug: List files and check config
+      - name: Debug - List files and check config
         run: |
           echo "=== Current directory ==="
           pwd
