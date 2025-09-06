@@ -423,6 +423,7 @@ BUILD_ONCE=1 pnpm run test:unit
 - **[Local Development Guide](./docs/runbooks/local-dev.md)** - Detailed setup guide
 - **[Testing Strategy](./docs/engineering/testing.md)** - Comprehensive testing guide
 - **[TypeScript Standards](./docs/engineering/typescript.md)** - Type safety guidelines
+- **[Security & Privacy Policy](./docs/security-privacy.md)** - Security and privacy guidelines
 - **[Architectural Decisions](./docs/adr/)** - ADRs for key technical decisions
 
 ### Key Files
