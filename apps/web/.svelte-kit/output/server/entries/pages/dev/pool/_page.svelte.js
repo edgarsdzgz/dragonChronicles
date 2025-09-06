@@ -1,5 +1,5 @@
 import { c as create_ssr_component, o as onDestroy, a as add_attribute, e as escape } from "../../../../chunks/ssr.js";
-import { Sprite } from "pixi.js";
+import { S as Sprite } from "../../../../chunks/index.js";
 function createPool(factory, reset = () => {
 }, initial = 0) {
   const free = [];

@@ -4,6 +4,7 @@
   import { hudEnabled } from '$lib/flags/store';
   import UpdateToast from '$lib/pwa/UpdateToast.svelte';
   import InstallPrompt from '$lib/pwa/InstallPrompt.svelte';
+  import DevMenu from '$lib/ui/DevMenu.svelte';
 
   let canvas: HTMLCanvasElement;
   let handle: Awaited<ReturnType<typeof mountPixi>> | null = null;
@@ -27,5 +28,8 @@
 
 <!-- PWA Install Prompt -->
 <InstallPrompt />
+
+<!-- Developer Menu -->
+<DevMenu />
 
 <slot />
