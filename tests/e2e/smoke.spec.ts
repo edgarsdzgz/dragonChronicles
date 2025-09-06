@@ -7,15 +7,20 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     // Check that the page title is set
     const title = await page.title();
     expect(title).toBeTruthy();
     
-    // Check that the page has loaded (wait for body to be visible after SvelteKit hydration)
+    // Check that the page has loaded (body should be visible after preload data is removed)
     const body = await page.locator('body');
-    await expect(body).toBeVisible({ timeout: 10000 });
+    await expect(body).toBeVisible();
   });
 
   test('should have basic app structure', async ({ page }) => {
@@ -24,7 +29,12 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     // Check for basic HTML structure
     const html = await page.locator('html');
@@ -34,9 +44,9 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     const head = await page.locator('head');
     await expect(head).toBeVisible();
     
-    // Body should be visible after SvelteKit hydration
+    // Body should be visible after SvelteKit preload data is removed
     const body = await page.locator('body');
-    await expect(body).toBeVisible({ timeout: 10000 });
+    await expect(body).toBeVisible();
   });
 
   test('should not have console errors', async ({ page }) => {
@@ -54,7 +64,12 @@ test.describe('Dragon Chronicles - Smoke Tests', () => {
     
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     // Filter out 404 errors for missing resources (common in static builds)
     const filteredErrors = consoleErrors.filter(error => 

@@ -7,15 +7,20 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     // Check that the page loads without errors
     const title = await page.title();
     expect(title).toBeTruthy();
     
-    // Check for basic app elements (wait for body to be visible after SvelteKit hydration)
+    // Check for basic app elements (body should be visible after preload data is removed)
     const body = await page.locator('body');
-    await expect(body).toBeVisible({ timeout: 10000 });
+    await expect(body).toBeVisible();
     
     // Check that the app has loaded (look for common app indicators)
     const appElement = await page.locator('#app, [data-testid="app"], main, .app').first();
@@ -30,14 +35,19 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     
     // Wait for the page to load and SvelteKit to initialize
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     // Try to navigate to a non-existent page
     await page.goto('/non-existent-page');
     
     // The app should handle this gracefully (either show 404 or redirect)
     const body = await page.locator('body');
-    await expect(body).toBeVisible({ timeout: 10000 });
+    await expect(body).toBeVisible();
   });
 
   test('should have responsive design', async ({ page }) => {
@@ -45,17 +55,27 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
+    
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
     
     const body = await page.locator('body');
-    await expect(body).toBeVisible({ timeout: 10000 });
+    await expect(body).toBeVisible();
     
     // Test desktop viewport
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000); // Give SvelteKit time to hydrate
     
-    await expect(body).toBeVisible({ timeout: 10000 });
+    // Wait for SvelteKit to remove the preload data attribute
+    await page.waitForFunction(() => {
+      const body = document.body;
+      return !body.hasAttribute('data-sveltekit-preload-data');
+    }, { timeout: 10000 });
+    
+    await expect(body).toBeVisible();
   });
 });
