@@ -64,6 +64,19 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://127.0.0.1:4173/${{ github.event.repository.name }}/
 
+      - name: Debug: List files and check config
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Listing tests directory ==="
+          ls -la tests/
+          echo "=== Listing e2e directory ==="
+          ls -la tests/e2e/
+          echo "=== Checking Playwright config ==="
+          cat configs/playwright.config.ts
+          echo "=== Testing Playwright list ==="
+          npx playwright test --config=configs/playwright.config.ts --list
+
       - name: Run smoke tests (Chromium only)
         env:
           BASE_URL: http://127.0.0.1:4173/${{ github.event.repository.name }}
