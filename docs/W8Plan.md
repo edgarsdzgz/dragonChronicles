@@ -62,7 +62,7 @@ handling, architectural documentation, and developer onboarding.
 
 #### **Key Features**
 
-```typescript
+````typescript
 
 export interface AppFlags {
   hud: boolean;              // ?hud=1
@@ -431,3 +431,4 @@ CONTRIBUTING & ADR-0004
 
 **Next Steps**: Begin implementation with Phase 1 (Feature Flags System) following the established
 development workflow and testing practices.
+````

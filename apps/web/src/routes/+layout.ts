@@ -6,6 +6,6 @@ export const load: LayoutLoad = ({ url }) => {
   // Initialize flags from environment, query string, and defaults
   const flags = createFlags(url);
   appFlags.set(flags);
-  
+
   return {};
 };

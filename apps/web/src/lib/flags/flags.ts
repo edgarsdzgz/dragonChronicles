@@ -1,6 +1,6 @@
 /**
  * Typed feature flags interface for Draconia Chronicles
- * 
+ *
  * Flags control app behavior and can be set via:
  * - Environment variables (build-time)
  * - Query string parameters (runtime)
@@ -12,16 +12,16 @@ export type ForceMode = 'fg' | 'bg' | 'auto';
 export interface AppFlags {
   /** Show development HUD overlay */
   hud: boolean;
-  
+
   /** Show developer navigation menu */
   devMenu: boolean;
-  
+
   /** Enable console logging sink (dev override) */
   logConsole: boolean;
-  
+
   /** Use legacy in-page background simulation (dev fallback) */
   useLegacyBgSim: boolean;
-  
+
   /** Force simulation mode: fg=foreground, bg=background, auto=visibility-driven */
   forceMode: ForceMode;
 }
@@ -49,7 +49,7 @@ export const DEFAULT_FLAGS: AppFlags = {
  */
 export function getEnvFlags(): Partial<AppFlags> {
   const flags: Partial<AppFlags> = {};
-  
+
   // Only allow dev flags in development mode
   if (import.meta.env.DEV) {
     if (import.meta.env.VITE_HUD_ENABLED === 'true') {
@@ -71,7 +71,7 @@ export function getEnvFlags(): Partial<AppFlags> {
       }
     }
   }
-  
+
   return flags;
 }
 
@@ -81,7 +81,7 @@ export function getEnvFlags(): Partial<AppFlags> {
  */
 export function getQueryFlags(url: URL): Partial<AppFlags> {
   const flags: Partial<AppFlags> = {};
-  
+
   // Only allow query flags in development mode
   if (import.meta.env.DEV) {
     if (url.searchParams.get('hud') === '1') {
@@ -101,7 +101,7 @@ export function getQueryFlags(url: URL): Partial<AppFlags> {
       flags.forceMode = mode as ForceMode;
     }
   }
-  
+
   return flags;
 }
 
@@ -125,9 +125,6 @@ export function createFlags(url: URL): AppFlags {
     query: getQueryFlags(url),
     defaults: DEFAULT_FLAGS,
   };
-  
+
   return mergeFlags(sources);
 }
-
-
-

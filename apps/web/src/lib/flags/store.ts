@@ -1,6 +1,6 @@
 /**
  * Svelte store for app feature flags
- * 
+ *
  * Provides reactive access to feature flags throughout the app
  */
 
@@ -22,30 +22,21 @@ export const appFlags = writable<AppFlags>({
  * Derived stores for individual flags
  * These provide convenient access to specific flags
  */
-export const hudEnabled: Readable<boolean> = derived(
-  appFlags,
-  ($flags) => $flags.hud
-);
+export const hudEnabled: Readable<boolean> = derived(appFlags, ($flags) => $flags.hud);
 
-export const devMenuEnabled: Readable<boolean> = derived(
-  appFlags,
-  ($flags) => $flags.devMenu
-);
+export const devMenuEnabled: Readable<boolean> = derived(appFlags, ($flags) => $flags.devMenu);
 
 export const logConsoleEnabled: Readable<boolean> = derived(
   appFlags,
-  ($flags) => $flags.logConsole
+  ($flags) => $flags.logConsole,
 );
 
 export const legacyBgSimEnabled: Readable<boolean> = derived(
   appFlags,
-  ($flags) => $flags.useLegacyBgSim
+  ($flags) => $flags.useLegacyBgSim,
 );
 
-export const forceMode: Readable<ForceMode> = derived(
-  appFlags,
-  ($flags) => $flags.forceMode
-);
+export const forceMode: Readable<ForceMode> = derived(appFlags, ($flags) => $flags.forceMode);
 
 /**
  * Utility function to check if a specific flag is enabled
@@ -64,6 +55,3 @@ export function getCurrentFlags(): AppFlags {
   })();
   return current!;
 }
-
-
-

@@ -53,5 +53,5 @@ implemented for Draconia Chronicles.
 
 ---
 
-*This optimization framework establishes sustainable performance practices and provides a solid
-foundation for future development work.*
+_This optimization framework establishes sustainable performance practices and provides a solid
+foundation for future development work._

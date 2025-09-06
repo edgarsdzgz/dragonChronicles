@@ -1,6 +1,6 @@
 /**
  * Query string utilities for feature flags
- * 
+ *
  * Provides helper functions for working with flag-related query parameters
  */
 
@@ -11,7 +11,7 @@ import type { AppFlags, ForceMode } from './flags.js';
  */
 export function buildFlagQuery(flags: Partial<AppFlags>): string {
   const params = new URLSearchParams();
-  
+
   // Only add flags that are enabled (true) to keep URLs clean
   if (flags.hud) params.set('hud', '1');
   if (flags.devMenu) params.set('dev', '1');
@@ -20,7 +20,7 @@ export function buildFlagQuery(flags: Partial<AppFlags>): string {
   if (flags.forceMode && flags.forceMode !== 'auto') {
     params.set('mode', flags.forceMode);
   }
-  
+
   return params.toString();
 }
 
@@ -77,13 +77,10 @@ export function getFlagDescription(flag: keyof AppFlags): string {
 export function isDevOnlyFlag(flag: keyof AppFlags): boolean {
   const devFlags: (keyof AppFlags)[] = [
     'hud',
-    'devMenu', 
+    'devMenu',
     'logConsole',
     'useLegacyBgSim',
     'forceMode',
   ];
   return devFlags.includes(flag);
 }
-
-
-

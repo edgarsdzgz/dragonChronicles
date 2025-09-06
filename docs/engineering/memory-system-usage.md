@@ -24,7 +24,7 @@ AI assistant to maintain context and important information across sessions.
 
 ### **File Structure**
 
-```text
+````text
 
 dragonChronicles/
 ├── memory.md                           # Main memory file
@@ -232,7 +232,7 @@ When working with the AI assistant, you can:
 
 ```text
 Please read the memory file to understand the current project context
-```
+````
 
 **Update memory during the session**:
 
@@ -309,7 +309,7 @@ The memory file is organized into these main sections:
 
 You can create custom sections for specific needs:
 
-```bash
+````bash
 
 # Create a new section for debugging sessions
 
@@ -479,3 +479,4 @@ all development sessions.
 
 **Last Updated**: 2025-01-15
 **Version**: 1.0.0
+````

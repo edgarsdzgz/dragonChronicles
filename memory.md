@@ -99,7 +99,7 @@ Branch: feat/w8-dev-ux-docs, W8 Phase 1: Feature flags system completed and PR #
 
 ### **Project Structure**
 
-```text
+````text
 
 dragonChronicles/
 ├── apps/
@@ -206,3 +206,10 @@ Successfully implemented comprehensive feature flags system: Created typed AppFl
 COMPLETED: Created universal markdown fixer script (fix-markdown-universal.py) that combines all functionality from redundant scripts. File-agnostic, comprehensive, handles all markdownlint violations. Deleted 18 redundant scripts, keeping only the universal one. Script tested and working perfectly.
 
 
+
+
+### **Pipeline Debugging Strategy (2025-01-15)**
+
+CRITICAL PIPELINE DEBUGGING RULE: When pipeline is failing, work on ONE workflow at a time. Use knowledge and internet research to find resolution path. Only move to next workflow when current one reaches 100% success. Exception: If workflow has cascading issues that prevent other workflows from ever succeeding, prioritize the cascading workflow first. This ensures systematic resolution and prevents scattered fixes.
+
+````
