@@ -33,7 +33,7 @@ test('FixedClock executes steps at correct intervals', () => {
 test('FixedClock accumulator handles variable frame times', () => {
     let stepCount = 0;
     let totalTime = 0;
-    const clock = new FixedClock((_dtMs) => {
+    const _clock = new FixedClock((_dtMs) => {
         stepCount++;
         totalTime += _dtMs;
     });
@@ -83,7 +83,7 @@ test('FixedClock manual step works correctly', () => {
     let lastDt = 0;
     const clock = new FixedClock((_dtMs) => {
         stepCount++;
-        lastDt = dtMs;
+        lastDt = _dtMs;
     });
     // Manual step should work
     clock.step(25);

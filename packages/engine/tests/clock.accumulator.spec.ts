@@ -10,11 +10,11 @@ import { BackgroundTickDriver, createBackgroundTickDriver } from '../src/sim/clo
 import { DT_MS, MAX_FRAME_TIME_MS, MAX_STEPS_PER_FRAME } from '../src/shared/constants.js';
 
 test('FixedClock executes steps at correct intervals', () => {
-  let stepCount = 0;
+  let _stepCount = 0;
   let lastStepTime = 0;
   
   const _clock = new FixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
     const now = performance.now();
     if (lastStepTime > 0) {
       const actualDt = now - lastStepTime;
@@ -24,24 +24,24 @@ test('FixedClock executes steps at correct intervals', () => {
   });
   
   // Start clock and let it run for a short time
-  clock.start();
+  _clock.start();
   
   // Wait for a few steps
   return new Promise<void>((resolve) => {
     setTimeout(() => {
-      clock.stop();
-      assert.ok(stepCount > 0, 'Should have executed at least one step');
+      _clock.stop();
+      assert.ok(_stepCount > 0, 'Should have executed at least one step');
       resolve();
     }, 100);
   });
 });
 
 test('FixedClock accumulator handles variable frame times', () => {
-  let stepCount = 0;
+  let _stepCount = 0;
   let totalTime = 0;
   
   const _clock = new FixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
     totalTime += _dtMs;
   });
   
@@ -50,8 +50,8 @@ test('FixedClock accumulator handles variable frame times', () => {
   const getNowMs = () => currentTime;
   
   const _clockWithTime = new FixedClock((_dtMs) => {
-    stepCount++;
-    totalTime += dtMs;
+    _stepCount++;
+    totalTime += _dtMs;
   }, getNowMs);
   
   // Simulate frames with different durations
@@ -71,15 +71,15 @@ test('FixedClock accumulator handles variable frame times', () => {
   
   _clockWithTime.stop();
   
-  assert.ok(stepCount > 0, 'Should have executed steps');
-  assert.equal(totalTime, stepCount * DT_MS, 'Total time should match step count * DT_MS');
+  assert.ok(_stepCount > 0, 'Should have executed steps');
+  assert.equal(totalTime, _stepCount * DT_MS, 'Total time should match step count * DT_MS');
 });
 
 test('FixedClock clamps excessive frame times', () => {
-  let stepCount = 0;
+  let _stepCount = 0;
   
   const _clock = new FixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
   });
   
   // Simulate a very long frame time
@@ -87,7 +87,7 @@ test('FixedClock clamps excessive frame times', () => {
   const getNowMs = () => currentTime;
   
   const _clockWithTime = new FixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
   }, getNowMs);
   
   _clockWithTime.start();
@@ -99,26 +99,26 @@ test('FixedClock clamps excessive frame times', () => {
   _clockWithTime.stop();
   
   // Should not have executed more than MAX_STEPS_PER_FRAME steps
-  assert.ok(stepCount <= MAX_STEPS_PER_FRAME, `Should not exceed ${MAX_STEPS_PER_FRAME} steps per frame`);
+  assert.ok(_stepCount <= MAX_STEPS_PER_FRAME, `Should not exceed ${MAX_STEPS_PER_FRAME} steps per frame`);
 });
 
 test('FixedClock manual step works correctly', () => {
-  let stepCount = 0;
+  let _stepCount = 0;
   let lastDt = 0;
   
   const clock = new FixedClock((_dtMs) => {
-    stepCount++;
-    lastDt = dtMs;
+    _stepCount++;
+    lastDt = _dtMs;
   });
   
   // Manual step should work
   clock.step(25);
-  assert.equal(stepCount, 1, 'Manual step should increment count');
+  assert.equal(_stepCount, 1, 'Manual step should increment count');
   assert.equal(lastDt, 25, 'Manual step should use provided dt');
   
   // Multiple manual steps
   clock.advance(5, 30);
-  assert.equal(stepCount, 6, 'Advance should execute multiple steps');
+  assert.equal(_stepCount, 6, 'Advance should execute multiple steps');
   assert.equal(lastDt, 30, 'Advance should use provided dt');
 });
 
@@ -192,16 +192,16 @@ test('BackgroundTickDriver statistics are correct', () => {
 });
 
 test('createFixedClock factory works correctly', () => {
-  let stepCount = 0;
+  let _stepCount = 0;
   
   const _clock = createFixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
   });
   
   assert.ok(_clock instanceof FixedClock, 'Factory should return FixedClock instance');
   
   _clock.step();
-  assert.equal(stepCount, 1, 'Factory-created clock should work correctly');
+  assert.equal(_stepCount, 1, 'Factory-created clock should work correctly');
 });
 
 test('createBackgroundTickDriver factory works correctly', () => {
@@ -214,11 +214,11 @@ test('createBackgroundTickDriver factory works correctly', () => {
 });
 
 test('FixedClock accumulator precision is maintained', () => {
-  let _stepCount = 0;
+  let __stepCount = 0;
   let _accumulatorError = 0;
   
   const _clock = new FixedClock((_dtMs) => {
-    _stepCount++;
+    __stepCount++;
   });
   
   // Simulate precise timing
@@ -226,7 +226,7 @@ test('FixedClock accumulator precision is maintained', () => {
   const getNowMs = () => currentTime;
   
   const _clockWithTime = new FixedClock((_dtMs) => {
-    stepCount++;
+    _stepCount++;
   }, getNowMs);
   
   _clockWithTime.start();
