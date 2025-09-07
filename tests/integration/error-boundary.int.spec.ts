@@ -152,7 +152,7 @@ describe('Error Boundary Integration Tests', () => {
       // Simulate export logs function with error handling
       const exportLogs = async () => {
         try {
-          const blob = await mockLogger.exportNDJSON();
+          await mockLogger.exportNDJSON();
           console.log('This should not be reached');
         } catch (exportError) {
           console.error('Failed to export logs:', exportError);

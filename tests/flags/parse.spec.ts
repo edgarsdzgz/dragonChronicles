@@ -10,7 +10,6 @@ import {
   getQueryFlags,
   mergeFlags,
   createFlags,
-  type AppFlags,
   type FlagSources,
   type ForceMode,
 } from '../../apps/web/src/lib/flags/flags.js';

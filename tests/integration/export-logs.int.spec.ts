@@ -7,10 +7,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createLogger } from '@draconia/logger';
 
 // Mock the logger dependencies
-const mockDexieSink = {
-  flush: vi.fn(),
-  close: vi.fn(),
-};
 
 // Mock the logger module entirely
 vi.mock('@draconia/logger', () => ({
@@ -99,7 +95,6 @@ vi.mock('@draconia/logger', () => ({
           type: 'application/x-ndjson',
           text: vi.fn(() => Promise.resolve(mockLogData)),
           arrayBuffer: vi.fn(() => Promise.resolve(new ArrayBuffer(mockLogData.length))),
-          stream: vi.fn(() => new ReadableStream()),
           slice: vi.fn(() => mockBlob),
         };
         return Promise.resolve(mockBlob);
@@ -299,7 +294,7 @@ describe('Log Export Integration Tests', () => {
     });
 
     it('should generate filename with current date', async () => {
-      const blob = await logger.exportNDJSON();
+      await logger.exportNDJSON();
       const today = new Date().toISOString().split('T')[0];
 
       // Simulate download
