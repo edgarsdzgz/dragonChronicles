@@ -10,6 +10,7 @@ architecture, processes, and engineering standards.
 Product summaries, architecture overviews, and project status:
 
 - [Project Overview](./overview/README.md) - Status, metrics, architecture
+- [Phase 0 Completion](./overview/phase0-completion.md) - Foundation milestone achievement
 - [Changelog](./overview/changelog.md) - v2.0.0 release notes and versioning
 
 ### 🔧 Engineering
@@ -18,6 +19,7 @@ Development standards, policies, and technical guidelines:
 
 - [Engineering Overview](./engineering/README.md) - Complete engineering documentation index
 - [Development Practices](./engineering/dev-practices.md) - Key development practices and guidelines
+- [LLM Onboarding](./engineering/llm-onboarding-complete.md) - Complete context for AI assistants
 - [Development Workflow](./engineering/development-workflow.md) - Workflow, safeguards, and best
   practices
 - [Testing Strategy](./engineering/testing.md) - Test layers, runner behavior, execution guide

@@ -12,6 +12,27 @@ This file contains important guidelines and patterns for working on the Draconia
 
 ## Development Standards (From Scrum Master Feedback)
 
+### Debugging Chronicles System
+
+**CRITICAL**: All debugging sessions must be documented as chronicles in `docs/engineering/`
+
+- **Purpose**: Capture root causes, solutions, and learnings for future reference
+- **Format**: Follow existing chronicle format with session overview, issues resolved, and key learnings
+- **Location**: `docs/engineering/*-debugging-session.md`
+- **Content**: Include systematic debugging approach, pipeline-first strategy, and automation preferences
+
+### Cleanup Workflow Directives
+
+**CRITICAL**: After PR merge, follow the PR cleanup runbook exactly:
+
+- **Delete planning documents** (WXPlan.md, S00XPlan.md) - do NOT mark them complete
+- **Switch to main branch** and pull latest changes
+- **Delete local and remote feature branches**
+- **Clean up temporary files** and outdated documentation
+- **Update project documentation** (changelog, ADRs, status)
+
+**Planning documents are temporary** - delete when workpack is complete, only keep completed work documented in changelog and ADRs.
+
 ### Never Bypass Agreed Requirements
 
 **Don't fall back to alternative approaches when the agreed path fails.** Instead:
