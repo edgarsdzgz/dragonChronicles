@@ -214,11 +214,11 @@ test('createBackgroundTickDriver factory works correctly', () => {
 });
 
 test('FixedClock accumulator precision is maintained', () => {
-  let __stepCount = 0;
+  let _stepCount = 0;
   let _accumulatorError = 0;
   
   const _clock = new FixedClock((_dtMs) => {
-    __stepCount++;
+    _stepCount++;
   });
   
   // Simulate precise timing
