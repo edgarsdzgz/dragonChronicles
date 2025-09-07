@@ -1,6 +1,6 @@
 {
   "name": "@draconia/shared",
-  "version": "0.0.0-phase0",
+  "version": "0.0.1-alpha",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

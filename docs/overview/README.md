@@ -2,14 +2,14 @@
 
 # Overview
 
-Product summaries, architecture overviews, and project status for Draconia Chronicles v2.0.0.
+Product summaries, architecture overviews, and project status for Draconia Chronicles v0.0.1-alpha.
 
 ## Project Status
 
-**Version**: 0.5.0-alpha (Phase 0 Foundation Nearly Complete)  
-**Phase**: Phase 0 (6/8 workpacks complete - W1-W6 foundation established, W7 95% complete)  
-**Architecture**: TypeScript Monorepo with Worker Simulation, Strict Mode Enforcement & Persistence  
-**Workpack Model**: 8-workpack Phase 0 approach (W1-W6 complete, W7 nearly complete, W8 pending)
+**Version**: 0.0.1-alpha (Phase 1/16 - P1-S1 Core Determinism Complete)  
+**Phase**: Phase 1/16 (P1-S1 core determinism engine implemented)  
+**Architecture**: TypeScript Monorepo with Deterministic Engine, Strict Mode Enforcement & Persistence  
+**Development Model**: 16-phase development cycle (0.0.1-alpha → 0.7.0-beta)
 
 ## Key Metrics
 
@@ -98,20 +98,19 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 
 ## Next Milestones
 
-### Phase 0 — Foundational Scaffolding & Guardrails (IN PROGRESS)
+### Phase 1/16 — Core Determinism Engine (COMPLETED)
 
-**Workpack Structure**: 8 comprehensive workpacks delivering complete functionality blocks
+**P1-S1 Implementation**: Core determinism engine with comprehensive testing
 
-- ✅ **W1**: Repo & Standards (monorepo, TS strict, ESLint+Prettier, Husky v9+, commitlint, templates)
-- ✅ **W2**: App Shell & Render Host (SvelteKit, Pixi mount, HUD toggle, pooling primitives)
-- ✅ **W3**: Worker Sim Harness (worker protocol v1, RNG, fixed clock, offline stub, autorecover)
-- ✅ **W4**: Persistence v1 (Dexie schema, Zod, atomic writes, export/import, migration scaffold)
-- ✅ **W5**: Logging v1 (ring buffer caps, Dexie flush, console sink, export, perf lab)
-- ✅ **W6**: PWA & Update UX (Workbox, precache, manifest/icons, service worker, offline support)
-- 🔄 **W7**: CI/CD & Previews (Actions, caches, size budgets, Playwright, Lighthouse, PR previews) - 95% complete
-- ⏳ **W8**: Dev UX & Docs (feature flags, error boundary, ADRs, CONTRIBUTING, privacy stance)
+- ✅ **P1-S1**: Core Determinism Engine (PCG32 RNG, fixed clock, snapshot system, protocol validation)
+  - Deterministic RNG system with PCG32 and named streams
+  - Fixed clock accumulator for 60Hz/2Hz timing
+  - Snapshot stream codec and hasher for byte-equal determinism
+  - Protocol validation layer with security guards
+  - Comprehensive test matrix with unit, integration, and E2E tests
+  - Engine bootstrap API and documentation
 
-**Current Status**: 6/8 workpacks complete, W7 95% complete. W1-W6 established production-ready foundation with TypeScript strict mode, automated quality gates, development standards, worker simulation harness, robust persistence layer, structured logging infrastructure, and complete PWA implementation. W7 CI/CD pipeline is nearly complete with all major components implemented.
+**Current Status**: Phase 1/16 complete. P1-S1 core determinism engine provides solid foundation for deterministic game simulation with comprehensive testing and validation. Ready for Phase 2/16 development.
 
 ### Phase 0 Success Criteria
 
@@ -122,26 +121,31 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 - PWA installs; update toast on SW waiting ✅
 - CI gates: typecheck, unit, integration, Playwright smoke, Lighthouse a11y ✅
 
-### Future Phases
+### Development Timeline (16 Phases)
 
-- **Phase 1**: Core Game Loop Implementation (after W8 completion)
-  - Shooter-idle mechanics, combat, progression, enchants
-- **Phase 2**: UI/UX Development and Polish
-  - User interface refinement and accessibility
-- **Phase 3**: Performance Optimization and Advanced Features
-  - Meta systems, automation, and performance tuning
-- **Phase 4**: Player Documentation and Release Preparation
-  - Final polish, player guides, and launch readiness
+**Version Progression**: 0.0.1-alpha → 0.7.0-beta
 
-**Extended Development Timeline**:
+#### **Major Milestones (0.#.0 releases)**
+- **Phase 4/16** → 0.1.0-alpha (Foundation complete)
+- **Phase 8/16** → 0.2.0-alpha (Core systems complete)
+- **Phase 12/16** → 0.3.0-alpha (Gameplay complete)
+- **Phase 16/16** → 0.7.0-beta (Full beta ready)
 
-- **Core GDD Implementation**: 4 phases (0.5.0-alpha → 0.10.0-alpha)
-- **Extended Alpha Development**: Gameplay refinement and content expansion (0.10.0-alpha → 0.15.0-alpha)
-- **Beta Phase**: Feature freeze and stability focus (0.15.0-alpha → 0.20.0-beta)
-- **Release Candidate**: Final validation and release prep (0.20.0-beta → 0.25.0-rc)
-- **Full Release**: Production deployment (0.25.0-rc → 1.0.0)
+#### **Minor Releases (0.#.# releases)**
+- **Phase 1/16** → 0.0.1-alpha ✅ (P1-S1 core determinism)
+- **Phase 2/16** → 0.0.2-alpha (Next phase)
+- **Phase 3/16** → 0.0.3-alpha
+- **Phase 5/16** → 0.1.1-alpha
+- **Phase 6/16** → 0.1.2-alpha
+- **Phase 7/16** → 0.1.3-alpha
+- **Phase 9/16** → 0.2.1-alpha
+- **Phase 10/16** → 0.2.2-alpha
+- **Phase 11/16** → 0.2.3-alpha
+- **Phase 13/16** → 0.3.1-alpha
+- **Phase 14/16** → 0.3.2-alpha
+- **Phase 15/16** → 0.3.3-alpha
 
-**Total Development Scope**: Comprehensive development cycle with proper alpha, beta, and RC phases before release
+**Total Development Scope**: 16-phase development cycle reaching 0.7.0-beta for comprehensive game development
 
 ## Links and Resources
 

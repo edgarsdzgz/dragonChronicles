@@ -377,54 +377,37 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 ## Versioning Strategy & Guidelines
 
-### Current Version: 0.5.0-alpha
+### Current Version: 0.0.1-alpha
 
 **Version Numbering Rationale:**
 
 - **0.x.x**: Pre-1.0 development phase
-- **0.5.0**: Reflects Phase 0 progress (5/8 workpacks complete)
+- **0.0.1**: Reflects Phase 1/16 progress (P1-S1 core determinism complete)
 - **-alpha**: Indicates incomplete feature set, not ready for general use
 
-### Version Progression Path
+### Version Progression Path (16 Phases)
 
-**Phase 0 (Current)**: 0.5.0-alpha → 0.8.0-alpha
+**Target**: 0.7.0-beta by Phase 16/16
 
-- W1-W5: ✅ Complete (foundation established)
-- W6-W8: ⏳ Pending (PWA, CI/CD, Dev UX)
+#### **Major Milestones (0.#.0 releases)**
+- **Phase 4/16** → 0.1.0-alpha (Foundation complete)
+- **Phase 8/16** → 0.2.0-alpha (Core systems complete)
+- **Phase 12/16** → 0.3.0-alpha (Gameplay complete)
+- **Phase 16/16** → 0.7.0-beta (Full beta ready)
 
-**Phase 1**: 0.8.0-alpha → 0.9.0-alpha
-
-- Core gameplay loop implementation
-- Shooter-idle mechanics, combat, progression
-
-**Phase 2**: 0.9.0-alpha → 0.9.5-alpha
-
-- UI/UX development and refinement
-- Accessibility and performance optimization
-
-**Phase 3**: 0.9.5-alpha → 0.9.9-alpha
-
-- Performance optimization and advanced features
-- Meta systems and automation
-
-**Phase 4**: 0.9.9-alpha → 0.10.0-alpha
-
-- Player documentation and release preparation
-- Final polish and launch readiness
-
-**Extended Alpha Development**: 0.10.0-alpha → 0.15.0-alpha
-
-- Gameplay balancing and tuning
-- Content expansion and refinement
-- Performance optimization
-- Bug fixes and polish
-
-**Beta Phase**: 0.15.0-alpha → 0.20.0-beta
-
-- Feature freeze
-- Extensive testing and feedback
-- Performance optimization
-- Bug fixes and stability
+#### **Minor Releases (0.#.# releases)**
+- **Phase 1/16** → 0.0.1-alpha ✅ (P1-S1 core determinism)
+- **Phase 2/16** → 0.0.2-alpha (Next phase)
+- **Phase 3/16** → 0.0.3-alpha
+- **Phase 5/16** → 0.1.1-alpha
+- **Phase 6/16** → 0.1.2-alpha
+- **Phase 7/16** → 0.1.3-alpha
+- **Phase 9/16** → 0.2.1-alpha
+- **Phase 10/16** → 0.2.2-alpha
+- **Phase 11/16** → 0.2.3-alpha
+- **Phase 13/16** → 0.3.1-alpha
+- **Phase 14/16** → 0.3.2-alpha
+- **Phase 15/16** → 0.3.3-alpha
 
 **Release Candidate**: 0.20.0-beta → 0.25.0-rc
 
@@ -443,32 +426,36 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
 
 **When to Update Version Numbers:**
 
-1. **Workpack Completion**: Increment minor version (0.5.0 → 0.6.0)
-   - W6 complete: 0.6.0-alpha
-   - W7 complete: 0.7.0-alpha
-   - W8 complete: 0.8.0-alpha
+1. **Phase Completion**: Update version according to phase progression
+   - **Major milestones (0.#.0)**: Phases 4, 8, 12, 16
+   - **Minor releases (0.#.#)**: All other phases
 
-2. **Phase Completion**: Increment minor version (0.8.0 → 0.9.0)
-   - Phase 0 complete: 0.8.0-alpha
-   - Phase 1 complete: 0.9.0-alpha
+2. **Current Progression**:
+   - Phase 1/16 → 0.0.1-alpha ✅ (P1-S1 core determinism)
+   - Phase 2/16 → 0.0.2-alpha (Next phase)
+   - Phase 3/16 → 0.0.3-alpha
+   - Phase 4/16 → 0.1.0-alpha (Foundation complete)
+   - Phase 5/16 → 0.1.1-alpha
+   - Phase 8/16 → 0.2.0-alpha (Core systems complete)
+   - Phase 12/16 → 0.3.0-alpha (Gameplay complete)
+   - Phase 16/16 → 0.7.0-beta (Full beta ready)
 
-3. **Extended Alpha Development**: Increment minor version (0.10.0 → 0.15.0)
-   - Major gameplay milestones: 0.10.0 → 0.11.0 → 0.12.0
-   - Content expansions: 0.12.0 → 0.13.0 → 0.14.0
-   - Final alpha polish: 0.14.0 → 0.15.0
+3. **Version Update Process**:
+   ```bash
+   # Update all package.json files
+   find . -name "package.json" -exec sed -i 's/"version": "0.0.1"/"version": "0.0.2"/g' {} \;
+   
+   # Update documentation
+   # - README.md version
+   # - docs/overview/README.md version
+   # - CLAUDE.md version guidelines
+   
+   # Commit version bump
+   git add -A
+   git commit -m "chore: bump version to 0.0.2-alpha (Phase 2/16 complete)"
+   ```
 
-4. **Beta Phase**: Transition to beta (0.15.0-alpha → 0.15.0-beta)
-   - Beta iterations: 0.15.0-beta → 0.16.0-beta → 0.20.0-beta
-   - Feature freeze and stability focus
-
-5. **Release Candidate**: Transition to RC (0.20.0-beta → 0.20.0-rc)
-   - RC iterations: 0.20.0-rc → 0.25.0-rc
-   - Final validation and release prep
-
-6. **Full Release**: 0.25.0-rc → 1.0.0
-   - Production deployment and player launch
-
-**Note**: This extended timeline provides realistic space for proper development, testing, and refinement before release.
+**Note**: This 16-phase development cycle provides structured progression from 0.0.1-alpha to 0.7.0-beta.
 
 ### Alpha Status Guidelines
 
