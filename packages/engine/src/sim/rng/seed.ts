@@ -59,7 +59,7 @@ export function clampSeed(seed: number): number {
   if (!Number.isFinite(seed)) {
     throw new Error('Seed must be a finite number');
   }
-  
+
   const clamped = toUint32(seed);
   if (clamped === 0) {
     return 1; // Ensure non-zero seed
@@ -98,7 +98,7 @@ export function generateRandomSeed(): number {
     crypto.getRandomValues(array);
     return array[0] || 1; // Ensure non-zero
   }
-  
+
   // Fallback to Math.random (less secure but deterministic for testing)
   return Math.floor(Math.random() * 0xffffffff) || 1;
 }

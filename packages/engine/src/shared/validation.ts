@@ -20,25 +20,17 @@ export function isUiToSim(x: unknown): x is UiToSim {
 
   switch (msg.t) {
     case MessageType.Boot:
-      return (
-        Number.isFinite(msg.seed) &&
-        typeof msg.build === 'string' &&
-        msg.build.length > 0
-      );
+      return Number.isFinite(msg.seed) && typeof msg.build === 'string' && msg.build.length > 0;
 
     case MessageType.Start:
-      return (
-        isLandId(msg.land) &&
-        isWardId(msg.ward)
-      );
+      return isLandId(msg.land) && isWardId(msg.ward);
 
     case MessageType.Stop:
       return true;
 
     case MessageType.Ability:
       return (
-        typeof msg.id === 'number' &&
-        Object.values(AbilityIdEnum).includes(msg.id as AbilityId)
+        typeof msg.id === 'number' && Object.values(AbilityIdEnum).includes(msg.id as AbilityId)
       );
 
     case MessageType.Offline:
@@ -114,7 +106,7 @@ export function sanitizeSeed(seed: unknown): number {
   if (typeof seed !== 'number' || !Number.isFinite(seed)) {
     throw new Error('Invalid seed: must be a finite number');
   }
-  
+
   // Clamp to uint32 range
   return Math.floor(seed) >>> 0;
 }
@@ -123,11 +115,7 @@ export function sanitizeSeed(seed: unknown): number {
  * Validates offline time is reasonable
  */
 export function validateOfflineTime(elapsedMs: number): boolean {
-  return (
-    Number.isFinite(elapsedMs) &&
-    elapsedMs >= 0 &&
-    elapsedMs <= MAX_OFFLINE_MS
-  );
+  return Number.isFinite(elapsedMs) && elapsedMs >= 0 && elapsedMs <= MAX_OFFLINE_MS;
 }
 
 /**
@@ -211,7 +199,7 @@ export class ValidationContext {
       messageCount: this.messageCount,
       errorCount: this.errorCount,
       errorRate: this.messageCount > 0 ? this.errorCount / this.messageCount : 0,
-      uptime: performance.now() - this.bootTime
+      uptime: performance.now() - this.bootTime,
     };
   }
 }

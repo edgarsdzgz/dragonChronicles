@@ -12,7 +12,7 @@ import type { Snapshot } from '../../shared/types.js';
  */
 export function encodeSnapshot(snapshot: Snapshot): string {
   const { now, enemies, proj, fps } = snapshot;
-  
+
   // Use pipe-separated format with integer coercion for determinism
   return `${Math.floor(now)}|${enemies}|${proj}|${Math.round(fps)}`;
 }
@@ -24,22 +24,22 @@ export function encodeSnapshot(snapshot: Snapshot): string {
  */
 export function decodeSnapshot(encoded: string): Snapshot {
   const parts = encoded.split('|');
-  
+
   if (parts.length !== 4) {
     throw new Error(`Invalid snapshot format: expected 4 parts, got ${parts.length}`);
   }
-  
+
   const [nowStr, enemiesStr, projStr, fpsStr] = parts;
-  
+
   if (!nowStr || !enemiesStr || !projStr || !fpsStr) {
     throw new Error('Invalid snapshot format: missing parts');
   }
-  
+
   return {
     now: parseInt(nowStr, 10),
     enemies: parseInt(enemiesStr, 10),
     proj: parseInt(projStr, 10),
-    fps: parseInt(fpsStr, 10)
+    fps: parseInt(fpsStr, 10),
   };
 }
 
@@ -61,7 +61,7 @@ export function decodeSnapshotStream(encoded: string): Snapshot[] {
   if (!encoded.trim()) {
     return [];
   }
-  
+
   return encoded.trim().split('\n').map(decodeSnapshot);
 }
 
@@ -74,9 +74,9 @@ export function validateSnapshot(snapshot: unknown): snapshot is Snapshot {
   if (!snapshot || typeof snapshot !== 'object') {
     return false;
   }
-  
+
   const s = snapshot as Record<string, unknown>;
-  
+
   return (
     typeof s.now === 'number' &&
     Number.isFinite(s.now) &&
@@ -101,13 +101,13 @@ export function createSnapshot(
   now: number,
   enemies: number,
   projectiles: number,
-  fps: number
+  fps: number,
 ): Snapshot {
   return {
     now: Math.floor(now),
     enemies: Math.floor(enemies),
     proj: Math.floor(projectiles),
-    fps: Math.round(fps)
+    fps: Math.round(fps),
   };
 }
 
@@ -118,12 +118,7 @@ export function createSnapshot(
  * @returns True if snapshots are equal, false otherwise
  */
 export function snapshotsEqual(a: Snapshot, b: Snapshot): boolean {
-  return (
-    a.now === b.now &&
-    a.enemies === b.enemies &&
-    a.proj === b.proj &&
-    a.fps === b.fps
-  );
+  return a.now === b.now && a.enemies === b.enemies && a.proj === b.proj && a.fps === b.fps;
 }
 
 /**
@@ -132,7 +127,10 @@ export function snapshotsEqual(a: Snapshot, b: Snapshot): boolean {
  * @param b - Second snapshot
  * @returns Object with differences
  */
-export function getSnapshotDiff(a: Snapshot, b: Snapshot): {
+export function getSnapshotDiff(
+  a: Snapshot,
+  b: Snapshot,
+): {
   now: number;
   enemies: number;
   proj: number;
@@ -142,7 +140,7 @@ export function getSnapshotDiff(a: Snapshot, b: Snapshot): {
     now: b.now - a.now,
     enemies: b.enemies - a.enemies,
     proj: b.proj - a.proj,
-    fps: b.fps - a.fps
+    fps: b.fps - a.fps,
   };
 }
 
@@ -179,12 +177,7 @@ export class SnapshotStreamWriter {
    * @param fps - Current FPS
    * @returns True if snapshot was recorded, false otherwise
    */
-  recordSnapshot(
-    now: number,
-    enemies: number,
-    projectiles: number,
-    fps: number
-  ): boolean {
+  recordSnapshot(now: number, enemies: number, projectiles: number, fps: number): boolean {
     if (now - this.lastSnapshotTime >= this.interval) {
       const snapshot = createSnapshot(now, enemies, projectiles, fps);
       this.snapshots.push(snapshot);

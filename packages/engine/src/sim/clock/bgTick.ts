@@ -8,7 +8,7 @@ import type { SimMode } from '../../shared/enums.js';
 
 /**
  * Background tick driver for 2Hz simulation
- * 
+ *
  * When the tab is hidden or UI requests background mode, this system
  * runs simulation steps at 2Hz with aggregated stats (no rendering).
  */
@@ -27,7 +27,7 @@ export class BackgroundTickDriver {
    */
   constructor(
     stepCallback: (_dtMs: number) => void,
-    tickCallback: (_stats: Record<string, unknown>) => void
+    tickCallback: (_stats: Record<string, unknown>) => void,
   ) {
     this.stepCallback = stepCallback;
     this.tickCallback = tickCallback;
@@ -60,7 +60,7 @@ export class BackgroundTickDriver {
     }
 
     this.isRunning = false;
-    
+
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;
@@ -100,8 +100,8 @@ export class BackgroundTickDriver {
         fps: BG_HZ,
         enemies: 0,
         proj: 0,
-        dps: 0
-      }
+        dps: 0,
+      },
     });
   }
 
@@ -119,7 +119,7 @@ export class BackgroundTickDriver {
    */
   setTickInterval(intervalMs: number): void {
     this.tickInterval = intervalMs;
-    
+
     // Restart if currently running
     if (this.isRunning) {
       this.stop();
@@ -141,7 +141,7 @@ export class BackgroundTickDriver {
       isRunning: this.isRunning,
       tickInterval: this.tickInterval,
       lastTickTime: this.lastTickTime,
-      uptime: this.isRunning ? performance.now() - this.lastTickTime : 0
+      uptime: this.isRunning ? performance.now() - this.lastTickTime : 0,
     };
   }
 }
@@ -154,7 +154,7 @@ export class BackgroundTickDriver {
  */
 export function createBackgroundTickDriver(
   stepCallback: (_dtMs: number) => void,
-  tickCallback: (_stats: Record<string, unknown>) => void
+  tickCallback: (_stats: Record<string, unknown>) => void,
 ): BackgroundTickDriver {
   return new BackgroundTickDriver(stepCallback, tickCallback);
 }
@@ -178,7 +178,7 @@ export class ModeAwareSimDriver {
   constructor(
     stepCallback: (_dtMs: number) => void,
     tickCallback: (_stats: Record<string, unknown>) => void,
-    foregroundClock: unknown
+    foregroundClock: unknown,
   ) {
     this.stepCallback = stepCallback;
     this.tickCallback = tickCallback;
@@ -261,12 +261,12 @@ export class ModeAwareSimDriver {
     if (this.currentMode === 'fg') {
       return {
         mode: 'fg',
-        ...this.foregroundClock.getState()
+        ...this.foregroundClock.getState(),
       };
     } else {
       return {
         mode: 'bg',
-        ...this.backgroundDriver.getStats()
+        ...this.backgroundDriver.getStats(),
       };
     }
   }

@@ -5,7 +5,7 @@
 
 /**
  * Fast 64-bit hash function inspired by xxHash
- * 
+ *
  * Provides fast, high-quality hashing suitable for determinism verification.
  * Uses 64-bit arithmetic with 32-bit fallback for compatibility.
  */
@@ -33,35 +33,35 @@ export class FastHasher {
    */
   static hash64Bytes(bytes: Uint8Array): string {
     let hash = 0x9e3779b97f4a7c15n; // Seed
-    
+
     let i = 0;
     const len = bytes.length;
-    
+
     // Process 8-byte chunks
     while (i + 8 <= len) {
       const chunk = this.readUint64(bytes, i);
       hash = this.round(hash, chunk);
       i += 8;
     }
-    
+
     // Process remaining bytes
     if (i < len) {
       let remaining = 0n;
       let shift = 0n;
-      
+
       while (i < len) {
         remaining |= BigInt(bytes[i]!) << shift;
         shift += 8n;
         i++;
       }
-      
+
       hash = this.round(hash, remaining);
     }
-    
+
     // Finalize
     hash ^= BigInt(len);
     hash = this.mix64(hash);
-    
+
     return hash.toString(16).padStart(16, '0');
   }
 
@@ -123,13 +123,13 @@ export class FastHasher {
    */
   static hash64Multiple(inputs: string[]): string {
     let combined = 0x9e3779b97f4a7c15n;
-    
+
     for (const input of inputs) {
       const hash = BigInt('0x' + this.hash64(input));
       combined ^= hash;
       combined = this.mix64(combined);
     }
-    
+
     return combined.toString(16).padStart(16, '0');
   }
 
@@ -181,7 +181,10 @@ export class HashComparator {
    * @param hash2 - Second hash
    * @returns Object with comparison details
    */
-  static diff(hash1: string, hash2: string): {
+  static diff(
+    hash1: string,
+    hash2: string,
+  ): {
     equal: boolean;
     length1: number;
     length2: number;
@@ -193,7 +196,7 @@ export class HashComparator {
       length1: hash1.length,
       length2: hash2.length,
       format1: hash1.match(/^[0-9a-f]+$/i) ? 'hex' : 'unknown',
-      format2: hash2.match(/^[0-9a-f]+$/i) ? 'hex' : 'unknown'
+      format2: hash2.match(/^[0-9a-f]+$/i) ? 'hex' : 'unknown',
     };
   }
 }

@@ -42,7 +42,7 @@
 
 ### **Monorepo Structure**
 
-```bash
+````bash
 
 dragonChronicles/
 ├── packages/           # Shared libraries
@@ -296,3 +296,4 @@ pnpm run build:web       # Build web app
 
 **This document provides complete context for any LLM taking over the Draconia Chronicles
 project. Phase 0 foundation is complete and ready for Phase 1: Game Content Development.**
+````

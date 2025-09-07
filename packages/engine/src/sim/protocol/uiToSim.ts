@@ -17,7 +17,7 @@ export function createBootMessage(seed: number, build: string): UiToSim {
   return {
     t: MessageType.Boot,
     seed,
-    build
+    build,
   };
 }
 
@@ -31,7 +31,7 @@ export function createStartMessage(land: LandId, ward: WardId): UiToSim {
   return {
     t: MessageType.Start,
     land,
-    ward
+    ward,
   };
 }
 
@@ -41,7 +41,7 @@ export function createStartMessage(land: LandId, ward: WardId): UiToSim {
  */
 export function createStopMessage(): UiToSim {
   return {
-    t: MessageType.Stop
+    t: MessageType.Stop,
   };
 }
 
@@ -53,7 +53,7 @@ export function createStopMessage(): UiToSim {
 export function createAbilityMessage(id: AbilityId): UiToSim {
   return {
     t: MessageType.Ability,
-    id
+    id,
   };
 }
 
@@ -65,7 +65,7 @@ export function createAbilityMessage(id: AbilityId): UiToSim {
 export function createOfflineMessage(elapsedMs: number): UiToSim {
   return {
     t: MessageType.Offline,
-    elapsedMs
+    elapsedMs,
   };
 }
 

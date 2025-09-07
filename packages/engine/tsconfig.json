@@ -16,7 +16,5 @@
     "sourceMap": false
   },
   "include": ["src", "tests"],
-  "references": [
-    { "path": "../shared" }
-  ]
+  "references": [{ "path": "../shared" }]
 }

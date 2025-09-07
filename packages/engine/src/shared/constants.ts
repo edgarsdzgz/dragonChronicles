@@ -3,7 +3,7 @@
  * @description Phase 1 Story 1: Essential constants for timing, budgets, and system limits
  */
 
-export const BUILD_VERSION = "__INJECTED_GIT_SHA__"; // replaced in CI
+export const BUILD_VERSION = '__INJECTED_GIT_SHA__'; // replaced in CI
 
 // Timing constants
 export const DT_MS = 1000 / 60; // 16.666… ms (60 Hz)
@@ -23,12 +23,7 @@ export const MAX_FRAME_TIME_MS = 250; // clamp to avoid spiral of death
 export const MAX_STEPS_PER_FRAME = 8; // emergency step cap
 
 // RNG constants
-export const RNG_STREAM_NAMES = [
-  'spawns',
-  'crits', 
-  'drops',
-  'variance'
-] as const;
+export const RNG_STREAM_NAMES = ['spawns', 'crits', 'drops', 'variance'] as const;
 
 // Message validation limits
 export const MAX_OFFLINE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days

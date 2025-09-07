@@ -12,7 +12,7 @@ import { MessageType, LogLvl } from '../../shared/enums.js';
  */
 export function createReadyMessage(): SimToUi {
   return {
-    t: MessageType.Ready
+    t: MessageType.Ready,
   };
 }
 
@@ -26,7 +26,7 @@ export function createTickMessage(now: number, stats: SimStats): SimToUi {
   return {
     t: MessageType.Tick,
     now,
-    stats
+    stats,
   };
 }
 
@@ -40,7 +40,7 @@ export function createLogMessage(level: LogLvl, message: string): SimToUi {
   return {
     t: MessageType.Log,
     lvl: level,
-    msg: message
+    msg: message,
   };
 }
 
@@ -52,7 +52,7 @@ export function createLogMessage(level: LogLvl, message: string): SimToUi {
 export function createFatalMessage(reason: string): SimToUi {
   return {
     t: MessageType.Fatal,
-    reason
+    reason,
   };
 }
 

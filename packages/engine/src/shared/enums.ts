@@ -8,31 +8,31 @@
  */
 export enum Family {
   _Melee = 1,
-  _Ranged = 2
+  _Ranged = 2,
 }
 
 /**
  * Ability identifiers
  */
 export enum AbilityId {
-  _Roar = 1
+  _Roar = 1,
 }
 
 /**
  * Log levels for structured logging
  */
 export enum LogLvl {
-  _Info = "info",
-  _Warn = "warn", 
-  _Error = "error"
+  _Info = 'info',
+  _Warn = 'warn',
+  _Error = 'error',
 }
 
 /**
  * Simulation modes
  */
 export enum SimMode {
-  _Foreground = "fg",
-  _Background = "bg"
+  _Foreground = 'fg',
+  _Background = 'bg',
 }
 
 /**
@@ -40,24 +40,24 @@ export enum SimMode {
  */
 export enum MessageType {
   // UI → Sim
-  _Boot = "boot",
-  _Start = "start", 
-  _Stop = "stop",
-  _Ability = "ability",
-  _Offline = "offline",
-  
+  _Boot = 'boot',
+  _Start = 'start',
+  _Stop = 'stop',
+  _Ability = 'ability',
+  _Offline = 'offline',
+
   // Sim → UI
-  _Ready = "ready",
-  _Tick = "tick",
-  _Log = "log",
-  _Fatal = "fatal"
+  _Ready = 'ready',
+  _Tick = 'tick',
+  _Log = 'log',
+  _Fatal = 'fatal',
 }
 
 /**
  * Validation result types
  */
 export enum ValidationResult {
-  _Valid = "valid",
-  _Invalid = "invalid",
-  _Fatal = "fatal"
+  _Valid = 'valid',
+  _Invalid = 'invalid',
+  _Fatal = 'fatal',
 }

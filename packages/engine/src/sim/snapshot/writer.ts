@@ -10,7 +10,7 @@ import { hashSnapshotStream } from './hasher.js';
 
 /**
  * Snapshot writer for collecting deterministic snapshots
- * 
+ *
  * Collects snapshots at regular intervals and provides utilities
  * for golden test verification and determinism checking.
  */
@@ -55,12 +55,7 @@ export class SnapshotWriter {
    * @param fps - Current FPS
    * @returns True if snapshot was recorded, false otherwise
    */
-  recordSnapshot(
-    now: number,
-    enemies: number,
-    projectiles: number,
-    fps: number
-  ): boolean {
+  recordSnapshot(now: number, enemies: number, projectiles: number, fps: number): boolean {
     if (!this.isRecording) {
       return false;
     }
@@ -126,7 +121,7 @@ export class SnapshotWriter {
     if (this.snapshots.length === 0) {
       return 0;
     }
-    
+
     const lastSnapshot = this.snapshots[this.snapshots.length - 1];
     return lastSnapshot!.now - this.startTime;
   }
@@ -173,7 +168,7 @@ export class SnapshotWriter {
       duration: this.getDuration(),
       interval: this.interval,
       startTime: this.startTime,
-      lastSnapshotTime: this.lastSnapshotTime
+      lastSnapshotTime: this.lastSnapshotTime,
     };
   }
 
@@ -182,9 +177,7 @@ export class SnapshotWriter {
    * @returns NDJSON string
    */
   exportNDJSON(): string {
-    return this.snapshots
-      .map(snapshot => JSON.stringify(snapshot))
-      .join('\n');
+    return this.snapshots.map((snapshot) => JSON.stringify(snapshot)).join('\n');
   }
 
   /**
@@ -193,10 +186,8 @@ export class SnapshotWriter {
    */
   exportCSV(): string {
     const header = 'now,enemies,proj,fps';
-    const rows = this.snapshots
-      .map(s => `${s.now},${s.enemies},${s.proj},${s.fps}`)
-      .join('\n');
-    
+    const rows = this.snapshots.map((s) => `${s.now},${s.enemies},${s.proj},${s.fps}`).join('\n');
+
     return `${header}\n${rows}`;
   }
 }
@@ -253,18 +244,24 @@ export class GoldenTestManager {
       const actualSnapshots = writer.getSnapshots();
       if (actualSnapshots.length !== this.expectedSnapshots.length) {
         snapshotMatch = false;
-        errors.push(`Snapshot count mismatch: expected ${this.expectedSnapshots.length}, got ${actualSnapshots.length}`);
+        errors.push(
+          `Snapshot count mismatch: expected ${this.expectedSnapshots.length}, got ${actualSnapshots.length}`,
+        );
       } else {
         for (let i = 0; i < actualSnapshots.length; i++) {
           const expected = this.expectedSnapshots[i];
           const actual = actualSnapshots[i];
-          
-          if (expected!.now !== actual!.now ||
-              expected!.enemies !== actual!.enemies ||
-              expected!.proj !== actual!.proj ||
-              expected!.fps !== actual!.fps) {
+
+          if (
+            expected!.now !== actual!.now ||
+            expected!.enemies !== actual!.enemies ||
+            expected!.proj !== actual!.proj ||
+            expected!.fps !== actual!.fps
+          ) {
             snapshotMatch = false;
-            errors.push(`Snapshot ${i} mismatch: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+            errors.push(
+              `Snapshot ${i} mismatch: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`,
+            );
           }
         }
       }
@@ -274,7 +271,7 @@ export class GoldenTestManager {
       valid: hashMatch && snapshotMatch,
       hashMatch,
       snapshotMatch,
-      errors
+      errors,
     };
   }
 }

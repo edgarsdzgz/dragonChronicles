@@ -8,7 +8,7 @@ import type { ClockState } from '../../shared/types.js';
 
 /**
  * Fixed-timestep clock with accumulator pattern
- * 
+ *
  * Ensures simulation runs at a consistent rate regardless of frame rate.
  * Uses accumulator pattern to handle variable frame times while maintaining
  * deterministic simulation steps.
@@ -25,17 +25,17 @@ export class FixedClock {
    */
   constructor(
     stepCallback: (_dtMs: number) => void,
-    getNowMs: () => number = () => performance.now()
+    getNowMs: () => number = () => performance.now(),
   ) {
     this.stepCallback = stepCallback;
     this.getNowMs = getNowMs;
-    
+
     this.state = {
       running: false,
       lastTime: 0,
       accumulator: 0,
       stepCount: 0,
-      frameCount: 0
+      frameCount: 0,
     };
   }
 
@@ -46,13 +46,13 @@ export class FixedClock {
     if (this.state.running) {
       return;
     }
-    
+
     this.state.running = true;
     this.state.lastTime = this.getNowMs();
     this.state.accumulator = 0;
     this.state.stepCount = 0;
     this.state.frameCount = 0;
-    
+
     this.scheduleNextFrame();
   }
 
@@ -193,7 +193,7 @@ export class FixedClock {
  */
 export function createFixedClock(
   stepCallback: (_dtMs: number) => void,
-  getNowMs?: () => number
+  getNowMs?: () => number,
 ): FixedClock {
   return new FixedClock(stepCallback, getNowMs);
 }

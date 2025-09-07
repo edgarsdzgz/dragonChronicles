@@ -250,4 +250,4 @@ The foundation is solid, the architecture is scalable, and the developer experie
 
 ---
 
-*This document serves as the official completion record for Phase 0 of Draconia Chronicles v2.0.0 development.*
+_This document serves as the official completion record for Phase 0 of Draconia Chronicles v2.0.0 development._

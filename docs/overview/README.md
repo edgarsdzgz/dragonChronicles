@@ -126,12 +126,14 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia_Chronicles_
 **Version Progression**: 0.0.1-alpha → 0.7.0-beta
 
 #### **Major Milestones (0.#.0 releases)**
+
 - **Phase 4/16** → 0.1.0-alpha (Foundation complete)
 - **Phase 8/16** → 0.2.0-alpha (Core systems complete)
 - **Phase 12/16** → 0.3.0-alpha (Gameplay complete)
 - **Phase 16/16** → 0.7.0-beta (Full beta ready)
 
 #### **Minor Releases (0.#.# releases)**
+
 - **Phase 1/16** → 0.0.1-alpha ✅ (P1-S1 core determinism)
 - **Phase 2/16** → 0.0.2-alpha (Next phase)
 - **Phase 3/16** → 0.0.3-alpha

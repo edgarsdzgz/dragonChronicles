@@ -7,10 +7,10 @@ import type { Rng } from '../../shared/types.js';
 
 /**
  * PCG32 RNG implementation
- * 
+ *
  * Uses the PCG-XSH-RR variant with 64-bit state and 32-bit output.
  * Provides excellent statistical quality and fast generation.
- * 
+ *
  * Based on the PCG family of random number generators by Melissa O'Neill.
  * Reference: https://www.pcg-random.org/
  */
@@ -25,8 +25,8 @@ export class PCG32 implements Rng {
    */
   constructor(seed: number, seq: number = 0) {
     // Convert to uint32 and ensure non-zero
-    const seedU32 = (seed >>> 0) || 1;
-    const seqU32 = (seq >>> 0) || 1;
+    const seedU32 = seed >>> 0 || 1;
+    const seqU32 = seq >>> 0 || 1;
 
     this.state = 0n;
     this.inc = (BigInt(seqU32) << 1n) | 1n;

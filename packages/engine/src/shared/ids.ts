@@ -7,23 +7,23 @@
  * Land identifiers
  */
 export const Lands = {
-  HorizonSteppe: 1
+  HorizonSteppe: 1,
 } as const;
 
-export type LandId = typeof Lands[keyof typeof Lands];
+export type LandId = (typeof Lands)[keyof typeof Lands];
 
 /**
  * Ward identifiers within lands
  */
 export const Wards = {
   W1: 1,
-  W2: 2, 
+  W2: 2,
   W3: 3,
   W4: 4,
-  W5: 5
+  W5: 5,
 } as const;
 
-export type WardId = typeof Wards[keyof typeof Wards];
+export type WardId = (typeof Wards)[keyof typeof Wards];
 
 /**
  * Type guards for ID validation

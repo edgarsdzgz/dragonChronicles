@@ -40,7 +40,7 @@ export class DraconiaEngine {
 
     // Initialize RNG streams
     const streams = createStandardStreams(seed);
-    
+
     // Initialize simulation context
     this.ctx = {
       now: 0,
@@ -49,9 +49,9 @@ export class DraconiaEngine {
         spawns: streams.get('spawns'),
         crits: streams.get('crits'),
         drops: streams.get('drops'),
-        variance: streams.get('variance')
+        variance: streams.get('variance'),
       },
-      perf: { stepMsP95: 0 }
+      perf: { stepMsP95: 0 },
     };
 
     // Initialize snapshot writer
@@ -64,7 +64,7 @@ export class DraconiaEngine {
     this.clock = new FixedClock((dtMs) => this.step(dtMs));
     this.bgDriver = new BackgroundTickDriver(
       (dtMs) => this.step(dtMs),
-      (stats) => this.emitTick(stats)
+      (stats) => this.emitTick(stats),
     );
 
     // Default message handler
@@ -153,7 +153,7 @@ export class DraconiaEngine {
       now: this.ctx.now,
       seed: this.ctx.seed,
       snapshotCount: this.snapshotWriter.getCount(),
-      validationStats: this.validationContext.getStats()
+      validationStats: this.validationContext.getStats(),
     };
   }
 
@@ -163,10 +163,10 @@ export class DraconiaEngine {
    */
   private handleBoot(msg: UiToSim): void {
     if (msg.t !== MessageType.Boot) return;
-    
+
     // Emit ready message
     this.emitReady();
-    
+
     // Start snapshot recording
     this.snapshotWriter.start(this.ctx.now);
   }
@@ -177,7 +177,7 @@ export class DraconiaEngine {
    */
   private handleStart(msg: UiToSim): void {
     if (msg.t !== MessageType.Start) return;
-    
+
     // Start simulation
     this.start();
   }
@@ -195,7 +195,7 @@ export class DraconiaEngine {
    */
   private handleAbility(msg: UiToSim): void {
     if (msg.t !== MessageType.Ability) return;
-    
+
     // For P1-S1, abilities are no-op
     // Later stories will implement actual ability logic
   }
@@ -206,7 +206,7 @@ export class DraconiaEngine {
    */
   private handleOffline(msg: UiToSim): void {
     if (msg.t !== MessageType.Offline) return;
-    
+
     // For P1-S1, offline is no-op
     // Later stories will implement offline simulation
   }
@@ -216,9 +216,9 @@ export class DraconiaEngine {
    */
   private start(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
-    
+
     if (this.currentMode === 'fg') {
       this.clock.start();
     } else {
@@ -231,15 +231,15 @@ export class DraconiaEngine {
    */
   private stop(): void {
     if (!this.isRunning) return;
-    
+
     this.isRunning = false;
-    
+
     if (this.currentMode === 'fg') {
       this.clock.stop();
     } else {
       this.bgDriver.stop();
     }
-    
+
     this.snapshotWriter.stop();
   }
 
@@ -249,10 +249,10 @@ export class DraconiaEngine {
    */
   private step(dtMs: number): void {
     this.ctx.now += dtMs;
-    
+
     // For P1-S1, simulation step is minimal
     // Later stories will implement actual game logic
-    
+
     // Emit tick with dummy stats
     this.emitTick({
       mode: this.currentMode,
@@ -262,8 +262,8 @@ export class DraconiaEngine {
         fps: this.currentMode === 'fg' ? 60 : 2,
         enemies: 0,
         proj: 0,
-        dps: 0
-      }
+        dps: 0,
+      },
     });
   }
 
@@ -322,11 +322,11 @@ export function createEngine(seed: number, build: string): DraconiaEngine {
  */
 export function createEngineWithConfig(config: EngineConfig): DraconiaEngine {
   const engine = new DraconiaEngine(config.seed, config.build);
-  
+
   // Apply configuration
   if (config.mode) {
     // Set mode (implementation would go here)
   }
-  
+
   return engine;
 }

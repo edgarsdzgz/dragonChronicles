@@ -10,7 +10,7 @@ import { RNG_STREAM_NAMES } from '../../shared/constants.js';
 
 /**
  * Registry for named RNG streams
- * 
+ *
  * Each system gets its own deterministic stream derived from a master seed.
  * This ensures that different systems don't interfere with each other's
  * randomness while maintaining full determinism.
@@ -34,13 +34,13 @@ export class RngStreams {
    */
   get(name: string): Rng {
     let stream = this.streams.get(name);
-    
+
     if (!stream) {
       const subSeed = deriveSubSeed(this.masterSeed, name);
       stream = new PCG32(subSeed);
       this.streams.set(name, stream);
     }
-    
+
     return stream;
   }
 
@@ -53,7 +53,9 @@ export class RngStreams {
   getRequired(name: string): Rng {
     const stream = this.streams.get(name);
     if (!stream) {
-      throw new Error(`RNG stream '${name}' not found. Available streams: ${Array.from(this.streams.keys()).join(', ')}`);
+      throw new Error(
+        `RNG stream '${name}' not found. Available streams: ${Array.from(this.streams.keys()).join(', ')}`,
+      );
     }
     return stream;
   }
@@ -109,13 +111,13 @@ export class RngStreams {
    */
   clone(): RngStreams {
     const cloned = new RngStreams(this.masterSeed);
-    
+
     for (const [name, stream] of this.streams) {
       if (stream instanceof PCG32) {
         cloned.streams.set(name, stream.clone());
       }
     }
-    
+
     return cloned;
   }
 
@@ -131,7 +133,7 @@ export class RngStreams {
     return {
       streamCount: this.streams.size,
       streamNames: this.getStreamNames(),
-      masterSeed: this.masterSeed
+      masterSeed: this.masterSeed,
     };
   }
 }
@@ -143,12 +145,12 @@ export class RngStreams {
  */
 export function createStandardStreams(masterSeed: number): RngStreams {
   const streams = new RngStreams(masterSeed);
-  
+
   // Initialize standard streams
   for (const streamName of RNG_STREAM_NAMES) {
     streams.get(streamName);
   }
-  
+
   return streams;
 }
 
