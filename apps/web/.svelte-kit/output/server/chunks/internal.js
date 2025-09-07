@@ -2,10 +2,6 @@ import { c as create_ssr_component, s as setContext, v as validate_component, m 
 let base = "";
 let assets = base;
 const initial = { base, assets };
-function override(paths) {
-  base = paths.base;
-  assets = paths.assets;
-}
 function reset() {
   base = initial.base;
   assets = initial.assets;
@@ -14,22 +10,14 @@ function set_assets(path) {
   assets = initial.assets = path;
 }
 let public_env = {};
-let safe_public_env = {};
 function set_private_env(environment) {
 }
 function set_public_env(environment) {
   public_env = environment;
 }
-function set_safe_public_env(environment) {
-  safe_public_env = environment;
-}
 function afterUpdate() {
 }
-let prerendering = false;
 function set_building() {
-}
-function set_prerendering() {
-  prerendering = true;
 }
 const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { stores } = $$props;
@@ -43,13 +31,20 @@ const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     setContext("__svelte__", stores);
   }
   afterUpdate(stores.page.notify);
-  if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0) $$bindings.stores(stores);
-  if ($$props.page === void 0 && $$bindings.page && page !== void 0) $$bindings.page(page);
-  if ($$props.constructors === void 0 && $$bindings.constructors && constructors !== void 0) $$bindings.constructors(constructors);
-  if ($$props.components === void 0 && $$bindings.components && components !== void 0) $$bindings.components(components);
-  if ($$props.form === void 0 && $$bindings.form && form !== void 0) $$bindings.form(form);
-  if ($$props.data_0 === void 0 && $$bindings.data_0 && data_0 !== void 0) $$bindings.data_0(data_0);
-  if ($$props.data_1 === void 0 && $$bindings.data_1 && data_1 !== void 0) $$bindings.data_1(data_1);
+  if ($$props.stores === void 0 && $$bindings.stores && stores !== void 0)
+    $$bindings.stores(stores);
+  if ($$props.page === void 0 && $$bindings.page && page !== void 0)
+    $$bindings.page(page);
+  if ($$props.constructors === void 0 && $$bindings.constructors && constructors !== void 0)
+    $$bindings.constructors(constructors);
+  if ($$props.components === void 0 && $$bindings.components && components !== void 0)
+    $$bindings.components(components);
+  if ($$props.form === void 0 && $$bindings.form && form !== void 0)
+    $$bindings.form(form);
+  if ($$props.data_0 === void 0 && $$bindings.data_0 && data_0 !== void 0)
+    $$bindings.data_0(data_0);
+  if ($$props.data_1 === void 0 && $$bindings.data_1 && data_1 !== void 0)
+    $$bindings.data_1(data_1);
   let $$settled;
   let $$rendered;
   let previous_head = $$result.head;
@@ -97,15 +92,11 @@ const Root = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   } while (!$$settled);
   return $$rendered;
 });
-function set_read_implementation(fn) {
-}
-function set_manifest(_) {
-}
 const options = {
-  app_dir: "_app",
   app_template_contains_nonce: false,
   csp: { "mode": "auto", "directives": { "upgrade-insecure-requests": false, "block-all-mixed-content": false }, "reportOnly": { "upgrade-insecure-requests": false, "block-all-mixed-content": false } },
   csrf_check_origin: true,
+  track_server_fetches: false,
   embedded: false,
   env_public_prefix: "PUBLIC_",
   env_private_prefix: "",
@@ -115,7 +106,7 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\r\n<html lang="en">\r\n  <head>\r\n    <meta charset="utf-8" />\r\n    <link rel="icon" href="' + assets2 + '/favicon.svg" />\r\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\r\n    <title>Draconia Chronicles</title>\r\n    \r\n    <!-- PWA Manifest -->\r\n    <link rel="manifest" href="' + assets2 + '/manifest.json" />\r\n    \r\n    <!-- PWA Meta Tags -->\r\n    <meta name="theme-color" content="#4a90e2" />\r\n    <meta name="apple-mobile-web-app-capable" content="yes" />\r\n    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />\r\n    <meta name="apple-mobile-web-app-title" content="Draconia" />\r\n    \r\n    <!-- Apple Touch Icons -->\r\n    <link rel="apple-touch-icon" href="' + assets2 + '/icons/icon-192.png" />\r\n    <link rel="apple-touch-icon" sizes="152x152" href="' + assets2 + '/icons/icon-152.png" />\r\n    <link rel="apple-touch-icon" sizes="180x180" href="' + assets2 + '/icons/icon-192.png" />\r\n    \r\n    <!-- Microsoft Tiles -->\r\n    <meta name="msapplication-TileColor" content="#1a1a1a" />\r\n    <meta name="msapplication-TileImage" content="' + assets2 + '/icons/icon-144.png" />\r\n    \r\n    ' + head + '\r\n  </head>\r\n  <body data-sveltekit-preload-data="hover">\r\n    <div style="display: contents">' + body + "</div>\r\n  </body>\r\n</html>",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <link rel="icon" href="' + assets2 + '/favicon.svg" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <title>Draconia Chronicles</title>\n    \n    <!-- PWA Manifest -->\n    <link rel="manifest" href="' + assets2 + '/manifest.json" />\n    \n    <!-- PWA Meta Tags -->\n    <meta name="theme-color" content="#4a90e2" />\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />\n    <meta name="apple-mobile-web-app-title" content="Draconia" />\n    \n    <!-- Apple Touch Icons -->\n    <link rel="apple-touch-icon" href="' + assets2 + '/icons/icon-192.png" />\n    <link rel="apple-touch-icon" sizes="152x152" href="' + assets2 + '/icons/icon-152.png" />\n    <link rel="apple-touch-icon" sizes="180x180" href="' + assets2 + '/icons/icon-192.png" />\n    \n    <!-- Microsoft Tiles -->\n    <meta name="msapplication-TileColor" content="#1a1a1a" />\n    <meta name="msapplication-TileImage" content="' + assets2 + '/icons/icon-144.png" />\n    \n    ' + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -187,27 +178,20 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1iq6ufw"
+  version_hash: "1nc3flf"
 };
-async function get_hooks() {
+function get_hooks() {
   return {};
 }
 export {
   assets as a,
   base as b,
-  options as c,
-  set_private_env as d,
-  prerendering as e,
-  set_public_env as f,
+  set_public_env as c,
+  set_assets as d,
+  set_building as e,
   get_hooks as g,
-  set_safe_public_env as h,
-  set_assets as i,
-  set_building as j,
-  set_manifest as k,
-  set_prerendering as l,
-  set_read_implementation as m,
-  override as o,
+  options as o,
   public_env as p,
   reset as r,
-  safe_public_env as s
+  set_private_env as s
 };

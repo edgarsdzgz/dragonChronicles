@@ -66,6 +66,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -74,15 +75,18 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Comment PR with preview URL
-        if: ${{ github.event_name == 'pull_request' }}
+  pr-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Comment PR with preview info
         uses: actions/github-script@v7
         continue-on-error: true
         with:
           script: |
             try {
-              const url = process.env.DEPLOY_URL || '${{ steps.deployment.outputs.page_url }}';
-              const body = `🔍 **Preview deployed**: ${url}\n\n(BASE_PATH set to /${{ github.event.repository.name }})`;
+              const body = `🔍 **Preview build completed**: Artifact ready for deployment\n\n(BASE_PATH set to /${{ github.event.repository.name }})\n\n*Note: Full deployment to GitHub Pages only occurs from main branch due to environment protection rules.*`;
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -92,5 +96,5 @@ jobs:
               console.log('✅ PR comment posted successfully');
             } catch (error) {
               console.log('⚠️ Failed to post PR comment:', error.message);
-              console.log('Deployment was successful, but comment failed');
+              console.log('Build was successful, but comment failed');
             }

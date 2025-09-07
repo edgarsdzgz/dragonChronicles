@@ -1,6 +1,37 @@
-import { h as hudEnabled } from "../../chunks/flags.js";
+import { a as appFlags } from "../../chunks/store.js";
+const DEFAULT_FLAGS = {
+  hud: false,
+  devMenu: false,
+  logConsole: false,
+  useLegacyBgSim: false,
+  forceMode: "auto"
+};
+function getEnvFlags() {
+  const flags = {};
+  return flags;
+}
+function getQueryFlags(url) {
+  const flags = {};
+  return flags;
+}
+function mergeFlags(sources) {
+  return {
+    ...sources.defaults,
+    ...sources.env,
+    ...sources.query
+  };
+}
+function createFlags(url) {
+  const sources = {
+    env: getEnvFlags(),
+    query: getQueryFlags(),
+    defaults: DEFAULT_FLAGS
+  };
+  return mergeFlags(sources);
+}
 const load = ({ url }) => {
-  if (url.searchParams.get("hud") === "1") hudEnabled.set(true);
+  const flags = createFlags();
+  appFlags.set(flags);
   return {};
 };
 export {

@@ -1,7 +1,11 @@
 import type { LayoutLoad } from './$types';
-import { hudEnabled } from '$lib/stores/flags';
+import { appFlags } from '$lib/flags/store';
+import { createFlags } from '$lib/flags/flags';
 
 export const load: LayoutLoad = ({ url }) => {
-  if (url.searchParams.get('hud') === '1') hudEnabled.set(true);
+  // Initialize flags from environment, query string, and defaults
+  const flags = createFlags(url);
+  appFlags.set(flags);
+
   return {};
 };
