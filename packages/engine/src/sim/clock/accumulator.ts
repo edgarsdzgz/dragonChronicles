@@ -15,7 +15,7 @@ import type { ClockState } from '../../shared/types.js';
  */
 export class FixedClock {
   private state: ClockState;
-  private stepCallback: (dtMs: number) => void;
+  private stepCallback: (_dtMs: number) => void;
   private getNowMs: () => number;
 
   /**
@@ -24,7 +24,7 @@ export class FixedClock {
    * @param getNowMs - Function to get current time in milliseconds
    */
   constructor(
-    stepCallback: (dtMs: number) => void,
+    stepCallback: (_dtMs: number) => void,
     getNowMs: () => number = () => performance.now()
   ) {
     this.stepCallback = stepCallback;
@@ -192,7 +192,7 @@ export class FixedClock {
  * @returns New FixedClock instance
  */
 export function createFixedClock(
-  stepCallback: (dtMs: number) => void,
+  stepCallback: (_dtMs: number) => void,
   getNowMs?: () => number
 ): FixedClock {
   return new FixedClock(stepCallback, getNowMs);

@@ -3,7 +3,7 @@
 **Purpose**: File-based memory system for AI assistant to maintain context and important information
 across sessions
 
-**Last Updated**: 2025-09-06
+**Last Updated**: 2025-09-07
 **Version**: 1.0.0
 
 ---
@@ -300,3 +300,37 @@ Pages Deploy (environment protection), Lighthouse, E2E.
 Pipeline now 100% healthy.
 Key learning: Work on ONE workflow at a time until 100% success, using knowledge and
 internet research for resolution paths.
+
+
+### **CI/CD Pipeline Debugging Procedures**
+
+SYSTEMATIC PIPELINE DEBUGGING APPROACH:
+
+1. PIPELINE-FIRST STRATEGY: Always go by what GitHub logs say, not local tests
+2. WORKFLOW-BY-WORKFLOW: Go through each failing workflow one by one systematically
+3. INTERNET RESEARCH: Use web search to bolster knowledge and find solutions
+
+DEBUGGING PROCESS:
+- Step 1: Assess current pipeline status with 'gh run list --limit 10'
+- Step 2: Prioritize workflow fixes (CI → Checks → Docs → Pages → Lighthouse → E2E)
+- Step 3: For each failing workflow:
+  * Analyze error from GitHub Actions logs
+  * Research solution using web search
+  * Reproduce locally with equivalent commands
+  * Implement fix based on research
+  * Validate and push fix
+  * Verify pipeline improvement
+  * Move to next failing workflow
+
+QUALITY GATES: ESLint (zero errors), Prettier (consistent formatting), TypeScript (strict mode), Markdown (linting compliance), Tests (100% pass rate), Performance (size budgets)
+
+DOCUMENTATION: All debugging sessions must be chronicled in docs/engineering/*-debugging-session.md with session overview, issues resolved, solutions implemented, and key learnings.
+
+This approach ensures efficient, thorough, and knowledge-building CI/CD pipeline debugging.
+
+
+
+### **Current Session**
+
+Created comprehensive CI/CD pipeline debugging procedures document and committed systematic debugging approach to memory. Key principles: 1) Pipeline-first strategy (use GitHub logs as source of truth), 2) Workflow-by-workflow systematic approach, 3) Internet research integration for solutions. Documented complete step-by-step process, common issues/solutions, quality gates, and documentation requirements.
+

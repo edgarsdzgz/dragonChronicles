@@ -184,5 +184,5 @@ function createDeterministicRunSync(seed, durationMs) {
     };
 }
 // Override the async function for testing
-const createDeterministicRun = createDeterministicRunSync;
+const createDeterministicRunTest = createDeterministicRunSync;
 await run();

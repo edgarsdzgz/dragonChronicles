@@ -11,8 +11,8 @@ import { BackgroundTickDriver } from './sim/clock/bgTick.js';
 import { SnapshotWriter } from './sim/snapshot/writer.js';
 import { ValidationContext } from './shared/validation.js';
 import { SimToUiMessageFactory } from './sim/protocol/simToUi.js';
-import { BUILD_VERSION, DT_MS, SNAPSHOT_INTERVAL_MS } from './shared/constants.js';
-import { MessageType, SimMode as SimModeEnum } from './shared/enums.js';
+import { BUILD_VERSION, SNAPSHOT_INTERVAL_MS } from './shared/constants.js';
+import { MessageType } from './shared/enums.js';
 
 /**
  * Main engine class for Draconia Chronicles simulation
@@ -23,7 +23,7 @@ export class DraconiaEngine {
   private bgDriver: BackgroundTickDriver;
   private snapshotWriter: SnapshotWriter;
   private validationContext: ValidationContext;
-  private onSimMessage: (msg: SimToUi) => void;
+  private onSimMessage: (_msg: SimToUi) => void;
   private isRunning = false;
   private currentMode: SimMode = 'fg' as SimMode;
 
@@ -75,7 +75,7 @@ export class DraconiaEngine {
    * Sets the message handler for Sim to UI messages
    * @param handler - Function to handle Sim to UI messages
    */
-  onSimMsg(handler: (msg: SimToUi) => void): void {
+  onSimMsg(handler: (_msg: SimToUi) => void): void {
     this.onSimMessage = handler;
   }
 
@@ -145,7 +145,7 @@ export class DraconiaEngine {
     now: number;
     seed: number;
     snapshotCount: number;
-    validationStats: any;
+    validationStats: Record<string, unknown>;
   } {
     return {
       isRunning: this.isRunning,
@@ -271,7 +271,7 @@ export class DraconiaEngine {
    * Emits a tick message
    * @param stats - Tick statistics
    */
-  private emitTick(stats: any): void {
+  private emitTick(stats: Record<string, unknown>): void {
     const tickMsg = SimToUiMessageFactory.tick(stats.now, stats.stats);
     this.onSimMessage(tickMsg);
   }

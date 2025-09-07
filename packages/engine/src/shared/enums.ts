@@ -7,32 +7,32 @@
  * Enemy family types
  */
 export enum Family {
-  Melee = 1,
-  Ranged = 2
+  _Melee = 1,
+  _Ranged = 2
 }
 
 /**
  * Ability identifiers
  */
 export enum AbilityId {
-  Roar = 1
+  _Roar = 1
 }
 
 /**
  * Log levels for structured logging
  */
 export enum LogLvl {
-  Info = "info",
-  Warn = "warn", 
-  Error = "error"
+  _Info = "info",
+  _Warn = "warn", 
+  _Error = "error"
 }
 
 /**
  * Simulation modes
  */
 export enum SimMode {
-  Foreground = "fg",
-  Background = "bg"
+  _Foreground = "fg",
+  _Background = "bg"
 }
 
 /**
@@ -40,24 +40,24 @@ export enum SimMode {
  */
 export enum MessageType {
   // UI → Sim
-  Boot = "boot",
-  Start = "start", 
-  Stop = "stop",
-  Ability = "ability",
-  Offline = "offline",
+  _Boot = "boot",
+  _Start = "start", 
+  _Stop = "stop",
+  _Ability = "ability",
+  _Offline = "offline",
   
   // Sim → UI
-  Ready = "ready",
-  Tick = "tick",
-  Log = "log",
-  Fatal = "fatal"
+  _Ready = "ready",
+  _Tick = "tick",
+  _Log = "log",
+  _Fatal = "fatal"
 }
 
 /**
  * Validation result types
  */
 export enum ValidationResult {
-  Valid = "valid",
-  Invalid = "invalid",
-  Fatal = "fatal"
+  _Valid = "valid",
+  _Invalid = "invalid",
+  _Fatal = "fatal"
 }

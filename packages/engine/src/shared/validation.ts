@@ -3,7 +3,7 @@
  * @description Phase 1 Story 1: Security guards and validation for untrusted UI messages
  */
 
-import type { UiToSim, SimToUi, LandId, WardId, AbilityId, LogLvl } from './types.js';
+import type { UiToSim, SimToUi, AbilityId, LogLvl } from './types.js';
 import { MessageType, LogLvl as LogLvlEnum, AbilityId as AbilityIdEnum } from './enums.js';
 import { isLandId, isWardId } from './ids.js';
 import { BUILD_VERSION, MAX_OFFLINE_MS, ABILITY_COOLDOWN_MS } from './constants.js';
