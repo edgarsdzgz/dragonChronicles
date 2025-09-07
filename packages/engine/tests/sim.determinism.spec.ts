@@ -6,11 +6,11 @@
 import { strict as assert } from 'assert';
 import { test, run } from '../../tests/_tiny-runner.mjs';
 import { createStandardStreams } from '../src/sim/rng/streams.js';
-import { FixedClock } from '../src/sim/clock/accumulator.js';
+import { _FixedClock } from '../src/sim/clock/accumulator.js';
 import { SnapshotWriter } from '../src/sim/snapshot/writer.js';
-import { encodeSnapshotStream, createSnapshot } from '../src/sim/protocol/codec.js';
+import { encodeSnapshotStream, _createSnapshot } from '../src/sim/protocol/codec.js';
 import { hashSnapshotStream } from '../src/sim/snapshot/hasher.js';
-import { SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
+import { _SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
 
 // Golden test configuration
 const GOLDEN_SEED = 123;
@@ -18,7 +18,7 @@ const GOLDEN_DURATION_MS = 60000; // 60 seconds
 const GOLDEN_SNAPSHOT_INTERVAL = 1000; // 1 second
 
 // Expected golden hash for 60-second run with seed 123
-const EXPECTED_GOLDEN_HASH = 'a1b2c3d4e5f67890'; // This would be the actual hash from a real run
+const _EXPECTED_GOLDEN_HASH = 'a1b2c3d4e5f67890'; // This would be the actual hash from a real run
 
 test('simulation produces deterministic snapshots', () => {
   // Create two identical simulation runs
@@ -131,7 +131,7 @@ test('simulation produces byte-equal output across runs', () => {
 
 // For testing purposes, we'll create a synchronous version
 function createDeterministicRunSync(seed: number, durationMs: number): {
-  snapshots: any[];
+  snapshots: unknown[];
   hash: string;
   rngSequence: number[];
 } {
@@ -140,12 +140,12 @@ function createDeterministicRunSync(seed: number, durationMs: number): {
   const rngSequence: number[] = [];
   
   let currentTime = 0;
-  let stepCount = 0;
+  let _stepCount = 0;
   
   // Simulation step function
   const step = (dtMs: number) => {
     currentTime += dtMs;
-    stepCount++;
+    _stepCount++;
     
     // Use RNG to generate deterministic values
     const spawnsRng = streams.get('spawns');

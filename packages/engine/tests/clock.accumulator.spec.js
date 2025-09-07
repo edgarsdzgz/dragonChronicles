@@ -35,14 +35,14 @@ test('FixedClock accumulator handles variable frame times', () => {
     let totalTime = 0;
     const clock = new FixedClock((_dtMs) => {
         stepCount++;
-        totalTime += dtMs;
+        totalTime += _dtMs;
     });
     // Simulate variable frame times
     let currentTime = 1000;
     const getNowMs = () => currentTime;
     const clockWithTime = new FixedClock((_dtMs) => {
         stepCount++;
-        totalTime += dtMs;
+        totalTime += _dtMs;
     }, getNowMs);
     // Simulate frames with different durations
     clockWithTime.start();
@@ -61,20 +61,20 @@ test('FixedClock accumulator handles variable frame times', () => {
 });
 test('FixedClock clamps excessive frame times', () => {
     let stepCount = 0;
-    const clock = new FixedClock((_dtMs) => {
+    const _clock = new FixedClock((_dtMs) => {
         stepCount++;
     });
     // Simulate a very long frame time
     let currentTime = 1000;
     const getNowMs = () => currentTime;
-    const clockWithTime = new FixedClock((_dtMs) => {
+    const _clockWithTime = new FixedClock((_dtMs) => {
         stepCount++;
     }, getNowMs);
-    clockWithTime.start();
+    _clockWithTime.start();
     // Simulate a frame that's longer than MAX_FRAME_TIME_MS
     currentTime += MAX_FRAME_TIME_MS + 1000;
-    clockWithTime.tick();
-    clockWithTime.stop();
+    _clockWithTime.tick();
+    _clockWithTime.stop();
     // Should not have executed more than MAX_STEPS_PER_FRAME steps
     assert.ok(stepCount <= MAX_STEPS_PER_FRAME, `Should not exceed ${MAX_STEPS_PER_FRAME} steps per frame`);
 });
@@ -116,7 +116,7 @@ test('BackgroundTickDriver runs at 2Hz', () => {
     let lastTickTime = 0;
     const driver = new BackgroundTickDriver((_dtMs) => {
         // Step callback
-    }, (stats) => {
+    }, (_stats) => {
         tickCount++;
         const now = performance.now();
         if (lastTickTime > 0) {
@@ -163,26 +163,26 @@ test('createBackgroundTickDriver factory works correctly', () => {
     assert.equal(stats.isRunning, false, 'Factory-created driver should be inactive initially');
 });
 test('FixedClock accumulator precision is maintained', () => {
-    let stepCount = 0;
-    let accumulatorError = 0;
-    const clock = new FixedClock((_dtMs) => {
-        stepCount++;
+    let _stepCount = 0;
+    let _accumulatorError = 0;
+    const _clock = new FixedClock((_dtMs) => {
+        _stepCount++;
     });
     // Simulate precise timing
     let currentTime = 1000;
     const getNowMs = () => currentTime;
-    const clockWithTime = new FixedClock((_dtMs) => {
-        stepCount++;
+    const _clockWithTime = new FixedClock((_dtMs) => {
+        _stepCount++;
     }, getNowMs);
-    clockWithTime.start();
+    _clockWithTime.start();
     // Simulate many frames with slight timing variations
     for (let i = 0; i < 100; i++) {
         currentTime += DT_MS + (Math.random() - 0.5) * 2; // ±1ms variation
-        clockWithTime.tick();
+        _clockWithTime.tick();
     }
-    clockWithTime.stop();
+    _clockWithTime.stop();
     // Accumulator should be close to zero (no drift)
-    const finalAccumulator = clockWithTime.getAccumulator();
+    const finalAccumulator = _clockWithTime.getAccumulator();
     assert.ok(Math.abs(finalAccumulator) < DT_MS, `Accumulator should be close to zero, got ${finalAccumulator}ms`);
 });
 await run();

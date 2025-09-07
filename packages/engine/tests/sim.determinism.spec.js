@@ -14,7 +14,7 @@ const GOLDEN_SEED = 123;
 const GOLDEN_DURATION_MS = 60000; // 60 seconds
 const GOLDEN_SNAPSHOT_INTERVAL = 1000; // 1 second
 // Expected golden hash for 60-second run with seed 123
-const EXPECTED_GOLDEN_HASH = 'a1b2c3d4e5f67890'; // This would be the actual hash from a real run
+const _EXPECTED_GOLDEN_HASH = 'a1b2c3d4e5f67890'; // This would be the actual hash from a real run
 test('simulation produces deterministic snapshots', () => {
     // Create two identical simulation runs
     const run1 = createDeterministicRun(GOLDEN_SEED, GOLDEN_DURATION_MS);
@@ -105,11 +105,11 @@ function createDeterministicRun(seed, durationMs) {
     const snapshotWriter = new SnapshotWriter(GOLDEN_SNAPSHOT_INTERVAL);
     const rngSequence = [];
     let currentTime = 0;
-    let stepCount = 0;
+    let _stepCount = 0;
     // Simulation step function
     const step = (dtMs) => {
         currentTime += dtMs;
-        stepCount++;
+        _stepCount++;
         // Use RNG to generate deterministic values
         const spawnsRng = streams.get('spawns');
         const varianceRng = streams.get('variance');
@@ -127,7 +127,7 @@ function createDeterministicRun(seed, durationMs) {
     // Start recording
     snapshotWriter.start(0);
     // Run simulation for specified duration
-    const startTime = performance.now();
+    const _startTime = performance.now();
     clock.start();
     // Wait for duration
     return new Promise((resolve) => {
@@ -150,11 +150,11 @@ function createDeterministicRunSync(seed, durationMs) {
     const snapshotWriter = new SnapshotWriter(GOLDEN_SNAPSHOT_INTERVAL);
     const rngSequence = [];
     let currentTime = 0;
-    let stepCount = 0;
+    let _stepCount = 0;
     // Simulation step function
     const step = (dtMs) => {
         currentTime += dtMs;
-        stepCount++;
+        _stepCount++;
         // Use RNG to generate deterministic values
         const spawnsRng = streams.get('spawns');
         const varianceRng = streams.get('variance');
@@ -184,5 +184,5 @@ function createDeterministicRunSync(seed, durationMs) {
     };
 }
 // Override the async function for testing
-const createDeterministicRunTest = createDeterministicRunSync;
+const _createDeterministicRunTest = createDeterministicRunSync;
 await run();
