@@ -1,5 +1,6 @@
 {
   "name": "@draconia/web",
+  "version": "0.0.1-alpha",
   "private": true,
   "type": "module",
   "scripts": {

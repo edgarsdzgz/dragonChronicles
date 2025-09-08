@@ -1,0 +1,30 @@
+{
+  "name": "@draconia/engine",
+  "version": "0.0.1-alpha",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "npx tsc -b",
+    "clean": "rimraf dist",
+    "echo-ok": "echo ok"
+  },
+  "dependencies": {
+    "@draconia/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "rimraf": "^5.0.5"
+  }
+}

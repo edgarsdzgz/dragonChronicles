@@ -1,4 +1,4 @@
-# Draconia Chronicles v2.0.0
+# Draconia Chronicles v0.0.1-alpha
 
 🐉 A shooter-idle game built with TypeScript, SvelteKit, and modern web technologies.
 

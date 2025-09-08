@@ -1,5 +1,6 @@
 {
   "name": "draconia",
+  "version": "0.0.1-alpha",
   "private": true,
   "packageManager": "pnpm@9.15.9",
   "engines": {

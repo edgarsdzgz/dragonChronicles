@@ -162,13 +162,8 @@ describe('Error Boundary Integration Tests', () => {
 
       await exportLogs();
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to export logs:',
-        expect.any(Error),
-      );
-      expect(alertSpy).toHaveBeenCalledWith(
-        'Failed to export logs. Check console for details.',
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to export logs:', expect.any(Error));
+      expect(alertSpy).toHaveBeenCalledWith('Failed to export logs. Check console for details.');
 
       consoleErrorSpy.mockRestore();
       alertSpy.mockRestore();
@@ -296,10 +291,7 @@ describe('Error Boundary Integration Tests', () => {
       };
 
       expect(() => downloadWithErrorHandling()).toThrow('URL creation failed');
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Download failed:',
-        expect.any(Error),
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Download failed:', expect.any(Error));
 
       consoleErrorSpy.mockRestore();
     });
@@ -322,19 +314,23 @@ describe('Error Boundary Integration Tests', () => {
       const handleError = async (page: any) => {
         // 1. Extract error information
         const errorId = page.error?.id || 'unknown';
-        
+
         // 2. Generate error details
-        const errorDetails = JSON.stringify({
-          message: page.error.message,
-          stack: page.error.stack,
-          id: page.error.id,
-          timestamp: new Date().toISOString(),
-          url: page.url.toString(),
-        }, null, 2);
+        const errorDetails = JSON.stringify(
+          {
+            message: page.error.message,
+            stack: page.error.stack,
+            id: page.error.id,
+            timestamp: new Date().toISOString(),
+            url: page.url.toString(),
+          },
+          null,
+          2,
+        );
 
         // 3. Export logs
         const blob = await mockLogger.exportNDJSON();
-        
+
         return {
           errorId,
           errorDetails,

@@ -5,6 +5,7 @@
     { "path": "./packages/logger" },
     { "path": "./packages/db" },
     { "path": "./packages/sim" },
+    { "path": "./packages/engine" },
     { "path": "./apps/sandbox" }
   ],
   "compilerOptions": {
@@ -31,7 +32,8 @@
       "@draconia/shared": ["packages/shared/src/index.ts"],
       "@draconia/logger": ["packages/logger/src/index.ts"],
       "@draconia/db": ["packages/db/src/index.ts"],
-      "@draconia/sim": ["packages/sim/src/index.ts"]
+      "@draconia/sim": ["packages/sim/src/index.ts"],
+      "@draconia/engine": ["packages/engine/src/index.ts"]
     }
   }
 }

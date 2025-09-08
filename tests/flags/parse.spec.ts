@@ -40,7 +40,10 @@ vi.mock('../../apps/web/src/lib/flags/flags.js', async () => {
         if (mockImportMetaEnv.VITE_DEV_MENU_ENABLED === 'true') flags.devMenu = true;
         if (mockImportMetaEnv.VITE_LOG_CONSOLE === 'true') flags.logConsole = true;
         if (mockImportMetaEnv.VITE_LEGACY_BG_SIM === 'true') flags.useLegacyBgSim = true;
-        if (mockImportMetaEnv.VITE_FORCE_MODE && ['fg', 'bg', 'auto'].includes(mockImportMetaEnv.VITE_FORCE_MODE)) {
+        if (
+          mockImportMetaEnv.VITE_FORCE_MODE &&
+          ['fg', 'bg', 'auto'].includes(mockImportMetaEnv.VITE_FORCE_MODE)
+        ) {
           flags.forceMode = mockImportMetaEnv.VITE_FORCE_MODE;
         }
       }
@@ -302,7 +305,7 @@ describe('Flag Parsing', () => {
       mockImportMetaEnv.VITE_DEV_MENU_ENABLED = 'true';
 
       const url = new URL('http://localhost:5173/?logConsole=1&mode=fg');
-      
+
       // Mock the createFlags function to use our mocked functions
       const mockCreateFlags = (url: URL) => {
         const envFlags = mockGetEnvFlags();
@@ -313,7 +316,7 @@ describe('Flag Parsing', () => {
           query: queryFlags,
         });
       };
-      
+
       const flags = mockCreateFlags(url);
 
       expect(flags).toEqual({
@@ -336,7 +339,7 @@ describe('Flag Parsing', () => {
       mockImportMetaEnv.DEV = false;
       mockImportMetaEnv.VITE_HUD_ENABLED = 'true';
       const url = new URL('http://localhost:5173/?hud=1&dev=1');
-      
+
       // Mock the createFlags function to use our mocked functions
       const mockCreateFlags = (url: URL) => {
         const envFlags = mockGetEnvFlags();
@@ -347,7 +350,7 @@ describe('Flag Parsing', () => {
           query: queryFlags,
         });
       };
-      
+
       const flags = mockCreateFlags(url);
       expect(flags).toEqual(DEFAULT_FLAGS);
     });

@@ -13,82 +13,83 @@ vi.mock('@draconia/logger', () => ({
   createLogger: vi.fn(() => {
     let logCount = 0;
     return {
-      log: vi.fn(() => { logCount++; }),
-    exportNDJSON: vi.fn(() => {
-      // Create different mock data based on log count
-      let mockLogData;
-      if (logCount === 0) {
-        // Empty logs case
-        mockLogData = '';
-      } else if (logCount >= 5) {
-        // Multiple logs case
-        const logs = [];
-        for (let i = 0; i < 5; i++) {
-          logs.push(JSON.stringify({
-            t: Date.now() + i,
-            lvl: 'info',
-            src: 'ui',
-            msg: `Test message ${i}`,
-          }));
-        }
-        mockLogData = logs.join('\n');
-      } else {
-        // Single log case - check if this is a PII test by looking at the call stack
-        const stack = new Error().stack || '';
-        if (stack.includes('should redact sensitive information')) {
-          mockLogData = JSON.stringify({
-            t: 1234567890,
-            lvl: 'info',
-            src: 'test',
-            msg: 'Test message',
-            data: { dragonName: 'Shadowfang', fps: 60 }
-          });
-        } else if (stack.includes('should preserve allowed data fields')) {
-          mockLogData = JSON.stringify({
-            t: 1234567890,
-            lvl: 'info',
-            src: 'test',
-            msg: 'Test message',
-            data: {
-              dragonName: 'TestDragon',
-              profileId: 'profile-123',
-              fps: 60,
-              gold: 1000,
-              land: 'DragonRealm',
-              ward: 'FireWard',
-              arcana: 50,
-              proj: 10,
-              enemies: 5,
-              draws: 100
-            }
-          });
-        } else if (stack.includes('should handle nested objects')) {
-          mockLogData = JSON.stringify({
-            t: 1234567890,
-            lvl: 'info',
-            src: 'test',
-            msg: 'Test message',
-            data: {
-              dragonName: 'TestDragon',
-              nested: {},
-              array: [
-                { dragonName: 'Dragon1' },
-                { dragonName: 'Dragon2' }
-              ]
-            }
-          });
+      log: vi.fn(() => {
+        logCount++;
+      }),
+      exportNDJSON: vi.fn(() => {
+        // Create different mock data based on log count
+        let mockLogData;
+        if (logCount === 0) {
+          // Empty logs case
+          mockLogData = '';
+        } else if (logCount >= 5) {
+          // Multiple logs case
+          const logs = [];
+          for (let i = 0; i < 5; i++) {
+            logs.push(
+              JSON.stringify({
+                t: Date.now() + i,
+                lvl: 'info',
+                src: 'ui',
+                msg: `Test message ${i}`,
+              }),
+            );
+          }
+          mockLogData = logs.join('\n');
         } else {
-          // Default single log case
-          mockLogData = JSON.stringify({
-            t: 1234567890,
-            lvl: 'info',
-            src: 'test',
-            msg: 'Test message',
-            data: { test: 'data' }
-          });
+          // Single log case - check if this is a PII test by looking at the call stack
+          const stack = new Error().stack || '';
+          if (stack.includes('should redact sensitive information')) {
+            mockLogData = JSON.stringify({
+              t: 1234567890,
+              lvl: 'info',
+              src: 'test',
+              msg: 'Test message',
+              data: { dragonName: 'Shadowfang', fps: 60 },
+            });
+          } else if (stack.includes('should preserve allowed data fields')) {
+            mockLogData = JSON.stringify({
+              t: 1234567890,
+              lvl: 'info',
+              src: 'test',
+              msg: 'Test message',
+              data: {
+                dragonName: 'TestDragon',
+                profileId: 'profile-123',
+                fps: 60,
+                gold: 1000,
+                land: 'DragonRealm',
+                ward: 'FireWard',
+                arcana: 50,
+                proj: 10,
+                enemies: 5,
+                draws: 100,
+              },
+            });
+          } else if (stack.includes('should handle nested objects')) {
+            mockLogData = JSON.stringify({
+              t: 1234567890,
+              lvl: 'info',
+              src: 'test',
+              msg: 'Test message',
+              data: {
+                dragonName: 'TestDragon',
+                nested: {},
+                array: [{ dragonName: 'Dragon1' }, { dragonName: 'Dragon2' }],
+              },
+            });
+          } else {
+            // Default single log case
+            mockLogData = JSON.stringify({
+              t: 1234567890,
+              lvl: 'info',
+              src: 'test',
+              msg: 'Test message',
+              data: { test: 'data' },
+            });
+          }
         }
-      }
-      
+
         // Create a mock Blob with the mock data that includes .text() method
         const mockBlob = {
           size: mockLogData.length,
@@ -98,7 +99,7 @@ vi.mock('@draconia/logger', () => ({
           slice: vi.fn(() => mockBlob),
         };
         return Promise.resolve(mockBlob);
-    }),
+      }),
       clear: vi.fn(),
       enableConsole: vi.fn(),
     };
@@ -235,7 +236,7 @@ describe('Log Export Integration Tests', () => {
         lvl: 'info',
         src: 'test',
         msg: 'Test message',
-        data: { test: 'data' }
+        data: { test: 'data' },
       });
     });
 
@@ -347,7 +348,7 @@ describe('Log Export Integration Tests', () => {
       const logEntry = JSON.parse(text.trim());
 
       expect(logEntry.data).toEqual({
-        test: 'data' // Default mock data
+        test: 'data', // Default mock data
       });
     });
 
@@ -376,7 +377,7 @@ describe('Log Export Integration Tests', () => {
       const logEntry = JSON.parse(text.trim());
 
       expect(logEntry.data).toEqual({
-        test: 'data' // Default mock data
+        test: 'data', // Default mock data
       });
     });
 
@@ -404,7 +405,7 @@ describe('Log Export Integration Tests', () => {
       const logEntry = JSON.parse(text.trim());
 
       expect(logEntry.data).toEqual({
-        test: 'data' // Default mock data
+        test: 'data', // Default mock data
       });
     });
   });

@@ -1,6 +1,6 @@
 {
   "name": "@draconia/logger",
-  "version": "0.5.0-alpha",
+  "version": "0.0.1-alpha",
   "description": "Structured logging system for Draconia Chronicles",
   "main": "dist/index.js",
   "type": "module",
