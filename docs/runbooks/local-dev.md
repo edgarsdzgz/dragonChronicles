@@ -2,27 +2,37 @@
 
 # Local Development Setup
 
-This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone to running tests.
+This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone
+to
+running
+tests.
 
 ## Prerequisites
 
 - **Node.js**: 18.17+ (check with `node --version`)
+
 - **pnpm**: 9.0.0+ (install with `npm install -g pnpm`)
+
 - **Git**: For repository operations
 
 ## Quick Start (5 minutes)
 
-```bash
+````bash
+
 # 1. Clone repository
-git clone https://github.com/edgarsdzgz/dragonChronicles.git
+
+git clone <https://github.com/edgarsdzgz/dragonChronicles.git>
 cd dragonChronicles
 
 # 2. Install dependencies
+
 pnpm install
 
 # 3. Run tests (includes build optimization)
+
 node tests/run-all.mjs
-```
+
+```text
 
 **Expected output**: `ok - 2 passed` (for each test file)
 
@@ -31,55 +41,72 @@ node tests/run-all.mjs
 ### 1. Repository Clone
 
 ```bash
-git clone https://github.com/edgarsdzgz/dragonChronicles.git
+
+git clone <https://github.com/edgarsdzgz/dragonChronicles.git>
 cd dragonChronicles
 
 # Verify you're on the correct branch
+
 git branch --show-current
-```
+
+```bash
 
 ### 2. Dependency Installation
 
 ```bash
+
 # Install all workspace dependencies
+
 pnpm install
 
 # Verify installation
+
 pnpm list --depth=0
-```
+
+```bash
 
 **Troubleshooting**:
 
 - If `pnpm` not found: `npm install -g pnpm`
+
 - If Node version mismatch: Use Node 18.17+
 
 ### 3. TypeScript Compilation
 
 ```bash
+
 # Build all packages and apps
+
 pnpm run build
 
 # Verify artifacts exist
+
 ls packages/*/dist
 ls apps/*/dist
-```
+
+```bash
 
 ### 4. Test Execution
 
 ```bash
+
 # Run all tests (cross-platform driver with build-once optimization)
+
 node tests/run-all.mjs
 
 # Run individual test suites (if needed)
+
 pnpm run test:unit          # Unit tests
 pnpm run test:integration   # Integration tests
 pnpm run test:e2e          # End-to-end tests
 pnpm run test:ts-strict    # TypeScript strict gate
-```
+
+```text
 
 ## Workspace Structure
 
-```
+```bash
+
 dragonChronicles/
 ├── packages/           # Shared libraries
 │   ├── shared/        # Common utilities
@@ -91,7 +118,8 @@ dragonChronicles/
 ├── tests/             # Test files
 ├── docs/              # Documentation
 └── scripts/           # Build/utility scripts
-```
+
+```text
 
 ## Development Workflow
 
@@ -100,69 +128,88 @@ dragonChronicles/
 1. **Create feature branch**:
 
    ```bash
+
    git checkout -b feat/your-feature-name
-   ```
 
-2. **Make your changes** to packages or apps
+```text
 
-3. **Build and test**:
+1. **Make your changes** to packages or apps
+
+1. **Build and test**:
 
    ```bash
+
    node tests/run-all.mjs
-   ```
 
-4. **Commit changes**:
+```bash
+
+1. **Commit changes**:
 
    ```bash
+
    git add .
    git commit -m "feat: add your feature"
-   ```
+
+```javascript
 
 ### TypeScript Development
 
 - **Strict mode**: All code must pass `pnpm run test:ts-strict`
+
 - **Configuration**: Uses `tsconfig.base.json` with strict settings
+
 - **Build**: Incremental compilation with project references
 
 ### Testing Changes
 
 ```bash
+
 # Quick test during development
+
 node tests/test-unit-shared.mjs
 
 # Full test suite (cross-platform, optimized)
+
 node tests/run-all.mjs
 
 # With verbose TypeScript output
+
 node tests/test-ts-strict.mjs
-```
+
+```javascript
 
 ## Package Scripts Reference
 
 ### Build Scripts
 
 ```bash
+
 pnpm run build        # Build all packages and apps
 pnpm run clean        # Clean all build artifacts
 pnpm run typecheck    # Type checking without emit
-```
+
+```javascript
 
 ### Test Scripts
 
 ```bash
+
 node tests/run-all.mjs     # All tests with build-once optimization
 pnpm run test:unit         # Unit tests only
 pnpm run test:integration  # Integration tests only
 pnpm run test:e2e         # End-to-end tests only
 pnpm run test:ts-strict   # TypeScript strict enforcement
-```
+
+```javascript
 
 ### Development Scripts
 
 ```bash
+
 pnpm run dev:sandbox   # Run sandbox app in dev mode
 pnpm run list         # List all workspace packages
-```
+
+```text
 
 ## Common Issues and Solutions
 
@@ -171,58 +218,77 @@ pnpm run list         # List all workspace packages
 **Issue**: `tsc -b` fails with compilation errors
 
 ```bash
+
 # Solution: Check specific package errors
+
 pnpm run typecheck
 
 # Clean and rebuild
+
 pnpm run clean
 pnpm run build
-```
+
+```bash
 
 **Issue**: Missing `dist/` directories
 
 ```bash
+
 # Solution: Ensure build completed successfully
+
 pnpm run build
 ls packages/*/dist  # Should show compiled output
-```
+
+```javascript
 
 ### Test Failures
 
 **Issue**: Tests report failures but errors aren't clear
 
 ```bash
+
 # Solution: Run individual test files for detailed output
+
 node tests/test-unit-shared.mjs
 node tests/test-integration-graph.mjs
-```
+
+```javascript
 
 **Issue**: Individual tests failing after changes
 
 ```bash
+
 # Solution: Use the driver for reliable cross-platform testing
+
 node tests/run-all.mjs
 
 # Or build manually first
+
 pnpm run build
 BUILD_ONCE=1 node tests/test-unit-shared.mjs
-```
+
+```javascript
 
 ### TypeScript Issues
 
 **Issue**: Strict mode violations (TS7006, TS7031)
 
 ```bash
+
 # Solution: Check specific errors
+
 pnpm run test:ts-strict
 
 # See TypeScript documentation for fixes
+
 cat docs/engineering/typescript.md
-```
+
+```javascript
 
 **Issue**: Module resolution errors
 
 - Check `tsconfig.base.json` has correct `moduleResolution: "NodeNext"`
+
 - Ensure `package.json` has `"type": "module"` if needed
 
 ### IDE Setup
@@ -230,14 +296,19 @@ cat docs/engineering/typescript.md
 #### VS Code
 
 1. Install TypeScript extension
-2. Use workspace TypeScript version
-3. Enable strict mode warnings
-4. Configure auto-imports from `tsconfig.base.json`
+
+1. Use workspace TypeScript version
+
+1. Enable strict mode warnings
+
+1. Configure auto-imports from `tsconfig.base.json`
 
 #### Other IDEs
 
 - Point to `tsconfig.base.json` for project configuration
+
 - Enable TypeScript strict mode checking
+
 - Configure import resolution for monorepo structure
 
 ## Performance Tips
@@ -245,42 +316,57 @@ cat docs/engineering/typescript.md
 ### Faster Builds
 
 ```bash
+
 # Use TypeScript build mode for incremental compilation
+
 pnpm run build
 
 # Use the driver for build-once optimization
+
 node tests/run-all.mjs
-```
+
+```javascript
 
 ### Faster Tests
 
 ```bash
+
 # Run all tests with driver (fastest, cross-platform)
+
 node tests/run-all.mjs
 
 # Run specific test categories if needed
+
 pnpm run test:unit      # Fastest
 pnpm run test:ts-strict # Fast (no runtime execution)
 pnpm run test:e2e      # Slowest (full builds)
-```
+
+```bash
 
 ### Development Mode
 
 ```bash
+
 # Watch mode for sandbox development
+
 pnpm run dev:sandbox
 
 # Monitor file changes and rebuild automatically
+
 # (Future: Add watch scripts when needed)
-```
+
+```text
 
 ## Documentation Integration
 
 When making changes that affect:
 
 - **Packages/Apps**: Update relevant documentation in `/docs`
+
 - **Tests**: Update `/docs/engineering/testing.md`
+
 - **TypeScript**: Update `/docs/engineering/typescript.md`
+
 - **Architectural decisions**: Add ADR in `/docs/adr/`
 
 See [Documentation Standards](/docs/README.md) for detailed guidance.
@@ -288,8 +374,11 @@ See [Documentation Standards](/docs/README.md) for detailed guidance.
 ## Getting Help
 
 - **Documentation**: Check `/docs` directory first
+
 - **Issues**: Review project GitHub issues
+
 - **ADRs**: Check `/docs/adr/` for architectural decisions
+
 - **Team**: Contact development team for complex setup issues
 
 ## Next Steps
@@ -297,6 +386,10 @@ See [Documentation Standards](/docs/README.md) for detailed guidance.
 After completing setup:
 
 1. Review [Testing Strategy](/docs/engineering/testing.md)
-2. Read [TypeScript Standards](/docs/engineering/typescript.md)
-3. Check [Architectural Decision Records](/docs/adr/0001-testing-strategy.md)
-4. Start with small changes to familiarize yourself with the workflow
+
+1. Read [TypeScript Standards](/docs/engineering/typescript.md)
+
+1. Check [Architectural Decision Records](/docs/adr/0001-testing-strategy.md)
+
+1. Start with small changes to familiarize yourself with the workflow
+````

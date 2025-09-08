@@ -66,11 +66,17 @@ across sessions
 
 1. **Debugging Chronicles System**
    - Created comprehensive documentation system
+
    - Real-time debugging session capture
+
    - Searchable knowledge base for community
+
    - Template and index system established
+
    - **CRITICAL**: All debugging sessions must be documented as chronicles
+
    - **CRITICAL**: Debugging chronicles capture root causes, solutions, and learnings
+
    - **CRITICAL**: Use systematic pipeline-first debugging approach
 
 ### **Recent Discoveries**
@@ -86,8 +92,11 @@ across sessions
 ### **Cleanup Workflow Directives**
 
 - **CRITICAL**: After PR merge, delete planning documents (WXPlan.md, S00XPlan.md) - do NOT mark complete
+
 - **CRITICAL**: Follow PR cleanup runbook: switch to main, pull, delete branches, clean docs
+
 - **CRITICAL**: Planning documents are temporary - delete when workpack is complete
+
 - **CRITICAL**: Only keep completed work documented in changelog and ADRs
 
 ---
@@ -306,28 +315,73 @@ internet research for resolution paths.
 SYSTEMATIC PIPELINE DEBUGGING APPROACH:
 
 1. PIPELINE-FIRST STRATEGY: Always go by what GitHub logs say, not local tests
-2. WORKFLOW-BY-WORKFLOW: Go through each failing workflow one by one systematically
-3. INTERNET RESEARCH: Use web search to bolster knowledge and find solutions
+
+1. WORKFLOW-BY-WORKFLOW: Go through each failing workflow one by one systematically
+
+1. INTERNET RESEARCH: Use web search to bolster knowledge and find solutions
 
 DEBUGGING PROCESS:
 
 - Step 1: Assess current pipeline status with 'gh run list --limit 10'
+
 - Step 2: Prioritize workflow fixes (CI → Checks → Docs → Pages → Lighthouse → E2E)
+
 - Step 3: For each failing workflow:
   - Analyze error from GitHub Actions logs
+
   - Research solution using web search
+
   - Reproduce locally with equivalent commands
+
   - Implement fix based on research
+
   - Validate and push fix
+
   - Verify pipeline improvement
+
   - Move to next failing workflow
 
-QUALITY GATES: ESLint (zero errors), Prettier (consistent formatting), TypeScript (strict mode), Markdown (linting compliance), Tests (100% pass rate), Performance (size budgets)
+QUALITY GATES: ESLint (zero errors), Prettier (consistent formatting), TypeScript (strict mode),
+Markdown
+(linting
+compliance),
+Tests
+(100%
+pass
+rate),
+Performance
+(size
+budgets)
 
-DOCUMENTATION: All debugging sessions must be chronicled in docs/engineering/\*-debugging-session.md with session overview, issues resolved, solutions implemented, and key learnings.
+DOCUMENTATION: All debugging sessions must be chronicled in docs/engineering/\*-debugging-session.md
+with
+session
+overview,
+issues
+resolved,
+solutions
+implemented,
+and
+key
+learnings.
 
 This approach ensures efficient, thorough, and knowledge-building CI/CD pipeline debugging.
 
 ### **Current Session**
 
-Created comprehensive CI/CD pipeline debugging procedures document and committed systematic debugging approach to memory. Key principles: 1) Pipeline-first strategy (use GitHub logs as source of truth), 2) Workflow-by-workflow systematic approach, 3) Internet research integration for solutions. Documented complete step-by-step process, common issues/solutions, quality gates, and documentation requirements.
+Created comprehensive CI/CD pipeline debugging procedures document and committed systematic
+debugging
+approach
+to
+memory..
+Key principles: 1) Pipeline-first strategy (use GitHub logs as source of truth), 2)
+Workflow-by-workflow
+systematic
+approach, 3)
+Internet
+research
+integration
+for
+solutions.
+Documented complete step-by-step process, common issues/solutions, quality gates, and documentation
+requirements.
