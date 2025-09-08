@@ -1458,7 +1458,7 @@ if (process.env.VERBOSE) console.log('All validations passed');
 
 ### Always Automate Repetitive Tasks
 
-**When encountering repetitive, manual tasks that follow a simple pattern, ALWAYS create a bash script to automate them.**
+**When manual attempts fail repeatedly (3+ times), check to see if there's a scripts folder in our project, then go through the scripts to see if there's an existing script that will resolve the failed manual attempt. If no such script exists, create an automation script instead of continuing manual attempts (this can be a bash script for something simple or a python script for something more complex).**
 
 **Benefits:**
 
