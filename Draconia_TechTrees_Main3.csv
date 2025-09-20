@@ -1,0 +1,84 @@
+Tree,NodeName,UpgradeType,Tier
+Flamecraft,Damage 1,Damage,1
+Flamecraft,Damage 2,Damage,2
+Flamecraft,Damage 3,Damage,3
+Flamecraft,Damage 4,Damage,4
+Flamecraft,Damage 5,Damage,5
+Flamecraft,Damage 6,Damage,6
+Flamecraft,Fire Rate 1,Fire Rate,1
+Flamecraft,Fire Rate 2,Fire Rate,2
+Flamecraft,Fire Rate 3,Fire Rate,3
+Flamecraft,Fire Rate 4,Fire Rate,4
+Flamecraft,Fire Rate 5,Fire Rate,5
+Flamecraft,Range 1,Range,1
+Flamecraft,Range 2,Range,2
+Flamecraft,Range 3,Range,3
+Flamecraft,Range 4,Range,4
+Flamecraft,Range 5,Range,5
+Flamecraft,Splash Chance 1,Splash Chance,1
+Flamecraft,Splash Chance 2,Splash Chance,2
+Flamecraft,Splash Chance 3,Splash Chance,3
+Flamecraft,Splash Radius 1,Splash Radius,1
+Flamecraft,Splash Radius 2,Splash Radius,2
+Flamecraft,Splash Radius 3,Splash Radius,3
+Flamecraft,Splash Damage % 1,Splash Damage %,1
+Flamecraft,Splash Damage % 2,Splash Damage %,2
+Flamecraft,On-Hit Effect 1,On-Hit Effect,1
+Flamecraft,On-Hit Effect 2,On-Hit Effect,2
+Flamecraft,On-Kill Effect 1,On-Kill Effect,1
+Flamecraft,On-Kill Effect 2,On-Kill Effect,2
+Flamecraft,Armor Shred 1,Armor Shred,1
+Flamecraft,Armor Shred 2,Armor Shred,2
+Flamecraft,Critical Chance 1,Critical Chance,1
+Flamecraft,Critical Chance 2,Critical Chance,2
+Flamecraft,Critical Damage 1,Critical Damage,1
+Flamecraft,Critical Damage 2,Critical Damage,2
+Flamecraft,Multishot 1,Multishot,1
+Flamecraft,Rampage 1,Rampage,1
+Scales,Max HP 1,Max HP,1
+Scales,Max HP 2,Max HP,2
+Scales,Max HP 3,Max HP,3
+Scales,Max HP 4,Max HP,4
+Scales,HP Regeneration 1,HP Regeneration,1
+Scales,HP Regeneration 2,HP Regeneration,2
+Scales,HP Regeneration 3,HP Regeneration,3
+Scales,Armor 1,Armor,1
+Scales,Armor 2,Armor,2
+Scales,Armor 3,Armor,3
+Scales,Armor 4,Armor,4
+Scales,Status Resist 1,Status Resist,1
+Scales,Status Resist 2,Status Resist,2
+Scales,Status Resist 3,Status Resist,3
+Scales,Shockwave Radius 1,Shockwave Radius,1
+Scales,Shockwave Radius 2,Shockwave Radius,2
+Scales,Shockwave Damage 1,Shockwave Damage,1
+Scales,Shockwave Damage 2,Shockwave Damage,2
+Scales,Thorns 1,Thorns,1
+Scales,Thorns 2,Thorns,2
+Scales,Lifesteal 1,Lifesteal,1
+Scales,Lifesteal 2,Lifesteal,2
+Scales,% Damage Reduction 1,% Damage Reduction,1
+Scales,Second Chance 1,Second Chance,1
+Safety,Flight Speed 1,Flight Speed,1
+Safety,Flight Speed 2,Flight Speed,2
+Safety,Flight Speed 3,Flight Speed,3
+Safety,Flight Speed 4,Flight Speed,4
+Safety,Cooldown Reduction 1,Cooldown Reduction,1
+Safety,Cooldown Reduction 2,Cooldown Reduction,2
+Safety,Cooldown Reduction 3,Cooldown Reduction,3
+Safety,Gold Gain 1,Gold Gain,1
+Safety,Gold Gain 2,Gold Gain,2
+Safety,Gold Gain 3,Gold Gain,3
+Safety,Gold Gain 4,Gold Gain,4
+Safety,Arcana Gain 1,Arcana Gain,1
+Safety,Arcana Gain 2,Arcana Gain,2
+Safety,XP / Soul Power Gain 1,XP / Soul Power Gain,1
+Safety,XP / Soul Power Gain 2,XP / Soul Power Gain,2
+Safety,XP / Soul Power Gain 3,XP / Soul Power Gain,3
+Safety,XP / Soul Power Gain 4,XP / Soul Power Gain,4
+Safety,Drop Chance 1,Drop Chance,1
+Safety,Drop Chance 2,Drop Chance,2
+Safety,Offline / Idle Boost 1,Offline / Idle Boost,1
+Safety,Offline / Idle Boost 2,Offline / Idle Boost,2
+Safety,Offline / Idle Boost 3,Offline / Idle Boost,3
+Safety,Offline / Idle Boost 4,Offline / Idle Boost,4

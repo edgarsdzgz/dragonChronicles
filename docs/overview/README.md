@@ -2,7 +2,8 @@
 
 # Overview
 
-Product summaries, architecture overviews, and project status for Draconia Chronicles v0.0.1-alpha.
+Product summaries, architecture overviews, and project status for Draconia Chronicles
+v0.0.1-alpha.
 
 ## Project Status
 
@@ -120,7 +121,8 @@ tests/             # Test infrastructure
 **Architecture**: PWA with offline-first design
 **Platform**: Desktop/Mobile browsers with installable PWA
 
-For complete game design, see [Draconia Chronicles v2 GDD](/Draconia*Chronicles*v2_GDD.md).
+For complete game design, see [Draconia Chronicles v2
+GDD](/Draconia*Chronicles*v2_GDD.md).
 
 ## Next Milestones
 
@@ -221,4 +223,5 @@ For complete game design, see [Draconia Chronicles v2 GDD](/Draconia*Chronicles*
 ---
 
 Last updated: 2025-08-28
+
 ````

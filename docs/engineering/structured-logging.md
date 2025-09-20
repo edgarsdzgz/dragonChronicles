@@ -6,9 +6,11 @@
 
 ## Overview
 
-The structured logging system provides a production-ready, high-performance logging infrastructure
+The structured logging system provides a production-ready, high-performance logging
+infrastructure
 for
-Draconia Chronicles v2.0.0. It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
+Draconia Chronicles v2.0.0..
+It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
 management, Dexie persistence, and comprehensive PII redaction.
 
 ## Architecture
@@ -357,7 +359,8 @@ pnpm run test:vitest:render # Render tests (JSDOM)
 
 ### Migration Path
 
-The current v1 implementation provides a stable foundation for future enhancements while maintaining
+The current v1 implementation provides a stable foundation for future enhancements while
+maintaining
 backward compatibility through the core `Logger` interface.
 
 ## Related Documentation
@@ -369,4 +372,5 @@ backward compatibility through the core `Logger` interface.
 - [Testing Strategy](./testing.md) - Test infrastructure
 
 - [TypeScript Standards](./typescript.md) - Type safety enforcement
+
 ````

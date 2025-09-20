@@ -2,7 +2,9 @@
 
 # Local Development Setup
 
-This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from initial clone
+This runbook covers setting up Draconia Chronicles v2.0.0 for local development, from
+initial
+clone
 to
 running
 tests.
@@ -392,4 +394,5 @@ After completing setup:
 1. Check [Architectural Decision Records](/docs/adr/0001-testing-strategy.md)
 
 1. Start with small changes to familiarize yourself with the workflow
+
 ````

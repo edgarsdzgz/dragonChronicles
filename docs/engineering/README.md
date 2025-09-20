@@ -1,6 +1,8 @@
 # Engineering Documentation
 
-This directory contains comprehensive engineering documentation for the Draconia Chronicles project.
+This directory contains comprehensive engineering documentation for the Draconia
+Chronicles
+project.
 
 ## 📚 Documentation Overview
 

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **W4**: Persistence v1 Implementation
+
   - Complete Dexie (IndexedDB) integration with v1 schema
 
   - Zod validation for runtime type safety and data integrity
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive test suite (70 tests, 32 passing core functionality)
 
 - **W5**: Logging v1 Implementation
+
   - Structured logging system with tiny, tree-shakeable API (≤8 KB gz)
 
   - In-memory ring buffer with configurable byte/entry caps (2 MB / 10k entries)
@@ -44,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive test suite (124 tests, 100% pass rate)
 
 - **W6**: PWA & Update UX Implementation ✅
+
   - Complete Progressive Web App with installation and offline capabilities
 
   - Workbox-based service worker with comprehensive caching strategies
@@ -61,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Production-ready build pipeline with PWA asset generation
 
 - **W7**: CI/CD & Previews Implementation ✅
+
   - Complete GitHub Actions CI/CD pipeline with quality gates
 
   - Size budget enforcement (base ≤200KB gz, logger ≤8KB gz) - all budgets met
@@ -78,6 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Production deployment automation for main branch
 
 - **W8**: Dev UX & Docs Implementation ✅
+
   - Complete feature flags system with environment and query string support
 
   - Global error boundary with NDJSON log export capability
@@ -107,6 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added (2)
 
 - **S001**: Testing Strategy Implementation
+
   - Custom tiny-runner test infrastructure
 
   - BUILD_ONCE optimization for faster test execution
@@ -116,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - TypeScript strict gate enforcement
 
 - **S002**: TypeScript Strict Enforcement
+
   - Strict mode compliance across all packages
 
   - Automated type safety validation

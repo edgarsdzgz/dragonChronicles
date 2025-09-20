@@ -1,0 +1,109 @@
+{
+  "name": "Documentation Standards Rule",
+  "version": "1.0",
+  "description": "MANDATORY rule for comprehensive summaries in all documentation",
+  "type": "validation",
+  "trigger": ["documentation_creation", "documentation_update", "epic_creation", "story_creation"],
+  "rules": {
+    "hierarchical_summaries": {
+      "description": "Every hierarchical level must have both technical and non-technical summaries",
+      "levels": ["epic_of_epics", "epic", "story", "chapter", "section"],
+      "required": true,
+      "templates": {
+        "non_technical": "### 🎯 **What This [Level] Does**\n**For Non-Coders:** [Clear, jargon-free explanation]",
+        "technical": "**Technical Summary:** [Concise technical explanation]",
+        "completion": "### 🏗️ **What We'll Have Completed After [Level]**\n**For Non-Coders:** [What players will experience]\n**Technical Summary:** [What systems will be implemented]"
+      }
+    },
+    "code_examples": {
+      "description": "Every code example must include comprehensive inline comments",
+      "required": true,
+      "elements": {
+        "inline_comments": "Explain what each line/section does",
+        "purpose_statement": "Why this code exists",
+        "integration_notes": "How it connects to other systems",
+        "usage_context": "When and where this code is used"
+      }
+    },
+    "section_purpose": {
+      "description": "Every section must explain its purpose and integration",
+      "required": true,
+      "elements": {
+        "purpose": "What this section accomplishes",
+        "integration": "How it connects to other systems",
+        "audience": "Who this is for (technical/non-technical)"
+      }
+    },
+    "h3_headers": {
+      "description": "Every H3 header section must have comprehensive explanations",
+      "required": true,
+      "elements": {
+        "section_purpose": "What this section does and why it exists",
+        "integration_notes": "How this section connects to other systems",
+        "non_technical_explanation": "Clear explanation accessible to non-coders",
+        "technical_context": "Implementation details and technical reasoning"
+      }
+    },
+    "h4_headers": {
+      "description": "Every H4 header section must have component-level explanations",
+      "required": true,
+      "elements": {
+        "component_purpose": "What this specific component/system does",
+        "technical_reasoning": "Why this component exists and how it works",
+        "integration_context": "How this component fits into the larger system",
+        "implementation_details": "Technical specifics and implementation notes"
+      }
+    }
+  },
+  "validation": {
+    "checklist": [
+      "Every hierarchical level has non-technical summary",
+      "Every hierarchical level has technical summary", 
+      "Every code example has inline comments",
+      "Every section explains its purpose and integration",
+      "Every H3 header section has purpose and integration explanations",
+      "Every H3 header section has non-technical explanations",
+      "Every H4 header section has component purpose and technical reasoning",
+      "Every H4 header section has integration context and implementation details",
+        "No hardcoded values - all gameplay parameters are upgradeable through configuration",
+      "Upgrade system integration - Soul Power, tech trees, premium currency paths",
+        "Future-proofing - modular design supports new parameters and features",
+        "Test reliability - test values can be hardcoded for consistent testing",
+      "Non-technical summaries are accessible to non-coders",
+      "Technical summaries are precise and complete",
+      "Completion criteria are measurable and clear"
+    ]
+  },
+  "templates": {
+    "epic_overview": {
+      "non_technical": "### 🎯 **Epic [X] Overview - What This Epic Does**\n**For Non-Coders:** [Clear explanation of player benefits]",
+      "technical": "**Technical Summary:** [Systems and components implemented]"
+    },
+    "story_purpose": {
+      "non_technical": "### 🎯 **What This Story Does**\n**For Non-Coders:** [Clear explanation of player benefits]",
+      "technical": "**Technical Summary:** [Specific features and systems implemented]"
+    },
+    "code_example": {
+      "format": "```typescript\n// What this does: [Purpose statement]\n// Why this exists: [Context and reasoning]\n// How it integrates: [System connections]\nclass ExampleClass {\n  // Inline comments explaining each line\n  method() {\n    // Implementation with comments\n  }\n}\n```"
+    }
+  },
+  "enforcement": {
+    "level": "mandatory",
+    "scope": ["gdd", "epics", "stories", "technical_specs", "documentation"],
+    "ai_assistants": true,
+    "human_team": true,
+    "review_required": true
+  },
+  "references": {
+    "rule_file": "docs/Documentation_Standards_Rule.md",
+    "claude_integration": "CLAUDE.md",
+    "examples": "temp_github_issue_epic_1_1_detailed_spec.md"
+  },
+  "quality_gates": {
+    "accessibility": "Non-technical team members can understand purpose and impact",
+    "completeness": "All hierarchical levels have required summaries",
+    "clarity": "Code examples are self-documenting with comments",
+    "integration": "Clear understanding of how components connect",
+    "actionability": "Clear completion criteria and deliverables"
+  }
+}

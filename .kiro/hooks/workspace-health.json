@@ -1,0 +1,47 @@
+{
+  "name": "Workspace Health Check",
+  "description": "Comprehensive workspace integrity and health validation",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🏥 Health Check",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm -w list --depth -1",
+      "description": "Check workspace package listing"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run ws:check",
+      "description": "Workspace integrity check"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run build:verify",
+      "description": "Build verification"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run structural:verify",
+      "description": "Structural verification"
+    },
+    {
+      "type": "shell",
+      "command": "gh run list --limit 5",
+      "description": "Check recent pipeline runs",
+      "ignore_errors": true
+    }
+  ],
+  "notification": {
+    "success": "✅ Workspace health check passed",
+    "error": "⚠️ Workspace health issues detected - check output"
+  },
+  "output": {
+    "show_on_success": true,
+    "show_on_error": true
+  }
+}

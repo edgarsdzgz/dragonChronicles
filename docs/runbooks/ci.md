@@ -2,7 +2,9 @@
 
 # CI/CD Execution
 
-This runbook describes how Continuous Integration (CI) executes tests and documentation checks for
+This runbook describes how Continuous Integration (CI) executes tests and documentation
+checks
+for
 Draconia
 Chronicles
 v2.0.0.
@@ -293,4 +295,5 @@ Before submitting PRs, ensure:
 | Deployment           | ❌ Not Implemented | Future implementation needed          |
 
 See [Local Development](./local-dev.md) for current development workflow.
+
 ````

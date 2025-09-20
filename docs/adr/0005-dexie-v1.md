@@ -7,7 +7,11 @@
 
 ## Context
 
-Draconia Chronicles requires a client-side database solution for persistent game state, save data, and logging..
+Draconia Chronicles requires a client-side database solution for persistent game state,
+save
+data,
+and
+logging..
 The requirements include:
 
 - **Client-Side Storage**: No server dependency for core game functionality
@@ -26,7 +30,9 @@ The requirements include:
 
 - **Atomic Operations**: Transaction-safe save operations
 
-The game needs to store player progress, simulation state, settings, and logs while maintaining data
+The game needs to store player progress, simulation state, settings, and logs while
+maintaining
+data
 consistency
 and
 supporting
@@ -35,7 +41,8 @@ updates.
 
 ## Decision
 
-Implement **Dexie (IndexedDB wrapper) v1** as the primary database solution with Zod validation,
+Implement **Dexie (IndexedDB wrapper) v1** as the primary database solution with Zod
+validation,
 atomic
 operations,
 and
@@ -165,7 +172,7 @@ db.version(2).stores({
 // Data portability with integrity validation
 async function exportProfile(profileId: string): Promise<Blob> {
   const saves = await db.saves.where('profileId').equals(profileId).toArray();
-  const meta = await db.meta.where('key').startsWith(`active*save*${profileId}`).toArray();
+const meta = await db.meta.where('key').startsWith(`active*save*${profileId}`).toArray();
 
   const exportData = {
     version: '1.0.0',
@@ -320,4 +327,5 @@ The database system was established during W4 and has proven successful:
 - [W4 Implementation](../engineering/database-persistence.md)
 
 - [Database Testing Strategy](../engineering/testing.md)
+
 ````

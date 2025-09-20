@@ -2,13 +2,28 @@
 
 # Development Practices
 
-This document outlines key development practices and guidelines for the Draconia Chronicles project.
+This document outlines key development practices and guidelines for the Draconia
+Chronicles
+project.
 
 ## Engineering Standards
 
 ### Don't Bypass Agreed Requirements
 
-When given specific technical requirements (such as using `pnpm -w -r run build` for workspace builds), implement those exact requirements rather than falling back to alternative solutions..
+When given specific technical requirements (such as using `pnpm -w -r run build` for
+workspace
+builds),
+implement
+those
+exact
+requirements
+rather
+than
+falling
+back
+to
+alternative
+solutions..
 If implementation fails:
 
 1. **Debug the root cause** - Use diagnostic commands to understand why the requirement fails
@@ -152,5 +167,7 @@ When receiving detailed technical feedback:
 
 1. **Ask for clarification** rather than making assumptions about requirements
 
-These practices help maintain code quality and ensure reliable, predictable development processes.
+These practices help maintain code quality and ensure reliable, predictable development
+processes.
+
 ````

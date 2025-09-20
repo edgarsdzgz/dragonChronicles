@@ -1,0 +1,287 @@
+# DragonIdler Project Rules for Cursor
+
+This project uses a comprehensive documentation system with strict workflow gates. You MUST follow these rules and refer to the documentation files.
+
+## MANDATORY Reading Before Starting (NON-NEGOTIABLE)
+
+1. **MUST READ FIRST**: `CLAUDE.md` - Complete development guidelines and operational procedures
+2. **MUST READ SECOND**: `docs/engineering/llm-onboarding-complete.md` - Full project context and architecture
+3. **MUST READ THIRD**: `draconiaChroniclesDocs/README.md` - Entry point to the Draconia Tome of Knowledge
+4. **MUST READ FOURTH**: `draconiaChroniclesDocs/tome/00_TOME_Index_v2.2.md` - Master index of all game design specifications
+5. **MUST CHECK**: Current pipeline status with `gh run list --limit 5` (all 6 workflows must be passing)
+6. **MUST VERIFY**: You are NOT on main branch - create feature branch immediately
+
+## CRITICAL Technology Constraints (NEVER VIOLATE)
+
+1. **Package Manager**: ALWAYS use `pnpm`, NEVER use `npm` or `yarn`
+   - Install packages: `pnpm add [package-name]`
+   - Install dev dependencies: `pnpm add -D [package-name]`
+   - Workspace operations: `pnpm -w [command]`
+   - Run scripts: `pnpm run [script-name]`
+
+2. **TypeScript**: MANDATORY strict mode compliance
+   - All code must pass `pnpm run type-check`
+   - Zero TypeScript errors allowed
+   - Use proper type annotations
+
+3. **Testing**: ALL code changes require 100% test pass rate
+   - Must pass all 192 tests: `pnpm run test:all`
+   - New features require new tests
+   - No breaking existing tests
+
+4. **Pipeline**: MUST achieve 6/6 workflow success before proceeding
+   - CI, Checks, Docs, Pages Deploy, Lighthouse, E2E Smoke
+   - Check status: `gh run list --limit 5`
+   - Fix failures before continuing work
+
+## Workflow Gates (MANDATORY CHECKPOINTS)
+
+### Before Starting Work
+1. **Feature Branch Gate**: NEVER work directly on main branch
+   - Create branch: `git checkout -b feat/wX-description`
+   - Push branch: `git push origin feat/wX-description`
+
+2. **Planning Document Gate**: MUST create plan document before implementation
+   - Create `WXPlan.md` or `SXXXPlan.md` in root directory
+   - Include analysis, implementation plan, risk assessment
+   - Get user approval before proceeding
+
+3. **Pipeline Health Gate**: Verify all workflows are passing
+   - Run `gh run list --limit 5`
+   - If any failures, fix them before starting new work
+
+### During Development
+4. **Documentation Update Gate**: MANDATORY updates for all changes
+   - **New Functions**: MUST update CLAUDE.md with purpose and usage
+   - **New Files**: MUST document file purpose and integration points
+   - **New Packages**: MUST update architecture documentation
+   - **Architecture Changes**: MUST create or update ADR
+   - **Environment Variables**: MUST document in config docs
+
+5. **Quality Gate**: Continuous validation required
+   - ESLint: `pnpm run lint` (zero errors)
+   - Prettier: `pnpm run format` (consistent formatting)
+   - TypeScript: `pnpm run type-check` (strict compliance)
+   - Tests: `pnpm run test:all` (100% pass rate)
+
+### Before PR Creation
+6. **Pre-PR Approval Gate**: MUST get user approval before creating PR
+   - Provide comprehensive summary of all changes
+   - List all files modified with descriptions
+   - Show test results and validation
+   - Wait for explicit user go-ahead
+
+7. **Documentation Verification Gate**: Ensure all docs are updated
+   - CLAUDE.md reflects new functions/files
+   - Architecture docs updated if needed
+   - No undocumented environment variables
+   - ADRs created for significant decisions
+   - **Draconia Tome updated** for any new game mechanics, lore, or systems
+   - **Tome specifications complete** with TypeScript interfaces and acceptance criteria
+
+## Documentation System Architecture
+
+### Primary Documentation (ALWAYS CURRENT)
+- **CLAUDE.md**: Development guidelines and operational procedures
+- **v2_GDD.md**: Game design document (updated with each workpack)
+- **draconiaChroniclesDocs/tome/**: Complete game design specifications (Draconia Tome v2.2)
+- **docs/engineering/llm-onboarding-complete.md**: Complete project context
+
+### Documentation Hierarchy
+1. **Planning Documents**: Temporary (DELETE after PR merge)
+2. **ADRs**: Permanent architectural decisions
+3. **Changelog**: Version history and completed features
+4. **Chronicles**: Debugging session documentation
+
+### Documentation Update Requirements
+- **When Adding Code**: Update CLAUDE.md with new functions/files
+- **When Changing Architecture**: Create/update ADR
+- **When Completing Workpack**: Update v2_GDD.md, CLAUDE.md, changelog
+- **When Debugging**: Create chronicle document in `docs/engineering/`
+- **When Implementing Game Features**: Reference relevant tome documents for specifications
+- **When Adding Game Content**: Ensure alignment with Draconia Tome specifications
+- **When Developing New Game Mechanics**: MUST update relevant tome document with complete specifications
+- **When Creating New Lore Details**: MUST update tome with canonical lore information
+- **When Defining New Game Systems**: MUST create/update tome documents with full system specifications
+- **When Establishing New Balance Rules**: MUST update tome with mathematical models and constraints
+
+### MANDATORY Debugging Chronicles (NON-NEGOTIABLE)
+- **Pipeline Failures**: MUST create debugging chronicle with root cause analysis
+- **Workflow Debugging Sessions**: MUST document systematic approach and solutions applied
+- **CI/CD Issues**: MUST create session handoff document for AI continuity
+- **Quality Gate Failures**: MUST chronicle debugging process and resolution steps
+- **Performance Issues**: MUST document profiling results and optimization solutions
+- **Integration Problems**: MUST chronicle cross-system debugging and fixes applied
+
+## Quality Standards (NON-NEGOTIABLE)
+
+### Code Quality
+- **ESLint**: Zero errors, strict configuration
+- **Prettier**: Consistent formatting across all files
+- **TypeScript**: Strict mode validation, proper types
+- **Performance**: All size budgets must be met
+- **Tests**: 192 tests must pass (Unit: 54, Integration: 26, DB: 70, Render: 40, E2E: 2)
+
+### Documentation Quality
+- **Markdown**: Must pass markdownlint validation
+- **Completeness**: All new code must be documented
+- **Accuracy**: Documentation must reflect current implementation
+- **Structure**: Follow established documentation patterns
+
+## Emergency Procedures
+
+### Pipeline Failures (MANDATORY CHRONICLES)
+1. **Check Status**: `gh run list --limit 5`
+2. **Get Logs**: `gh run view [RUN_ID] --log-failed`
+3. **Use Chronicles**: Follow `docs/engineering/quick-reference-continuation.md`
+4. **MANDATORY**: Create comprehensive debugging chronicle in `docs/engineering/`
+5. **MANDATORY**: Document root causes, solutions applied, and key learnings
+6. **MANDATORY**: Create session handoff document for AI continuity
+7. **MANDATORY**: Update quick reference guide with new debugging patterns
+
+### Automation Before Manual Work
+1. **Check Scripts**: Look in `scripts/` folder for existing automation
+2. **3+ Manual Failures**: Create automation script instead
+3. **Script Types**: Bash for simple tasks, Python for complex ones
+4. **Commit Scripts**: Save automation for future use
+
+### Memory System
+1. **Update Memories**: When user corrects information, update memory immediately
+2. **Memory Citations**: Always cite memories when using them: [[memory:ID]]
+3. **Contradictions**: Delete incorrect memories rather than updating
+
+## Game Design Reference System (MANDATORY)
+
+### Draconia Tome of Knowledge Usage
+- **ALWAYS** reference the Draconia Tome before implementing game features
+- **Start with**: `draconiaChroniclesDocs/tome/00_TOME_Index_v2.2.md` for navigation
+- **Check precedence**: v2.1 GDD wins over tome if conflicts exist
+- **Use specific documents**: Reference the exact tome document for your feature area
+
+### Key Tome Documents by Development Area
+- **Core Gameplay**: `03_ShooterIdle_Core_Loop.md`
+- **Combat Systems**: `05_Combat_Systems_Enemies_Bosses.md`
+- **Progression**: `04_Progression_Maps_Wards_Lands.md`
+- **Economy**: `07_Economy_Currencies_Items_Market.md`
+- **Technical Architecture**: `12_Tech_Architecture_Frontend.md`
+- **Simulation**: `13_Simulation_Workers_Protocol.md`
+- **Rendering**: `14_Rendering_Pixi_Perf_Budgets.md`
+- **Persistence**: `15_Persistence_Save_Dexie_Schema.md`
+- **Tech Trees**: `16_Firecraft_Safety_Scales_Tech_Trees.md`
+
+### Game Content Implementation Rules
+- **Research Discovery**: All Firecraft/Safety/Scales nodes hidden until discovered
+- **Combat Balance**: Pre-Rift combat ≥70% Journey research, town/meta ≤30%
+- **Performance Targets**: 60 fps desktop, ≥40 fps mid-phones
+- **Economic Balance**: Arcana ×1.12 growth, Soul Power ×1.90 growth
+- **Manual Contribution**: ~20% ±10% damage from player abilities
+
+### When to Reference Tome Documents
+- **Before implementing any game feature**: Check relevant tome specification
+- **When adding game content**: Verify alignment with lore and systems
+- **When balancing mechanics**: Reference mathematical models and curves
+- **When designing UI**: Check accessibility and mobile UX requirements
+- **When adding enemies/bosses**: Reference bestiary and combat specifications
+
+### MANDATORY Tome Updates (NON-NEGOTIABLE)
+- **New Game Mechanics**: Update relevant tome document with complete specification
+- **New Lore Elements**: Add canonical lore to appropriate tome document
+- **New Game Systems**: Create new tome section or document if needed
+- **Balance Changes**: Update mathematical models in `20_Balancing_Math_Curves_Tables.md`
+- **New Enemies/Bosses**: Update bestiary in `05_Combat_Systems_Enemies_Bosses.md`
+- **New Regions/Areas**: Update or create region-specific tome document
+- **New Currencies/Items**: Update `07_Economy_Currencies_Items_Market.md`
+- **New Tech Tree Nodes**: Update `16_Firecraft_Safety_Scales_Tech_Trees.md`
+- **New UI/UX Patterns**: Update `21_A11y_UX_Mobile_Design.md`
+
+### Tome Update Requirements
+- **Complete Specifications**: Include purpose, scope, data contracts, acceptance criteria
+- **TypeScript Interfaces**: Define all data structures and types
+- **Mathematical Models**: Include formulas, growth rates, and balance constraints
+- **Cross-References**: Link to related tome documents and systems
+- **Acceptance Criteria**: Define how to verify correct implementation
+- **Lore Consistency**: Ensure alignment with established world and story
+
+## MANDATORY Debugging Chronicles System
+
+### When Chronicles Are Required (NON-NEGOTIABLE)
+- **Pipeline Failures**: Any CI/CD workflow failure requiring investigation
+- **Quality Gate Failures**: ESLint, TypeScript, test, or build failures
+- **Performance Issues**: Frame rate drops, memory leaks, or optimization needs
+- **Integration Debugging**: Cross-system or cross-package integration problems
+- **Environment Issues**: Development, staging, or production environment problems
+- **Dependency Conflicts**: Package resolution or compatibility issues
+
+### Chronicle Documentation Requirements
+- **Session Overview**: Date, duration, objectives, key issues addressed
+- **Issues Resolved**: Detailed breakdown of each problem, root cause, solution applied
+- **Key Learnings**: Patterns discovered, automation scripts created, configuration changes
+- **Current Status**: Workflow status (X/6 passing), remaining issues, next steps
+- **Automation Scripts**: List of scripts created with purposes and usage
+- **Memory Rules**: New rules discovered and documented
+- **Handoff Instructions**: Specific commands and context for continuation
+
+### Required Chronicle Files
+- **Session Documentation**: `docs/engineering/[topic]-debugging-session.md` - Complete session chronicle
+- **Quick Reference**: `docs/engineering/quick-reference-continuation.md` - Immediate actions and status
+- **Handoff Document**: `docs/engineering/session-handoff-complete.md` - Comprehensive handoff for new AI
+
+### Debugging Process Standards
+- **Systematic Approach**: One workflow at a time, document each fix
+- **Pipeline-First Strategy**: Trust GitHub Actions logs over local tests
+- **Automation Priority**: Create scripts for repetitive tasks (3+ manual attempts)
+- **Online Research**: Use web search to bolster debugging with known solutions
+- **Comprehensive Documentation**: Capture root causes, solutions, and learnings
+
+## Project Architecture (REFERENCE)
+
+### Monorepo Structure
+- `packages/`: Shared libraries (shared, logger, db, sim, engine)
+- `apps/`: Applications (web: SvelteKit, sandbox: CLI)
+- `tests/`: Test suites (unit, integration, e2e, render)
+- `docs/`: Documentation hub
+- `scripts/`: Automation tools
+- `draconiaChroniclesDocs/`: Game design specifications (Draconia Tome)
+
+### Technology Stack
+- **Frontend**: SvelteKit, TypeScript, PixiJS
+- **Backend**: Web Workers, Dexie (IndexedDB)
+- **Build**: pnpm workspaces, Vite, TypeScript project references
+- **Testing**: Vitest, Playwright, custom tiny-runner
+- **CI/CD**: GitHub Actions, Lighthouse CI
+- **PWA**: Workbox, service workers, offline support
+
+## Common Commands (QUICK REFERENCE)
+
+```bash
+# Setup and Development
+pnpm install                    # Install dependencies
+pnpm run dev:web               # Start web app
+pnpm run dev:sandbox           # Start sandbox CLI
+
+# Quality Checks
+pnpm run lint                  # ESLint check
+pnpm run format                # Prettier format
+pnpm run type-check            # TypeScript validation
+pnpm run test:all              # Run all tests
+
+# Pipeline and Status
+gh run list --limit 5          # Check workflow status
+gh run view [RUN_ID] --log-failed  # Get failure logs
+
+# Documentation
+npx markdownlint -c .markdownlint.json file.md  # Test markdown
+scripts/fix-markdown-universal.py               # Fix markdown issues
+```
+
+## CRITICAL REMINDERS
+
+1. **NEVER bypass agreed requirements** - Debug and fix root causes
+2. **ALWAYS provide objective evidence** - Use grep checks, command outputs
+3. **FOLLOW the documentation system** - It's the source of truth
+4. **ASK when unsure** - Don't guess and break workflows
+5. **DOCUMENT everything** - Real-time updates, not after-the-fact
+
+---
+
+**Remember**: This project has a sophisticated documentation system designed for consistency and quality. The rules exist to prevent common mistakes and ensure smooth collaboration between developers and AI assistants. When in doubt, read CLAUDE.md and the onboarding document.

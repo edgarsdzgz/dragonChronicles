@@ -11,7 +11,8 @@ missing memory tools
 ## 🎯 **Overview**
 
 Since Cursor's memory tools are not available on Linux (version 1.5.11), we've created a
-comprehensive file-based memory system that provides the same functionality. This system allows the
+comprehensive file-based memory system that provides the same functionality..
+This system allows the
 AI assistant to maintain context and important information across sessions.
 
 ## 📁 **System Components**
@@ -113,7 +114,8 @@ python3 scripts/memory-manager.py read
 
 # Update current session information
 
-python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration research"
+python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration
+research"
 
 # Update project status
 
@@ -144,12 +146,16 @@ feat/w7-cicd-previews, CI/CD: 4/6 workflows passing"
 
 # Add to session notes
 
-python3 scripts/memory-manager.py add "Session Notes" "Discovered Steam overlay compatibility
+python3 scripts/memory-manager.py add "Session Notes" "Discovered Steam overlay
+compatibility
 issues"
 
 # Add to knowledge base
 
-python3 scripts/memory-manager.py add "Steam Integration Research" "Electron + Steamworks.js is the
+python3 scripts/memory-manager.py add "Steam Integration Research" "Electron +
+Steamworks.js
+is
+the
 recommended approach"
 
 ```text
@@ -338,12 +344,15 @@ You can create custom sections for specific needs:
 
 # Create a new section for debugging sessions
 
-python3 scripts/memory-manager.py update "Debugging Sessions" "PNPM hoisting issue resolved with
+python3 scripts/memory-manager.py update "Debugging Sessions" "PNPM hoisting issue
+resolved
+with
 --config.node-linker=hoisted"
 
 # Add to the debugging section
 
-python3 scripts/memory-manager.py add "Debugging Sessions" "GitHub Pages environment protection
+python3 scripts/memory-manager.py add "Debugging Sessions" "GitHub Pages environment
+protection
 rules fixed"
 
 ```text
@@ -357,8 +366,10 @@ For multiple updates, you can chain commands:
 # Update multiple sections
 
 python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration"
-python3 scripts/memory-manager.py add "Session Notes" "Researched Electron wrapper approach"
-python3 scripts/memory-manager.py add "Session Notes" "Confirmed Steam overlay compatibility
+python3 scripts/memory-manager.py add "Session Notes" "Researched Electron wrapper
+approach"
+python3 scripts/memory-manager.py add "Session Notes" "Confirmed Steam overlay
+compatibility
 solutions"
 
 ```text
@@ -514,7 +525,8 @@ If you try to add to a non-existent section, it will be created automatically.
 
 ## 🎯 **Summary**
 
-The file-based memory system provides a robust alternative to Cursor's missing memory tools. It
+The file-based memory system provides a robust alternative to Cursor's missing memory tools..
+It
 offers:
 
 ✅ **Full functionality** - All memory operations supported
@@ -524,7 +536,9 @@ offers:
 ✅ **Offline operation** - Works without internet
 ✅ **Customizable** - Adapt to your needs
 
-This system ensures that important project context and knowledge are preserved and accessible across
+This system ensures that important project context and knowledge are preserved and
+accessible
+across
 all development sessions.
 
 ---

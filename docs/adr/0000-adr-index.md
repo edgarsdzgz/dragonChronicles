@@ -7,8 +7,19 @@
 
 ## Overview
 
-This index provides a comprehensive list of all Architecture Decision Records (ADRs) for Draconia Chronicles v2.0.0..
-ADRs document the architectural decisions made during the foundational workpacks (W1-W5) and establish the technical foundation for the project.
+This index provides a comprehensive list of all Architecture Decision Records (ADRs) for
+Draconia
+Chronicles
+v2.0.0..
+ADRs document the architectural decisions made during the foundational workpacks (W1-W5)
+and
+establish
+the
+technical
+foundation
+for
+the
+project.
 
 ## ADR List
 

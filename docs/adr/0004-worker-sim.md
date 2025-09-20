@@ -7,7 +7,12 @@
 
 ## Context
 
-Draconia Chronicles requires a game simulation system that can run continuously without blocking the main UI thread..
+Draconia Chronicles requires a game simulation system that can run continuously without
+blocking
+the
+main
+UI
+thread..
 The simulation needs to:
 
 - **Maintain 60fps UI**: UI rendering must not be blocked by game logic
@@ -20,7 +25,8 @@ The simulation needs to:
 
 - **Background Processing**: Continue simulation during offline periods
 
-The game involves continuous spawning, projectile physics, DPS/HP calculations, and progression
+The game involves continuous spawning, projectile physics, DPS/HP calculations, and
+progression
 systems
 that
 could
@@ -35,7 +41,8 @@ synchronously.
 
 ## Decision
 
-Implement a **Web Worker-based simulation system** with a structured communication protocol,
+Implement a **Web Worker-based simulation system** with a structured communication
+protocol,
 fixed-timestep
 clock,
 and
@@ -262,4 +269,5 @@ class SimulationWorker {
 - [W3 Implementation](../engineering/development-workflow.md)
 
 - [Performance Optimization Guide](../optimization/CODE*OPTIMIZATION*GUIDE.md)
+
 ````

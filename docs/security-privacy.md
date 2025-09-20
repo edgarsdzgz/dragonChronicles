@@ -6,7 +6,8 @@
 
 ## Overview
 
-This document outlines the security and privacy policies for Draconia Chronicles v2.0.0, ensuring
+This document outlines the security and privacy policies for Draconia Chronicles v2.0.0,
+ensuring
 compliance
 with
 data
@@ -30,6 +31,7 @@ project.
 **Only the following PII is allowed in the application:**
 
 - **Dragon Name**: The name chosen by the player for their dragon character
+
   - **Rationale**: Essential for gameplay and player identification
 
   - **Storage**: Local IndexedDB only

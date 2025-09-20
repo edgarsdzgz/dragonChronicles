@@ -7,7 +7,12 @@
 
 ## Context
 
-Draconia Chronicles v2.0.0 requires a scalable project structure that can accommodate multiple applications and shared libraries..
+Draconia Chronicles v2.0.0 requires a scalable project structure that can accommodate
+multiple
+applications
+and
+shared
+libraries..
 The project needs to support:
 
 - **Multiple Applications**: Web app (SvelteKit), CLI sandbox, and potential future apps
@@ -20,7 +25,9 @@ The project needs to support:
 
 - **Development Workflow**: Easy local development and testing across packages
 
-The project started as a single application but quickly grew to require shared components for game
+The project started as a single application but quickly grew to require shared components
+for
+game
 simulation,
 persistence,
 and
@@ -29,7 +36,9 @@ systems.
 
 ## Decision
 
-Implement a **pnpm workspace-based monorepo** with TypeScript project references for optimal build
+Implement a **pnpm workspace-based monorepo** with TypeScript project references for
+optimal
+build
 performance
 and
 dependency
@@ -142,7 +151,8 @@ Each package has its own `package.json` with:
 
 ### Migration Path
 
-The monorepo structure was established during W1 (Repo & Standards) and has proven successful
+The monorepo structure was established during W1 (Repo & Standards) and has proven
+successful
 through
 W5:
 
@@ -175,4 +185,5 @@ W5:
 - [Monorepo Best Practices](https://monorepo.tools/)
 
 - [W1 Implementation](../engineering/development-workflow.md)
+
 ````

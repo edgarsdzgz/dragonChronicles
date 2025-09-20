@@ -1,0 +1,51 @@
+{
+  "name": "Start Debugging Chronicle",
+  "description": "Initialize debugging session documentation as required by project standards",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "📝 Start Debug Chronicle",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "input",
+      "prompt": "Enter issue name (e.g., pipeline-failure, build-error):",
+      "variable": "ISSUE_NAME"
+    },
+    {
+      "type": "shell",
+      "command": "git checkout -b debug/${ISSUE_NAME}",
+      "description": "Create debugging branch"
+    },
+    {
+      "type": "template",
+      "template": "debugging-chronicle",
+      "output": "docs/engineering/${ISSUE_NAME}-debugging-session.md",
+      "variables": {
+        "ISSUE_NAME": "${ISSUE_NAME}",
+        "DATE": "${DATE}",
+        "DURATION": "TBD",
+        "OBJECTIVE": "TBD"
+      }
+    },
+    {
+      "type": "shell",
+      "command": "git add docs/engineering/${ISSUE_NAME}-debugging-session.md",
+      "description": "Stage chronicle file"
+    },
+    {
+      "type": "shell",
+      "command": "git commit -m \"docs: initialize debugging chronicle for ${ISSUE_NAME}\"",
+      "description": "Commit initial chronicle"
+    }
+  ],
+  "notification": {
+    "success": "📝 Debugging chronicle initialized for ${ISSUE_NAME}",
+    "error": "❌ Failed to initialize debugging chronicle"
+  },
+  "templates": {
+    "debugging-chronicle": "# ${ISSUE_NAME} Debugging Session\n\n## Session Overview\n- **Date**: ${DATE}\n- **Duration**: ${DURATION}\n- **Objective**: ${OBJECTIVE}\n- **Issues Addressed**: TBD\n\n## Issues Resolved\n### Issue 1: [Problem Description]\n- **Problem**: TBD\n- **Root Cause**: TBD\n- **Solution**: TBD\n- **Evidence**: TBD\n\n## Key Learnings\n- TBD\n\n## Current Status\n- ✅ TBD\n- ❌ TBD\n- ⏳ TBD\n\n## Next Steps\n1. TBD\n\n## Automation Created\n- TBD\n\n## Memory Rules Added\n- TBD"
+  }
+}

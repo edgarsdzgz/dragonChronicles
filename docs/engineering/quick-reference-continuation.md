@@ -26,7 +26,8 @@ gh run view [RUN_ID] --log-failed
 
 # Verify environment settings
 
-gh api repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
+gh api
+repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
 
 ```text
 
@@ -140,4 +141,5 @@ git push origin feat/w7-cicd-previews
 ---
 
 **Ready for continuation!** 🚀
+
 ````

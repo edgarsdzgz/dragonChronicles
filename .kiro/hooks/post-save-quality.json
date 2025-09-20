@@ -1,0 +1,29 @@
+{
+  "name": "Post-Save Code Quality",
+  "description": "Run ESLint, Prettier, and TypeScript checks after saving code files",
+  "trigger": {
+    "type": "file_save",
+    "patterns": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.svelte"]
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm run lint:quiet",
+      "description": "Run ESLint with auto-fix"
+    },
+    {
+      "type": "shell", 
+      "command": "pnpm run format",
+      "description": "Format code with Prettier"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run typecheck",
+      "description": "Validate TypeScript types"
+    }
+  ],
+  "notification": {
+    "success": "✅ Code quality checks passed",
+    "error": "❌ Code quality issues found - check output"
+  }
+}

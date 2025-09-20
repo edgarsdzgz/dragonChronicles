@@ -7,7 +7,9 @@
 
 ## Context
 
-(Why this decision was needed - what problem, constraint, or requirement drove the need for a
+(Why this decision was needed - what problem, constraint, or requirement drove the need
+for
+a
 decision)
 
 ## Decision
@@ -16,7 +18,9 @@ decision)
 
 ## Consequences
 
-(Tradeoffs, operational impacts, migration requirements, and how this decision affects future work)
+(Tradeoffs, operational impacts, migration requirements, and how this decision affects
+future
+work)
 
 ---
 
@@ -34,6 +38,8 @@ decision)
 
 ## Template Example
 
-See [ADR-0001: Testing Strategy](./0001-testing-strategy.md) for a concrete example of this template
+See [ADR-0001: Testing Strategy](./0001-testing-strategy.md) for a concrete example of
+this
+template
 in
 use.

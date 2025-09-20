@@ -299,6 +299,8 @@ tests/
 
 ```text
 
-See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural decision
+See [ADR-0001: Testing Strategy](/docs/adr/0001-testing-strategy.md) for the architectural
+decision
 record.
+
 ````

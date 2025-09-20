@@ -1,0 +1,30 @@
+{
+  "name": "Documentation Sync",
+  "description": "Validate and fix markdown documentation on save",
+  "trigger": {
+    "type": "file_save",
+    "patterns": ["**/*.md"]
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm run docs:lint",
+      "description": "Markdown linting validation"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run docs:links",
+      "description": "Internal link validation",
+      "ignore_errors": true
+    }
+  ],
+  "notification": {
+    "success": "📚 Documentation validated successfully",
+    "error": "📚 Documentation issues found - check markdown linting"
+  },
+  "auto_fix": {
+    "enabled": true,
+    "command": "python scripts/fix-markdown-universal.py",
+    "description": "Auto-fix common markdown issues"
+  }
+}

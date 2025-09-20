@@ -2,9 +2,11 @@
 
 # Database Persistence Layer
 
-This document describes the database persistence layer implementation for Draconia Chronicles
+This document describes the database persistence layer implementation for Draconia
+Chronicles
 v2.0.0,
-including the Dexie (IndexedDB) integration, test suite, and current implementation status.
+including the Dexie (IndexedDB) integration, test suite, and current implementation
+status.
 
 ## Architecture Overview
 
@@ -174,7 +176,10 @@ const META_KEYS = {
 
 // Keep the most recent saves, delete the oldest ones
 const savesToDelete =
-  savesToPrune.length > keepBackups ? savesToPrune.slice(0, savesToPrune.length - keepBackups) : [];
+savesToPrune.length > keepBackups ? savesToPrune.slice(0, savesToPrune.length -
+keepBackups)
+:
+[];
 
 ```text
 
@@ -184,7 +189,8 @@ const savesToDelete =
 
 ```typescript
 
-throw new Error(`Atomic save failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+throw new Error(`Atomic save failed: ${error instanceof Error ? error.message : 'Unknown
+error'}`);
 
 ```javascript
 
@@ -296,4 +302,5 @@ pnpm db:seed
 - [W4Plan.md](../../W4Plan.md) - Week 4 implementation plan
 
 - [GDD](../../../Draconia*Chronicles*v2_GDD.md) - Game Design Document
+
 ````

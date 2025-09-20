@@ -180,7 +180,8 @@ pnpm run test
 ```bash
 
 gh api repos/edgarsdzgz/dragonChronicles/environments
-gh api repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
+gh api
+repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
 
 ```bash
 
@@ -262,7 +263,8 @@ When resuming work on the new machine:
 
 1. **Document**: Any new findings or solutions
 
-The foundation is solid - most workflows are now passing, and the remaining issues are well-defined
+The foundation is solid - most workflows are now passing, and the remaining issues are
+well-defined
 with
 clear
 paths
@@ -274,4 +276,5 @@ resolution.
 **Last Updated**: September 5, 2025
 **Session Status**: 4/6 workflows passing, 2 remaining
 **Next Priority**: Complete Pages Deploys fix, then tackle E2E Smoke workflow
+
 ````

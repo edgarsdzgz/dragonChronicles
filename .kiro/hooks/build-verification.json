@@ -1,0 +1,43 @@
+{
+  "name": "Build Verification",
+  "description": "Complete build verification with size budgets and optimization checks",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🏗️ Verify Build",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm run clean",
+      "description": "Clean build artifacts"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run build:ci",
+      "description": "Full workspace build with CI optimizations",
+      "timeout": 180000
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run size:check",
+      "description": "Validate bundle size budgets"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run bundle:analyze",
+      "description": "Analyze bundle composition",
+      "ignore_errors": true
+    }
+  ],
+  "notification": {
+    "success": "✅ Build verification passed - all size budgets met",
+    "error": "❌ Build verification failed - check size budgets or build errors"
+  },
+  "output": {
+    "show_on_error": true,
+    "show_summary": true
+  }
+}

@@ -2,7 +2,9 @@
 
 # Claude Development Guidelines
 
-This file contains important guidelines and patterns for working on the Draconia Chronicles project.
+This file contains important guidelines and patterns for working on the Draconia
+Chronicles
+project.
 
 ## Testing Guidelines
 
@@ -10,19 +12,834 @@ This file contains important guidelines and patterns for working on the Draconia
 
 **Don't add a naked `console.log("ok")` at the end—that lies about the result.** The runner already prints derived results and sets the exit code correctly.
 
+## Server Startup Instructions
+
+### Starting the Development Server
+
+**From the project root directory:**
+
+```bash
+
+cd apps/web
+pnpm run dev
+
+```bash
+
+**Alternative from root (using workspace filter):**
+
+```bash
+
+pnpm --filter @draconia/web run dev
+
+```text
+
+**Server URL:** <http://localhost:5173/>
+
+### Important Notes
+
+- **Build Issues**: The production build (`pnpm run build`) has dependency resolution issues with the logger package, but this does NOT affect development
+
+- **Development Works**: The dev server (`pnpm run dev`) works perfectly for all development and testing
+
+- **Monorepo Structure**: This project uses pnpm workspaces - the root has no `dev` script, only `dev:sandbox`
+
+### Key Development Pages
+
+- **Dragon Animation Test**: <http://localhost:5173/dev/dragon-animated>
+
+- **Debug Page**: <http://localhost:5173/dev/dragon-debug>
+
+- **Main App**: <http://localhost:5173/>
+
+## Sprite Animation System Documentation
+
+### Overview
+
+The project includes a comprehensive sprite animation system supporting:
+
+- **Dragons**: 2x2 sprite sheet animation (idle → fly*1 → fly*2 → fly_3)
+
+- **Wind Swept Nomads Enemies**: Mantair Corsair and Swarm with same animation pattern
+
+- **Dynamic FPS Control**: 1-20 FPS with real-time adjustment
+
+- **Multiple Sprite Management**: Spawn, control, and clear sprites independently
+
+### Core Architecture
+
+#### 1. TextureAtlas System (`lib/pixi/texture-atlas.ts`)
+
+**Purpose**: Extracts individual frames from sprite sheets
+
+```typescript
+
+const atlas = new TextureAtlas({
+  imagePath: '/sprites/your*sprite*sheet.png',
+  frameWidth: 128,
+  frameHeight: 128,
+  rows: 2,
+  cols: 2
+});
+
+```javascript
+
+#### 2. Animator Classes (`lib/pixi/dragon-animator.ts`, `lib/pixi/enemy-sprites.ts`)
+
+**Purpose**: Handles frame cycling and animation timing
+
+- Frame sequence: `['idle', 'fly*1', 'fly*2', 'fly_3']`
+
+- Configurable FPS (default 8 FPS = 125ms per frame)
+
+- Manual rendering for ticker-stopped applications
+
+#### 3. Sprite Management (`lib/pixi/dragon-sprites.ts`, `lib/pixi/enemy-sprites.ts`)
+
+**Purpose**: Creates and configures animated sprites
+
+- Texture loading via PixiJS v8 Assets API
+
+- Anchor point management (0.5 for center positioning)
+
+- Integration with animators and renderers
+
+### Adding New Sprites/Enemies
+
+#### Step 1: Add Sprite Assets
+
+Place your 2x2 sprite sheet in `apps/web/static/sprites/`
+
+- Format: SVG file with 4 frames in 2x2 grid (256x256 total dimensions)
+
+- Frame layout: idle (top-left), fly*1 (top-right), fly*2 (bottom-left), fly_3 (bottom-right)
+
+#### Step 2: Update Enemy Configuration
+
+In `lib/pixi/enemy-sprites.ts`, add to `enemyConfigs`:
+
+```typescript
+
+export const enemyConfigs: Record<EnemyType, {
+  name: string;
+  imagePath: string;
+  frameWidth: number;
+  frameHeight: number;
+  rows: number;
+  cols: number;
+}> = {
+  // ... existing enemies
+  'new-enemy': {
+    name: 'New Enemy Name',
+    imagePath: '/sprites/new*enemy*sprite.svg',
+    frameWidth: 128,
+    frameHeight: 128,
+    rows: 2,
+    cols: 2
+  }
+};
+
+```text
+
+#### Step 3: Update Type Definitions
+
+Add new enemy type to the union:
+
+```typescript
+
+export type EnemyType = 'mantair-corsair' | 'swarm' | 'new-enemy';
+
+```text
+
+#### Step 4: Add UI Controls
+
+In your test page, add spawn buttons:
+
+```typescript
+
+function spawnNewEnemy() {
+  spawnEnemy('new-enemy');
+}
+
+```text
+
+### Animation System Features
+
+#### Dynamic FPS Control
+
+- **Range**: 1-20 FPS
+
+- **Real-time Updates**: Changes apply to all existing sprites immediately
+
+- **UI Controls**: Slider + number input for precise control
+
+#### Multi-Sprite Management
+
+- **Independent Control**: Each sprite has its own animator
+
+- **Global Controls**: Play/pause all animations simultaneously
+
+- **Selective Clearing**: Clear dragons, enemies, or all sprites
+
+#### Performance Optimizations
+
+- **Object Pooling**: Reuses sprite instances (existing in dragon-sprites)
+
+- **Manual Rendering**: Only renders when frames change
+
+- **Efficient Frame Storage**: TextureAtlas caches all frames
+
+### Technical Implementation Details
+
+#### PixiJS v8 Compatibility
+
+- Uses `Assets.load()` instead of deprecated `Texture.from()`
+
+- Proper async texture loading with error handling
+
+- Manual renderer management for ticker-stopped applications
+
+#### Frame Animation Logic
+
+```typescript
+
+// Frame sequence cycles through 4 states
+private readonly frameSequence: DragonFrame[] = ['idle', 'fly*1', 'fly*2', 'fly_3'];
+
+// FPS to milliseconds conversion
+private frameDuration = 1000 / fps; // 8 FPS = 125ms per frame
+
+// Manual rendering for visual updates
+if (this.renderer && this.stage) {
+  this.renderer.render(this.stage);
+}
+
+```text
+
+#### Error Handling & Debugging
+
+- Comprehensive console logging for texture loading
+
+- Graceful fallbacks for missing frames
+
+- Debug page with step-by-step loading verification
+
+### Best Practices for Extension
+
+1. **Follow Existing Patterns**: Use the same file structure and naming conventions
+
+1. **Maintain Type Safety**: Always update TypeScript types when adding new sprites
+
+1. **Test Incrementally**: Use the debug page to verify texture loading before adding to main page
+
+1. **Document Changes**: Update this documentation when adding new sprite types
+
+1. **Performance Considerations**: Consider object pooling for high-frequency spawning
+
+### Troubleshooting
+
+#### Common Issues
+
+- **Sprites Not Visible**: Check console for texture loading errors, verify file paths
+
+- **Animation Not Working**: Ensure renderer and stage are passed to animator constructor
+
+- **Build Failures**: Development works fine; build issues are related to logger package dependencies
+
+#### Debug Tools
+
+- **Debug Page**: `/dev/dragon-debug` - Step-by-step texture loading verification
+
+- **Console Logs**: Detailed logging for texture loading and frame updates
+
+- **Browser DevTools**: Network tab to verify sprite sheet loading
+
+## Industry Best Practices Integration
+
+**MANDATORY**: All development must follow industry best practices for code organization, documentation quality, and consistent high-quality code production.
+
+### Code Organization Standards
+
+#### SOLID Principles (NON-NEGOTIABLE)
+
+- **Single Responsibility**: Each class/module has one reason to change
+
+- **Open/Closed**: Open for extension, closed for modification
+
+- **Liskov Substitution**: Derived classes must be substitutable for base classes
+
+- **Interface Segregation**: Clients shouldn't depend on unused interfaces
+
+- **Dependency Inversion**: Depend on abstractions, not concretions
+
+#### Clean Code Requirements
+
+- **Meaningful Names**: Use intention-revealing, searchable, pronounceable names
+
+- **Small Functions**: Functions should be small and do one thing well
+
+- **Comments**: Explain why, not what; prefer expressive code over comments
+
+- **Error Handling**: Use exceptions rather than return codes; don't return null
+
+- **Formatting**: Consistent formatting aids readability
+
+#### TypeScript Excellence
+
+- **Strict Mode**: MANDATORY TypeScript strict mode compliance
+
+- **Explicit Types**: Prefer explicit type annotations for public APIs
+
+- **Generic Constraints**: Use generic constraints to improve type safety
+
+- **Utility Types**: Leverage TypeScript utility types (Pick, Omit, Partial, etc.)
+
+- **Type-Only Imports**: Use `import type` for type-only imports
+
+### Game Development Architecture
+
+#### Performance-First Design
+
+- **Object Pooling**: Reuse objects to reduce garbage collection
+
+- **Fixed Timestep**: Consistent simulation regardless of frame rate
+
+- **Memory Profiling**: Regular monitoring of memory usage patterns
+
+- **Batch Operations**: Group similar rendering operations
+
+#### Entity Component System (ECS) Patterns
+
+- **Entities**: Simple containers with unique IDs
+
+- **Components**: Pure data structures
+
+- **Systems**: Logic that operates on entities with specific components
+
+- **Benefits**: Performance, flexibility, maintainability
+
+### Quality Assurance Standards
+
+#### Test Pyramid Compliance
+
+- **Unit Tests**: Fast, isolated, comprehensive coverage (54 tests minimum)
+
+- **Integration Tests**: Component interaction verification (26 tests minimum)
+
+- **End-to-End Tests**: Full user journey validation (2 tests minimum)
+
+- **Database Tests**: Persistence layer validation (70 tests minimum)
+
+- **Render Tests**: UI component validation (40 tests minimum)
+
+#### Code Quality Tools (MANDATORY)
+
+- **ESLint**: Zero errors with strict configuration
+
+- **Prettier**: Consistent code formatting across all files
+
+- **TypeScript Compiler**: Strict type checking with zero errors
+
+- **Performance Monitoring**: Track build times and bundle sizes
+
+### Documentation Excellence Framework
+
+#### Real-Time Documentation (MANDATORY)
+
+- **Function Documentation**: Purpose, parameters, return values, side effects
+
+- **Class Documentation**: Responsibilities, usage examples, lifecycle
+
+- **Module Documentation**: Overview, dependencies, public interface
+
+- **Complex Algorithm Documentation**: Step-by-step explanation with rationale
+
+#### Architecture Decision Records (ADRs)
+
+- **Context**: Why the decision was needed
+
+- **Options**: What alternatives were considered
+
+- **Decision**: What was decided and why
+
+- **Consequences**: What are the trade-offs and implications
+
+### Automation and Tooling Standards
+
+#### Development Workflow
+
+- **Pre-commit Hooks**: Validate code quality before commits
+
+- **CI/CD Pipelines**: Comprehensive checks in continuous integration
+
+- **Code Review Gates**: Mandatory reviews with quality checklists
+
+- **Documentation Gates**: Verify documentation updates
+
+#### Performance Optimization
+
+- **Bundle Optimization**: Tree shaking, code splitting, asset optimization
+
+- **Memory Management**: Minimize allocations and memory leaks
+
+- **CPU Usage**: Profile and optimize hot paths
+
+- **Network Requests**: Minimize and optimize API calls
+
+### Security and Privacy Standards
+
+#### Input Validation (MANDATORY)
+
+- **Sanitize Inputs**: Validate and sanitize all user inputs
+
+- **Type Safety**: Use TypeScript to prevent type-related vulnerabilities
+
+- **Bounds Checking**: Prevent buffer overflows and out-of-bounds access
+
+#### Data Protection
+
+- **PII Redaction**: Implement PII redaction and anonymization
+
+- **User Consent**: Clear consent mechanisms for data collection
+
+- **Data Retention**: Implement data retention and deletion policies
+
+### Implementation Enforcement
+
+#### Gateway System Integration
+
+- **Quality Gates**: Automated checks at every stage
+
+- **Documentation Verification**: Ensure all changes are documented
+
+- **Performance Monitoring**: Track metrics and enforce budgets
+
+- **Security Scanning**: Automated vulnerability detection
+
+#### Continuous Improvement
+
+- **Metrics Monitoring**: Track code quality, test coverage, performance
+
+- **Regular Reviews**: Schedule periodic best practices audits
+
+- **Knowledge Sharing**: Regular tech talks and documentation updates
+
+- **Industry Alignment**: Stay current with evolving best practices
+
+**Reference**: Complete best practices documentation available at `docs/engineering/best-practices-comprehensive.md`
+
+## Game Design Reference System
+
+**CRITICAL**: All game-related development MUST reference the Draconia Tome of Knowledge for specifications, lore, and balance requirements.
+
+### Draconia Tome Navigation
+
+#### Primary Entry Points
+
+- **Start Here**: `draconiaChroniclesDocs/README.md` - Overview and integration sources
+
+- **Master Index**: `draconiaChroniclesDocs/tome/00*TOME*Index_v2.2.md` - Complete navigation
+
+- **Precedence Rule**: If conflicts exist, v2.1 GDD is authoritative over tome
+
+#### Development Area Quick Reference
+
+- **Core Gameplay Implementation**: `03*ShooterIdle*Core_Loop.md`
+
+- **Combat Systems & Enemies**: `05*Combat*Systems*Enemies*Bosses.md`
+
+- **Player Progression**: `04*Progression*Maps*Wards*Lands.md`
+
+- **Economic Systems**: `07*Economy*Currencies*Items*Market.md`
+
+- **Frontend Architecture**: `12*Tech*Architecture_Frontend.md`
+
+- **Web Worker Simulation**: `13*Simulation*Workers_Protocol.md`
+
+- **PixiJS Rendering**: `14*Rendering*Pixi*Perf*Budgets.md`
+
+- **Database Schema**: `15*Persistence*Save*Dexie*Schema.md`
+
+- **Tech Tree Systems**: `16*Firecraft*Safety*Scales*Tech_Trees.md`
+
+- **Region Content**: `18*Region*R01*Horizon*Steppe.md`
+
+- **Premium Currency**: `19*Premium*Currency*Astral*Seals.md`
+
+- **Game Balance**: `20*Balancing*Math*Curves*Tables.md`
+
+### Mandatory Game Design Compliance
+
+#### Research Discovery System
+
+- **ALL** Firecraft/Safety/Scales tech tree nodes MUST be hidden until discovered
+
+- Research requires: Soul Power + Synth Materials + Time
+
+- Progression flow: Discovery → Soul Unlock → Arcana Leveling
+
+- Only **Ember Potency** and **Draconic Vitality** visible at game start
+
+#### Combat Balance Requirements
+
+- Pre-Rift combat power: **≥70%** from Journey research, town/meta **≤30%** (City ≤10%)
+
+- Manual player contribution: **~20% ±10%** of total damage from abilities
+
+- Performance targets: 60 fps desktop, ≥40 fps mid-phones
+
+- Entity limits: ≤200/400 enemies, ≤600 projectiles/second
+
+#### Economic Balance Standards
+
+- **Arcana** (run currency): Geometric growth ×1.12, Tier-Up 15–25× multiplier
+
+- **Soul Power** (meta currency): Permanent progression, ×1.90 growth rate
+
+- **Astral Seals** (premium): Cosmic lore-based, rare acquisition methods
+
+- **Synth Materials**: Time-based production with rank loops
+
+#### Lore and World Consistency
+
+- **Setting**: Draconia world with elemental magic systems
+
+- **Core Elements**: Fire (Firecraft), Safety, Scales research trees
+
+- **Dragon Lore**: Player is a dragon with evolving abilities
+
+- **Region Design**: Horizon Steppe as first region with specific biome rules
+
+### Implementation Workflow
+
+#### Before Implementing Game Features
+
+1. **Identify Feature Area**: Determine which tome document(s) apply
+
+1. **Read Specifications**: Review complete specification in relevant tome document
+
+1. **Check Dependencies**: Verify prerequisite systems and integrations
+
+1. **Validate Balance**: Ensure implementation follows mathematical models
+
+1. **Verify Lore Alignment**: Confirm feature fits world and story consistency
+
+#### During Implementation
+
+1. **Reference Data Contracts**: Use TypeScript interfaces defined in tome
+
+1. **Follow Acceptance Criteria**: Implement according to tome acceptance criteria
+
+1. **Maintain Performance Budgets**: Respect performance constraints from tome
+
+1. **Document Deviations**: If deviating from tome, create ADR with justification
+
+#### After Implementation
+
+1. **Verify Acceptance Criteria**: Test against tome acceptance criteria
+
+1. **Update Documentation**: Document any tome clarifications or extensions
+
+1. **Cross-Reference Validation**: Ensure no conflicts with other tome systems
+
+1. **Performance Validation**: Confirm implementation meets performance targets
+
+### Common Game Development Patterns
+
+#### Entity Component System (ECS)
+
+```typescript
+
+// Follow tome specifications for component design
+interface DragonComponent {
+  health: number;
+  mana: number;
+  position: { x: number; y: number };
+  abilities: AbilityId[];
+}
+
+interface EnemyComponent {
+  type: EnemyType; // Defined in tome bestiary
+  health: number;
+  damage: number;
+  resistances: ElementalResistances;
+}
+
+```javascript
+
+#### Research Discovery Implementation
+
+```typescript
+
+// All tech nodes start hidden per tome requirements
+interface TechNode {
+  id: string;
+  isDiscovered: boolean; // FALSE by default
+  isUnlocked: boolean;
+  requirements: {
+    soulPower: number;
+    synthMaterials: SynthMaterialCost[];
+    timeHours: number;
+  };
+}
+
+```javascript
+
+#### Economic Calculations
+
+```typescript
+
+// Follow tome mathematical models exactly
+function calculateArcanaGrowth(currentAmount: number, tier: number): number {
+  const baseGrowth = 1.12; // From tome balance specifications
+  const tierMultiplier = tier <= 15 ? 15 : 25; // Tier-up multipliers
+  return currentAmount * Math.pow(baseGrowth, tier) * tierMultiplier;
+}
+
+```text
+
+### Quality Gates for Game Content
+
+#### Pre-Implementation Checklist
+
+- [ ] Identified relevant tome document(s)
+
+- [ ] Read complete specification for feature area
+
+- [ ] Understood data contracts and interfaces
+
+- [ ] Verified performance requirements
+
+- [ ] Confirmed lore and world consistency
+
+#### Implementation Validation
+
+- [ ] Follows tome data contracts exactly
+
+- [ ] Meets performance targets (fps, entity limits)
+
+- [ ] Respects balance requirements (growth rates, percentages)
+
+- [ ] Maintains lore consistency
+
+- [ ] Passes tome acceptance criteria
+
+#### Pre-PR Verification
+
+- [ ] All game features reference appropriate tome documents
+
+- [ ] Implementation aligns with tome specifications
+
+- [ ] No deviations without documented ADR justification
+
+- [ ] Performance budgets respected
+
+- [ ] Lore and world consistency maintained
+
+### Tome Update Workflow (MANDATORY)
+
+**CRITICAL**: Any development that creates new game mechanics, lore details, or system specifications MUST update the Draconia Tome as part of the implementation process.
+
+#### When Tome Updates Are Required
+
+- **New Game Mechanics**: Any new gameplay system, rule, or interaction
+
+- **New Lore Elements**: Characters, locations, history, world-building details
+
+- **New Balance Rules**: Mathematical models, growth rates, damage calculations
+
+- **New Content**: Enemies, bosses, items, equipment, abilities, spells
+
+- **New Systems**: UI patterns, progression systems, economic models
+
+- **Modified Existing Systems**: Changes to established mechanics or balance
+
+#### Tome Update Process
+
+1. **Identify Target Document**: Determine which tome document needs updating
+
+1. **Follow Tome Structure**: Use existing format with Purpose, Scope, Data Contracts, Acceptance Criteria
+
+1. **Include Complete Specifications**:
+
+    - TypeScript interfaces for all data structures
+
+    - Mathematical formulas for balance calculations
+
+    - Cross-references to related systems
+
+    - Acceptance criteria for implementation verification
+
+1. **Maintain Lore Consistency**: Ensure alignment with established world and story
+
+1. **Update Cross-References**: Link to and from related tome documents
+
+1. **Validate Against Existing Systems**: Ensure no conflicts with established mechanics
+
+#### Tome Update Quality Standards
+
+- **Complete Specifications**: No ambiguity or missing details
+
+- **TypeScript Data Contracts**: All interfaces and types defined
+
+- **Mathematical Precision**: Exact formulas and growth models
+
+- **Lore Consistency**: Alignment with established world-building
+
+- **Cross-Reference Integrity**: All links functional and bidirectional
+
+- **Acceptance Criteria**: Clear verification requirements
+
+#### Examples of Required Tome Updates
+
+**New Enemy Type:**
+
+```typescript
+
+// Must be added to 05*Combat*Systems*Enemies*Bosses.md
+interface ShadowWolf {
+  type: 'shadow-wolf';
+  health: number;
+  damage: number;
+  speed: number;
+  abilities: ['shadow-leap', 'pack-howl'];
+  resistances: {
+    fire: 0.5;    // 50% fire resistance
+    shadow: 1.2;  // 20% shadow vulnerability
+  };
+  lore: {
+    habitat: 'Horizon Steppe shadow groves';
+    behavior: 'Pack hunters that emerge at dusk';
+    threat: 'Medium - dangerous in groups';
+  };
+}
+
+```javascript
+
+**New Tech Tree Node:**
+
+```typescript
+
+// Must be added to 16*Firecraft*Safety*Scales*Tech_Trees.md
+interface FlameStrikeNode {
+  id: 'flame-strike-tier-2';
+  tree: 'firecraft';
+  tier: 2;
+  isDiscovered: false; // Hidden until discovered
+  requirements: {
+    prerequisites: ['ember-potency-tier-1'];
+    soulPower: 500;
+    synthMaterials: [
+      { type: 'fire-essence', amount: 10 },
+      { type: 'crystal-shard', amount: 5 }
+    ];
+    researchTimeHours: 2;
+  };
+  effects: {
+    damageMultiplier: 1.25;
+    manaCost: 15;
+    cooldownSeconds: 8;
+  };
+}
+
+```javascript
+
+**New Economic Balance Rule:**
+
+```typescript
+
+// Must be added to 20*Balancing*Math*Curves*Tables.md
+interface SoulPowerGrowthModel {
+  baseAmount: number;
+  growthRate: 1.90; // ×1.90 per tier as specified
+  tierMultipliers: {
+    early: 1.0;   // Tiers 1-10
+    mid: 1.2;     // Tiers 11-25
+    late: 1.5;    // Tiers 26+
+  };
+  formula: 'baseAmount * Math.pow(growthRate, tier) * tierMultiplier';
+}
+
+```text
+
+#### Enforcement and Validation
+
+- **Pre-PR Gate**: All new game content must have corresponding tome updates
+
+- **Review Requirement**: Tome updates must be reviewed for completeness and consistency
+
+- **CI Integration**: Automated checks for tome cross-reference integrity
+
+- **Quality Metrics**: Track tome completeness and update frequency
+
+**Remember**: The Draconia Tome is the authoritative source for ALL game design decisions. When developing new content, updating the tome is not optional—it's a mandatory part of the implementation process. When in doubt, reference the tome first, then ask for clarification if specifications are unclear.
+
 ## Development Standards (From Scrum Master Feedback)
 
 ### Debugging Chronicles System
 
-**CRITICAL**: All debugging sessions must be documented as chronicles in `docs/engineering/`
+**CRITICAL**: All debugging sessions must be documented as chronicles in `docs/engineering/` with the same rigor as Draconia Tome updates.
 
-- **Purpose**: Capture root causes, solutions, and learnings for future reference
+#### MANDATORY Chronicle Creation (NON-NEGOTIABLE)
 
-- **Format**: Follow existing chronicle format with session overview, issues resolved, and key learnings
+- **Pipeline Failures**: Any CI/CD workflow failure requiring investigation
 
-- **Location**: `docs/engineering/*-debugging-session.md`
+- **Quality Gate Failures**: ESLint, TypeScript, test, or build failures
 
-- **Content**: Include systematic debugging approach, pipeline-first strategy, and automation preferences
+- **Performance Issues**: Frame rate drops, memory leaks, or optimization needs
+
+- **Integration Debugging**: Cross-system or cross-package integration problems
+
+- **Environment Issues**: Development, staging, or production environment problems
+
+- **Dependency Conflicts**: Package resolution or compatibility issues
+
+#### Chronicle Documentation Standards
+
+- **Session Overview**: Date, duration, objectives, key issues addressed
+
+- **Issues Resolved**: Detailed breakdown of each problem, root cause, solution applied
+
+- **Key Learnings**: Patterns discovered, automation scripts created, configuration changes
+
+- **Current Status**: Workflow status (X/6 passing), remaining issues, next steps
+
+- **Automation Scripts**: List of scripts created with purposes and usage
+
+- **Memory Rules**: New rules discovered and documented
+
+- **Handoff Instructions**: Specific commands and context for AI continuation
+
+#### Required Chronicle Files (ALL MANDATORY)
+
+- **Session Documentation**: `docs/engineering/[topic]-debugging-session.md` - Complete session chronicle
+
+- **Quick Reference**: `docs/engineering/quick-reference-continuation.md` - Immediate actions and status
+
+- **Handoff Document**: `docs/engineering/session-handoff-complete.md` - Comprehensive handoff for new AI
+
+#### Debugging Process Standards
+
+- **Systematic Approach**: One workflow at a time, document each fix
+
+- **Pipeline-First Strategy**: Trust GitHub Actions logs over local tests
+
+- **Automation Priority**: Create scripts for repetitive tasks (3+ manual attempts)
+
+- **Online Research**: Use web search to bolster debugging with known solutions
+
+- **Comprehensive Documentation**: Capture root causes, solutions, and learnings
+
+#### Quality Gates for Debugging Chronicles
+
+- **Completeness**: All debugging sessions must have complete chronicles
+
+- **Handoff Ready**: Documentation must enable seamless AI transitions
+
+- **Automation Captured**: All scripts created must be documented and committed
+
+- **Memory Integration**: New patterns must be integrated into project rules
+
+- **Verification**: Chronicles must include validation that fixes work
 
 ### Cleanup Workflow Directives
 
@@ -39,6 +856,164 @@ This file contains important guidelines and patterns for working on the Draconia
 - **Update project documentation** (changelog, ADRs, status)
 
 **Planning documents are temporary** - delete when workpack is complete, only keep completed work documented in changelog and ADRs.
+
+### Time Estimation Tracking Rule
+
+**CRITICAL**: All project phases, epics, and stories must maintain their original time estimates alongside actual completion times.
+
+**Requirements:**
+
+- Never remove or hide original estimates
+
+- Always show both estimated vs actual time
+
+- Track variance percentage for analysis
+
+### Documentation Standards Rule
+
+**MANDATORY**: All documentation, especially Epics and Stories, MUST include comprehensive summaries with both technical and non-technical explanations at every hierarchical level.
+
+### Real-Time Documentation Update Rule
+
+**MANDATORY**: All code changes must be documented in real-time, not after-the-fact. This ensures AI assistants and developers always have current context.
+
+**Requirements for New Code:**
+
+- **New Functions**: MUST update this CLAUDE.md file with function purpose, parameters, and usage examples
+
+- **New Files**: MUST document file purpose, responsibilities, and integration points in CLAUDE.md
+
+- **New Packages**: MUST update architecture documentation and this file with package overview
+
+- **New Scripts**: MUST document script purpose, usage, and parameters in CLAUDE.md or scripts README
+
+- **New Environment Variables**: MUST document in appropriate configuration documentation
+
+- **New Game Features**: MUST reference relevant Draconia Tome documents for specifications and alignment
+
+- **New Game Content**: MUST ensure alignment with lore, balance, and systems defined in the Draconia Tome
+
+**Requirements for New Game Development:**
+
+- **New Game Mechanics**: MUST update relevant tome document with complete specifications, data contracts, and acceptance criteria
+
+- **New Lore Details**: MUST update appropriate tome document with canonical lore information and world consistency
+
+- **New Game Systems**: MUST create or update tome documents with full system specifications and integration points
+
+- **New Balance Rules**: MUST update tome with mathematical models, growth rates, and balance constraints
+
+- **New Enemies/Bosses**: MUST update tome bestiary with complete stat blocks, abilities, and lore
+
+- **New Items/Equipment**: MUST update tome economy section with complete item specifications
+
+- **New Regions/Areas**: MUST create or update tome region documents with complete area specifications
+
+- **New Tech Tree Nodes**: MUST update tome tech tree document with node specifications and unlock requirements
+
+**Requirements for Code Changes:**
+
+- **Architecture Changes**: MUST create or update ADR in `docs/adr/`
+
+- **API Changes**: MUST update relevant documentation immediately
+
+- **Integration Point Changes**: MUST document cross-service/cross-package interactions
+
+- **Configuration Changes**: MUST update configuration documentation
+
+**Requirements for Workpack Completion:**
+
+- **MUST update**: `v2_GDD.md` with completed features and learnings
+
+- **MUST update**: This CLAUDE.md file with new patterns, functions, and architectural insights
+
+- **MUST update**: `docs/overview/changelog.md` with version entries and feature summaries
+
+- **MUST create**: ADRs for any significant technical decisions made during implementation
+
+**Verification Gates:**
+
+- Before PR creation: Verify all new code is documented in CLAUDE.md
+
+- Before PR creation: Verify architecture docs updated if needed
+
+- Before PR creation: Verify no undocumented environment variables or configuration changes
+
+- Before PR creation: Verify ADRs created for significant technical decisions
+
+- Before PR creation: Verify game features align with Draconia Tome specifications
+
+- Before PR creation: Verify game content follows lore and balance requirements from tome
+
+- Before PR creation: Verify ALL new game mechanics, lore, or systems are documented in tome
+
+- Before PR creation: Verify tome updates include complete specifications and acceptance criteria
+
+- Before PR creation: Verify tome cross-references are updated and consistent
+
+- Before PR creation: Verify ALL debugging sessions have complete chronicles documentation
+
+- Before PR creation: Verify debugging chronicles include handoff documents and automation scripts
+
+- Before PR creation: Verify new debugging patterns are integrated into project rules
+
+**Enforcement:**
+
+- Documentation updates are NON-NEGOTIABLE - treat them as required as writing tests
+
+- PRs without proper documentation updates should be rejected
+
+- Use the .cursorrules file to enforce these requirements
+
+### No Hardcoded Values Rule
+
+**MANDATORY**: All technical specifications must be free of hardcoded values that affect gameplay. Every numeric constant, duration, rate, threshold, and configuration value that directly impacts player experience MUST be upgradeable through player progression systems (Soul Power, tech trees, premium currency). Test values are exempt and should use fixed values for reliability. This ensures future scalability and customization options.
+
+**Requirements:**
+
+- Every Epic of Epics, Epic, Story, and Chapter must have non-technical and technical summaries
+
+- Every code example must include comprehensive inline comments explaining what it does and why
+
+- Every section must explain its purpose and how it integrates with other systems
+
+- Non-technical summaries must be accessible to non-coders
+
+- Technical summaries must be precise and complete
+
+**Implementation:**
+
+- Use the Documentation Standards Rule template for all new documentation
+
+- Update existing documentation to comply with this rule
+
+- This rule applies to ALL project documentation including GDD, Epics, Stories, and technical specs
+
+- See `docs/Documentation*Standards*Rule.md` for complete requirements and templates
+
+- Preserve historical data for learning
+
+- Update documentation with both times upon completion
+
+**Implementation:**
+
+- Phases: Estimated Duration, Actual Duration, Variance %
+
+- Epics: Estimated Effort, Actual Effort, Story Count
+
+- Stories: Estimated Time, Actual Time, Complexity
+
+**Benefits:**
+
+- Track estimation accuracy patterns
+
+- Identify over/under-estimation trends
+
+- Improve resource allocation
+
+- Build institutional knowledge
+
+- Enable data-driven decisions
 
 ### Never Bypass Agreed Requirements
 
@@ -102,7 +1077,16 @@ await run(); // Prints "ok - 1 passed" or "FAIL - 1 failed" with proper exit cod
 ### Current Test Architecture
 
 These scripts currently build and import from `dist/`..
-That's fine for now, but when we move to Vitest/Playwright we'll import source for unit/integration and run a browser for true UI E2E.
+That's fine for now, but when we move to Vitest/Playwright we'll import source for
+unit/integration
+and
+run
+a
+browser
+for
+true
+UI
+E2E.
 (This file set is focused on quick smoke/unit/integration checks and a build-level E2E.)
 
 **Current Pattern:**
@@ -566,7 +1550,8 @@ Use these keywords in PR descriptions to automatically close issues when the PR 
    ```bash
 
    # Update all package.json files
-   find . -name "package.json" -exec sed -i 's/"version": "0.0.1"/"version": "0.0.2"/g' {} \;
+   find ..
+-name "package.json" -exec sed -i 's/"version": "0.0.1"/"version": "0.0.2"/g' {} \;
 
    # Update documentation
    # - README.md version
@@ -1056,7 +2041,8 @@ Text after code
 ```json
 
 {
-  "docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"",
+"docs:lint": "markdownlint -c .markdownlint.json --ignore-path .markdownlintignore
+\"**/*.md\"",
 "docs:links": "linkinator docs --silent --recurse --skip
 \"node*modules|LEGACY*v|playwright-report|test-results|dist\""
 }
@@ -1259,7 +2245,7 @@ feat: [brief description]
 
 ## Refactor Notes (P0-S003)
 
-### Performance Optimizations
+### Performance Optimizations (2)
 
 **ESLint caching**: All lint scripts use `--cache --cache-location ./.cache/eslint` for faster subsequent runs.
 
@@ -1558,7 +2544,9 @@ find docs -name "*.md" -exec fix_file {} \;
 
   run: |
     echo "Checking if pixi.js is hoisted:"
-ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not
+ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌
+pixi.js
+not
 hoisted"
 
 ```text
@@ -1617,9 +2605,30 @@ hoisted"
 
 ### Automation Preference for Repetitive Tasks
 
-**When manual attempts fail repeatedly (3+ times), create automation scripts instead of continuing manual attempts.** This saves tokens and thinking time while ensuring consistent results.
+**When manual attempts fail repeatedly (3+ times), check to see if there's a scripts folder in our project, then go through the scripts to see if there's an existing script that will resolve the failed manual attempt. If no such script exists, create an automation script instead of continuing manual attempts (this can be a bash script for something simple or a python script for something more complex).** This saves tokens and thinking time while ensuring consistent results.
 
-Example: Instead of manually editing markdown line length issues repeatedly, create a bash script to
+Example: Instead of manually editing markdown line length issues repeatedly, first check
+if
+there's
+already
+a
+script
+in
+the
+scripts
+folder
+that
+can
+handle
+this,
+and
+if
+not,
+create
+a
+bash
+script
+to
 automate
 the
 fix.
@@ -1627,6 +2636,62 @@ fix.
 ### Sequential Problem Solving Approach
 
 **Focus on one issue at a time with a slow and steady approach.** This allows better control over what is being tested, broken, and fixed, preventing cascading failures.
+
+### Project Rules Integration Preference
+
+**When I identify strong repeated preferences about the workflow of this project, I should ask the user if they would like to add those preferences to our project rules.** This ensures we work in concert together by capturing important workflow patterns as formal project standards rather than relying on memories. This helps maintain consistency and ensures all AI assistants working on the project follow the same established patterns.
+
+## Horizon Steppe Official Color Palette (September 18, 2025)
+
+### **OFFICIAL FIRST LAND COLOR PALETTE APPROVED** ✅
+
+The Horizon Steppe color palette has been officially approved and implemented based on
+analysis
+of
+three
+steppe
+inspiration
+images.
+
+**Implementation Status:**
+
+- ✅ **Color Palette Document**: `docs/Horizon*Steppe*Color_Palette.md` - Complete analysis with 60+ extracted colors
+
+- ✅ **Dragon-Animated Test Page**: Updated with layered steppe background using official colors
+
+- ✅ **Detailed Image Analysis**: `docs/Steppe*Images*Detailed_Analysis.md` - Comprehensive visual breakdown
+
+**Key Official Colors:**
+
+- **Sky**: Deep sky blue (`#4169E1`) → Main sky blue (`#87CEEB`) → Powder blue (`#B0E0E6`) → Morning haze (`#E6F3FF`)
+
+- **Grass**: Olive drab (`#6B8E23`) → Forest green (`#228B22`) → Yellow-green (`#9ACD32`) → Dark olive (`#556B2F`)
+
+- **Atmosphere**: Heat shimmer (`#F0F8FF`), morning mist (`#E6F3FF`), atmospheric blue (`#B0E0E6`)
+
+- **Distance**: Slate grey (`#708090`), cornflower blue (`#6495ED`) for atmospheric perspective
+
+- **Effects**: Seed drift (`#F5F5DC`), dust swirls (`#DEB887`)
+
+**Implementation Notes:**
+
+- Applied layered CSS gradients for depth and realism
+
+- Includes atmospheric perspective system (foreground → middle → distance)
+
+- Supports seasonal variations and weather effects
+
+- Optimized for PixiJS rendering performance
+
+- Meets accessibility standards (WCAG AA)
+
+**Reference Files:**
+
+- Implementation: `apps/web/src/routes/dev/dragon-animated/+page.svelte`
+
+- Color Documentation: `docs/Horizon*Steppe*Color_Palette.md`
+
+- Image Analysis: `docs/Steppe*Images*Detailed_Analysis.md`
 
 ## Current Session Status (Updated - September 5, 2025)
 
@@ -1701,4 +2766,5 @@ fix.
 - `scripts/fix-remaining-markdownlint.sh` - Targeted markdownlint fixes
 
 - `scripts/fix-final-markdownlint.sh` - Final markdownlint cleanup
+
 ````

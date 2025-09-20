@@ -1,0 +1,27 @@
+{
+  "name": "Run Full Test Suite",
+  "description": "Execute comprehensive test suite with build optimization",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🧪 Run Tests",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "node tests/run-all.mjs",
+      "description": "Run all tests with BUILD_ONCE optimization",
+      "timeout": 300000
+    }
+  ],
+  "notification": {
+    "success": "✅ All tests passed (192 tests)",
+    "error": "❌ Test failures detected - check output for details"
+  },
+  "output": {
+    "show_on_error": true,
+    "show_on_success": false
+  }
+}

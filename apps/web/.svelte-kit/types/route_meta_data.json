@@ -7,6 +7,24 @@
 		"src/routes/dev/boom/+page.ts",
 		"src/routes/+layout.ts"
 	],
+	"/dev/dragon-animated": [
+		"src/routes/+layout.ts"
+	],
+	"/dev/dragon-debug": [
+		"src/routes/+layout.ts"
+	],
+	"/dev/dragon-final": [
+		"src/routes/+layout.ts"
+	],
+	"/dev/dragon-simple": [
+		"src/routes/+layout.ts"
+	],
+	"/dev/dragon-working": [
+		"src/routes/+layout.ts"
+	],
+	"/dev/dragon": [
+		"src/routes/+layout.ts"
+	],
 	"/dev/logs": [
 		"src/routes/+layout.ts"
 	],
