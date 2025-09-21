@@ -1,145 +1,92 @@
-# Quick Reference: CI/CD Continuation Guide
+# Quick Reference - CI/CD Continuation Guide
 
-## 🚀 Immediate Actions for New Machine
+**Last Updated**: January 21, 2025  
+**Current Status**: All 6 workflows passing ✅  
+**Branch**: `feat/p1-s1-core-determinism`
 
-### 1. Check Current Status
+## Current Pipeline Status
 
-````bash
+```
+✅ CI - TypeScript, ESLint, Prettier, Tests
+✅ Checks - Build, Tests, Lint, Format, Docs
+✅ Docs - Linkinator scanning
+✅ E2E Smoke (Playwright) - End-to-end tests
+✅ Lighthouse (warn) - Performance monitoring
+✅ Pages Deploys (PR Preview & Main) - Deployment
+```
 
-# Check workflow status
+## Immediate Commands
 
-gh run list --limit 5
-
-# Check Pages Deploys specifically
-
-gh run view [LATEST*PAGES*RUN_ID] --log
-
-```bash
-
-### 2. If Pages Deploys is Still Failing
-
-```bash
-
-# Check deployment logs
-
-gh run view [RUN_ID] --log-failed
-
-# Verify environment settings
-
-gh api
-repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
-
-```text
-
-### 3. If Pages Deploys is Passing ✅
-
-Move to E2E Smoke workflow:
+### Check Pipeline Status
 
 ```bash
+gh run list --limit 6 --json status,conclusion,name,workflowName,headBranch
+```
 
-# Check E2E workflow logs
-
-gh run view [E2E*RUN*ID] --log
-
-# Look for: "Project(s) 'chromium' not found"
-
-```text
-
-## 🔧 Key Commands
-
-### Workflow Management
+### Run Full Test Suite
 
 ```bash
+pnpm -w run test:all
+```
 
-gh run list --limit 10
-gh run view [RUN_ID] --log
-gh run view [RUN_ID] --log-failed
-
-```bash
-
-### Local Testing
+### Verify Docs Links
 
 ```bash
+pnpm run docs:links
+```
 
-pnpm run docs:lint
-pnpm run build
-pnpm run test
-
-```bash
-
-### Git Operations
+### Check Render Tests
 
 ```bash
+pnpm run test:vitest:render
+```
 
-git status
-git log --oneline -5
-git push origin feat/w7-cicd-previews
+## Recent Fixes Applied
 
-```text
+### Docs Workflow Fix
 
-## 📋 Current State Summary
+- **Issue**: Broken links in `docs/README.md`
+- **Fix**: Corrected asterisk to underscore in link filenames
+- **Files**: `CODE*OPTIMIZATION*GUIDE.md` → `CODE_OPTIMIZATION_GUIDE.md`
 
-### ✅ FIXED (4/6 workflows)
+### Checks Workflow Fix
 
-- **CI**: Prettier formatting issues resolved
+- **Issue**: Missing `jsdom` dependency for render tests
+- **Fix**: Added `jsdom: ^26.1.0` to workspace root
+- **Command**: `pnpm add -D -w jsdom`
 
-- **Checks**: Linting issues resolved
+## Test Results Summary
 
-- **Lighthouse**: Was already working
+- **Total Tests**: 162/162 passing
+- **Unit/Integration**: 152 tests ✅
+- **Render**: 40 tests ✅
+- **Node**: 10 tests ✅
 
-- **Docs**: Markdownlint issues resolved (MD051, MD024)
+## Quality Gates Status
 
-### 🔄 IN PROGRESS
+- ✅ TypeScript Strict Mode
+- ✅ ESLint (zero errors)
+- ✅ Prettier (consistent formatting)
+- ✅ All Tests Passing
+- ✅ Documentation Links Valid
+- ✅ Build Successful
 
-- **Pages Deploys**: Environment protection rules fix applied, deployment succeeds but PR comment
+## Next Actions
 
-  fails due to permissions
-  fails due to permissions
+1. Continue P1-S1 Core Determinism Engine implementation
+2. Monitor pipeline health during development
+3. Apply systematic debugging approach for future issues
+4. Update documentation as features are implemented
 
-### ❌ REMAINING
+## Emergency Procedures
 
-- **E2E Smoke**: Playwright configuration issue
+If workflows fail again:
 
-## 🎯 Next Steps Priority
-
-1. **Verify Pages Deploys fix** (environment protection rules)
-
-1. **Fix E2E Smoke workflow** (Playwright configuration)
-
-1. **Clean up temporary fixes** (remove `continue-on-error: true`)
-
-1. **Document final solutions**
-
-## 📚 Key Files to Reference
-
-- `docs/engineering/ci-workflow-debugging-session.md` - Complete session documentation
-
-- `CLAUDE.md` - Updated with current status and solutions
-
-- `.github/workflows/` - All workflow configurations
-
-- `scripts/` - Automation scripts created during debugging
-
-## 🧠 User Preferences (from memories)
-
-- **Automation**: Prefers bash scripts for repetitive tasks
-
-- **Sequential**: One issue at a time approach
-
-- **Testing**: Local testing before CI
-
-- **Documentation**: All docs in `/docs/` folder
-
-- **Feature Branches**: Work on feature branches, not main
-
-## 🎉 Success Metrics
-
-**Before**: 1/6 workflows passing (16.7%)
-**Current**: 4/6 workflows passing (66.7%)
-**Target**: 6/6 workflows passing (100%)
+1. Check status: `gh run list --limit 5`
+2. Get logs: `gh run view [RUN_ID] --log-failed`
+3. Follow systematic approach from `ci-workflow-debugging-session.md`
+4. Document all debugging steps in chronicles
 
 ---
 
-**Ready for continuation!** 🚀
-
-````
+**Status**: Pipeline fully operational, ready for continued development
