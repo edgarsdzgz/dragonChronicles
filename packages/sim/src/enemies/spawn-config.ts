@@ -6,6 +6,9 @@
 import type { Family, LandId, WardId } from './types.js';
 import type { SpawnConfig, WardSpawnConfig, EnemySpawnConfig } from './types.js';
 
+// Re-export SpawnConfig for external use
+export type { SpawnConfig };
+
 /**
  * Default spawn configuration for Phase 1
  * These values will be balanced and tuned during development
@@ -127,7 +130,7 @@ export function calculateSpawnRate(config: SpawnConfig, distance: number): numbe
 
   // Apply distance-based exponential growth (only for distances beyond thresholds)
   // Only apply exponential growth if distance is beyond the highest threshold
-  const maxThreshold = Math.max(...config.distanceThresholds.map((t) => t.distance));
+  const maxThreshold = Math.max(...config.distanceThresholds.map((t: any) => t.distance));
   if (distance > maxThreshold) {
     const extraDistance = distance - maxThreshold;
     rate *= Math.pow(config.distanceMultiplier, Math.floor(extraDistance / 100));

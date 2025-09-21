@@ -6,7 +6,7 @@
 // Only apply polyfills in Node.js environment
 if (typeof window === 'undefined') {
   // Import polyfill
-  import('fake-indexeddb/auto');
+  import('fake-indexeddb/auto' as any);
 
   // Apply common mocks
   if (typeof global.CustomEvent === 'undefined') {

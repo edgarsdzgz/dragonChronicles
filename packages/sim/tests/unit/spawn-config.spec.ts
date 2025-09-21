@@ -3,7 +3,7 @@
  * @description P1-E2-S1: Unit tests for spawn rate calculations and ward configurations
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   DEFAULT_SPAWN_CONFIG,
   createWardConfigs,

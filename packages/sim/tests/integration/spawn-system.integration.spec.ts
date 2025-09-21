@@ -64,7 +64,11 @@ describe('Spawn System Integration', () => {
 
       // Spawn rate should generally increase with distance
       for (let i = 1; i < spawnRates.length; i++) {
-        expect(spawnRates[i]).toBeGreaterThanOrEqual(spawnRates[i - 1]);
+        const currentRate = spawnRates[i];
+        const previousRate = spawnRates[i - 1];
+        if (currentRate !== undefined && previousRate !== undefined) {
+          expect(currentRate).toBeGreaterThanOrEqual(previousRate);
+        }
       }
     });
 

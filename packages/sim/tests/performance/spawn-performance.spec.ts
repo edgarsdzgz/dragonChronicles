@@ -3,7 +3,7 @@
  * @description P1-E2-S1: Performance validation for enemy spawning system
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { SpawnManager, SimpleRngImpl } from '../../src/enemies/spawn-manager.js';
 import { PoolManager, DEFAULT_POOL_MANAGER_CONFIG } from '../../src/enemies/pool-manager.js';
 import type { Vector2, WardId, LandId } from '../../src/enemies/types.js';
@@ -49,7 +49,7 @@ describe('Spawn System Performance', () => {
       // Simulate 1000 game loop iterations (16.67ms each at 60fps)
       for (let i = 0; i < 1000; i++) {
         const currentTime = i * 16.67; // 60fps
-        spawnManager.update(currentTime, i * 10, currentWard, currentLand); // Distance increases
+        spawnManager.update(currentTime, i * 10, playerPosition, currentWard, currentLand, 16.67); // Distance increases
       }
 
       const endTime = performance.now();

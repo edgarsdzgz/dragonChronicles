@@ -25,7 +25,7 @@ class MockRng implements SimpleRng {
   }
 
   randomFloat(min?: number, max?: number): number {
-    const value = this.values[this.index % this.values.length];
+    const value = this.values[this.index % this.values.length] ?? 0.5;
     this.index++;
 
     if (min !== undefined && max !== undefined) {
