@@ -505,4 +505,5 @@ test('should call internal method', () => {
 ---
 
 **Remember**: Quality is not negotiable. These practices exist to ensure consistent, maintainable, and excellent code. When in doubt, err on the side of higher quality and better documentation.
+
 ````

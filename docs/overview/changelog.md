@@ -13,15 +13,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **P1-S1**: Core Determinism Engine Foundation ✅
   - Complete core types, constants, enums, and ID system
+
   - Deterministic simulation framework with PCG32 RNG
+
   - Clock system with accumulator and background tick management
+
   - Protocol validation with Zod codecs for type safety
+
   - Message handling system (simToUi, uiToSim protocols)
+
   - Snapshot system with hasher and writer for state persistence
+
   - Comprehensive test suite (20 tests, 100% pass rate)
+
   - All CI/CD workflows passing (6/6 green)
 
-### Added
+### Added (2)
 
 - **W4**: Persistence v1 Implementation
   - Complete Dexie (IndexedDB) integration with v1 schema

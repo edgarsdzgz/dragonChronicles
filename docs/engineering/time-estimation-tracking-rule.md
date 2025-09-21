@@ -271,9 +271,11 @@ When updating project documents, use this format:
 ---
 
 **This rule ensures complete visibility into project timing, enables continuous improvement of estimation accuracy, and maintains accountability for project delivery timelines.**
+
 ````
 `````
 
-```
+````text
 
-```
+```text
+````
