@@ -45,12 +45,24 @@ export function createWardConfigs(): Map<WardId, WardSpawnConfig> {
   // These will be expanded in future phases with actual land/ward data
 
   const landId = 1 as LandId;
-  const wardId = 1 as WardId;
 
-  wardConfigs.set(wardId, {
-    wardId,
+  // Ward 1 configuration
+  wardConfigs.set(1 as WardId, {
+    wardId: 1 as WardId,
     landId,
     spawnRateMultiplier: 1.0,
+    availableEnemyTypes: [1, 2], // Family._Melee = 1, Family._Ranged = 2
+    enemyConfigs: new Map([
+      [1, createMeleeEnemyConfig()],
+      [2, createRangedEnemyConfig()],
+    ]),
+  });
+
+  // Ward 2 configuration (for testing)
+  wardConfigs.set(2 as WardId, {
+    wardId: 2 as WardId,
+    landId,
+    spawnRateMultiplier: 1.2,
     availableEnemyTypes: [1, 2], // Family._Melee = 1, Family._Ranged = 2
     enemyConfigs: new Map([
       [1, createMeleeEnemyConfig()],

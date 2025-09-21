@@ -17,3 +17,4 @@ export * from './enemies/types.js';
 export * from './enemies/spawn-config.js';
 export * from './enemies/enemy-pool.js';
 export * from './enemies/pool-manager.js';
+export * from './enemies/spawn-manager.js';

@@ -111,10 +111,10 @@ export interface DistanceThreshold {
  * Spawn manager statistics
  */
 export interface SpawnStats {
-  totalSpawned: number;
-  activeEnemies: number;
-  spawnRate: number;
-  poolUtilization: number;
+  spawnAttempts: number;
+  spawnedEnemies: number;
+  despawnedEnemies: number;
+  currentSpawnRate: number; // enemies per second
 }
 
 /**
