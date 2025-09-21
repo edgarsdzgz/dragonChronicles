@@ -11,3 +11,7 @@
 export * from './core/clock.js';
 export * from './core/loop.js';
 export * from './core/state.js';
+
+// Export enemy system components
+export * from './enemies/types.js';
+export * from './enemies/spawn-config.js';

@@ -375,6 +375,54 @@ if (this.renderer && this.stage) {
 
 - **Documentation Gates**: Verify documentation updates
 
+#### Focus and Task Management Rules (CRITICAL)
+
+- **MAINTAIN FOCUS**: When given a specific task (epic planning, story implementation, etc.), stay focused on that task ONLY
+
+- **IGNORE DISTRACTIONS**: Do NOT fix CI/CD failures, linting errors, or other issues unless they directly block the current task
+
+- **PLANNING PHASE**: During epic planning, story planning, or issue creation, ignore ALL errors and focus solely on planning
+
+- **IMPLEMENTATION PHASE**: Only address errors that prevent the current story/feature from working
+
+- **ERROR PRIORITY**:
+  - **Blocking Errors**: Fix immediately if they prevent current task completion
+  - **Non-Blocking Errors**: Document and address later, do not interrupt current work
+  - **CI/CD Failures**: Only address if they prevent deployment of current feature
+
+- **WORKFLOW DISCIPLINE**: Follow the established workflow: Plan → Branch → Implement → Test → Commit → PR
+
+#### Epic-Story Workflow (MANDATORY)
+
+**Branch Hierarchy**: `main` > `epic/{epic-name}` > `feature/{story-name}`
+
+**Epic Level Process**:
+1. **Epic Creation**: Create epic from Epic of Epics (Issue #1)
+2. **Epic Planning**: Create detailed planning document for epic
+3. **Epic Branch**: Create `epic/{epic-name}` branch from main
+4. **Story Creation**: Create individual GitHub issues for each story in epic
+5. **Epic Documentation**: Update roadmap and documentation
+
+**Story Level Process**:
+1. **Story Planning**: Plan first story in epic
+2. **Story Branch**: Create `feature/{story-name}` branch from `epic/{epic-name}`
+3. **Implementation**: Implement story features and tests
+4. **Story Completion**: Test, commit, and create PR to epic branch
+5. **Story Merge**: Merge story branch into epic branch
+6. **Next Story**: Repeat for each story in epic
+
+**Epic Completion Process**:
+1. **Epic Testing**: Ensure all stories complete and tested
+2. **Epic PR**: Create PR from epic branch to main
+3. **Epic Merge**: Merge epic branch into main
+4. **Epic Cleanup**: Delete epic and story branches
+5. **Documentation**: Update project documentation and roadmap
+
+**Quality Gates**:
+- Each story must pass all tests before merging to epic branch
+- Epic must pass all tests before merging to main
+- All documentation must be updated at each level
+
 #### Performance Optimization
 
 - **Bundle Optimization**: Tree shaking, code splitting, asset optimization

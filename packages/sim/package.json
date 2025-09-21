@@ -21,7 +21,8 @@
     "echo-ok": "echo ok"
   },
   "dependencies": {
-    "@draconia/shared": "workspace:*"
+    "@draconia/shared": "workspace:*",
+    "@draconia/engine": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
