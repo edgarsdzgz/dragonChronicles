@@ -2,7 +2,9 @@
 
 # TypeScript Standards
 
-This document defines TypeScript standards, strict mode enforcement, and development guidelines for
+This document defines TypeScript standards, strict mode enforcement, and development
+guidelines
+for
 Draconia Chronicles v2.0.0.
 
 ## Strict Mode Policy
@@ -11,7 +13,8 @@ Draconia Chronicles v2.0.0.
 
 All TypeScript code must compile successfully with these strict settings:
 
-```json
+````json
+
 {
   "compilerOptions": {
     "strict": true,
@@ -26,37 +29,46 @@ All TypeScript code must compile successfully with these strict settings:
     "moduleResolution": "NodeNext"
   }
 }
-```
+
+```text
 
 ````
-
 
 ### Policy Rationale
 
 - **`strict: true`**: Enables all strict type checking options
+
 - **`noImplicitAny: true`**: Prevents implicit any types that hide errors
+
 - **`exactOptionalPropertyTypes: true`**: Enforces precise optional property handling
+
 - **`noUncheckedIndexedAccess: true`**: Requires index signature safety checks
+
 - **`noFallthroughCasesInSwitch: true`**: Prevents accidental switch fallthrough bugs
 
 ## Strict Gate Enforcement
 
-
 ### How to Run the Strict Gate
 
-```bash
+`````bash
+
 # Run TypeScript strict mode validation
+
 pnpm run test:ts-strict
 
 # Or directly
+
 node tests/test-ts-strict.mjs
-````
+
+```text
 
 ### Expected Output
 
-```text
+````text
+
 ok - 2 passed
-```
+
+```javascript
 
 ### Gate Implementation
 
@@ -65,6 +77,7 @@ The strict gate uses two separate TypeScript projects to validate compliance:
 #### Pass Configuration (`tsconfig.strict.should-pass.json`)
 
 ```json
+
 {
   "compilerOptions": {
     "strict": true,
@@ -76,11 +89,13 @@ The strict gate uses two separate TypeScript projects to validate compliance:
   },
   "include": ["../fixtures/strict/good.ts"]
 }
-```
+
+```bash
 
 #### Fail Configuration (`tsconfig.strict.should-fail.json`)
 
 ```json
+
 {
   "compilerOptions": {
     "strict": true,
@@ -92,24 +107,28 @@ The strict gate uses two separate TypeScript projects to validate compliance:
   },
   "include": ["../fixtures/strict/bad-implicit-any.ts"]
 }
-```
+
+```javascript
 
 ### Error Code Assertions
 
 The gate validates specific TypeScript error codes rather than full error messages:
 
 ```javascript
+
 // Assert specific error codes (non-brittle)
 const output = (result.stderr || result.stdout || '').toString();
 assert.ok(
   output.includes('TS7006') || output.includes('TS7031'),
   'expected implicit any error codes TS7006/TS7031',
 );
-```
+
+```javascript
 
 **Target Error Codes**:
 
 - **TS7006**: Parameter implicitly has an 'any' type
+
 - **TS7031**: Binding element implicitly has an 'any' type
 
 ## Code Examples
@@ -119,18 +138,22 @@ assert.ok(
 **File**: `tests/fixtures/strict/good.ts`
 
 ```typescript
+
 type Opt = { title?: string };
 export function greet(name: string, opt?: Opt) {
   // exactOptionalPropertyTypes: opt?.title is string | undefined, not string
   const label = opt?.title ? `${opt.title}: ` : '';
   return `${label}Hello, ${name}`;
 }
-```
+
+```text
 
 **Why it passes**:
 
 - All parameters have explicit types (`name: string`, `opt?: Opt`)
+
 - Optional property handling respects `exactOptionalPropertyTypes`
+
 - No implicit any types anywhere
 
 ### ❌ Bad TypeScript (Fails Strict Gate)
@@ -138,17 +161,21 @@ export function greet(name: string, opt?: Opt) {
 **File**: `tests/fixtures/strict/bad-implicit-any.ts`
 
 ```typescript
+
 // Should fail with TS7006 (parameter implicitly has 'any')
 // and/or TS7031 (binding element implicitly has 'any')
 export function bad(a, { b }) {
   return a ?? b;
 }
-```
+
+```text
 
 **Why it fails**:
 
 - Parameter `a` has no type annotation (implicit any)
+
 - Destructured parameter `{ b }` has no type annotation (implicit any)
+
 - Triggers TS7006 and TS7031 error codes
 
 ## Best Practices
@@ -156,6 +183,7 @@ export function bad(a, { b }) {
 ### Function Parameters
 
 ```typescript
+
 // ❌ Implicit any
 function process(data) {
   return data;
@@ -168,11 +196,13 @@ function process(data: unknown): unknown {
 function processUser(user: { name: string }): string {
   return user.name;
 }
-```
+
+```javascript
 
 ### Object Destructuring
 
 ```typescript
+
 // ❌ Implicit any in destructuring
 function handle({ name, age }) {
   return `${name}: ${age}`;
@@ -182,11 +212,13 @@ function handle({ name, age }) {
 function handle({ name, age }: { name: string; age: number }): string {
   return `${name}: ${age}`;
 }
-```
+
+```javascript
 
 ### Optional Properties
 
 ```typescript
+
 interface Config {
   title?: string;
   enabled?: boolean;
@@ -201,11 +233,13 @@ function getTitle(config: Config): string {
 function getTitle(config: Config): string {
   return config.title ? config.title.toUpperCase() : 'DEFAULT';
 }
-```
+
+```javascript
 
 ### Index Signatures
 
 ```typescript
+
 interface Dictionary {
   [key: string]: string;
 }
@@ -220,13 +254,15 @@ function getValue(dict: Dictionary, key: string): string {
   const value = dict[key];
   return value ? value.trim() : '';
 }
-```
+
+```javascript
 
 ## Quick Fixes for Common Violations
 
 ### Fix TS7006: Parameter Implicitly Has Any
 
 ```typescript
+
 // Before (fails strict gate)
 function helper(value) {
   return value;
@@ -236,11 +272,13 @@ function helper(value) {
 function helper(value: unknown): unknown {
   return value;
 }
-```
+
+```javascript
 
 ### Fix TS7031: Binding Element Implicitly Has Any
 
 ```typescript
+
 // Before (fails strict gate)
 function extract({ data }) {
   return data;
@@ -250,11 +288,13 @@ function extract({ data }) {
 function extract({ data }: { data: unknown }): unknown {
   return data;
 }
-```
+
+```javascript
 
 ### Fix Exact Optional Properties
 
 ```typescript
+
 interface User {
   name: string;
   email?: string;
@@ -269,7 +309,8 @@ function formatUser(user: User): string {
 function formatUser(user: User): string {
   return user.email ? `${user.name} <${user.email}>` : user.name;
 }
-```
+
+```javascript
 
 ## Configuration Files
 
@@ -278,6 +319,7 @@ function formatUser(user: User): string {
 The base TypeScript configuration enforces strict mode across the workspace:
 
 ```json
+
 {
   "compilerOptions": {
     "strict": true,
@@ -296,13 +338,15 @@ The base TypeScript configuration enforces strict mode across the workspace:
   },
   "exclude": ["node_modules", "dist", "**/*.test.*"]
 }
-```
+
+```javascript
 
 ### Gate Test Configurations
 
 Located in `tests/ts-strict/`:
 
 - `tsconfig.strict.should-pass.json` - Validates good TypeScript compiles
+
 - `tsconfig.strict.should-fail.json` - Validates bad TypeScript fails
 
 ## Troubleshooting
@@ -310,6 +354,7 @@ Located in `tests/ts-strict/`:
 ### "Property does not exist" Errors
 
 ```typescript
+
 // Problem: TypeScript doesn't know about dynamic properties
 const obj: any = { name: 'test' };
 console.log(obj.unknownProp); // No error, but dangerous
@@ -319,11 +364,13 @@ interface MyObject {
   name: string;
   [key: string]: unknown; // Allow additional properties
 }
-```
+
+```javascript
 
 ### "Object is possibly undefined" Errors
 
 ```typescript
+
 // Problem: Optional chaining needed
 function getLength(items?: string[]): number {
   return items.length; // Error: items might be undefined
@@ -333,11 +380,13 @@ function getLength(items?: string[]): number {
 function getLength(items?: string[]): number {
   return items?.length ?? 0;
 }
-```
+
+```javascript
 
 ### "Type 'undefined' is not assignable" Errors
 
 ```typescript
+
 // Problem: exactOptionalPropertyTypes enforcement
 interface Config {
   debug?: boolean;
@@ -353,13 +402,15 @@ const config: Config = {}; // Omit the property
 interface Config {
   debug?: boolean | undefined; // Explicitly allow undefined
 }
-```
+
+```text
 
 ## Migration from Non-Strict Code
 
 ### Step 1: Enable Strict Mode Gradually
 
 ```json
+
 {
   "compilerOptions": {
     // Start with these
@@ -374,22 +425,27 @@ interface Config {
     "strict": true
   }
 }
-```
+
+```javascript
 
 ### Step 2: Fix Implicit Any Issues
 
 Run the strict gate and address TS7006/TS7031 errors:
 
 ```bash
+
 pnpm run test:ts-strict
+
 # Fix reported implicit any issues
-```
+
+```text
 
 ### Step 3: Address Optional Property Issues
 
 Enable `exactOptionalPropertyTypes` and fix undefined handling:
 
 ```typescript
+
 // Before
 interface User {
   name?: string;
@@ -401,7 +457,8 @@ interface User {
   name?: string;
 }
 const user: User = {}; // Correct - omit undefined properties
-```
+
+```text
 
 ## Integration with Development Workflow
 
@@ -410,7 +467,9 @@ const user: User = {}; // Correct - omit undefined properties
 The TypeScript strict gate runs as part of:
 
 - `pnpm run test:all` - Full test suite execution
+
 - CI/CD pipeline validation
+
 - Manual quality checks before PR submission
 
 ### IDE Configuration
@@ -418,15 +477,22 @@ The TypeScript strict gate runs as part of:
 Ensure your IDE uses the project's TypeScript configuration:
 
 1. Point IDE to `tsconfig.base.json`
-2. Enable TypeScript strict mode warnings
-3. Configure auto-fix for common violations
+
+1. Enable TypeScript strict mode warnings
+
+1. Configure auto-fix for common violations
 
 ### Code Review Guidelines
 
 - All new code must pass the strict gate
+
 - No `@ts-ignore` comments without justification
+
 - Prefer explicit types over `any` or `unknown`
+
 - Document complex type definitions with comments
 
 See [ADR-0002: TypeScript Strict Gate](/docs/adr/0002-typescript-strict-gate.md) for the
 architectural decision record.
+
+`````

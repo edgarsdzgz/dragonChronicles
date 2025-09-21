@@ -1,0 +1,47 @@
+{
+  "name": "Pipeline Status Monitor",
+  "description": "Check GitHub Actions pipeline status and suggest debugging steps",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🔍 Check Pipeline",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "gh run list --limit 5 --json status,conclusion,name,url",
+      "description": "Get recent workflow runs"
+    },
+    {
+      "type": "conditional",
+      "condition": "exit_code != 0",
+      "actions": [
+        {
+          "type": "notification",
+          "message": "⚠️ GitHub CLI not available - install gh CLI for pipeline monitoring"
+        }
+      ]
+    }
+  ],
+  "notification": {
+    "success": "✅ Pipeline status retrieved - check output",
+    "error": "❌ Unable to check pipeline status"
+  },
+  "output": {
+    "show_on_success": true,
+    "format": "json"
+  },
+  "follow_up": {
+    "on_failure": {
+      "message": "Pipeline failures detected. Use systematic debugging approach: fix one workflow at a time.",
+      "actions": [
+        "Check GitHub Actions logs",
+        "Focus on first failing workflow",
+        "Use internet research for solutions",
+        "Document fixes in debugging chronicle"
+      ]
+    }
+  }
+}

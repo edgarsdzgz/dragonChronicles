@@ -1,0 +1,144 @@
+---
+description: "Enforce the Debugging Chronicles System for all debugging activities and AI handoffs"
+globs: ["**/*.md", "**/*.yml", "**/*.yaml", "**/*.sh", "**/*.py", "**/*.js", "**/*.ts"]
+alwaysApply: true
+---
+
+# DragonIdler Project Rules
+
+## Development Workflow & Process Rules
+
+**Automation First Principle**: When manual attempts fail repeatedly (3+ times), check the scripts folder for existing automation tools first. If none exist, create bash scripts for simple tasks or Python scripts for complex ones. This saves tokens, thinking time, and ensures consistent results.
+
+**Sequential Problem Solving**: Focus on one issue at a time with a slow and steady approach. This provides better control over testing, breaking, and fixing, preventing cascading failures.
+
+**CI/CD Pipeline Priority**: Always trust GitHub Actions logs over local tests for debugging. When CI fails, investigate and resolve each workflow one at a time, using online resources to bolster research and debugging.
+
+**Documentation Standards**: All documents must be created in the /docs/ folder. Only maintain v2_GDD.md (always updated), planning markdowns for active issues, and CLAUDE.md as LLM context. All markdown files must comply with project linter rules 100% of the time.
+
+**Feature Branch Discipline**: Never work directly on main. Always create feature branches (feat/p0-s00X-description) and follow the complete implementation workflow: create branch → plan → implement → test → commit → PR.
+
+**Memory Management**: Treat each new W# issue with its own feature branch and create plan markdown files. After PR merge, clean up local branches, switch to main, delete feature branches, and update documentation.
+
+**Issue Workflow**: Each new W# issue gets its own feature branch and always create a plan markdown file for each W# issue.
+
+**PR Cleanup Process**: Whenever a PR is merged, clean up all local branches, switch back to the main branch, complete any markdown files for the merged PR, and ensure this process is documented and followed every time.
+
+**Documentation Maintenance**: Update documentation a little bit each workpack to keep documents easy to maintain and up to date, ensuring clarity for collaborators returning to the project.
+
+**Versioning Strategy**: Use phase-based semantic versioning scheme: main releases use 0.<phase>.0, sub-phase point releases use 0.<phase>.<sub> with the second number moving from 0-99 and then resetting. Phase 16 should reach version 0.7.0. Versions below 0.5.0 are alpha, and 0.5.0 and above are beta throughout the 16-phase project.
+
+**Process Verification**: After finishing each issue, always check CLAUDE.md for the process.
+
+**Story Chapter Completion**: At the end of each story chapter, stop work, commit and push code to the standing PR, and check the pipeline to ensure it is passing 100% before continuing. If the pipeline is broken, start systematic approach to fixing the pipeline by picking the first workflow, looking at the errors it's displaying, and resolving the issue.
+
+**Documentation Updates**: Update documentation each time we finish with a story chapter, ensuring all changes and learnings are captured.
+
+**Quality Gates**: All code must pass GitHub pipeline before proceeding to next phase. When linting issues occur, fix one type at a time and always include failsafes with timeouts in maintenance scripts.
+
+**Script Management**: Delete redundant scripts whose functionality is covered by other scripts. Keep only enhanced and unique scripts in the scripts folder.
+
+**Stop and Check**: When encountering difficulties, stop working and check in more often rather than guessing solutions.
+
+## Debugging Chronicles System
+
+**MANDATORY**: All debugging sessions must be documented as chronicles in `docs/engineering/` following the established format and templates.
+
+## Required Chronicle Files
+
+- **Session Documentation**: `docs/engineering/ci-workflow-debugging-session.md` - Complete session chronicle
+- **Quick Reference**: `docs/engineering/quick-reference-continuation.md` - Immediate actions and status  
+- **Handoff Document**: `docs/engineering/session-handoff-complete.md` - Comprehensive handoff for new AI
+
+## Chronicle Template Structure
+
+1. **Session Overview**: Date, duration, objectives, key issues addressed
+2. **Issues Resolved**: Detailed breakdown of each problem, root cause, solution applied
+3. **Key Learnings**: Patterns discovered, automation scripts created, configuration changes
+4. **Current Status**: Workflow status (X/6 passing), remaining issues, next steps
+5. **Automation Scripts**: List of scripts created with purposes and usage
+6. **Memory Rules**: New rules discovered and documented
+7. **Handoff Instructions**: Specific commands and context for continuation
+
+## Required Actions for Each Debugging Session
+
+1. **Create/Update Chronicle**: Document every debugging session in `docs/engineering/`
+2. **Update Quick Reference**: Maintain current status and immediate next steps
+3. **Create Handoff Document**: Comprehensive guide for AI handoff scenarios
+4. **Document Automation**: Record all scripts created and their purposes
+5. **Update CLAUDE.md**: Add new memory rules and patterns discovered
+6. **Verify Workflow Status**: Check `gh run list --limit 5` for current pipeline status
+
+## Key Files to Reference
+
+- **CLAUDE.md**: AI development guidelines and operational procedures
+- **docs/engineering/ci-workflow-debugging-session.md**: Complete debugging chronicle
+- **docs/engineering/quick-reference-continuation.md**: Current status and commands
+- **docs/engineering/session-handoff-complete.md**: Handoff documentation
+- **scripts/**: Automation scripts for repetitive tasks
+
+## Debugging Patterns to Follow
+
+1. **Systematic Approach**: One workflow at a time, document each fix
+2. **Pipeline-First Strategy**: Trust GitHub Actions logs over local tests
+3. **Automation Priority**: Create scripts for repetitive tasks (3+ manual attempts)
+4. **Online Research**: Use web search to bolster debugging with known solutions
+5. **Comprehensive Documentation**: Capture root causes, solutions, and learnings
+
+## Quality Gates
+
+- All debugging sessions must have complete chronicle documentation
+- Quick reference must be updated with current status
+- Handoff document must be comprehensive for seamless AI transitions
+- Automation scripts must be documented and committed
+- Memory rules must be updated in CLAUDE.md
+
+## Project-Specific Requirements
+
+**LLM Onboarding**: All AI assistants must read `docs/engineering/llm-onboarding-complete.md` for complete project context before starting work.
+
+**Documentation Standards**: 
+- All documents must be created in `/docs/` folder
+- Only maintain `v2_GDD.md` (always updated), planning markdowns for active issues, and `CLAUDE.md` as LLM context
+- All markdown files must comply with project linter rules 100% of the time
+- Use `scripts/fix-markdown-universal.py` for markdown linting fixes
+
+**Quality Gates**:
+- TypeScript Strict: All code must pass strict type checking
+- Test Suite: Unit + Integration + E2E tests must pass (192 tests total)
+- Documentation: Code changes require documentation updates
+- Build Verification: Full workspace must compile successfully
+- Performance: All size budgets must be met
+- Comprehensive Testing Strategy: Apply comprehensive testing strategy and guardrails & monitoring to the entire codebase as normal practice for all issues
+
+**Technology Stack Requirements**:
+- Frontend: SvelteKit, TypeScript, PixiJS
+- Backend: Web Workers, Dexie (IndexedDB)
+- Build: pnpm workspaces, Vite, TypeScript project references
+- Testing: Vitest, Playwright, custom tiny-runner
+- CI/CD: GitHub Actions, Lighthouse CI
+- PWA: Workbox, service workers, offline support
+
+**Branch Strategy**:
+- Main Branch: `main` - production-ready code
+- Feature Branches: `feat/wX-description` for workpacks
+- Cleanup: Delete feature branches after merge
+
+**Test Execution Commands**:
+- `pnpm run test:all` - Run all tests
+- `pnpm run test:vitest` - Unit and integration tests
+- `pnpm run test:vitest:render` - Render tests
+- `pnpm run test:e2e` - End-to-end tests
+
+**Development Commands**:
+- `pnpm run dev:web` - Start web app
+- `pnpm run dev:sandbox` - Start sandbox CLI
+- `pnpm run lint` - ESLint check
+- `pnpm run format` - Prettier format
+- `pnpm run type-check` - TypeScript check
+
+**Never Bypass Agreed Requirements**: When given specific technical requirements, implement those exact requirements rather than falling back to alternative solutions. Debug root causes and fix underlying issues.
+
+**Provide Objective Evidence**: Always support implementation claims with concrete, reproducible evidence using grep checks, exact command outputs, and before/after comparisons.
+
+**Reference**: This system ensures systematic debugging, knowledge preservation, and seamless handoffs between AI assistants while maintaining comprehensive project context.

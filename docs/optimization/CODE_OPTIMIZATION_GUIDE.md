@@ -1,35 +1,49 @@
 # Code Optimization Guide for Draconia Chronicles
 
-**Version**: 1.0  
-**Date**: September 3, 2025  
+**Version**: 1.0
+**Date**: September 3, 2025
 **Purpose**: Comprehensive guide for optimizing code performance and maintainability
 
 ## 📖 **Table of Contents**
 
 1. [Introduction](#-introduction)
-2. [Performance Optimization Techniques](#-performance-optimization-techniques)
-3. [Memory Management](#memory-management)
-4. [Data Structure Optimization](#-data-structure-optimization)
-5. [Database Optimization](#database-optimization)
-6. [Bundle Optimization](#bundle-optimization)
-7. [Error Handling Optimization](#-error-handling-optimization)
-8. [Testing and Validation](#-testing-and-validation)
-9. Tools and Resources
-10. [Best Practices](#-best-practices)
+
+1. [Performance Optimization Techniques](#-performance-optimization-techniques)
+
+1. Memory Management
+
+1. Data Structure Optimization
+
+1. Database Optimization
+
+1. Bundle Optimization
+
+1. Error Handling Optimization
+
+1. Testing and Validation
+
+1. Tools and Resources
+
+1. Best Practices
 
 ## 🎯 **Introduction**
 
-This guide provides comprehensive techniques and strategies for optimizing the Draconia Chronicles
+This guide provides comprehensive techniques and strategies for optimizing the Draconia
+Chronicles
 codebase. It covers performance optimization, memory management, data structures, database
 operations, bundle optimization, and error handling.
 
 ### **Optimization Principles**
 
 1. **Measure First**: Always measure performance before optimizing
-2. **Optimize Incrementally**: Make small, measurable changes
-3. **Maintain Quality**: Don't sacrifice code quality for performance
-4. **Test Thoroughly**: Maintain test coverage throughout optimization
-5. **Document Changes**: Document all optimization decisions and rationale
+
+1. **Optimize Incrementally**: Make small, measurable changes
+
+1. **Maintain Quality**: Don't sacrifice code quality for performance
+
+1. **Test Thoroughly**: Maintain test coverage throughout optimization
+
+1. **Document Changes**: Document all optimization decisions and rationale
 
 ## ⚡ **Performance Optimization Techniques**
 
@@ -39,7 +53,8 @@ operations, bundle optimization, and error handling.
 
 ### Before: O(n) Linear Operations
 
-```typescript
+````typescript
+
 // Inefficient: O(n) shift operation
 class LogBuffer {
   private logs: LogEvent[] = [];
@@ -51,11 +66,13 @@ class LogBuffer {
     }
   }
 }
-```
+
+```javascript
 
 ### After: O(1) Constant Operations
 
 ```typescript
+
 // Efficient: O(1) circular buffer
 class CircularBuffer<T> {
   private buffer: T[] = [];
@@ -74,24 +91,28 @@ class CircularBuffer<T> {
     }
   }
 }
-```
+
+```text
 
 #### **Space Complexity Optimization**
 
 ### Before: Recursive with Stack Overhead
 
 ```typescript
+
 // Inefficient: Recursive with WeakSet overhead
 function calculateSize(obj: unknown, seen = new WeakSet()): number {
   if (seen.has(obj)) return 0;
   seen.add(obj);
   // ... recursive calculation
 }
-```
+
+```javascript
 
 ### After: Iterative with Minimal Overhead
 
 ```typescript
+
 // Efficient: Iterative approach
 function calculateSizeFast(obj: unknown): number {
   if (obj == null) return 4;
@@ -106,13 +127,15 @@ function calculateSizeFast(obj: unknown): number {
     // ... fast object estimation
   }
 }
-```
+
+```text
 
 ### **Function Optimization**
 
 #### **Memoization**
 
 ```typescript
+
 // Cache expensive calculations
 const memoizedCalculation = (() => {
   const cache = new Map();
@@ -123,11 +146,13 @@ const memoizedCalculation = (() => {
     return result;
   };
 })();
-```
+
+```javascript
 
 #### **Debouncing and Throttling**
 
 ```typescript
+
 // Debounce expensive operations
 function debounce<T extends (...args: any[]) => any>(
   func: T,
@@ -139,7 +164,8 @@ function debounce<T extends (...args: any[]) => any>(
     timeout = setTimeout(() => func(...args), wait);
   };
 }
-```
+
+```text
 
 ## 🧠 **Memory Management**
 
@@ -148,6 +174,7 @@ function debounce<T extends (...args: any[]) => any>(
 #### **Event Listener Cleanup**
 
 ```typescript
+
 // Proper cleanup of event listeners
 class Component {
   private cleanup: (() => void)[] = [];
@@ -163,11 +190,13 @@ class Component {
     this.cleanup = [];
   }
 }
-```
+
+```javascript
 
 #### **Object Pool Pattern**
 
 ```typescript
+
 // Reuse objects to reduce garbage collection
 class ObjectPool<T> {
   private pool: T[] = [];
@@ -185,11 +214,13 @@ class ObjectPool<T> {
     this.pool.push(obj);
   }
 }
-```
+
+```javascript
 
 ### **Memory Usage Monitoring**
 
 ```typescript
+
 // Monitor memory usage
 function logMemoryUsage(label: string) {
   if (performance.memory) {
@@ -201,13 +232,15 @@ function logMemoryUsage(label: string) {
     });
   }
 }
-```
+
+```text
 
 ## 📊 **Data Structure Optimization**
 
 ### **Circular Buffer Implementation**
 
 ```typescript
+
 export class CircularBuffer<T> {
   private buffer: T[] = [];
   private head = 0;
@@ -251,11 +284,13 @@ export class CircularBuffer<T> {
     return result;
   }
 }
-```
+
+```javascript
 
 ### **Efficient Data Processing**
 
 ```typescript
+
 // Batch processing for large datasets
 function processBatch<T, R>(items: T[], processor: (item: T) => R, batchSize = 100): R[] {
   const results: R[] = [];
@@ -273,7 +308,8 @@ function processBatch<T, R>(items: T[], processor: (item: T) => R, batchSize = 1
 
   return results;
 }
-```
+
+```text
 
 ## 🗄️ **Database Optimization**
 
@@ -282,6 +318,7 @@ function processBatch<T, R>(items: T[], processor: (item: T) => R, batchSize = 1
 #### **Before: Nested Promise Chains**
 
 ```typescript
+
 // Inefficient: Nested promises
 function saveData(data: SaveData) {
   return db.saves.add(data).then((saveId) => {
@@ -294,11 +331,13 @@ function saveData(data: SaveData) {
     });
   });
 }
-```
+
+```javascript
 
 #### **After: Clean Async/Await**
 
 ```typescript
+
 // Efficient: Clean async/await
 async function saveData(data: SaveData): Promise<number> {
   const saveId = await db.saves.add(data);
@@ -308,11 +347,13 @@ async function saveData(data: SaveData): Promise<number> {
   await db.saves.delete(oldSaveId);
   return saveId;
 }
-```
+
+```javascript
 
 ### **Query Optimization**
 
 ```typescript
+
 // Optimize database queries
 class OptimizedRepository {
   private cache = new Map<string, any>();
@@ -335,13 +376,15 @@ class OptimizedRepository {
     });
   }
 }
-```
+
+```text
 
 ## 📦 **Bundle Optimization**
 
 ### **Code Splitting**
 
 ```typescript
+
 // Dynamic imports for code splitting
 const LazyComponent = lazy(() => import('./LazyComponent'));
 
@@ -356,11 +399,13 @@ const routes = [
     component: lazy(() => import('./Settings')),
   },
 ];
-```
+
+```bash
 
 ### **Tree Shaking Optimization**
 
 ```typescript
+
 // Optimize exports for tree shaking
 // Good: Named exports
 export { functionA, functionB, functionC };
@@ -374,11 +419,13 @@ export { functionC } from './moduleC';
 export * from './core';
 export * from './utils';
 export * from './types';
-```
+
+```javascript
 
 ### **Bundle Analysis**
 
 ```typescript
+
 // Bundle size monitoring
 function analyzeBundle() {
   const stats = {
@@ -393,13 +440,15 @@ function analyzeBundle() {
 
   return stats;
 }
-```
+
+```text
 
 ## 🚨 **Error Handling Optimization**
 
 ### **Structured Error Types**
 
 ```typescript
+
 // Enhanced error handling
 export class DatabaseError extends Error {
   constructor(
@@ -423,11 +472,13 @@ export class DatabaseError extends Error {
     return msg;
   }
 }
-```
+
+```javascript
 
 ### **Error Recovery**
 
 ```typescript
+
 // Error recovery strategies
 async function withRetry<T>(
   operation: () => Promise<T>,
@@ -453,11 +504,13 @@ async function withRetry<T>(
 
   throw lastError!;
 }
-```
+
+```javascript
 
 ### **Performance Monitoring**
 
 ```typescript
+
 // Performance monitoring wrapper
 function withPerformanceMonitoring<T>(
   operation: () => Promise<T>,
@@ -491,13 +544,15 @@ function withPerformanceMonitoring<T>(
       throw error;
     });
 }
-```
+
+```text
 
 ## 🧪 **Testing and Validation**
 
 ### **Performance Testing**
 
 ```typescript
+
 // Performance benchmark tests
 describe('Performance Tests', () => {
   test('circular buffer performance', () => {
@@ -528,11 +583,13 @@ describe('Performance Tests', () => {
     expect(memoryIncrease).toBeLessThan(1024 * 1024); // < 1MB increase
   });
 });
-```
+
+```javascript
 
 ### **Load Testing**
 
 ```typescript
+
 // Load testing for database operations
 async function loadTestDatabase() {
   const iterations = 1000;
@@ -552,29 +609,39 @@ async function loadTestDatabase() {
   console.log(`Database load test: ${opsPerSecond.toFixed(2)} ops/sec`);
   return opsPerSecond;
 }
-```
+
+```text
 
 ## 🛠️ **Tools and Resources**
 
 ### **Performance Monitoring Tools**
 
 - **Chrome DevTools**: Memory profiling, performance analysis
+
 - **Node.js Profiler**: CPU profiling, memory analysis
+
 - **Webpack Bundle Analyzer**: Bundle size analysis
+
 - **Lighthouse**: Performance auditing
 
 ### **Testing Tools**
 
 - **Jest**: Unit testing and performance testing
+
 - **K6**: Load testing and performance testing
+
 - **Artillery**: Load testing and stress testing
+
 - **Playwright**: End-to-end performance testing
 
 ### **Optimization Tools**
 
 - **TypeScript**: Type checking and optimization
+
 - **ESLint**: Code quality and performance linting
+
 - **Prettier**: Code formatting and consistency
+
 - **Husky**: Git hooks for quality assurance
 
 ## 📋 **Best Practices**
@@ -582,44 +649,66 @@ async function loadTestDatabase() {
 ### **Performance Optimization**
 
 1. **Profile First**: Always profile before optimizing
-2. **Optimize Hot Paths**: Focus on frequently executed code
-3. **Measure Impact**: Measure the impact of each optimization
-4. **Test Thoroughly**: Test optimizations thoroughly
-5. **Document Changes**: Document all optimization decisions
+
+1. **Optimize Hot Paths**: Focus on frequently executed code
+
+1. **Measure Impact**: Measure the impact of each optimization
+
+1. **Test Thoroughly**: Test optimizations thoroughly
+
+1. **Document Changes**: Document all optimization decisions
 
 ### **Memory Management**
 
 1. **Avoid Memory Leaks**: Clean up resources properly
-2. **Use Object Pools**: Reuse objects when possible
-3. **Monitor Memory Usage**: Monitor memory usage regularly
-4. **Optimize Data Structures**: Use efficient data structures
-5. **Minimize Garbage Collection**: Reduce object creation
+
+1. **Use Object Pools**: Reuse objects when possible
+
+1. **Monitor Memory Usage**: Monitor memory usage regularly
+
+1. **Optimize Data Structures**: Use efficient data structures
+
+1. **Minimize Garbage Collection**: Reduce object creation
 
 ### **Code Quality**
 
 1. **Maintain Readability**: Keep code readable and maintainable
-2. **Use TypeScript**: Leverage TypeScript for better code quality
-3. **Write Tests**: Maintain comprehensive test coverage
-4. **Handle Errors**: Implement proper error handling
-5. **Document Code**: Document complex optimizations
+
+1. **Use TypeScript**: Leverage TypeScript for better code quality
+
+1. **Write Tests**: Maintain comprehensive test coverage
+
+1. **Handle Errors**: Implement proper error handling
+
+1. **Document Code**: Document complex optimizations
 
 ### **Database Optimization**
 
 1. **Use Transactions**: Use transactions for related operations
-2. **Batch Operations**: Batch multiple operations together
-3. **Optimize Queries**: Optimize database queries
-4. **Use Indexes**: Use appropriate database indexes
-5. **Monitor Performance**: Monitor database performance
+
+1. **Batch Operations**: Batch multiple operations together
+
+1. **Optimize Queries**: Optimize database queries
+
+1. **Use Indexes**: Use appropriate database indexes
+
+1. **Monitor Performance**: Monitor database performance
 
 ### **Bundle Optimization**
 
 1. **Code Splitting**: Implement code splitting
-2. **Tree Shaking**: Optimize for tree shaking
-3. **Lazy Loading**: Use lazy loading for non-critical code
-4. **Bundle Analysis**: Regularly analyze bundle composition
-5. **Optimize Dependencies**: Optimize dependency usage
+
+1. **Tree Shaking**: Optimize for tree shaking
+
+1. **Lazy Loading**: Use lazy loading for non-critical code
+
+1. **Bundle Analysis**: Regularly analyze bundle composition
+
+1. **Optimize Dependencies**: Optimize dependency usage
 
 ---
 
 **This guide should be updated regularly as new optimization techniques and best practices are
 discovered.**
+
+````

@@ -11,7 +11,8 @@ missing memory tools
 ## 🎯 **Overview**
 
 Since Cursor's memory tools are not available on Linux (version 1.5.11), we've created a
-comprehensive file-based memory system that provides the same functionality. This system allows the
+comprehensive file-based memory system that provides the same functionality..
+This system allows the
 AI assistant to maintain context and important information across sessions.
 
 ## 📁 **System Components**
@@ -19,7 +20,9 @@ AI assistant to maintain context and important information across sessions.
 ### **Core Files**
 
 - `memory.md` - Main memory file containing all context and information
+
 - `scripts/memory-manager.py` - Python script for managing memory operations
+
 - `docs/engineering/memory-system-usage.md` - This usage guide
 
 ### **File Structure**
@@ -102,6 +105,7 @@ python3 scripts/memory-manager.py read
 **Parameters**:
 
 - `<section>` - Name of the section to update
+
 - `<content>` - New content for the section
 
 **Examples**:
@@ -110,7 +114,8 @@ python3 scripts/memory-manager.py read
 
 # Update current session information
 
-python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration research"
+python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration
+research"
 
 # Update project status
 
@@ -132,6 +137,7 @@ feat/w7-cicd-previews, CI/CD: 4/6 workflows passing"
 **Parameters**:
 
 - `<section>` - Name of the section to add to
+
 - `<content>` - Content to add to the section
 
 **Examples**:
@@ -140,12 +146,16 @@ feat/w7-cicd-previews, CI/CD: 4/6 workflows passing"
 
 # Add to session notes
 
-python3 scripts/memory-manager.py add "Session Notes" "Discovered Steam overlay compatibility
+python3 scripts/memory-manager.py add "Session Notes" "Discovered Steam overlay
+compatibility
 issues"
 
 # Add to knowledge base
 
-python3 scripts/memory-manager.py add "Steam Integration Research" "Electron + Steamworks.js is the
+python3 scripts/memory-manager.py add "Steam Integration Research" "Electron +
+Steamworks.js
+is
+the
 recommended approach"
 
 ```text
@@ -231,32 +241,42 @@ When working with the AI assistant, you can:
 **Read memory at the start of a session**:
 
 ```text
+
 Please read the memory file to understand the current project context
+
 ````
 
 **Update memory during the session**:
 
-```text
+`````text
+
 Please update the memory with our current progress on Steam integration
-```
+
+```text
 
 **Search for specific information**:
 
 ```text
+
 Please search the memory for information about CI/CD issues
-```
+
+```text
 
 **Add new discoveries**:
 
 ```text
+
 Please add this new information about Electron configuration to the memory
-```
+
+```text
 
 ### **Memory Update Workflow**
 
 1. **Start of session**: AI reads memory to understand context
-2. **During session**: AI updates memory with progress and discoveries
-3. **End of session**: AI updates memory with session summary and next steps
+
+1. **During session**: AI updates memory with progress and discoveries
+
+1. **End of session**: AI updates memory with session summary and next steps
 
 ---
 
@@ -269,36 +289,47 @@ The memory file is organized into these main sections:
 #### **🧠 Memory Categories**
 
 - **Project Context** - Basic project information
+
 - **Current Development Status** - Current state and progress
+
 - **Key Technical Decisions** - Important architectural decisions
 
 #### **🎯 Current Session Context**
 
 - **Active Issues** - Current problems being worked on
+
 - **Recent Discoveries** - New findings and solutions
+
 - **Next Steps** - Planned actions
 
 #### **📚 Knowledge Base**
 
 - **Steam Integration Research** - Steam distribution findings
+
 - **CI/CD Solutions** - CI/CD problem solutions
+
 - **Performance Optimization** - Optimization techniques
 
 #### **🔧 Technical Environment**
 
 - **Development Setup** - Environment details
+
 - **Project Structure** - File organization
+
 - **Key Files** - Important files and their purposes
 
 #### **🚀 Future Plans**
 
 - **Immediate** - Next session goals
+
 - **Short Term** - Upcoming milestones
+
 - **Long Term** - Long-term objectives
 
 #### **📝 Session Notes**
 
 - **Current Session** - Today's work
+
 - **Previous Sessions** - Historical context
 
 ---
@@ -313,12 +344,15 @@ You can create custom sections for specific needs:
 
 # Create a new section for debugging sessions
 
-python3 scripts/memory-manager.py update "Debugging Sessions" "PNPM hoisting issue resolved with
+python3 scripts/memory-manager.py update "Debugging Sessions" "PNPM hoisting issue
+resolved
+with
 --config.node-linker=hoisted"
 
 # Add to the debugging section
 
-python3 scripts/memory-manager.py add "Debugging Sessions" "GitHub Pages environment protection
+python3 scripts/memory-manager.py add "Debugging Sessions" "GitHub Pages environment
+protection
 rules fixed"
 
 ```text
@@ -332,8 +366,10 @@ For multiple updates, you can chain commands:
 # Update multiple sections
 
 python3 scripts/memory-manager.py update "Current Session" "Working on Steam integration"
-python3 scripts/memory-manager.py add "Session Notes" "Researched Electron wrapper approach"
-python3 scripts/memory-manager.py add "Session Notes" "Confirmed Steam overlay compatibility
+python3 scripts/memory-manager.py add "Session Notes" "Researched Electron wrapper
+approach"
+python3 scripts/memory-manager.py add "Session Notes" "Confirmed Steam overlay
+compatibility
 solutions"
 
 ```text
@@ -390,7 +426,9 @@ If you try to add to a non-existent section, it will be created automatically.
 ### **Error Messages**
 
 - **"Error reading memory file"** - Check file permissions and path
+
 - **"Error updating memory"** - Check write permissions
+
 - **"No results found"** - Try different search terms or check spelling
 
 ---
@@ -400,18 +438,26 @@ If you try to add to a non-existent section, it will be created automatically.
 ### **For AI Assistant**
 
 1. **Read memory at session start** - Always understand current context
-2. **Update frequently** - Keep memory current with progress
-3. **Use descriptive sections** - Organize information logically
-4. **Include context** - Add relevant details and background
-5. **Update timestamps** - Keep track of when information was last updated
+
+1. **Update frequently** - Keep memory current with progress
+
+1. **Use descriptive sections** - Organize information logically
+
+1. **Include context** - Add relevant details and background
+
+1. **Update timestamps** - Keep track of when information was last updated
 
 ### **For Developers**
 
 1. **Regular backups** - The memory file is important for context
-2. **Version control** - Include memory.md in git for team collaboration
-3. **Consistent naming** - Use consistent section names
-4. **Clear content** - Write clear, searchable content
-5. **Regular cleanup** - Remove outdated information
+
+1. **Version control** - Include memory.md in git for team collaboration
+
+1. **Consistent naming** - Use consistent section names
+
+1. **Clear content** - Write clear, searchable content
+
+1. **Regular cleanup** - Remove outdated information
 
 ---
 
@@ -420,24 +466,34 @@ If you try to add to a non-existent section, it will be created automatically.
 ### **What This Replaces**
 
 - `update-memory` tool calls
+
 - Automatic memory management
+
 - Built-in context persistence
 
 ### **What This Provides**
 
 - Manual memory control
+
 - Searchable knowledge base
+
 - Version-controlled memory
+
 - Team-shareable context
+
 - Offline memory management
 
 ### **Migration Steps**
 
 1. **Create initial memory** - Use the script to create the memory file
-2. **Populate with current context** - Add existing project information
-3. **Update AI workflow** - Modify AI instructions to use file-based memory
-4. **Test the system** - Verify all functionality works
-5. **Train team** - Ensure everyone knows how to use the system
+
+1. **Populate with current context** - Add existing project information
+
+1. **Update AI workflow** - Modify AI instructions to use file-based memory
+
+1. **Test the system** - Verify all functionality works
+
+1. **Train team** - Ensure everyone knows how to use the system
 
 ---
 
@@ -446,23 +502,31 @@ If you try to add to a non-existent section, it will be created automatically.
 ### **Planned Features**
 
 - **Memory versioning** - Track changes over time
+
 - **Memory merging** - Combine multiple memory sources
+
 - **Memory export** - Export memory in different formats
+
 - **Memory validation** - Check memory file integrity
+
 - **Memory backup** - Automatic backup functionality
 
 ### **Integration Ideas**
 
 - **Git hooks** - Auto-update memory on commits
+
 - **CI/CD integration** - Update memory with build status
+
 - **Documentation sync** - Sync with project documentation
+
 - **Team collaboration** - Multi-user memory management
 
 ---
 
 ## 🎯 **Summary**
 
-The file-based memory system provides a robust alternative to Cursor's missing memory tools. It
+The file-based memory system provides a robust alternative to Cursor's missing memory tools..
+It
 offers:
 
 ✅ **Full functionality** - All memory operations supported
@@ -472,11 +536,14 @@ offers:
 ✅ **Offline operation** - Works without internet
 ✅ **Customizable** - Adapt to your needs
 
-This system ensures that important project context and knowledge are preserved and accessible across
+This system ensures that important project context and knowledge are preserved and
+accessible
+across
 all development sessions.
 
 ---
 
 **Last Updated**: 2025-01-15
 **Version**: 1.0.0
-````
+
+`````

@@ -1,0 +1,44 @@
+{
+  "name": "Pre-Commit Validation",
+  "description": "Comprehensive validation before git commit",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "✅ Pre-Commit Check",
+      "location": "source_control"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm run lint:quiet",
+      "description": "ESLint validation"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run format:check",
+      "description": "Prettier format check"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run typecheck",
+      "description": "TypeScript strict mode validation"
+    },
+    {
+      "type": "shell",
+      "command": "node tests/run-all.mjs",
+      "description": "Full test suite execution",
+      "timeout": 300000
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run docs:lint",
+      "description": "Markdown documentation linting"
+    }
+  ],
+  "notification": {
+    "success": "✅ All pre-commit checks passed - ready to commit",
+    "error": "❌ Pre-commit validation failed - fix issues before committing"
+  },
+  "blocking": true
+}

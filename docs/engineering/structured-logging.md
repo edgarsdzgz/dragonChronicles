@@ -1,20 +1,24 @@
 # Structured Logging System
 
-**Workpack**: P0-W5 — Logging v1  
-**Status**: ✅ Complete  
+**Workpack**: P0-W5 — Logging v1
+**Status**: ✅ Complete
 **Package**: `@draconia/logger`
 
 ## Overview
 
-The structured logging system provides a production-ready, high-performance logging infrastructure for
-Draconia Chronicles v2.0.0. It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
+The structured logging system provides a production-ready, high-performance logging
+infrastructure
+for
+Draconia Chronicles v2.0.0..
+It features a tiny, tree-shakeable API (≤8 KB gz), in-memory ring buffer
 management, Dexie persistence, and comprehensive PII redaction.
 
 ## Architecture
 
 ### Core Components
 
-```text
+````text
+
 @draconia/logger/
 ├── types.ts           # Core interfaces and types
 ├── index.ts           # Main entry point and exports
@@ -27,21 +31,27 @@ management, Dexie persistence, and comprehensive PII redaction.
 │   └── ndjson.ts      # NDJSON conversion
 ├── redact.ts          # PII redaction logic
 └── export.ts          # Export button utilities
-```
+
+```text
 
 ### Design Principles
 
 1. **Tiny Footprint**: ≤8 KB gzipped bundle size
-2. **Tree-Shakeable**: Only import what you use
-3. **Memory Efficient**: Configurable byte and entry caps
-4. **PII Safe**: Automatic redaction of sensitive data
-5. **Performance Focused**: Ring buffer with batch persistence
+
+1. **Tree-Shakeable**: Only import what you use
+
+1. **Memory Efficient**: Configurable byte and entry caps
+
+1. **PII Safe**: Automatic redaction of sensitive data
+
+1. **Performance Focused**: Ring buffer with batch persistence
 
 ## API Reference
 
 ### Core Types
 
 ```typescript
+
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 export type LogSrc = 'ui' | 'worker' | 'render' | 'net';
 export type SimMode = 'fg' | 'bg';
@@ -62,11 +72,13 @@ export interface Logger {
   clear(): Promise<void>;
   enableConsole(enable: boolean): void;
 }
-```
+
+```javascript
 
 ### Factory Function
 
 ```typescript
+
 import { createLogger } from '@draconia/logger';
 
 const logger = createLogger({
@@ -75,23 +87,27 @@ const logger = createLogger({
   devConsole?: boolean;     // Enable console output (default: false)
   dexie?: DexieSink | null; // Dexie persistence sink (default: null)
 });
-```
+
+```text
 
 ## Configuration
 
 ### Memory Configuration
 
 ```typescript
+
 // 2MB memory cap, 10k entries
 const logger = createLogger({
   maxBytes: 2 * 1024 * 1024,
   maxEntries: 10_000,
 });
-```
+
+```javascript
 
 ### Sink Configuration
 
 ```typescript
+
 import { createDexieSink } from '@draconia/logger/src/sinks/dexie';
 
 // Dexie sink with 1s batch flush, 10k row cap
@@ -101,13 +117,15 @@ const logger = createLogger({
   dexie: dexieSink,
   devConsole: import.meta.env.DEV,
 });
-```
+
+```text
 
 ## Usage Examples
 
 ### Basic Logging
 
 ```typescript
+
 import { logger } from '@/lib/logging/logger';
 
 // Simple log
@@ -127,11 +145,13 @@ logger.log({
   mode: 'fg',
   data: { frame: 1234, fps: 60 },
 });
-```
+
+```javascript
 
 ### Worker Integration
 
 ```typescript
+
 // In worker
 self.postMessage({
   type: 'SimToUI',
@@ -148,11 +168,13 @@ self.postMessage({
 // In main thread
 import { bindWorkerLogs } from '@/lib/logging/worker-bridge';
 bindWorkerLogs(worker);
-```
+
+```javascript
 
 ### Export and Analysis
 
 ```typescript
+
 // Export logs as NDJSON
 const blob = await logger.exportNDJSON();
 const url = URL.createObjectURL(blob);
@@ -162,7 +184,8 @@ const a = document.createElement('a');
 a.href = url;
 a.download = `logs-${Date.now()}.ndjson`;
 a.click();
-```
+
+```text
 
 ## PII Redaction
 
@@ -171,6 +194,7 @@ a.click();
 Only `dragonName` is allowed as a string value in the `data` field:
 
 ```typescript
+
 // ✅ Allowed
 logger.log({
   t: Date.now(),
@@ -192,15 +216,21 @@ logger.log({
     email: 'user@example.com', // ❌ Redacted
   },
 });
-```
+
+```text
 
 ### Redaction Rules
 
 - **Strings**: Only `dragonName` allowed, all others converted to `'[REDACTED]'`
+
 - **Numbers**: Allowed (timestamps, IDs, metrics)
+
 - **Booleans**: Allowed
+
 - **Objects**: Recursively processed
+
 - **Arrays**: Recursively processed
+
 - **Null/Undefined**: Preserved
 
 ## Performance Monitoring
@@ -210,8 +240,11 @@ logger.log({
 Access the performance lab at `/dev/logs` to:
 
 - Configure log rate and duration
+
 - Start/stop logging sessions
+
 - Export logs for analysis
+
 - Monitor memory usage
 
 ### CSV Conversion
@@ -219,8 +252,10 @@ Access the performance lab at `/dev/logs` to:
 Use the provided script to convert NDJSON to CSV:
 
 ```bash
+
 node scripts/logs-perf-to-csv.mjs logs.ndjson logs.csv
-```
+
+```javascript
 
 ## Integration Points
 
@@ -229,6 +264,7 @@ node scripts/logs-perf-to-csv.mjs logs.ndjson logs.csv
 Logs are stored in the `logs` table with the following structure:
 
 ```typescript
+
 interface LogRow {
   id?: number;
   timestamp: number; // Unix timestamp
@@ -238,59 +274,75 @@ interface LogRow {
   data?: string; // JSON string of structured data
   profileId?: string; // User profile ID
 }
-```
+
+```text
 
 ### Worker Protocol
 
 Logs from workers are transmitted via the `SimToUI` protocol:
 
 ```typescript
+
 interface SimToUI {
   type: 'SimToUI';
   action: 'log';
   event: LogEvent;
 }
-```
+
+```text
 
 ## Testing
 
 ### Test Coverage
 
 - **Unit Tests**: Core functionality, memory limits, export format
+
 - **Integration Tests**: Logger ↔ simulation wiring
+
 - **Database Tests**: Dexie sink integration
+
 - **Performance Tests**: Memory usage and throughput
 
 ### Test Commands
 
 ```bash
+
 # Run all tests
+
 pnpm run test:all
 
 # Run specific test categories
+
 pnpm run test:node        # Node.js tests
 pnpm run test:vitest      # Vitest tests
 pnpm run test:vitest:render # Render tests (JSDOM)
-```
+
+```text
 
 ## Production Considerations
 
 ### Bundle Size
 
 - **Target**: ≤8 KB gzipped
+
 - **Tree-shaking**: Only import required components
+
 - **Dependencies**: Minimal external dependencies
 
 ### Memory Management
 
 - **Ring Buffer**: Automatic overflow handling
+
 - **Configurable Caps**: Adjust based on device capabilities
+
 - **Batch Persistence**: Minimize IndexedDB writes
 
 ### PII Compliance
 
 - **Automatic Redaction**: No sensitive data in logs
+
 - **Audit Trail**: All redaction actions logged
+
 - **Export Safety**: Clean data for analysis
 
 ## Future Enhancements
@@ -298,18 +350,27 @@ pnpm run test:vitest:render # Render tests (JSDOM)
 ### Planned Features
 
 1. **Remote Logging**: HTTP sink for centralized logging
-2. **Log Aggregation**: Real-time log streaming
-3. **Advanced Filtering**: Query and search capabilities
-4. **Performance Metrics**: Built-in performance monitoring
+
+1. **Log Aggregation**: Real-time log streaming
+
+1. **Advanced Filtering**: Query and search capabilities
+
+1. **Performance Metrics**: Built-in performance monitoring
 
 ### Migration Path
 
-The current v1 implementation provides a stable foundation for future enhancements while maintaining
+The current v1 implementation provides a stable foundation for future enhancements while
+maintaining
 backward compatibility through the core `Logger` interface.
 
 ## Related Documentation
 
 - [Database Persistence](./database-persistence.md) - W4 implementation
+
 - [Worker Simulation](../overview/README.md#worker-simulation) - W3 implementation
+
 - [Testing Strategy](./testing.md) - Test infrastructure
+
 - [TypeScript Standards](./typescript.md) - Type safety enforcement
+
+````

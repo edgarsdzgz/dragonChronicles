@@ -1,0 +1,32 @@
+{
+  "name": "Update AI Memory",
+  "description": "Update the AI memory system with current session information",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🧠 Update Memory",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "input",
+      "prompt": "Enter session summary:",
+      "variable": "SESSION_SUMMARY"
+    },
+    {
+      "type": "shell",
+      "command": "python scripts/memory-manager.py add \"Current Session\" \"${SESSION_SUMMARY}\"",
+      "description": "Add session information to memory"
+    },
+    {
+      "type": "shell",
+      "command": "python scripts/memory-manager.py timestamp",
+      "description": "Update memory timestamp"
+    }
+  ],
+  "notification": {
+    "success": "🧠 AI memory updated with session information",
+    "error": "❌ Failed to update AI memory"
+  }
+}

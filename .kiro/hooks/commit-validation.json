@@ -1,0 +1,34 @@
+{
+  "name": "Commit Message Validation",
+  "description": "Validate commit messages follow conventional commit format before committing",
+  "trigger": {
+    "type": "pre_commit"
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "git log --format=%B -n 1 HEAD | head -1",
+      "description": "Get commit message",
+      "capture_output": "COMMIT_MSG"
+    },
+    {
+      "type": "validation",
+      "rules": [
+        {
+          "pattern": "^(feat|fix|perf|refactor|docs|test|build|ci|chore|revert)(\\(.+\\))?: .{1,50}",
+          "message": "Commit message must follow conventional commit format: type(scope): description"
+        },
+        {
+          "pattern": "^.{1,72}$",
+          "message": "Commit message header must be 72 characters or less"
+        }
+      ],
+      "input": "${COMMIT_MSG}"
+    }
+  ],
+  "notification": {
+    "success": "✅ Commit message format valid",
+    "error": "❌ Commit message format invalid - check conventional commit guidelines"
+  },
+  "blocking": true
+}

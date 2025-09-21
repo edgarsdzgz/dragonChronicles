@@ -1,0 +1,41 @@
+{
+  "name": "Version Bump",
+  "description": "Update version numbers across all package.json files for phase completion",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "📈 Bump Version",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "input",
+      "prompt": "Enter new version (e.g., 0.0.2-alpha):",
+      "variable": "NEW_VERSION"
+    },
+    {
+      "type": "shell",
+      "command": "find . -name 'package.json' -exec sed -i 's/\"version\": \"[^\"]*\"/\"version\": \"${NEW_VERSION}\"/g' {} \\;",
+      "description": "Update version in all package.json files"
+    },
+    {
+      "type": "shell",
+      "command": "git add -A",
+      "description": "Stage version changes"
+    },
+    {
+      "type": "shell",
+      "command": "git commit -m \"chore: bump version to ${NEW_VERSION}\"",
+      "description": "Commit version bump"
+    }
+  ],
+  "notification": {
+    "success": "✅ Version bumped to ${NEW_VERSION}",
+    "error": "❌ Version bump failed"
+  },
+  "confirmation": {
+    "message": "This will update version numbers in all package.json files. Continue?",
+    "required": true
+  }
+}

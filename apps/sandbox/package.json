@@ -1,6 +1,6 @@
 {
   "name": "@draconia/sandbox",
-  "version": "0.5.0-alpha",
+  "version": "0.0.1-alpha",
   "type": "module",
   "private": true,
   "scripts": {

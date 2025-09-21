@@ -16,6 +16,18 @@
     "isEntry": true,
     "src": ".svelte-kit/generated/server/internal.js"
   },
+  "_BitmapFontManager.js": {
+    "file": "chunks/BitmapFontManager.js",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "_displayPool.js": {
+    "file": "chunks/displayPool.js",
+    "imports": [
+      "_index.js"
+    ]
+  },
   "_index.js": {
     "dynamicImports": [
       "node_modules/pixi.js/lib/environment-browser/browserAll.mjs",
@@ -32,7 +44,8 @@
   "_init.js": {
     "file": "chunks/init.js",
     "imports": [
-      "_index.js"
+      "_index.js",
+      "_BitmapFontManager.js"
     ]
   },
   "_internal.js": {
@@ -150,6 +163,63 @@
     "isEntry": true,
     "src": "src/routes/dev/boom/+page.ts"
   },
+  "src/routes/dev/dragon-animated/+page.svelte": {
+    "file": "entries/pages/dev/dragon-animated/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js",
+      "_BitmapFontManager.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon-animated/+page.svelte"
+  },
+  "src/routes/dev/dragon-debug/+page.svelte": {
+    "file": "entries/pages/dev/dragon-debug/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon-debug/+page.svelte"
+  },
+  "src/routes/dev/dragon-final/+page.svelte": {
+    "file": "entries/pages/dev/dragon-final/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon-final/+page.svelte"
+  },
+  "src/routes/dev/dragon-simple/+page.svelte": {
+    "file": "entries/pages/dev/dragon-simple/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js",
+      "_displayPool.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon-simple/+page.svelte"
+  },
+  "src/routes/dev/dragon-working/+page.svelte": {
+    "file": "entries/pages/dev/dragon-working/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon-working/+page.svelte"
+  },
+  "src/routes/dev/dragon/+page.svelte": {
+    "file": "entries/pages/dev/dragon/_page.svelte.js",
+    "imports": [
+      "_ssr.js",
+      "_index.js",
+      "_displayPool.js"
+    ],
+    "isEntry": true,
+    "src": "src/routes/dev/dragon/+page.svelte"
+  },
   "src/routes/dev/logs/+page.svelte": {
     "file": "entries/pages/dev/logs/_page.svelte.js",
     "imports": [
@@ -163,7 +233,8 @@
     "file": "entries/pages/dev/pool/_page.svelte.js",
     "imports": [
       "_ssr.js",
-      "_index.js"
+      "_index.js",
+      "_displayPool.js"
     ],
     "isEntry": true,
     "src": "src/routes/dev/pool/+page.svelte"

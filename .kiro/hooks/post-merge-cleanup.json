@@ -1,0 +1,47 @@
+{
+  "name": "Post-Merge Cleanup",
+  "description": "Clean up branches and planning documents after PR merge",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "🧹 Post-Merge Cleanup",
+      "location": "source_control"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "git checkout main",
+      "description": "Switch to main branch"
+    },
+    {
+      "type": "shell",
+      "command": "git pull origin main",
+      "description": "Pull latest changes"
+    },
+    {
+      "type": "shell",
+      "command": "git branch -d $(git branch --merged | grep -v main | grep -v '*' | tr -d ' ')",
+      "description": "Delete merged local branches",
+      "ignore_errors": true
+    },
+    {
+      "type": "shell",
+      "command": "find . -name '*Plan.md' -not -path './docs/*' -delete",
+      "description": "Delete planning documents from root"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run clean",
+      "description": "Clean build artifacts"
+    }
+  ],
+  "notification": {
+    "success": "✅ Post-merge cleanup completed",
+    "error": "⚠️ Cleanup completed with some warnings - check output"
+  },
+  "confirmation": {
+    "message": "This will delete merged branches and planning documents. Continue?",
+    "required": true
+  }
+}

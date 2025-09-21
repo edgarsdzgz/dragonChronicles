@@ -1,0 +1,32 @@
+{
+  "name": "Size Budget Validation",
+  "description": "Check bundle size budgets and performance constraints",
+  "trigger": {
+    "type": "manual",
+    "button": {
+      "label": "📏 Check Size Budgets",
+      "location": "status_bar"
+    }
+  },
+  "actions": [
+    {
+      "type": "shell",
+      "command": "pnpm run size:check",
+      "description": "Validate size budgets"
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run bundle:analyze",
+      "description": "Analyze bundle composition",
+      "ignore_errors": true
+    }
+  ],
+  "notification": {
+    "success": "✅ All size budgets met",
+    "error": "❌ Size budget violations detected"
+  },
+  "output": {
+    "show_on_success": true,
+    "show_on_error": true
+  }
+}

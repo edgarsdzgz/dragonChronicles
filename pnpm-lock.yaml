@@ -184,6 +184,19 @@ importers:
         specifier: ^5.0.0
         version: 5.9.2
 
+  packages/engine:
+    dependencies:
+      '@draconia/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.2
+
   packages/logger:
     dependencies:
       '@draconia/db':
