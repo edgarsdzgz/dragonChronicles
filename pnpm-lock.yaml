@@ -221,6 +221,9 @@ importers:
 
   packages/sim:
     dependencies:
+      '@draconia/engine':
+        specifier: workspace:*
+        version: link:../engine
       '@draconia/shared':
         specifier: workspace:*
         version: link:../shared
