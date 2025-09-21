@@ -392,6 +392,26 @@ if (this.renderer && this.stage) {
 
 - **WORKFLOW DISCIPLINE**: Follow the established workflow: Plan → Branch → Implement → Test → Commit → PR
 
+#### Commit Rules and Formatting (MANDATORY)
+
+- **CONVENTIONAL COMMITS**: All commits must follow conventional commit format: `type(scope): description`
+
+- **HEADER LENGTH**: Maximum 72 characters total for the header (everything before first line break)
+
+- **REQUIRED SCOPE**: Scope is mandatory - never commit without a scope (use `p1-e2-s1`, `engine`, `sim`, `web`, `docs`, `ci`, `build`, `deps`)
+
+- **ALLOWED TYPES**: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`, `chore`, `revert`
+
+- **VALIDATION**: Project uses commitlint with husky hooks - commits will fail if format is incorrect
+
+- **REFERENCE GUIDE**: See `docs/engineering/commit-rules-and-formatting.md` for complete rules and examples
+
+- **COMMON MISTAKES**:
+  - Header too long (>72 chars) - use body for details
+  - Missing scope - always include appropriate scope
+  - Wrong type - use allowed types only
+  - Vague descriptions - be specific and actionable
+
 #### Epic-Story Workflow (MANDATORY)
 
 **Branch Hierarchy**: `main` > `epic/{epic-name}` > `feature/{story-name}`
