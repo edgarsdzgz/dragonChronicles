@@ -455,19 +455,46 @@ if (this.renderer && this.stage) {
 3. **Implementation**: Implement story features and tests
 4. **Story Completion**: Test, commit, and create PR to epic branch
 5. **Story Merge**: Merge story branch into epic branch
-6. **Next Story**: Repeat for each story in epic
+6. **MANDATORY**: Check off completed deliverables in GitHub issue
+7. **Next Story**: Repeat for each story in epic
 
 **Epic Completion Process**:
 1. **Epic Testing**: Ensure all stories complete and tested
 2. **Epic PR**: Create PR from epic branch to main
 3. **Epic Merge**: Merge epic branch into main
-4. **Epic Cleanup**: Delete epic and story branches
-5. **Documentation**: Update project documentation and roadmap
+4. **MANDATORY**: Check off all epic deliverables in GitHub issue
+5. **Epic Cleanup**: Delete epic and story branches
+6. **Documentation**: Update project documentation and roadmap
+
+#### Story/Epic Completion Verification (MANDATORY)
+
+**After Each Story Completion**:
+1. **Review GitHub Issue**: Go to the story's GitHub issue
+2. **Check Deliverables**: Mark all completed deliverables as checked
+3. **Verify Completion**: Ensure all acceptance criteria are met
+4. **Update Status**: Mark story as complete if applicable
+5. **Document Progress**: Note any additional achievements
+
+**After Each Epic Completion**:
+1. **Review Epic Issue**: Go to the epic's GitHub issue
+2. **Check Epic Deliverables**: Mark all epic-level deliverables as checked
+3. **Verify All Stories**: Ensure all stories are completed and checked
+4. **Update Epic Status**: Mark epic as complete
+5. **Document Final Results**: Note epic achievements and metrics
+
+**Benefits**:
+- **Clear Progress Tracking**: Visual confirmation of completed work
+- **Deliverable Verification**: Ensures nothing is missed
+- **Stakeholder Visibility**: Clear progress indicators for all stakeholders
+- **Process Compliance**: Maintains systematic completion verification
 
 **Quality Gates**:
 - Each story must pass all tests before merging to epic branch
 - Epic must pass all tests before merging to main
 - All documentation must be updated at each level
+- **COMMIT VALIDATION**: All commits must pass commitlint validation
+- **SCOPE REQUIREMENT**: Every commit must include a valid scope (never empty)
+- **PRE-COMMIT HOOKS**: Husky hooks must pass before commit is accepted
 
 #### Performance Optimization
 
