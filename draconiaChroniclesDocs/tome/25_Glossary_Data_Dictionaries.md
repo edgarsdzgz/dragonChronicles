@@ -6,7 +6,7 @@
 
 ### Gameplay Terminology
 
-```typescript
+````typescript
 
 export interface GameplayTerms {
   // Core Concepts
@@ -863,3 +863,4 @@ export interface ErrorCodes {
 - [ ] Constraints are clearly specified
 
 - [ ] Format requirements are documented
+````

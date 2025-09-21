@@ -4,7 +4,7 @@
 
 ### Core Framework
 
-```typescript
+````typescript
 
 interface TechStack {
   framework: 'SvelteKit';
@@ -888,3 +888,4 @@ test('complete journey flow', async ({ page }) => {
 - [Accessibility & Mobile UX](18*A11y*UX*Mobile*Design.md) - Accessibility implementation
 
 - [Testing, QA & CI/CD](19*Testing*QA*CI*CD_Gates.md) - Testing strategy and implementation
+````

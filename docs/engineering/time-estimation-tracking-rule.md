@@ -20,8 +20,7 @@
 
 When updating project documents, use this format:
 
-```markdown
-
+`````markdown
 ### Epic X.X: [Name]
 
 **Priority:** [Level]
@@ -33,7 +32,7 @@ When updating project documents, use this format:
 
 - [ ] **X.X.1** - [Story Name] (Estimated: [time], Actual: [when completed])
 
-```bash
+````bash
 
 ### **Status Tracking**
 
@@ -272,3 +271,9 @@ When updating project documents, use this format:
 ---
 
 **This rule ensures complete visibility into project timing, enables continuous improvement of estimation accuracy, and maintains accountability for project delivery timelines.**
+````
+`````
+
+```
+
+```

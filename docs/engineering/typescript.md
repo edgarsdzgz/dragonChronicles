@@ -50,7 +50,7 @@ All TypeScript code must compile successfully with these strict settings:
 
 ### How to Run the Strict Gate
 
-```bash
+`````bash
 
 # Run TypeScript strict mode validation
 
@@ -495,4 +495,4 @@ Ensure your IDE uses the project's TypeScript configuration:
 See [ADR-0002: TypeScript Strict Gate](/docs/adr/0002-typescript-strict-gate.md) for the
 architectural decision record.
 
-````
+`````

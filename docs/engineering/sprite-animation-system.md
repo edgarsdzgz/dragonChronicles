@@ -21,8 +21,9 @@ management.
 
    cd apps/web
    pnpm run dev
+   ```
 
-```text
+````text
 
 1. **Open the animation test page:**
 
@@ -436,3 +437,4 @@ and
 resolve
 problems
 quickly.
+````

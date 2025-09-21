@@ -43,7 +43,6 @@ error code assertions:
 - **Test fixtures**: `tests/fixtures/strict/good.ts` and `tests/fixtures/strict/bad-implicit-any.ts`
 
 - **Configuration files**:
-
   - `tests/ts-strict/tsconfig.strict.should-pass.json` - Tests good TypeScript
 
   - `tests/ts-strict/tsconfig.strict.should-fail.json` - Tests bad TypeScript

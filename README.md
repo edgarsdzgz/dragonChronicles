@@ -4,7 +4,7 @@
 
 ## Quick Start
 
-```bash
+````bash
 
 # Clone and setup
 
@@ -103,3 +103,4 @@ For technical details, see [Documentation Hub](./docs/README.md).
 
 **Game Design**: See [Draconia Chronicles v2 GDD](./Draconia*Chronicles*v2_GDD.md)
 **Development**: See [Documentation](./docs/README.md) for engineering standards
+````

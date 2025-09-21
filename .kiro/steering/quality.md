@@ -20,7 +20,7 @@ All TypeScript code MUST compile with these strict settings:
 
 #### Validation Command
 
-```bash
+````bash
 
 pnpm run test:ts-strict
 
@@ -337,3 +337,4 @@ reliably
 across
 all
 environments.
+````

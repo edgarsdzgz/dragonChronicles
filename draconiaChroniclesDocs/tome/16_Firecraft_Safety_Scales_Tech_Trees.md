@@ -6,7 +6,7 @@
 
 ### Research States Progression
 
-```text
+````text
 
 Unknown → Discovered (via Research) → Soul-Unlocked → Arcana-Leveled
 
@@ -1005,3 +1005,4 @@ unlockNode(player: Player, node: FireTechNode | SafetyTechNode | ScalesTechNode)
 - [Balancing: Math, Curves & Tables](17*Balancing*Math*Curves*Tables.md) - Mathematical formulas and cost curves
 
 - [Town, Lair & City Public Works](08*Town*Lair*City*PublicWorks.md) - Synth production systems
+````

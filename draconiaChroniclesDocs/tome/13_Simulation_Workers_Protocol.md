@@ -16,7 +16,7 @@
 
 ### Worker Lifecycle
 
-```typescript
+````typescript
 
 export interface WorkerLifecycle {
   // Initialization
@@ -527,3 +527,4 @@ this.frameTimes.length;
 - [ ] Message queue prevents message loss or corruption
 
 - [ ] Worker lifecycle management handles all states correctly
+````

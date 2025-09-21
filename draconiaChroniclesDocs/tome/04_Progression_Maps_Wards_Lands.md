@@ -6,7 +6,7 @@
 
 ### Geographic Organization
 
-```text
+````text
 
 World
 ├── Lands (Major Regions)
@@ -357,3 +357,4 @@ export function arcanaReward(base: number, ward: number, distM: number) {
 - [ ] Future expansion framework supports modular content
 
 - [ ] Player progression feels meaningful and achievable
+````

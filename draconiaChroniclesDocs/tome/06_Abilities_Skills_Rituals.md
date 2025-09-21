@@ -6,7 +6,7 @@
 
 ### Core Ability Framework
 
-```typescript
+````typescript
 
 export interface Ability {
   id: string;
@@ -560,3 +560,4 @@ export interface AbilityBar {
 - [ ] Ability combinations provide tactical depth
 
 - [ ] Performance impact of abilities stays within budgets
+````

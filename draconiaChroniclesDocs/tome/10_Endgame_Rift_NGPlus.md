@@ -28,7 +28,7 @@
 
 ### Outpost Establishment
 
-```typescript
+````typescript
 
 export interface ForwardOutpost {
   id: string;
@@ -539,3 +539,4 @@ export interface EndgamePerformance {
 - [ ] Community events foster engagement without requiring participation
 
 - [ ] NG+ system provides long-term replayability
+````

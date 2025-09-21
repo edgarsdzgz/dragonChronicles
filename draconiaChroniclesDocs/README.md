@@ -4,7 +4,7 @@ This folder contains the split, LLM-friendly **v2.2 Game Design & Engineering To
 
 **Canonical precedence:** if anything conflicts with the v2.1 GDD, **v2.1 wins**.
 
-Start here → [/tome/00*TOME*Index*v2.2.md](tome/00*TOME*Index*v2.2.md)
+Start here → [/tome/00*TOME*Index\*v2.2.md](tome/00*TOME*Index*v2.2.md)
 
 ## Integration Sources
 

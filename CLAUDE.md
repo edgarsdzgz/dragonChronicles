@@ -18,7 +18,7 @@ project.
 
 **From the project root directory:**
 
-```bash
+`````bash
 
 cd apps/web
 pnpm run dev
@@ -2767,4 +2767,4 @@ images.
 
 - `scripts/fix-final-markdownlint.sh` - Final markdownlint cleanup
 
-````
+`````

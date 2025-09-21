@@ -6,7 +6,7 @@
 
 ### Asset Management System
 
-```typescript
+````typescript
 
 export interface AssetPipeline {
   // Asset Types
@@ -787,3 +787,4 @@ export class AssetLoader {
 - [ ] Audio management provides sound pooling and effects
 
 - [ ] Shader system supports custom visual effects
+````

@@ -12,7 +12,7 @@
       "description": "Run ESLint with auto-fix"
     },
     {
-      "type": "shell", 
+      "type": "shell",
       "command": "pnpm run format",
       "description": "Format code with Prettier"
     },

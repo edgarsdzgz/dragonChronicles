@@ -6,7 +6,7 @@
 
 ### Content Pack Architecture
 
-```typescript
+````typescript
 
 export interface ContentPack {
   id: string;
@@ -676,3 +676,4 @@ export const CONTENT*PACK*BALANCE = {
 - [ ] Future faction templates provide expansion framework
 
 - [ ] Modding support enables community content creation
+````

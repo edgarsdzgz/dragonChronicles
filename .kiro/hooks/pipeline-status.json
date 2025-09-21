@@ -38,7 +38,7 @@
       "message": "Pipeline failures detected. Use systematic debugging approach: fix one workflow at a time.",
       "actions": [
         "Check GitHub Actions logs",
-        "Focus on first failing workflow", 
+        "Focus on first failing workflow",
         "Use internet research for solutions",
         "Document fixes in debugging chronicle"
       ]

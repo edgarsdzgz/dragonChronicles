@@ -6,7 +6,7 @@
 
 ### WCAG 2.1 AA Compliance
 
-```typescript
+````typescript
 
 export interface AccessibilityStandards {
   // Visual Accessibility
@@ -788,3 +788,4 @@ export class ARIASupport {
 - [ ] Mobile layout adapts to different screen sizes
 
 - [ ] Screen reader support provides complete game narration
+````

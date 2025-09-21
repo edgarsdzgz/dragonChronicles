@@ -16,7 +16,7 @@
     },
     {
       "type": "shell",
-      "command": "pnpm run format:check", 
+      "command": "pnpm run format:check",
       "description": "Prettier format check"
     },
     {

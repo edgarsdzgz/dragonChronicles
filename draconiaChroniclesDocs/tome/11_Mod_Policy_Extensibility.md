@@ -28,7 +28,7 @@
 
 ### Content Pack Architecture
 
-```typescript
+````typescript
 
 export interface ContentPack {
   id: string;
@@ -540,3 +540,4 @@ export interface ModPerformanceBudget {
 - [ ] Community tools enable effective mod development
 
 - [ ] Documentation provides comprehensive modding guidance
+````

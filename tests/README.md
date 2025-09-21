@@ -22,7 +22,7 @@ The test suite supports `BUILD_ONCE=1` environment variable to skip rebuilding w
 running
 multiple tests:
 
-```bash
+````bash
 
 # Build once, then run all tests without rebuilding
 
@@ -41,3 +41,4 @@ The `npm run test:all` script automatically uses this pattern for optimal perfor
 - Consistent `stdio: "pipe"` handling for clean output
 
 - Error assertions focus on exit codes and specific error codes (not full text matching)
+````

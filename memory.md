@@ -47,40 +47,37 @@ across sessions
 ### **Active Issues**
 
 1. **CI/CD Pipeline Debugging**
+   - PNPM hoisting issues resolved
 
-    - PNPM hoisting issues resolved
+   - GitHub Pages environment protection rules fixed
 
-    - GitHub Pages environment protection rules fixed
+   - Playwright configuration still failing
 
-    - Playwright configuration still failing
-
-    - Markdown linting violations resolved
+   - Markdown linting violations resolved
 
 1. **Steam Distribution Research**
+   - Confirmed: Browser-based game can be published on Steam
 
-    - Confirmed: Browser-based game can be published on Steam
+   - Solution: Electron wrapper with Steamworks.js
 
-    - Solution: Electron wrapper with Steamworks.js
+   - No compromise to original browser-based design
 
-    - No compromise to original browser-based design
-
-    - Dual distribution strategy: Steam + direct browser
+   - Dual distribution strategy: Steam + direct browser
 
 1. **Debugging Chronicles System**
+   - Created comprehensive documentation system
 
-    - Created comprehensive documentation system
+   - Real-time debugging session capture
 
-    - Real-time debugging session capture
+   - Searchable knowledge base for community
 
-    - Searchable knowledge base for community
+   - Template and index system established
 
-    - Template and index system established
+   - **CRITICAL**: All debugging sessions must be documented as chronicles
 
-    - **CRITICAL**: All debugging sessions must be documented as chronicles
+   - **CRITICAL**: Debugging chronicles capture root causes, solutions, and learnings
 
-    - **CRITICAL**: Debugging chronicles capture root causes, solutions, and learnings
-
-    - **CRITICAL**: Use systematic pipeline-first debugging approach
+   - **CRITICAL**: Use systematic pipeline-first debugging approach
 
 ### **Recent Discoveries**
 
@@ -334,7 +331,6 @@ DEBUGGING PROCESS:
 - Step 2: Prioritize workflow fixes (CI → Checks → Docs → Pages → Lighthouse → E2E)
 
 - Step 3: For each failing workflow:
-
   - Analyze error from GitHub Actions logs
 
   - Research solution using web search

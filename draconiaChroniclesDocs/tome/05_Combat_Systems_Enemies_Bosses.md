@@ -16,7 +16,7 @@
 
 ### Combat Loop Architecture
 
-```typescript
+````typescript
 
 export interface CombatLoop {
   // Core Systems
@@ -470,3 +470,4 @@ export interface CombatMetrics {
 - [ ] Enemy scaling feels fair and progressive
 
 - [ ] Lane object interactions add strategic value
+````

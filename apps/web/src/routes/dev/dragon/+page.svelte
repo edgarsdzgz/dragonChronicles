@@ -23,12 +23,12 @@
 
   function spawnDragon() {
     if (!loaded || !dragonTexture) return;
-    
+
     const sprite = pool.acquire();
     sprite.visible = true;
     sprite.position.set(
       Math.random() * (app.renderer.width - 128),
-      Math.random() * (app.renderer.height - 128)
+      Math.random() * (app.renderer.height - 128),
     );
     sprite.scale.set(0.5);
     app.stage.addChild(sprite);
@@ -56,18 +56,24 @@
 
 <div style="position:fixed; inset:0; background: #1a1a2e;">
   <canvas bind:this={canvas} style="width:100%; height:100%; display:block;"></canvas>
-  
-  <div style="position:absolute; right:8px; top:8px; background:rgba(0,0,0,.8); color:#fff; padding:12px; border-radius:8px; font:12px system-ui; min-width:200px;">
+
+  <div
+    style="position:absolute; right:8px; top:8px; background:rgba(0,0,0,.8); color:#fff; padding:12px; border-radius:8px; font:12px system-ui; min-width:200px;"
+  >
     <h3 style="margin:0 0 8px 0; font-size:14px;">Dragon Sprite Test</h3>
-    
+
     <div style="margin-bottom:8px;">
-      <button on:click={spawnDragon} style="margin:2px; padding:6px 12px; background:#4CAF50;">Spawn Dragon</button>
+      <button on:click={spawnDragon} style="margin:2px; padding:6px 12px; background:#4CAF50;"
+        >Spawn Dragon</button
+      >
     </div>
-    
+
     <div style="margin-bottom:8px;">
-      <button on:click={recycleAll} style="margin:2px; padding:6px 12px; background:#f44336;">Recycle All</button>
+      <button on:click={recycleAll} style="margin:2px; padding:6px 12px; background:#f44336;"
+        >Recycle All</button
+      >
     </div>
-    
+
     <div style="border-top:1px solid #444; padding-top:8px; margin-top:8px;">
       <div>Spawned: {spawned}</div>
       <div>Pool: {pool.size()} total, {pool.inUse()} in use</div>

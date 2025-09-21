@@ -11,14 +11,13 @@
 1. **Begin Journey** (no blockers, immediate play)
 
 1. **Minimal Tutorial**:
+   - Distance ticks visible
 
-    - Distance ticks visible
+   - Enemies spawn automatically
 
-    - Enemies spawn automatically
+   - Arcana drops on kills
 
-    - Arcana drops on kills
-
-    - **Return** hint appears after first few kills
+   - **Return** hint appears after first few kills
 
 ### First Session Goals
 
@@ -70,7 +69,7 @@
 
 ### Offline Progression Model
 
-```bash
+````bash
 
 8h Linear → Diminishing Decay
 ├── Base Cap: 24h
@@ -268,3 +267,4 @@
 - [ ] Telemetry captures key player behavior metrics
 
 - [ ] Error handling provides clear recovery paths
+````

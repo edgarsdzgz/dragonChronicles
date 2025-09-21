@@ -368,8 +368,8 @@ independently.
 ## PHASE 2: FRONTEND COMPONENT DEVELOPMENT
 
 > **CRITICAL NOTE:** This phase is dedicated entirely to frontend component development..
-Each component will be developed, tested, and refined individually before integration.
-NO automation - all work will be manual and collaborative.
+> Each component will be developed, tested, and refined individually before integration.
+> NO automation - all work will be manual and collaborative.
 
 **Status:** 🔄 **EXPANDED** - Updated with UI work moved from Phase 1
 **Estimated Duration:** 30-36 weeks
@@ -838,17 +838,17 @@ NO automation - all work will be manual and collaborative.
 ## TIME TRACKING RULE
 
 > **CRITICAL:** All phases, epics, and stories maintain their original time estimates
-alongside
-actual
-completion
-times..
-Never remove or hide original estimates - always show both estimated vs actual time.
-This enables tracking of estimation accuracy, identifying where time was saved or went
-over,
-and
-improving
-future
-planning.
+> alongside
+> actual
+> completion
+> times..
+> Never remove or hide original estimates - always show both estimated vs actual time.
+> This enables tracking of estimation accuracy, identifying where time was saved or went
+> over,
+> and
+> improving
+> future
+> planning.
 
 **Implementation:** Each phase shows Estimated Duration, Actual Duration, and Variance percentage. Upon completion, all times are preserved for analysis and learning.
 

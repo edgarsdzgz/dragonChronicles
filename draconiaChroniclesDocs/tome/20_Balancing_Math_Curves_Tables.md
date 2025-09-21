@@ -16,7 +16,7 @@
 
 ### Mathematical Constants
 
-```typescript
+````typescript
 
 export const BALANCING_CONSTANTS = {
   // Cost Growth Rates
@@ -587,3 +587,4 @@ export function validateProgression(
 - [ ] Formulas are deterministic and reproducible
 
 - [ ] Performance impact of calculations is minimal
+````

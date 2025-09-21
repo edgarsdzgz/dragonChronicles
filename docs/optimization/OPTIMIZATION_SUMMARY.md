@@ -23,7 +23,6 @@
 - **Solution**: Created `CircularBuffer<T>` class with O(1) operations
 
 - **Performance Gain**:
-
   - Push operations: O(1) instead of O(n)
 
   - Shift operations: O(1) instead of O(n)
@@ -41,7 +40,6 @@
 - **Solution**: Flattened async/await with batch operations
 
 - **Performance Gain**:
-
   - Improved readability and maintainability
 
   - Better error handling
@@ -57,7 +55,6 @@
 - **Solution**: Created multiple optimized calculation functions
 
 - **Performance Gain**:
-
   - `approxJsonBytesFast`: O(1) for primitives, O(n) for objects
 
   - `estimateLogEventSize`: Ultra-fast for known structures
@@ -73,7 +70,6 @@
 - **Solution**: Structured error types with operation tracking
 
 - **Features**:
-
   - `DatabaseError`, `ValidationError`, `TransactionError`, etc.
 
   - Error context builders

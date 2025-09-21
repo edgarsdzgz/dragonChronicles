@@ -2,7 +2,7 @@
 
 ## Monorepo Layout
 
-```bash
+````bash
 
 dragonChronicles/
 ├── packages/              # Shared libraries
@@ -271,3 +271,4 @@ import type { GameState } from '../types/index.js';
 - **Clear Interfaces**: Well-defined package APIs
 
 - **Minimal Coupling**: Packages should be loosely coupled
+````

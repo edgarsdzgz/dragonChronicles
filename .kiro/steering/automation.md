@@ -38,7 +38,7 @@
 
 #### Pre-commit Hook
 
-```bash
+````bash
 
 pnpm exec lint-staged
 
@@ -389,3 +389,4 @@ effort
 and
 human
 error.
+````

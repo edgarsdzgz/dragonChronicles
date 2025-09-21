@@ -109,7 +109,7 @@ Every document must include summaries at ALL levels of its hierarchy:
 
 ### **Example Format:**
 
-```typescript
+````typescript
 
 // What this does: Calculates the Shield Tax based on total Arcana and legendary status
 // Why this exists: Provides fair taxation that rewards player progression
@@ -367,3 +367,4 @@ progression systems. Test values are exempt and should use fixed values for reli
 *This rule ensures that all project documentation is accessible, comprehensive, and
 maintains consistency across all hierarchical levels while serving both technical and
 non-technical stakeholders.*
+````

@@ -6,7 +6,7 @@
 
 ### Core Telemetry System
 
-```typescript
+````typescript
 
 export interface TelemetrySystem {
   // Event Collection
@@ -712,3 +712,4 @@ export class AnalyticsDashboard {
 - [ ] User interaction tracking provides UX insights
 
 - [ ] Data validation ensures telemetry data integrity
+````

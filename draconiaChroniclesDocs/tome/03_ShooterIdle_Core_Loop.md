@@ -2,7 +2,7 @@
 
 ## Loop Diagram
 
-```mermaid
+````mermaid
 
 flowchart LR
     Start[Begin Journey] --> Fight[Auto-combat & Abilities]
@@ -346,3 +346,4 @@ type CoreLoopEvent =
 - [Economy: Currencies, Items, Market](07*Economy*Currencies*Items*Market.md) - Currency flows and balance
 
 - [Balancing: Math, Curves & Tables](17*Balancing*Math*Curves*Tables.md) - Mathematical formulas and tuning
+````

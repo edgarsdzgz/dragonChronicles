@@ -6,7 +6,7 @@
 
 ### Dexie Integration
 
-```typescript
+````typescript
 
 import Dexie, { Table } from 'dexie';
 
@@ -723,3 +723,4 @@ export class DataValidator {
 - [ ] Checksum validation ensures data integrity
 
 - [ ] Transaction system prevents partial updates
+````

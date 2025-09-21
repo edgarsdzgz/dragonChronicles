@@ -29,34 +29,36 @@ export class TextureAtlas {
 
   private async initialize(): Promise<void> {
     if (this.initialized || typeof window === 'undefined') return;
-    
+
     try {
       console.log(`Loading texture using Assets API: ${this.config.imagePath}`);
-      
+
       // Use PixiJS v8 Assets API for proper texture loading
       this.baseTexture = await Assets.load(this.config.imagePath);
-      
+
       if (!this.baseTexture) {
         throw new Error(`Failed to load texture: ${this.config.imagePath}`);
       }
-      
+
       console.log(`Texture loaded successfully: ${this.config.imagePath}`, {
         width: this.baseTexture.width,
         height: this.baseTexture.height,
         valid: this.baseTexture.valid,
-        source: this.baseTexture.source
+        source: this.baseTexture.source,
       });
-      
+
       this.generateFrames(this.config);
       this.initialized = true;
-      
-      console.log(`TextureAtlas initialized: ${this.config.imagePath} (${this.frames.size} frames)`);
+
+      console.log(
+        `TextureAtlas initialized: ${this.config.imagePath} (${this.frames.size} frames)`,
+      );
     } catch (error) {
       console.error('Failed to initialize TextureAtlas:', error);
       console.error('Error details:', {
         message: error.message,
         stack: error.stack,
-        imagePath: this.config.imagePath
+        imagePath: this.config.imagePath,
       });
       throw error;
     }
@@ -64,14 +66,14 @@ export class TextureAtlas {
 
   private generateFrames(config: SpriteSheetConfig): void {
     if (!this.baseTexture) return;
-    
+
     const { frameWidth, frameHeight, rows, cols, spacing = 0 } = config;
-    
+
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const x = col * (frameWidth + spacing);
         const y = row * (frameHeight + spacing);
-        
+
         const frameKey = `${row}_${col}`;
         const frame: SpriteFrame = {
           texture: new Texture({
@@ -83,7 +85,7 @@ export class TextureAtlas {
           width: frameWidth,
           height: frameHeight,
         };
-        
+
         this.frames.set(frameKey, frame);
       }
     }
@@ -111,7 +113,6 @@ export class TextureAtlas {
     await this.initialize();
     return this.frames.size;
   }
-
 }
 
 // Dragon-specific atlas instance

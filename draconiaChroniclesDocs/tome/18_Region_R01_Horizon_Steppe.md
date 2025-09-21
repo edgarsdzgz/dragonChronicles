@@ -4,7 +4,7 @@
 
 **Region Code:** `REGION*R01*HORIZON_STEPPE`
 **Canonical Short Name:** `Horizon Steppe`
-**Tagline:** *Where sky kisses grass and home feels near.*
+**Tagline:** _Where sky kisses grass and home feels near._
 **Faction:** Wind-Taken Nomads (Veldtriders of the Open Steppe)
 
 ### World Context & Lore
@@ -153,7 +153,7 @@ Though incursions whisper along distant horizons, this land remains largely unsc
 
 ### Banner-Runner (Ground Support)
 
-```typescript
+````typescript
 
 interface BannerRunner {
   id: 'WT*BANNER*RUNNER';
@@ -839,3 +839,4 @@ const localizationKeys = {
 - [Content Packs: Clans, Bestiary & Factions](22*Content*Packs*Clans*Bestiary.md) - Faction system and enemy design patterns
 
 - [Telemetry, Stats & Analytics](16*Telemetry*Stats_Analytics.md) - Analytics and balance monitoring
+````

@@ -146,7 +146,7 @@ The P1-S1 Core Determinism Engine is complete and ready for:
 
 ### **Usage Examples:**
 
-```bash
+````bash
 
 # Fix all markdown linting issues
 

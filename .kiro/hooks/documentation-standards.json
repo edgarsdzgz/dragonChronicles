@@ -58,17 +58,17 @@
   "validation": {
     "checklist": [
       "Every hierarchical level has non-technical summary",
-      "Every hierarchical level has technical summary", 
+      "Every hierarchical level has technical summary",
       "Every code example has inline comments",
       "Every section explains its purpose and integration",
       "Every H3 header section has purpose and integration explanations",
       "Every H3 header section has non-technical explanations",
       "Every H4 header section has component purpose and technical reasoning",
       "Every H4 header section has integration context and implementation details",
-        "No hardcoded values - all gameplay parameters are upgradeable through configuration",
+      "No hardcoded values - all gameplay parameters are upgradeable through configuration",
       "Upgrade system integration - Soul Power, tech trees, premium currency paths",
-        "Future-proofing - modular design supports new parameters and features",
-        "Test reliability - test values can be hardcoded for consistent testing",
+      "Future-proofing - modular design supports new parameters and features",
+      "Test reliability - test values can be hardcoded for consistent testing",
       "Non-technical summaries are accessible to non-coders",
       "Technical summaries are precise and complete",
       "Completion criteria are measurable and clear"

@@ -32,7 +32,7 @@
 
 #### **Taxed Vendor Stalls**
 
-```typescript
+````typescript
 
 export interface VendorStall {
   id: string;
@@ -519,3 +519,4 @@ export interface CityPerformance {
 - [ ] UI/UX supports both mobile and desktop city management
 
 - [ ] Investment decisions feel meaningful and strategic
+````

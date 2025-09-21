@@ -6,7 +6,7 @@
 
 ### Phase Structure
 
-```typescript
+````typescript
 
 export interface DevelopmentPhase {
   id: string;
@@ -914,3 +914,4 @@ export const IDENTIFIED_RISKS: Risk[] = [
 - [ ] Success metrics are measurable
 
 - [ ] Rollback plans exist for each phase
+````

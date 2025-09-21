@@ -15,7 +15,7 @@ minutes.
 
 ### 1. Clone and Setup (2 minutes)
 
-```bash
+````bash
 
 # Clone the repository
 
@@ -639,3 +639,4 @@ BUILD_ONCE=1 pnpm run test:unit
 **Welcome to the Draconia Chronicles development team!** 🐉
 
 For questions or support, please refer to the documentation or create an issue on GitHub.
+````

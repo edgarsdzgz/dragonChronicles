@@ -6,7 +6,7 @@
 
 ### Testing Pyramid
 
-```typescript
+````typescript
 
 export interface TestingPyramid {
   unit: {
@@ -843,3 +843,4 @@ export class MockTelemetry {
 - [ ] Lighthouse tests verify ≥95 score
 
 - [ ] Quality gates prevent deployment of failing code
+````

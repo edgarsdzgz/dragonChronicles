@@ -30,7 +30,7 @@
 
 ### Route Architecture
 
-```typescript
+````typescript
 
 export interface TransportRoute {
   id: string;
@@ -538,3 +538,4 @@ export interface AutomationDashboard {
 - [ ] UI/UX supports both mobile and desktop automation management
 
 - [ ] Pity system prevents frustration with task failures
+````

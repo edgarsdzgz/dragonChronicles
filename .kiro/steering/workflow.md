@@ -74,7 +74,7 @@
 
 #### Conventional Commit Format (REQUIRED)
 
-```text
+````text
 
 type(scope): description
 
@@ -320,3 +320,4 @@ and
 maintaining
 project
 standards.
+````

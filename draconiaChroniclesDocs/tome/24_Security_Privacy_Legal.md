@@ -6,7 +6,7 @@
 
 ### Security Principles
 
-```typescript
+````typescript
 
 export interface SecurityPrinciples {
   // Data Protection
@@ -841,3 +841,4 @@ export class ThreatDetection {
 - [ ] Security monitoring detects and responds to threats
 
 - [ ] Legal requirements are met for all jurisdictions
+````

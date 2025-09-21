@@ -68,7 +68,7 @@
 
 ### Development
 
-```bash
+````bash
 
 # Setup
 
@@ -241,3 +241,4 @@ pnpm -w list --depth -1  # List workspace packages
 - **Theme**: Consistent branding
 
 - **Display**: Standalone app experience
+````

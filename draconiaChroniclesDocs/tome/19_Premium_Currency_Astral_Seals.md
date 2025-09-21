@@ -147,7 +147,7 @@ Spending one is akin to bending the memory of the stars toward your destiny.
 ### Tooltip Copy
 
 > "Astral Seals — fragments of the First Flame, bestowed only by the cosmos..
-Rarest currency of the Dragonlands."
+> Rarest currency of the Dragonlands."
 
 ## Gameplay Integration
 
@@ -223,7 +223,7 @@ Rarest currency of the Dragonlands."
 
 ### Gacha Mechanics
 
-```typescript
+````typescript
 
 interface RuneGacha {
   cost: number;              // Astral Seals per draw
@@ -644,3 +644,4 @@ const localizationKeys = {
 - [Telemetry, Stats & Analytics](16*Telemetry*Stats_Analytics.md) - Analytics and tracking
 
 - [Security, Privacy & Legal](24*Security*Privacy_Legal.md) - Security and compliance requirements
+````

@@ -37,60 +37,53 @@ When encountering any bug or debugging session, you MUST create/update these fil
 Every debugging chronicle MUST include:
 
 1. **Session Overview**
+   - Date and duration
 
-    - Date and duration
+   - Objectives and scope
 
-    - Objectives and scope
-
-    - Key issues addressed
+   - Key issues addressed
 
 1. **Issues Resolved**
+   - Detailed breakdown of each problem
 
-    - Detailed breakdown of each problem
+   - Root cause analysis
 
-    - Root cause analysis
-
-    - Solution applied with evidence
+   - Solution applied with evidence
 
 1. **Key Learnings**
+   - Patterns discovered
 
-    - Patterns discovered
+   - Automation scripts created
 
-    - Automation scripts created
-
-    - Configuration changes made
+   - Configuration changes made
 
 1. **Current Status**
+   - Workflow status (X/6 passing)
 
-    - Workflow status (X/6 passing)
+   - Remaining issues
 
-    - Remaining issues
-
-    - Next steps with priorities
+   - Next steps with priorities
 
 1. **Automation Scripts**
+   - List of scripts created
 
-    - List of scripts created
+   - Purpose and usage instructions
 
-    - Purpose and usage instructions
-
-    - Location in `/scripts/` directory
+   - Location in `/scripts/` directory
 
 1. **Memory Rules**
+   - New rules discovered
 
-    - New rules discovered
+   - Updates to CLAUDE.md
 
-    - Updates to CLAUDE.md
-
-    - Process improvements
+   - Process improvements
 
 1. **Handoff Instructions**
+   - Specific commands for continuation
 
-    - Specific commands for continuation
+   - Context for next developer/AI
 
-    - Context for next developer/AI
-
-    - Critical state information
+   - Critical state information
 
 ## Required Actions for Each Debugging Session
 
@@ -228,8 +221,7 @@ Every debugging chronicle MUST include:
 
 ## Example Chronicle Structure
 
-```markdown
-
+````markdown
 # [Issue Name] Debugging Session
 
 ## Session Overview
@@ -306,3 +298,5 @@ developers
 and
 AI
 assistants.
+```
+````

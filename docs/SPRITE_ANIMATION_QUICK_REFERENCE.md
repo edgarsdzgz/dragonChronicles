@@ -2,7 +2,7 @@
 
 ## Server Startup
 
-```bash
+````bash
 
 cd apps/web
 pnpm run dev
@@ -117,3 +117,4 @@ export type EnemyType = 'mantair-corsair' | 'swarm' | 'new-enemy';
 - `lib/pixi/dragon-sprites.ts` - Dragon system
 
 - `routes/dev/dragon-animated/+page.svelte` - Test page
+````

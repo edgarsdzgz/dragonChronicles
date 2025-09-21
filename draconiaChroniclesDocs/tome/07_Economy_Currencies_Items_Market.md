@@ -13,7 +13,7 @@ motivations:
 
 #### Arcana (Run-Bound Power Currency)
 
-```typescript
+````typescript
 
 interface ArcanaSystem {
   type: 'temporary';
@@ -577,3 +577,4 @@ type EconomicEvent =
 - [Balancing: Math, Curves & Tables](17*Balancing*Math*Curves*Tables.md) - Economic formulas and tuning
 
 - [Telemetry, Stats & Analytics](16*Telemetry*Stats_Analytics.md) - Economic event tracking
+````

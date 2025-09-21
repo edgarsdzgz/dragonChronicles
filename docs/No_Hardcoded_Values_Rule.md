@@ -50,7 +50,7 @@
 
 ### **❌ FORBIDDEN - Hardcoded Values:**
 
-```typescript
+````typescript
 
 // BAD: Hardcoded values
 const duration = 15 * 60 * 1000;  // 15 minutes hardcoded
@@ -282,3 +282,4 @@ interface PremiumUpgrades {
 **This rule ensures that Draconia Chronicles is built for the future.** Every system is designed to grow, adapt, and improve over time. Players can customize their experience, developers can balance and expand content easily, and the business can scale through premium features and long-term progression systems.
 
 **No hardcoded values = Infinite possibilities for growth and improvement.**
+````

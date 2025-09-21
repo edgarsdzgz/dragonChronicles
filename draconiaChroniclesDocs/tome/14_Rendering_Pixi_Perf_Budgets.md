@@ -6,7 +6,7 @@
 
 ### Rendering Pipeline
 
-```typescript
+````typescript
 
 export interface RenderingPipeline {
   // Core Systems
@@ -657,3 +657,4 @@ export class PerformanceMonitor {
 - [ ] Rendering pipeline supports all required visual effects
 
 - [ ] Optimization systems work seamlessly with game systems
+````
