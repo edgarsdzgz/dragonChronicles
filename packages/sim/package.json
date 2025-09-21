@@ -24,8 +24,7 @@
     "test:coverage": "vitest run --coverage --config ../../configs/vitest/vitest.config.ts"
   },
   "dependencies": {
-    "@draconia/shared": "workspace:*",
-    "@draconia/engine": "workspace:*"
+    "@draconia/shared": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

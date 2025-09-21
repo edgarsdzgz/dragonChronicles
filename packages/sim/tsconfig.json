@@ -14,5 +14,5 @@
     "sourceMap": false
   },
   "include": ["src", "tests"],
-  "references": [{ "path": "../shared" }, { "path": "../engine" }, { "path": "../logger" }]
+  "references": [{ "path": "../shared" }, { "path": "../logger" }]
 }

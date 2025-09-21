@@ -5,8 +5,8 @@
     { "path": "./packages/shared" },
     { "path": "./packages/logger" },
     { "path": "./packages/db" },
-    { "path": "./packages/engine" },
     { "path": "./packages/sim" },
+    { "path": "./packages/engine" },
     { "path": "./apps/sandbox" }
   ],
   "compilerOptions": {
