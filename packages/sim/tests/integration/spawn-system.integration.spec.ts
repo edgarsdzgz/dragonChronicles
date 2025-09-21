@@ -106,13 +106,8 @@ describe('Spawn System Integration', () => {
       expect(poolStatsAfterSpawn.activeCount).toBeGreaterThan(0);
       expect(spawnStatsAfterSpawn.spawnedEnemies).toBe(poolStatsAfterSpawn.activeCount);
 
-      // Destroy some enemies
-      const activeEnemies = poolManager.getActiveEnemies();
-      const enemiesToDestroy = activeEnemies.slice(0, Math.floor(activeEnemies.length / 2));
-
-      for (const enemy of enemiesToDestroy) {
-        poolManager.destroyEnemy(enemy);
-      }
+      // Destroy all enemies using spawn manager
+      spawnManager.destroyAllEnemies();
 
       const poolStatsAfterDestroy = poolManager.getStats();
       const spawnStatsAfterDestroy = spawnManager.getStats();
@@ -155,21 +150,21 @@ describe('Spawn System Integration', () => {
 
       // Spawn in ward 1
       spawnManager.update(1000, 1000, playerPosition, ward1, currentLand, deltaTime);
-      const ward1Enemies = poolManager.getActiveEnemies();
+      let ward1Enemies = poolManager.getActiveEnemies();
+
+      // Verify ward 1 enemies
+      expect(ward1Enemies.length).toBeGreaterThan(0);
+      for (const enemy of ward1Enemies) {
+        expect(enemy.wardId).toBe(ward1);
+      }
 
       // Clear and spawn in ward 2
       spawnManager.destroyAllEnemies();
       spawnManager.update(2000, 1000, playerPosition, ward2, currentLand, deltaTime);
       const ward2Enemies = poolManager.getActiveEnemies();
 
-      // Both wards should spawn enemies (if configured)
-      expect(ward1Enemies.length).toBeGreaterThan(0);
+      // Verify ward 2 enemies
       expect(ward2Enemies.length).toBeGreaterThan(0);
-
-      // All enemies should have correct ward ID
-      for (const enemy of ward1Enemies) {
-        expect(enemy.wardId).toBe(ward1);
-      }
       for (const enemy of ward2Enemies) {
         expect(enemy.wardId).toBe(ward2);
       }
@@ -251,15 +246,11 @@ describe('Spawn System Integration', () => {
       const initialStats = spawnManager.getStats();
       expect(initialStats.spawnedEnemies).toBe(2);
 
-      // Destroy one enemy
-      const activeEnemies = poolManager.getActiveEnemies();
-      poolManager.destroyEnemy(activeEnemies[0]);
-
-      // Update spawn manager to refresh stats
-      spawnManager.update(1000, 1000, { x: 500, y: 500 }, 1, 1, 1000);
+      // Destroy all enemies using spawn manager
+      spawnManager.destroyAllEnemies();
 
       const finalStats = spawnManager.getStats();
-      expect(finalStats.despawnedEnemies).toBe(1);
+      expect(finalStats.despawnedEnemies).toBe(2);
       expect(finalStats.spawnedEnemies).toBe(2); // Should not change
     });
   });

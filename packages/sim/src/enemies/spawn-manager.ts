@@ -286,6 +286,8 @@ export class SpawnManager {
     landId: LandId,
     family?: Family,
   ): SpawnedEnemy | null {
+    this.stats.spawnAttempts++;
+
     if (!this.poolManager.canSpawn()) {
       return null;
     }
@@ -318,8 +320,12 @@ export class SpawnManager {
    */
   destroyAllEnemies(): void {
     const activeEnemies = this.poolManager.getActiveEnemies();
-    for (const enemy of activeEnemies) {
+    const enemiesToDestroy = [...activeEnemies]; // Create a copy to avoid modification during iteration
+
+    for (const enemy of enemiesToDestroy) {
       this.poolManager.destroyEnemy(enemy);
     }
+    // Update despawned enemies count
+    this.stats.despawnedEnemies += enemiesToDestroy.length;
   }
 }
