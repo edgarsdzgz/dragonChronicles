@@ -1657,6 +1657,46 @@ git tag -a v0.6.0-alpha -m "Release 0.6.0-alpha: PWA & Update UX"
 
 **Benefits**: Reduces context switching, ensures complete feature delivery, bigger PRs with comprehensive testing, avoids lint/hook churn.
 
+## Core Determinism Engine Package (@draconia/engine)
+
+**Status**: ✅ **COMPLETED** (P1-S1, 2025-01-21)
+
+### Purpose
+Foundation package providing deterministic simulation framework, core types, and protocol validation for the Draconia Chronicles game engine.
+
+### Key Components
+
+#### Core Types & Constants (`src/shared/`)
+- **constants.ts**: Game configuration constants (tick rates, limits, thresholds)
+- **enums.ts**: Game state enumerations (GameState, SimulationMode, etc.)
+- **ids.ts**: Type-safe ID generation and validation
+- **types.ts**: Core game data structures and interfaces
+- **validation.ts**: Zod schemas for runtime type safety
+
+#### Deterministic Simulation (`src/sim/`)
+- **Clock System** (`clock/`): Fixed timestep simulation with accumulator
+- **RNG System** (`rng/`): PCG32-based deterministic random number generation
+- **Protocol System** (`protocol/`): Type-safe message passing between UI and simulation
+- **Snapshot System** (`snapshot/`): State persistence and restoration
+
+#### Test Coverage
+- **20 tests** covering all core functionality
+- **100% pass rate** with comprehensive edge case coverage
+- **Determinism validation** ensuring reproducible simulation
+
+### Integration Points
+- **Dependencies**: `@draconia/shared` for base types
+- **Exports**: Core engine functionality for game simulation
+- **Usage**: Imported by simulation workers and UI components
+
+### Files Added
+- `packages/engine/package.json` - Package configuration
+- `packages/engine/src/index.ts` - Main export file
+- `packages/engine/src/engine.ts` - Core engine implementation
+- `packages/engine/src/shared/*.ts` - Core types and constants
+- `packages/engine/src/sim/**/*.ts` - Simulation systems
+- `packages/engine/tests/*.spec.ts` - Comprehensive test suite
+
 ### New Issue Process (MANDATORY)
 
 **When given a new issue, ALWAYS follow this sequence:**

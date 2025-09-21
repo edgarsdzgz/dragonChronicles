@@ -185,17 +185,13 @@ export const PHASE*1*EPICS: Epic[] = [
     stories: [
       {
         id: 'P1-E1-S1',
-        name: 'Implement distance tracking',
-        description: 'Track player distance from Draconia',
+        name: 'Core Determinism Engine Foundation',
+        description: 'Implement core types, constants, enums, IDs, deterministic simulation, RNG, clock system, protocol validation, and message handling',
         epic: 'P1-E1',
-acceptanceCriteria: ['Distance increases with progression', 'Distance displayed in UI',
-'Distance
-persists
-in
-saves'],
-        estimatedEffort: 3,
+acceptanceCriteria: ['Core types and constants defined', 'Deterministic RNG system working', 'Clock system implemented', 'Protocol validation functional', 'Message handling system complete'],
+        estimatedEffort: 8,
         priority: 'critical',
-        status: 'in_progress'
+        status: 'done'
       },
       {
         id: 'P1-E1-S2',
