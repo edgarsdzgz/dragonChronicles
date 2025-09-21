@@ -120,16 +120,13 @@ export class PoolManager {
    */
   destroyEnemiesByFamily(family: Family): number {
     const activeEnemies = this.pool.getActiveEnemies();
-    let destroyed = 0;
+    const enemiesToDestroy = activeEnemies.filter((enemy) => enemy.family === family);
 
-    for (const enemy of activeEnemies) {
-      if (enemy.family === family) {
-        this.destroyEnemy(enemy);
-        destroyed++;
-      }
+    for (const enemy of enemiesToDestroy) {
+      this.destroyEnemy(enemy);
     }
 
-    return destroyed;
+    return enemiesToDestroy.length;
   }
 
   /**

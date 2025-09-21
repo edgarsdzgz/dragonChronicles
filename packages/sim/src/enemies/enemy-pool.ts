@@ -67,6 +67,12 @@ export class EnemyPool {
       this.createEnemyObject();
     }
     this.totalAllocated = this.config.initialSize;
+
+    // If initial size is 0, create at least one enemy for the first allocation
+    if (this.config.initialSize === 0) {
+      this.createEnemyObject();
+      this.totalAllocated = 1;
+    }
   }
 
   /**
@@ -273,9 +279,28 @@ export class EnemyPool {
    * Reset the pool (for testing or game reset)
    */
   reset(): void {
-    // Deallocate all active enemies
+    // Clear active enemies list and reset all enemies
     for (const enemy of this.activeEnemies) {
-      this.deallocate(enemy);
+      enemy.id = 0;
+      enemy.family = 1;
+      enemy.hp = 0;
+      enemy.maxHp = 0;
+      enemy.spd = 0;
+      enemy.contactDmg = 0;
+      enemy.position = { x: 0, y: 0 };
+      enemy.velocity = { x: 0, y: 0 };
+      enemy.spawnTime = 0;
+      enemy.spawnDistance = 0;
+      enemy.wardId = 0;
+      enemy.landId = 0;
+      enemy.isActive = false;
+      enemy.state = EnemyState.APPROACH;
+    }
+
+    // Reset available indices to include all pool indices
+    this.availableIndices = [];
+    for (let i = 0; i < this.pool.length; i++) {
+      this.availableIndices.push(i);
     }
 
     // Reset counters

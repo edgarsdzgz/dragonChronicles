@@ -94,6 +94,11 @@ function createRangedEnemyConfig(): EnemySpawnConfig {
  * @returns Calculated spawn rate (enemies per second)
  */
 export function calculateSpawnRate(config: SpawnConfig, distance: number): number {
+  // Handle negative distances by returning base rate
+  if (distance < 0) {
+    return config.baseRate;
+  }
+
   // Find the appropriate distance threshold
   let multiplier = 1.0;
 
@@ -108,8 +113,13 @@ export function calculateSpawnRate(config: SpawnConfig, distance: number): numbe
   // Calculate base rate with distance multiplier
   let rate = config.baseRate * multiplier;
 
-  // Apply distance-based exponential growth
-  rate *= Math.pow(config.distanceMultiplier, Math.floor(distance / 100));
+  // Apply distance-based exponential growth (only for distances beyond thresholds)
+  // Only apply exponential growth if distance is beyond the highest threshold
+  const maxThreshold = Math.max(...config.distanceThresholds.map((t) => t.distance));
+  if (distance > maxThreshold) {
+    const extraDistance = distance - maxThreshold;
+    rate *= Math.pow(config.distanceMultiplier, Math.floor(extraDistance / 100));
+  }
 
   // Cap at maximum spawn rate
   return Math.min(rate, config.maxSpawnRate);

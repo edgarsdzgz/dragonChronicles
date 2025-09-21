@@ -18,7 +18,10 @@
   "scripts": {
     "build": "npx tsc -b",
     "clean": "rimraf dist",
-    "echo-ok": "echo ok"
+    "echo-ok": "echo ok",
+    "test": "vitest run --config ../../configs/vitest/vitest.config.ts",
+    "test:watch": "vitest --config ../../configs/vitest/vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config ../../configs/vitest/vitest.config.ts"
   },
   "dependencies": {
     "@draconia/shared": "workspace:*",

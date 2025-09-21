@@ -412,6 +412,32 @@ if (this.renderer && this.stage) {
   - Wrong type - use allowed types only
   - Vague descriptions - be specific and actionable
 
+#### Story Testing Process (MANDATORY)
+
+- **TESTING REQUIRED**: Every story must include comprehensive testing during implementation
+
+- **UNIT TESTS**: All public functions and methods must have unit tests (minimum 80% coverage)
+
+- **INTEGRATION TESTS**: All component interactions must be tested
+
+- **PERFORMANCE TESTS**: Required for performance-critical code
+
+- **QUALITY GATES**: ESLint (zero errors), TypeScript strict (zero errors), Prettier formatting
+
+- **TEST-FIRST APPROACH**: Write tests during implementation, not after
+
+- **COMPLETION CRITERIA**: Story not complete until all tests pass and quality gates met
+
+- **REFERENCE GUIDE**: See `docs/engineering/story-testing-process.md` for complete process
+
+- **TESTING WORKFLOW**:
+  1. Write function/method
+  2. Write unit test immediately
+  3. Run tests to verify
+  4. Write integration tests for interactions
+  5. Run quality gates (lint, type-check, format)
+  6. Verify all tests pass in CI/CD
+
 #### Epic-Story Workflow (MANDATORY)
 
 **Branch Hierarchy**: `main` > `epic/{epic-name}` > `feature/{story-name}`
