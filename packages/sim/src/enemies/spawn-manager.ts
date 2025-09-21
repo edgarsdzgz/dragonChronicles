@@ -18,15 +18,15 @@ export interface SimpleRng {
  * TODO: Replace with deterministic RNG from @draconia/engine
  */
 export class SimpleRngImpl implements SimpleRng {
-  randomFloat(min?: number, max?: number): number {
-    if (min !== undefined && max !== undefined) {
-      return min + Math.random() * (max - min);
+  randomFloat(_min?: number, _max?: number): number {
+    if (_min !== undefined && _max !== undefined) {
+      return _min + Math.random() * (_max - _min);
     }
     return Math.random();
   }
 
-  randomInt(min: number, max: number): number {
-    return Math.floor(this.randomFloat(min, max + 1));
+  randomInt(_min: number, _max: number): number {
+    return Math.floor(this.randomFloat(_min, _max + 1));
   }
 }
 import { PoolManager } from './pool-manager.js';

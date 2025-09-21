@@ -147,7 +147,7 @@ export class EnemyPool {
     if (this.availableIndices.length === 0) {
       try {
         this.expandPool();
-      } catch (error) {
+      } catch (_error) {
         // Pool is at maximum size and full
         return null;
       }

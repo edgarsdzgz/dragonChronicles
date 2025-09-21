@@ -5,8 +5,8 @@
  * @description Quick validation tool for commit messages before committing
  */
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+// import { readFileSync } from 'fs';
+// import { join } from 'path';
 
 /**
  * Validates a commit message against project rules

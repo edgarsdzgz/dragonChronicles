@@ -4,7 +4,7 @@
  */
 
 import type { Family, LandId, WardId } from './types.js';
-import type { SpawnConfig, WardSpawnConfig, EnemySpawnConfig, DistanceThreshold } from './types.js';
+import type { SpawnConfig, WardSpawnConfig, EnemySpawnConfig } from './types.js';
 
 /**
  * Default spawn configuration for Phase 1
