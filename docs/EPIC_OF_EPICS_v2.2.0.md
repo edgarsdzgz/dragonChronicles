@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # 🐉 DRACONIA CHRONICLES v2.2.0 - EPIC OF EPICS
 
 **Version:** 2.2.0
@@ -287,8 +289,8 @@ independently.
 ## PHASE 2: FRONTEND COMPONENT DEVELOPMENT
 
 > **CRITICAL NOTE:** This phase is dedicated entirely to frontend component development..
-Each component will be developed, tested, and refined individually before integration.
-NO automation - all work will be manual and collaborative.
+> Each component will be developed, tested, and refined individually before integration.
+> NO automation - all work will be manual and collaborative.
 
 ### Epic 2.1: Core UI Layout Components
 

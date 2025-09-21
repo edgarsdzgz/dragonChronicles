@@ -19,16 +19,16 @@ export class DragonAnimator {
 
   async start(): Promise<void> {
     if (this.isPlaying) return;
-    
+
     this.isPlaying = true;
-    
+
     // Set initial frame
     await this.updateFrame();
-    
+
     // Start animation loop
     this.intervalId = window.setInterval(async () => {
       if (!this.isPlaying) return;
-      
+
       this.currentFrameIndex = (this.currentFrameIndex + 1) % this.frameSequence.length;
       await this.updateFrame();
     }, this.frameDuration);
@@ -60,21 +60,21 @@ export class DragonAnimator {
     try {
       const frameType = this.frameSequence[this.currentFrameIndex];
       const frame = await getDragonFrame(frameType);
-      
+
       if (frame) {
         // Always update texture, even if it seems the same
         this.sprite.texture = frame.texture;
         console.log(`Dragon frame updated to: ${frameType}`, {
           textureValid: frame.texture?.source?.valid,
           textureWidth: frame.texture?.width,
-          textureHeight: frame.texture?.height
+          textureHeight: frame.texture?.height,
         });
-        
+
         // Force a render using the provided renderer and stage
         if (this.renderer && this.stage) {
           this.renderer.render(this.stage);
         } else if (this.sprite.stage && 'renderer' in this.sprite.stage) {
-          const stage = this.sprite.stage as any;
+          const stage = this.sprite.stage as { renderer?: Renderer };
           if (stage.renderer) {
             stage.renderer.render(stage);
           }
@@ -100,10 +100,10 @@ export class DragonAnimator {
       console.warn('FPS must be greater than 0');
       return;
     }
-    
+
     this.frameDuration = 1000 / fps; // Convert FPS to milliseconds per frame
     console.log(`Dragon animation FPS changed to: ${fps} (${this.frameDuration}ms per frame)`);
-    
+
     // If currently playing, restart with new timing
     if (this.isPlaying) {
       this.stop();
@@ -120,19 +120,22 @@ export class DragonAnimator {
   }
 }
 
-export async function createAnimatedDragonSprite(renderer?: Renderer, stage?: Container): Promise<{ sprite: Sprite; animator: DragonAnimator }> {
+export async function createAnimatedDragonSprite(
+  renderer?: Renderer,
+  stage?: Container,
+): Promise<{ sprite: Sprite; animator: DragonAnimator }> {
   try {
     // Start with the idle frame
     const frame = await getDragonFrame('idle');
     if (!frame) {
       throw new Error('Failed to load initial dragon frame');
     }
-    
+
     const sprite = new Sprite(frame.texture);
     sprite.anchor.set(0.5); // Center anchor for easier positioning
-    
+
     const animator = new DragonAnimator(sprite, renderer, stage);
-    
+
     console.log('Created animated dragon sprite successfully');
     return { sprite, animator };
   } catch (error) {

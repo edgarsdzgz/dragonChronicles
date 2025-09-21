@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # Horizon Steppe Color Palette
 
 **Date**: September 18, 2025

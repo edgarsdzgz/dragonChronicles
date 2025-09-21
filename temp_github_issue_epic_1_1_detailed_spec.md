@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # Epic 1.1: Core Game Loop Foundation - Detailed Technical Specifications
 
 **Status:** 🔄 **IN PROGRESS** - P1-S1 Completed, Remaining Stories Pending
@@ -125,9 +127,9 @@
 
 ### Tests
 
-- ✅ **Unit Tests:** 95%+ coverage for sim/* modules
+- ✅ **Unit Tests:** 95%+ coverage for sim/\* modules
 
-- ✅ **Integration Tests:** 100% coverage for shared/* modules
+- ✅ **Integration Tests:** 100% coverage for shared/\* modules
 
 - ✅ **Golden Tests:** Byte-equal verification over 60 seconds
 
@@ -211,7 +213,7 @@
 
 **What This Does:** Defines the 7 different "modes" the journey can be in at any time.
 
-```typescript
+````typescript
 
 // What this does: Defines all possible states a journey can be in
 // Why this exists: Ensures the game knows exactly what the player is doing at all times
@@ -3567,3 +3569,4 @@ Safety
 trees.
 
 **Epic 1.1 serves as the foundation for all subsequent Phase 1 epics and must be 100% complete before advancing to Epic 1.2.**
+````

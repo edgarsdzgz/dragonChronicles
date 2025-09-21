@@ -4,67 +4,68 @@
 
 :root {
   /* Primary Sky Colors */
-  --steppe-sky-deep: #4169E1;        /* Deep sky blue */
-  --steppe-sky-main: #87CEEB;        /* Main sky blue from images */
-  --steppe-sky-powder: #B0E0E6;      /* Powder blue for atmosphere */
-  --steppe-sky-horizon: #E6F3FF;     /* Morning haze near horizon */
-  
+  --steppe-sky-deep: #4169e1; /* Deep sky blue */
+  --steppe-sky-main: #87ceeb; /* Main sky blue from images */
+  --steppe-sky-powder: #b0e0e6; /* Powder blue for atmosphere */
+  --steppe-sky-horizon: #e6f3ff; /* Morning haze near horizon */
+
   /* Primary Grass Colors */
-  --steppe-grass-olive: #6B8E23;     /* Primary olive drab grass */
-  --steppe-grass-forest: #228B22;    /* Rich forest green grass */
-  --steppe-grass-yellow: #9ACD32;    /* Yellow-green sunlit grass */
-  --steppe-grass-dark: #556B2F;      /* Dark olive green shadows */
-  
+  --steppe-grass-olive: #6b8e23; /* Primary olive drab grass */
+  --steppe-grass-forest: #228b22; /* Rich forest green grass */
+  --steppe-grass-yellow: #9acd32; /* Yellow-green sunlit grass */
+  --steppe-grass-dark: #556b2f; /* Dark olive green shadows */
+
   /* Atmospheric Effects */
-  --steppe-atmosphere-shimmer: #F0F8FF;    /* Heat shimmer effect */
-  --steppe-atmosphere-mist: #E6F3FF;       /* Morning mist */
-  --steppe-atmosphere-blue: #B0E0E6;       /* Atmospheric blue */
-  
+  --steppe-atmosphere-shimmer: #f0f8ff; /* Heat shimmer effect */
+  --steppe-atmosphere-mist: #e6f3ff; /* Morning mist */
+  --steppe-atmosphere-blue: #b0e0e6; /* Atmospheric blue */
+
   /* Distance Mountains/Hills */
-  --steppe-mountain-slate: #708090;        /* Distant slate grey mountains */
-  --steppe-mountain-blue: #6495ED;         /* Cornflower blue atmospheric mountains */
-  --steppe-mountain-shadow: #2F4F4F;       /* Mountain shadows */
-  
+  --steppe-mountain-slate: #708090; /* Distant slate grey mountains */
+  --steppe-mountain-blue: #6495ed; /* Cornflower blue atmospheric mountains */
+  --steppe-mountain-shadow: #2f4f4f; /* Mountain shadows */
+
   /* Wind and Particle Effects */
-  --steppe-wind-seed: #F5F5DC;             /* Seed drift particles */
-  --steppe-wind-dust: #DEB887;             /* Dust swirl */
-  --steppe-wind-zephyr: #87CEFA;           /* Zephyr blue wind effects */
-  
+  --steppe-wind-seed: #f5f5dc; /* Seed drift particles */
+  --steppe-wind-dust: #deb887; /* Dust swirl */
+  --steppe-wind-zephyr: #87cefa; /* Zephyr blue wind effects */
+
   /* Cloud Colors */
-  --steppe-cloud-white: #F8F8FF;           /* Pure cloud highlights */
-  --steppe-cloud-grey: #D3D3D3;            /* Cloud shadow areas */
-  --steppe-cloud-blue-grey: #B0C4DE;       /* Mixed cloud/sky transition */
-  
+  --steppe-cloud-white: #f8f8ff; /* Pure cloud highlights */
+  --steppe-cloud-grey: #d3d3d3; /* Cloud shadow areas */
+  --steppe-cloud-blue-grey: #b0c4de; /* Mixed cloud/sky transition */
+
   /* Earth and Terrain */
-  --steppe-earth-sandy: #F4A460;           /* Sandy brown exposed earth */
-  --steppe-earth-tan: #D2B48C;             /* Tan dried earth */
-  --steppe-earth-brown: #8B7355;           /* Darker earth tones */
-  --steppe-earth-khaki: #F0E68C;           /* Dusty surface areas */
-  
+  --steppe-earth-sandy: #f4a460; /* Sandy brown exposed earth */
+  --steppe-earth-tan: #d2b48c; /* Tan dried earth */
+  --steppe-earth-brown: #8b7355; /* Darker earth tones */
+  --steppe-earth-khaki: #f0e68c; /* Dusty surface areas */
+
   /* Water Features */
-  --steppe-water-silver: #C0C0C0;          /* Reflective water surface */
-  --steppe-water-blue: #4682B4;            /* Deeper water sections */
-  --steppe-water-reflection: #F5F5F5;      /* Water reflections */
-  
+  --steppe-water-silver: #c0c0c0; /* Reflective water surface */
+  --steppe-water-blue: #4682b4; /* Deeper water sections */
+  --steppe-water-reflection: #f5f5f5; /* Water reflections */
+
   /* Faction Colors (Wind-Taken Nomads) */
-  --steppe-banner-red: #DC143C;            /* Enemy faction banners */
-  --steppe-turquoise: #40E0D0;             /* Nomad fetishes and decorations */
-  --steppe-arcana-gold: #FFD700;           /* Magical energy effects */
-  
+  --steppe-banner-red: #dc143c; /* Enemy faction banners */
+  --steppe-turquoise: #40e0d0; /* Nomad fetishes and decorations */
+  --steppe-arcana-gold: #ffd700; /* Magical energy effects */
+
   /* Lighting Variations */
-  --steppe-light-golden: #FFE4B5;          /* Warm sunlight */
-  --steppe-light-bright: #FFFACD;          /* Bright sunlight */
-  --steppe-light-diffuse: #F5F5F5;         /* Diffuse light */
-  
+  --steppe-light-golden: #ffe4b5; /* Warm sunlight */
+  --steppe-light-bright: #fffacd; /* Bright sunlight */
+  --steppe-light-diffuse: #f5f5f5; /* Diffuse light */
+
   /* Shadow Variations */
-  --steppe-shadow-long: #8B7355;           /* Long shadows in golden light */
-  --steppe-shadow-sharp: #696969;          /* Sharp midday shadows */
-  --steppe-shadow-soft: #D3D3D3;           /* Soft overcast shadows */
+  --steppe-shadow-long: #8b7355; /* Long shadows in golden light */
+  --steppe-shadow-sharp: #696969; /* Sharp midday shadows */
+  --steppe-shadow-soft: #d3d3d3; /* Soft overcast shadows */
 }
 
 /* Predefined Gradient Classes */
 .steppe-sky-gradient {
-  background: linear-gradient(to bottom, 
+  background: linear-gradient(
+    to bottom,
     var(--steppe-sky-deep) 0%,
     var(--steppe-sky-main) 15%,
     var(--steppe-sky-powder) 30%,
@@ -73,7 +74,8 @@
 }
 
 .steppe-grass-gradient {
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+    to bottom,
     var(--steppe-grass-olive) 0%,
     var(--steppe-grass-forest) 25%,
     var(--steppe-grass-yellow) 75%,
@@ -82,14 +84,13 @@
 }
 
 .steppe-full-background {
-  background: linear-gradient(to bottom, 
-    /* Sky layers */
-    var(--steppe-sky-deep) 0%,
+  background: linear-gradient(
+    to bottom,
+    /* Sky layers */ var(--steppe-sky-deep) 0%,
     var(--steppe-sky-main) 15%,
     var(--steppe-sky-powder) 30%,
     var(--steppe-sky-horizon) 45%,
-    /* Grass layers */
-    var(--steppe-grass-olive) 60%,
+    /* Grass layers */ var(--steppe-grass-olive) 60%,
     var(--steppe-grass-forest) 75%,
     var(--steppe-grass-yellow) 85%,
     var(--steppe-grass-dark) 100%
@@ -98,45 +99,50 @@
 
 /* Atmospheric Effect Overlays */
 .steppe-atmosphere-overlay {
-  background: radial-gradient(ellipse at 50% 45%, 
-    rgba(240, 248, 255, 0.3) 0%,     /* Heat shimmer */
-    rgba(230, 243, 255, 0.2) 40%,    /* Morning mist */
-    rgba(176, 224, 230, 0.1) 70%,    /* Atmospheric blue */
-    transparent 100%
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(240, 248, 255, 0.3) 0%,
+    /* Heat shimmer */ rgba(230, 243, 255, 0.2) 40%,
+    /* Morning mist */ rgba(176, 224, 230, 0.1) 70%,
+    /* Atmospheric blue */ transparent 100%
   );
 }
 
 .steppe-mountain-overlay {
-  background: linear-gradient(to bottom, 
-    transparent 0%, 
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
     transparent 40%,
-    rgba(112, 128, 144, 0.15) 45%,   /* Distant mountains */
-    rgba(100, 149, 237, 0.1) 50%,    /* Atmospheric mountains */
-    transparent 55%,
+    rgba(112, 128, 144, 0.15) 45%,
+    /* Distant mountains */ rgba(100, 149, 237, 0.1) 50%,
+    /* Atmospheric mountains */ transparent 55%,
     transparent 100%
   );
 }
 
 .steppe-grass-texture {
-  background: linear-gradient(135deg, 
+  background: linear-gradient(
+    135deg,
     transparent 0%,
-    rgba(154, 205, 50, 0.1) 25%,     /* Grass highlights */
-    transparent 50%,
-    rgba(85, 107, 47, 0.05) 75%,     /* Grass shadows */
-    transparent 100%
+    rgba(154, 205, 50, 0.1) 25%,
+    /* Grass highlights */ transparent 50%,
+    rgba(85, 107, 47, 0.05) 75%,
+    /* Grass shadows */ transparent 100%
   );
   background-size: 200px 200px;
 }
 
 .steppe-wind-effects {
-  background: 
-    radial-gradient(circle at 30% 70%, 
-      rgba(245, 245, 220, 0.05) 0%,    /* Seed drift */
-      transparent 30%
-    ), 
-    radial-gradient(circle at 70% 60%, 
-      rgba(222, 184, 135, 0.03) 0%,    /* Dust swirl */
-      transparent 40%
+  background:
+    radial-gradient(
+      circle at 30% 70%,
+      rgba(245, 245, 220, 0.05) 0%,
+      /* Seed drift */ transparent 30%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(222, 184, 135, 0.03) 0%,
+      /* Dust swirl */ transparent 40%
     );
 }
 
@@ -153,5 +159,3 @@
  * - .steppe-grass-texture for grass variation
  * - .steppe-wind-effects for wind and particle effects
  */
-
-

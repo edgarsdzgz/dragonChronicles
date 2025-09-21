@@ -6,16 +6,19 @@ export type ProjectileType = 'mantair-corsair-attack' | 'swarm-attack' | 'dragon
 export type ProjectileFrame = 'idle' | 'fly_1' | 'fly_2' | 'fly_3';
 
 // Projectile configurations
-export const projectileConfigs: Record<ProjectileType, {
-  name: string;
-  imagePath: string;
-  frameWidth: number;
-  frameHeight: number;
-  rows: number;
-  cols: number;
-  speed: number; // pixels per second
-  scale: number; // visual scaling factor for balanced appearance
-}> = {
+export const projectileConfigs: Record<
+  ProjectileType,
+  {
+    name: string;
+    imagePath: string;
+    frameWidth: number;
+    frameHeight: number;
+    rows: number;
+    cols: number;
+    speed: number; // pixels per second
+    scale: number; // visual scaling factor for balanced appearance
+  }
+> = {
   'mantair-corsair-attack': {
     name: 'Mantair Corsair Projectile',
     imagePath: '/sprites/wsn_mantairCorsair_attack.svg',
@@ -24,7 +27,7 @@ export const projectileConfigs: Record<ProjectileType, {
     rows: 2,
     cols: 2,
     speed: 150, // pixels per second
-    scale: 0.75 // Larger, more visible projectiles
+    scale: 0.75, // Larger, more visible projectiles
   },
   'swarm-attack': {
     name: 'Swarm Projectile',
@@ -34,7 +37,7 @@ export const projectileConfigs: Record<ProjectileType, {
     rows: 2,
     cols: 2,
     speed: 200, // faster projectiles
-    scale: 0.75 // Same size as other projectiles for consistency
+    scale: 0.75, // Same size as other projectiles for consistency
   },
   'dragon-attack': {
     name: 'Dragon Attack Projectile',
@@ -44,20 +47,23 @@ export const projectileConfigs: Record<ProjectileType, {
     rows: 2,
     cols: 2,
     speed: 250, // fast dragon projectiles
-    scale: 0.75 // Larger, more visible projectiles
-  }
+    scale: 0.75, // Larger, more visible projectiles
+  },
 };
 
 // Frame mapping (same pattern as enemies)
 export const projectileFrameMap: Record<ProjectileFrame, { row: number; col: number }> = {
-  idle: { row: 0, col: 0 },    // Top-left frame
-  fly_1: { row: 0, col: 1 },   // Top-right frame
-  fly_2: { row: 1, col: 0 },   // Bottom-left frame
-  fly_3: { row: 1, col: 1 },   // Bottom-right frame
+  idle: { row: 0, col: 0 }, // Top-left frame
+  fly_1: { row: 0, col: 1 }, // Top-right frame
+  fly_2: { row: 1, col: 0 }, // Bottom-left frame
+  fly_3: { row: 1, col: 1 }, // Bottom-right frame
 };
 
 // Create texture atlases for each projectile type
-const projectileAtlases: Record<ProjectileType, TextureAtlas> = {} as any;
+const projectileAtlases: Record<ProjectileType, TextureAtlas> = {} as Record<
+  ProjectileType,
+  TextureAtlas
+>;
 
 for (const [projectileType, config] of Object.entries(projectileConfigs)) {
   projectileAtlases[projectileType as ProjectileType] = new TextureAtlas({
@@ -65,11 +71,14 @@ for (const [projectileType, config] of Object.entries(projectileConfigs)) {
     frameWidth: config.frameWidth,
     frameHeight: config.frameHeight,
     rows: config.rows,
-    cols: config.cols
+    cols: config.cols,
   });
 }
 
-export async function getProjectileFrame(projectileType: ProjectileType, frameType: ProjectileFrame): Promise<SpriteFrame | undefined> {
+export async function getProjectileFrame(
+  projectileType: ProjectileType,
+  frameType: ProjectileFrame,
+): Promise<SpriteFrame | undefined> {
   try {
     const atlas = projectileAtlases[projectileType];
     if (!atlas) {
@@ -79,12 +88,14 @@ export async function getProjectileFrame(projectileType: ProjectileType, frameTy
 
     const { row, col } = projectileFrameMap[frameType];
     const frame = await atlas.getFrame(row, col);
-    
+
     if (!frame) {
-      console.error(`Failed to get projectile frame: ${projectileType} ${frameType} (${row}, ${col})`);
+      console.error(
+        `Failed to get projectile frame: ${projectileType} ${frameType} (${row}, ${col})`,
+      );
       return undefined;
     }
-    
+
     return frame;
   } catch (error) {
     console.error(`Error loading projectile frame ${projectileType} ${frameType}:`, error);
@@ -92,12 +103,15 @@ export async function getProjectileFrame(projectileType: ProjectileType, frameTy
   }
 }
 
-export async function createProjectileSprite(projectileType: ProjectileType, frameType: ProjectileFrame = 'idle'): Promise<Sprite> {
+export async function createProjectileSprite(
+  projectileType: ProjectileType,
+  frameType: ProjectileFrame = 'idle',
+): Promise<Sprite> {
   const frame = await getProjectileFrame(projectileType, frameType);
   if (!frame) {
     throw new Error(`Invalid projectile frame: ${projectileType} ${frameType}`);
   }
-  
+
   const sprite = new Sprite(frame.texture);
   sprite.anchor.set(0.5); // Center anchor for easier positioning
   return sprite;
@@ -117,16 +131,16 @@ export class Projectile {
   private frameDuration = 125; // 8 FPS default
   private renderer: Renderer | null = null;
   private stage: Container | null = null;
-  private collisionCallback?: (projectileSprite: Sprite) => boolean; // Returns true if collision occurred
+  private collisionCallback?: (_projectileSprite: Sprite) => boolean; // Returns true if collision occurred
 
   constructor(
-    sprite: Sprite, 
-    projectileType: ProjectileType, 
-    targetX: number, 
+    sprite: Sprite,
+    projectileType: ProjectileType,
+    targetX: number,
     targetY: number,
     renderer?: Renderer,
     stage?: Container,
-    collisionCallback?: (projectileSprite: Sprite) => boolean
+    collisionCallback?: (_projectileSprite: Sprite) => boolean,
   ) {
     this.sprite = sprite;
     this.projectileType = projectileType;
@@ -157,7 +171,8 @@ export class Projectile {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     // Check if reached target position (fallback collision detection)
-    if (distance < 20) { // 20 pixel collision radius
+    if (distance < 20) {
+      // 20 pixel collision radius
       this.destroy();
       return false; // Projectile should be removed
     }
@@ -167,7 +182,7 @@ export class Projectile {
     if (distance > 0) {
       const moveX = (dx / distance) * moveDistance;
       const moveY = (dy / distance) * moveDistance;
-      
+
       this.sprite.x += moveX;
       this.sprite.y += moveY;
     }
@@ -180,7 +195,7 @@ export class Projectile {
     return true; // Projectile is still active
   }
 
-  private async updateAnimation(deltaTime: number) {
+  private async updateAnimation(_deltaTime: number) {
     const now = performance.now();
     if (now - this.lastFrameUpdate >= this.frameDuration) {
       this.animationFrameIndex = (this.animationFrameIndex + 1) % this.frameSequence.length;
@@ -188,7 +203,7 @@ export class Projectile {
 
       const frameType = this.frameSequence[this.animationFrameIndex];
       const frame = await getProjectileFrame(this.projectileType, frameType);
-      
+
       if (frame) {
         this.sprite.texture = frame.texture;
       }
@@ -224,24 +239,34 @@ export async function createProjectile(
   targetY: number,
   renderer?: Renderer,
   stage?: Container,
-  collisionCallback?: (projectileSprite: Sprite) => boolean
+  collisionCallback?: (_projectileSprite: Sprite) => boolean,
 ): Promise<Projectile> {
   const sprite = await createProjectileSprite(projectileType, 'idle');
   sprite.position.set(startX, startY);
-  
+
   // Use individual scale factor for each projectile type
   const config = projectileConfigs[projectileType];
   sprite.scale.set(config.scale);
   sprite.visible = true;
-  
-  const projectile = new Projectile(sprite, projectileType, targetX, targetY, renderer, stage, collisionCallback);
-  
+
+  const projectile = new Projectile(
+    sprite,
+    projectileType,
+    targetX,
+    targetY,
+    renderer,
+    stage,
+    collisionCallback,
+  );
+
   if (stage) {
     stage.addChild(sprite);
   }
-  
-  console.log(`Created ${projectileType} projectile from (${startX}, ${startY}) to (${targetX}, ${targetY}) at scale ${config.scale}`);
-  
+
+  console.log(
+    `Created ${projectileType} projectile from (${startX}, ${startY}) to (${targetX}, ${targetY}) at scale ${config.scale}`,
+  );
+
   return projectile;
 }
 

@@ -14,3 +14,11 @@ pnpm-lock.yaml
 
 # comprehensive debugging session documentation
 docs/engineering/ci-workflow-debugging-session.md
+
+# game design specification files (Draconia Tome)
+draconiaChroniclesDocs/tome/
+
+# temporary planning documents
+temp_github_issue_epic_1_1_detailed_spec.md
+EPIC_OF_EPICS_v2.2.0.md
+v2.3.1GDD.md

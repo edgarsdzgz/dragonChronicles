@@ -1,6 +1,7 @@
 # Best Practices Quick Reference Guide
 
-**Purpose**: Quick reference for developers and AI assistants to ensure consistent high-quality code and documentation.
+**Purpose**: Quick reference for developers and AI assistants to ensure consistent
+high-quality code and documentation.
 
 ## 🚨 Critical Quality Gates (NEVER BYPASS)
 
@@ -66,7 +67,7 @@
 
 ### New Function Added
 
-```typescript
+````typescript
 
 /**
 
@@ -504,3 +505,4 @@ test('should call internal method', () => {
 ---
 
 **Remember**: Quality is not negotiable. These practices exist to ensure consistent, maintainable, and excellent code. When in doubt, err on the side of higher quality and better documentation.
+````
