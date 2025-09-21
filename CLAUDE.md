@@ -495,6 +495,8 @@ if (this.renderer && this.stage) {
 - **COMMIT VALIDATION**: All commits must pass commitlint validation
 - **SCOPE REQUIREMENT**: Every commit must include a valid scope (never empty)
 - **PRE-COMMIT HOOKS**: Husky hooks must pass before commit is accepted
+- **LOCKFILE SYNC**: pnpm-lock.yaml must be updated and committed when dependencies change
+- **CI VERIFICATION**: All workflows must pass before PR merge
 
 #### Performance Optimization
 
