@@ -4,7 +4,7 @@
  */
 
 import { strict as assert } from 'assert';
-import { test, run } from '../../tests/_tiny-runner.mjs';
+import { test, run } from '../../../tests/_tiny-runner.mjs';
 import {
   isUiToSim,
   isSimToUi,
@@ -22,88 +22,92 @@ import { Lands, Wards } from '../src/shared/ids.js';
 
 test('isUiToSim validates boot messages correctly', () => {
   // Valid boot message
-  const validBoot = { t: MessageType.Boot, seed: 12345, build: 'test-build' };
+  const validBoot = { t: MessageType._Boot, seed: 12345, build: 'test-build' };
   assert.equal(isUiToSim(validBoot), true, 'Valid boot message should pass validation');
 
   // Invalid boot messages
   assert.equal(
-    isUiToSim({ t: MessageType.Boot, seed: 'invalid', build: 'test' }),
+    isUiToSim({ t: MessageType._Boot, seed: 'invalid', build: 'test' }),
     false,
     'Invalid seed should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Boot, seed: 12345, build: '' }),
+    isUiToSim({ t: MessageType._Boot, seed: 12345, build: '' }),
     false,
     'Empty build should fail',
   );
-  assert.equal(isUiToSim({ t: MessageType.Boot, seed: 12345 }), false, 'Missing build should fail');
+  assert.equal(
+    isUiToSim({ t: MessageType._Boot, seed: 12345 }),
+    false,
+    'Missing build should fail',
+  );
 });
 
 test('isUiToSim validates start messages correctly', () => {
   // Valid start message
-  const validStart = { t: MessageType.Start, land: Lands.HorizonSteppe, ward: Wards.W1 };
+  const validStart = { t: MessageType._Start, land: Lands.HorizonSteppe, ward: Wards.W1 };
   assert.equal(isUiToSim(validStart), true, 'Valid start message should pass validation');
 
   // Invalid start messages
   assert.equal(
-    isUiToSim({ t: MessageType.Start, land: 999, ward: Wards.W1 }),
+    isUiToSim({ t: MessageType._Start, land: 999, ward: Wards.W1 }),
     false,
     'Invalid land should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Start, land: Lands.HorizonSteppe, ward: 999 }),
+    isUiToSim({ t: MessageType._Start, land: Lands.HorizonSteppe, ward: 999 }),
     false,
     'Invalid ward should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Start, land: Lands.HorizonSteppe }),
+    isUiToSim({ t: MessageType._Start, land: Lands.HorizonSteppe }),
     false,
     'Missing ward should fail',
   );
 });
 
 test('isUiToSim validates stop messages correctly', () => {
-  const validStop = { t: MessageType.Stop };
+  const validStop = { t: MessageType._Stop };
   assert.equal(isUiToSim(validStop), true, 'Valid stop message should pass validation');
 });
 
 test('isUiToSim validates ability messages correctly', () => {
   // Valid ability message
-  const validAbility = { t: MessageType.Ability, id: AbilityId.Roar };
+  const validAbility = { t: MessageType._Ability, id: AbilityId._Roar };
   assert.equal(isUiToSim(validAbility), true, 'Valid ability message should pass validation');
 
   // Invalid ability messages
   assert.equal(
-    isUiToSim({ t: MessageType.Ability, id: 999 }),
+    isUiToSim({ t: MessageType._Ability, id: 999 }),
     false,
     'Invalid ability ID should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Ability, id: 'invalid' }),
+    isUiToSim({ t: MessageType._Ability, id: 'invalid' }),
     false,
     'Non-numeric ability ID should fail',
   );
-  assert.equal(isUiToSim({ t: MessageType.Ability }), false, 'Missing ability ID should fail');
+  assert.equal(isUiToSim({ t: MessageType._Ability }), false, 'Missing ability ID should fail');
 });
 
 test('isUiToSim validates offline messages correctly', () => {
   // Valid offline message
-  const validOffline = { t: MessageType.Offline, elapsedMs: 1000 };
+  const validOffline = { t: MessageType._Offline, elapsedMs: 1000 };
   assert.equal(isUiToSim(validOffline), true, 'Valid offline message should pass validation');
 
   // Invalid offline messages
   assert.equal(
-    isUiToSim({ t: MessageType.Offline, elapsedMs: -1 }),
+    isUiToSim({ t: MessageType._Offline, elapsedMs: -1 }),
     false,
     'Negative elapsed time should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Offline, elapsedMs: MAX_OFFLINE_MS + 1 }),
+    isUiToSim({ t: MessageType._Offline, elapsedMs: MAX_OFFLINE_MS + 1 }),
     false,
     'Excessive elapsed time should fail',
   );
   assert.equal(
-    isUiToSim({ t: MessageType.Offline, elapsedMs: 'invalid' }),
+    isUiToSim({ t: MessageType._Offline, elapsedMs: 'invalid' }),
     false,
     'Non-numeric elapsed time should fail',
   );
@@ -111,21 +115,21 @@ test('isUiToSim validates offline messages correctly', () => {
 
 test('isUiToSim rejects unknown message types', () => {
   assert.equal(isUiToSim({ t: 'unknown' }), false, 'Unknown message type should fail');
-  assert.equal(isUiToSim({ t: MessageType.Ready }), false, 'SimToUi message type should fail');
+  assert.equal(isUiToSim({ t: MessageType._Ready }), false, 'SimToUi message type should fail');
   assert.equal(isUiToSim(null), false, 'Null message should fail');
   assert.equal(isUiToSim(undefined), false, 'Undefined message should fail');
   assert.equal(isUiToSim('not an object'), false, 'Non-object message should fail');
 });
 
 test('isSimToUi validates ready messages correctly', () => {
-  const validReady = { t: MessageType.Ready };
+  const validReady = { t: MessageType._Ready };
   assert.equal(isSimToUi(validReady), true, 'Valid ready message should pass validation');
 });
 
 test('isSimToUi validates tick messages correctly', () => {
   // Valid tick message
   const validTick = {
-    t: MessageType.Tick,
+    t: MessageType._Tick,
     now: 1000,
     stats: { fps: 60, enemies: 5, proj: 10, dps: 100 },
   };
@@ -133,18 +137,18 @@ test('isSimToUi validates tick messages correctly', () => {
 
   // Invalid tick messages
   assert.equal(
-    isSimToUi({ t: MessageType.Tick, now: 'invalid', stats: {} }),
+    isSimToUi({ t: MessageType._Tick, now: 'invalid', stats: {} }),
     false,
     'Invalid now time should fail',
   );
   assert.equal(
-    isSimToUi({ t: MessageType.Tick, now: 1000, stats: 'invalid' }),
+    isSimToUi({ t: MessageType._Tick, now: 1000, stats: 'invalid' }),
     false,
     'Invalid stats should fail',
   );
   assert.equal(
     isSimToUi({
-      t: MessageType.Tick,
+      t: MessageType._Tick,
       now: 1000,
       stats: { fps: 'invalid', enemies: 5, proj: 10, dps: 100 },
     }),
@@ -155,9 +159,9 @@ test('isSimToUi validates tick messages correctly', () => {
 
 test('isSimToUi validates log messages correctly', () => {
   // Valid log messages
-  const validInfo = { t: MessageType.Log, lvl: LogLvl.Info, msg: 'test message' };
-  const validWarn = { t: MessageType.Log, lvl: LogLvl.Warn, msg: 'warning message' };
-  const validError = { t: MessageType.Log, lvl: LogLvl.Error, msg: 'error message' };
+  const validInfo = { t: MessageType._Log, lvl: LogLvl._Info, msg: 'test message' };
+  const validWarn = { t: MessageType._Log, lvl: LogLvl._Warn, msg: 'warning message' };
+  const validError = { t: MessageType._Log, lvl: LogLvl._Error, msg: 'error message' };
 
   assert.equal(isSimToUi(validInfo), true, 'Valid info log should pass validation');
   assert.equal(isSimToUi(validWarn), true, 'Valid warn log should pass validation');
@@ -165,17 +169,17 @@ test('isSimToUi validates log messages correctly', () => {
 
   // Invalid log messages
   assert.equal(
-    isSimToUi({ t: MessageType.Log, lvl: 'invalid', msg: 'test' }),
+    isSimToUi({ t: MessageType._Log, lvl: 'invalid', msg: 'test' }),
     false,
     'Invalid log level should fail',
   );
   assert.equal(
-    isSimToUi({ t: MessageType.Log, lvl: LogLvl.Info, msg: 123 }),
+    isSimToUi({ t: MessageType._Log, lvl: LogLvl._Info, msg: 123 }),
     false,
     'Non-string message should fail',
   );
   assert.equal(
-    isSimToUi({ t: MessageType.Log, lvl: LogLvl.Info }),
+    isSimToUi({ t: MessageType._Log, lvl: LogLvl._Info }),
     false,
     'Missing message should fail',
   );
@@ -183,16 +187,16 @@ test('isSimToUi validates log messages correctly', () => {
 
 test('isSimToUi validates fatal messages correctly', () => {
   // Valid fatal message
-  const validFatal = { t: MessageType.Fatal, reason: 'test error' };
+  const validFatal = { t: MessageType._Fatal, reason: 'test error' };
   assert.equal(isSimToUi(validFatal), true, 'Valid fatal message should pass validation');
 
   // Invalid fatal messages
   assert.equal(
-    isSimToUi({ t: MessageType.Fatal, reason: 123 }),
+    isSimToUi({ t: MessageType._Fatal, reason: 123 }),
     false,
     'Non-string reason should fail',
   );
-  assert.equal(isSimToUi({ t: MessageType.Fatal }), false, 'Missing reason should fail');
+  assert.equal(isSimToUi({ t: MessageType._Fatal }), false, 'Missing reason should fail');
 });
 
 test('validateBuildVersion works correctly', () => {
@@ -287,7 +291,7 @@ test('ValidationContext works correctly', () => {
   const context = new ValidationContext();
 
   // Valid message should pass
-  const validMessage = { t: MessageType.Stop };
+  const validMessage = { t: MessageType._Stop };
   const result1 = context.validateMessage(validMessage);
   assert.equal(result1.valid, true, 'Valid message should pass validation');
 
@@ -309,12 +313,12 @@ test('ValidationContext handles ability cooldown', () => {
   const context = new ValidationContext();
 
   // First ability should work
-  const ability1 = { t: MessageType.Ability, id: AbilityId.Roar };
+  const ability1 = { t: MessageType._Ability, id: AbilityId._Roar };
   const result1 = context.validateMessage(ability1);
   assert.equal(result1.valid, true, 'First ability should work');
 
   // Second ability should fail due to cooldown
-  const ability2 = { t: MessageType.Ability, id: AbilityId.Roar };
+  const ability2 = { t: MessageType._Ability, id: AbilityId._Roar };
   const result2 = context.validateMessage(ability2);
   assert.equal(result2.valid, false, 'Second ability should fail due to cooldown');
   assert.ok(result2.error?.includes('cooldown'), 'Error should mention cooldown');
@@ -324,12 +328,12 @@ test('ValidationContext handles build version validation', () => {
   const context = new ValidationContext();
 
   // Valid boot message should work
-  const validBoot = { t: MessageType.Boot, seed: 12345, build: BUILD_VERSION };
+  const validBoot = { t: MessageType._Boot, seed: 12345, build: BUILD_VERSION };
   const result1 = context.validateMessage(validBoot);
   assert.equal(result1.valid, true, 'Valid boot message should work');
 
   // Invalid boot message should fail
-  const invalidBoot = { t: MessageType.Boot, seed: 12345, build: 'wrong-version' };
+  const invalidBoot = { t: MessageType._Boot, seed: 12345, build: 'wrong-version' };
   const result2 = context.validateMessage(invalidBoot);
   assert.equal(result2.valid, false, 'Invalid boot message should fail');
   assert.ok(result2.error?.includes('version'), 'Error should mention version');

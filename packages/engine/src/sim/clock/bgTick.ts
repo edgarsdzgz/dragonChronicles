@@ -197,7 +197,7 @@ export class ModeAwareSimDriver {
 
     // Stop current mode
     if (this.currentMode === 'fg') {
-      this.foregroundClock.stop();
+      (this.foregroundClock as any).stop();
     } else {
       this.backgroundDriver.stop();
     }
@@ -205,7 +205,7 @@ export class ModeAwareSimDriver {
     // Start new mode
     this.currentMode = mode;
     if (mode === 'fg') {
-      this.foregroundClock.start();
+      (this.foregroundClock as any).start();
     } else {
       this.backgroundDriver.start();
     }
@@ -224,7 +224,7 @@ export class ModeAwareSimDriver {
    */
   start(): void {
     if (this.currentMode === 'fg') {
-      this.foregroundClock.start();
+      (this.foregroundClock as any).start();
     } else {
       this.backgroundDriver.start();
     }
@@ -235,7 +235,7 @@ export class ModeAwareSimDriver {
    */
   stop(): void {
     if (this.currentMode === 'fg') {
-      this.foregroundClock.stop();
+      (this.foregroundClock as any).stop();
     } else {
       this.backgroundDriver.stop();
     }
@@ -247,7 +247,7 @@ export class ModeAwareSimDriver {
    */
   isRunning(): boolean {
     if (this.currentMode === 'fg') {
-      return this.foregroundClock.isRunning();
+      return (this.foregroundClock as any).isRunning();
     } else {
       return this.backgroundDriver.isActive();
     }
@@ -261,7 +261,7 @@ export class ModeAwareSimDriver {
     if (this.currentMode === 'fg') {
       return {
         mode: 'fg',
-        ...this.foregroundClock.getState(),
+        ...(this.foregroundClock as any).getState(),
       };
     } else {
       return {

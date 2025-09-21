@@ -12,7 +12,7 @@ import { MessageType, LogLvl } from '../../shared/enums.js';
  */
 export function createReadyMessage(): SimToUi {
   return {
-    t: MessageType.Ready,
+    t: MessageType._Ready,
   };
 }
 
@@ -24,7 +24,7 @@ export function createReadyMessage(): SimToUi {
  */
 export function createTickMessage(now: number, stats: SimStats): SimToUi {
   return {
-    t: MessageType.Tick,
+    t: MessageType._Tick,
     now,
     stats,
   };
@@ -38,7 +38,7 @@ export function createTickMessage(now: number, stats: SimStats): SimToUi {
  */
 export function createLogMessage(level: LogLvl, message: string): SimToUi {
   return {
-    t: MessageType.Log,
+    t: MessageType._Log,
     lvl: level,
     msg: message,
   };
@@ -51,7 +51,7 @@ export function createLogMessage(level: LogLvl, message: string): SimToUi {
  */
 export function createFatalMessage(reason: string): SimToUi {
   return {
-    t: MessageType.Fatal,
+    t: MessageType._Fatal,
     reason,
   };
 }
@@ -84,7 +84,7 @@ export class SimToUiMessageFactory {
    * @returns Log message
    */
   static info(message: string): SimToUi {
-    return createLogMessage(LogLvl.Info, message);
+    return createLogMessage(LogLvl._Info, message);
   }
 
   /**
@@ -93,7 +93,7 @@ export class SimToUiMessageFactory {
    * @returns Log message
    */
   static warn(message: string): SimToUi {
-    return createLogMessage(LogLvl.Warn, message);
+    return createLogMessage(LogLvl._Warn, message);
   }
 
   /**
@@ -102,7 +102,7 @@ export class SimToUiMessageFactory {
    * @returns Log message
    */
   static error(message: string): SimToUi {
-    return createLogMessage(LogLvl.Error, message);
+    return createLogMessage(LogLvl._Error, message);
   }
 
   /**

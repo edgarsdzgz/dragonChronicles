@@ -4,7 +4,7 @@
  */
 
 import { strict as assert } from 'assert';
-import { test, run } from '../../tests/_tiny-runner.mjs';
+import { test, run } from '../../../tests/_tiny-runner.mjs';
 import {
   encodeSnapshot,
   decodeSnapshot,
@@ -168,8 +168,8 @@ test('SnapshotStreamWriter works correctly', () => {
   const writer = new SnapshotStreamWriter(1000);
 
   // Start recording
-  writer.start(0);
-  assert.equal(writer.isActive(), true, 'Writer should be active after start');
+  (writer as any).start(0);
+  assert.equal((writer as any).isActive(), true, 'Writer should be active after start');
 
   // Record snapshots
   const recorded1 = writer.recordSnapshot(500, 5, 10, 60);
@@ -196,8 +196,8 @@ test('SnapshotStreamWriter works correctly', () => {
   assert.ok(encoded.includes('2000|8|15|58'), 'Encoded stream should contain second snapshot');
 
   // Stop recording
-  writer.stop();
-  assert.equal(writer.isActive(), false, 'Writer should be inactive after stop');
+  (writer as any).stop();
+  assert.equal((writer as any).isActive(), false, 'Writer should be inactive after stop');
 });
 
 test('hash64 produces consistent results', () => {

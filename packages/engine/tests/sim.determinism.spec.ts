@@ -4,13 +4,13 @@
  */
 
 import { strict as assert } from 'assert';
-import { test, run } from '../../tests/_tiny-runner.mjs';
+import { test, run } from '../../../tests/_tiny-runner.mjs';
 import { createStandardStreams } from '../src/sim/rng/streams.js';
-import { _FixedClock } from '../src/sim/clock/accumulator.js';
+import { FixedClock } from '../src/sim/clock/accumulator.js';
 import { SnapshotWriter } from '../src/sim/snapshot/writer.js';
-import { encodeSnapshotStream, _createSnapshot } from '../src/sim/protocol/codec.js';
+import { encodeSnapshotStream, createSnapshot } from '../src/sim/protocol/codec.js';
 import { hashSnapshotStream } from '../src/sim/snapshot/hasher.js';
-import { _SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
+import { SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
 
 // Golden test configuration
 const GOLDEN_SEED = 123;
@@ -54,7 +54,7 @@ test('simulation maintains timing precision', () => {
   for (let i = 1; i < run.snapshots.length; i++) {
     const prev = run.snapshots[i - 1];
     const curr = run.snapshots[i];
-    const interval = curr.now - prev.now;
+    const interval = (curr as any).now - (prev as any).now;
 
     assert.ok(
       interval >= GOLDEN_SNAPSHOT_INTERVAL - 10,
@@ -102,8 +102,8 @@ test('simulation handles clock precision correctly', () => {
   for (let i = 1; i < run.snapshots.length; i++) {
     const prev = run.snapshots[i - 1];
     const curr = run.snapshots[i];
-    const expectedTime = prev.now + GOLDEN_SNAPSHOT_INTERVAL;
-    const drift = Math.abs(curr.now - expectedTime);
+    const expectedTime = (prev as any).now + GOLDEN_SNAPSHOT_INTERVAL;
+    const drift = Math.abs((curr as any).now - expectedTime);
     maxDrift = Math.max(maxDrift, drift);
   }
 
@@ -115,10 +115,10 @@ test('simulation produces consistent performance metrics', () => {
 
   // Check that performance metrics are reasonable
   for (const snapshot of run.snapshots) {
-    assert.ok(snapshot.fps >= 0, 'FPS should be non-negative');
-    assert.ok(snapshot.fps <= 120, 'FPS should be reasonable');
-    assert.ok(snapshot.enemies >= 0, 'Enemy count should be non-negative');
-    assert.ok(snapshot.proj >= 0, 'Projectile count should be non-negative');
+    assert.ok((snapshot as any).fps >= 0, 'FPS should be non-negative');
+    assert.ok((snapshot as any).fps <= 120, 'FPS should be reasonable');
+    assert.ok((snapshot as any).enemies >= 0, 'Enemy count should be non-negative');
+    assert.ok((snapshot as any).proj >= 0, 'Projectile count should be non-negative');
   }
 });
 
@@ -143,8 +143,8 @@ test('simulation produces byte-equal output across runs', () => {
   const run2 = createDeterministicRun(GOLDEN_SEED, GOLDEN_DURATION_MS);
 
   // Encode both runs to strings
-  const encoded1 = encodeSnapshotStream(run1.snapshots);
-  const encoded2 = encodeSnapshotStream(run2.snapshots);
+  const encoded1 = encodeSnapshotStream(run1.snapshots as any);
+  const encoded2 = encodeSnapshotStream(run2.snapshots as any);
 
   // Strings should be byte-equal
   assert.equal(encoded1, encoded2, 'Encoded snapshots should be byte-equal');

@@ -15,7 +15,7 @@ import type { LandId, WardId, AbilityId } from '../../shared/types.js';
  */
 export function createBootMessage(seed: number, build: string): UiToSim {
   return {
-    t: MessageType.Boot,
+    t: MessageType._Boot,
     seed,
     build,
   };
@@ -29,7 +29,7 @@ export function createBootMessage(seed: number, build: string): UiToSim {
  */
 export function createStartMessage(land: LandId, ward: WardId): UiToSim {
   return {
-    t: MessageType.Start,
+    t: MessageType._Start,
     land,
     ward,
   };
@@ -41,7 +41,7 @@ export function createStartMessage(land: LandId, ward: WardId): UiToSim {
  */
 export function createStopMessage(): UiToSim {
   return {
-    t: MessageType.Stop,
+    t: MessageType._Stop,
   };
 }
 
@@ -52,7 +52,7 @@ export function createStopMessage(): UiToSim {
  */
 export function createAbilityMessage(id: AbilityId): UiToSim {
   return {
-    t: MessageType.Ability,
+    t: MessageType._Ability,
     id,
   };
 }
@@ -64,7 +64,7 @@ export function createAbilityMessage(id: AbilityId): UiToSim {
  */
 export function createOfflineMessage(elapsedMs: number): UiToSim {
   return {
-    t: MessageType.Offline,
+    t: MessageType._Offline,
     elapsedMs,
   };
 }

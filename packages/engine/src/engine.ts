@@ -93,19 +93,19 @@ export class DraconiaEngine {
 
     // Handle message
     switch (msg.t) {
-      case MessageType.Boot:
+      case MessageType._Boot:
         this.handleBoot(msg);
         break;
-      case MessageType.Start:
+      case MessageType._Start:
         this.handleStart(msg);
         break;
-      case MessageType.Stop:
+      case MessageType._Stop:
         this.handleStop();
         break;
-      case MessageType.Ability:
+      case MessageType._Ability:
         this.handleAbility(msg);
         break;
-      case MessageType.Offline:
+      case MessageType._Offline:
         this.handleOffline(msg);
         break;
     }
@@ -162,7 +162,7 @@ export class DraconiaEngine {
    * @param msg - Boot message
    */
   private handleBoot(msg: UiToSim): void {
-    if (msg.t !== MessageType.Boot) return;
+    if (msg.t !== MessageType._Boot) return;
 
     // Emit ready message
     this.emitReady();
@@ -176,7 +176,7 @@ export class DraconiaEngine {
    * @param msg - Start message
    */
   private handleStart(msg: UiToSim): void {
-    if (msg.t !== MessageType.Start) return;
+    if (msg.t !== MessageType._Start) return;
 
     // Start simulation
     this.start();
@@ -194,7 +194,7 @@ export class DraconiaEngine {
    * @param msg - Ability message
    */
   private handleAbility(msg: UiToSim): void {
-    if (msg.t !== MessageType.Ability) return;
+    if (msg.t !== MessageType._Ability) return;
 
     // For P1-S1, abilities are no-op
     // Later stories will implement actual ability logic
@@ -205,7 +205,7 @@ export class DraconiaEngine {
    * @param msg - Offline message
    */
   private handleOffline(msg: UiToSim): void {
-    if (msg.t !== MessageType.Offline) return;
+    if (msg.t !== MessageType._Offline) return;
 
     // For P1-S1, offline is no-op
     // Later stories will implement offline simulation
@@ -272,7 +272,7 @@ export class DraconiaEngine {
    * @param stats - Tick statistics
    */
   private emitTick(stats: Record<string, unknown>): void {
-    const tickMsg = SimToUiMessageFactory.tick(stats.now, stats.stats);
+    const tickMsg = SimToUiMessageFactory.tick((stats as any).now, stats.stats as any);
     this.onSimMessage(tickMsg);
   }
 

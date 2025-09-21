@@ -4,7 +4,7 @@
  */
 
 import { strict as assert } from 'assert';
-import { test, run } from '../../tests/_tiny-runner.mjs';
+import { test, run } from '../../../tests/_tiny-runner.mjs';
 import { FixedClock, createFixedClock } from '../src/sim/clock/accumulator.js';
 import { BackgroundTickDriver, createBackgroundTickDriver } from '../src/sim/clock/bgTick.js';
 import { DT_MS, MAX_FRAME_TIME_MS, MAX_STEPS_PER_FRAME } from '../src/shared/constants.js';
@@ -62,15 +62,15 @@ test('FixedClock accumulator handles variable frame times', () => {
 
   // First frame: 50ms (should produce 3 steps)
   currentTime += 50;
-  _clockWithTime.tick();
+  (_clockWithTime as any).tick();
 
   // Second frame: 10ms (should produce 0 steps)
   currentTime += 10;
-  _clockWithTime.tick();
+  (_clockWithTime as any).tick();
 
   // Third frame: 100ms (should produce 6 steps)
   currentTime += 100;
-  _clockWithTime.tick();
+  (_clockWithTime as any).tick();
 
   _clockWithTime.stop();
 
@@ -97,7 +97,7 @@ test('FixedClock clamps excessive frame times', () => {
 
   // Simulate a frame that's longer than MAX_FRAME_TIME_MS
   currentTime += MAX_FRAME_TIME_MS + 1000;
-  _clockWithTime.tick();
+  (_clockWithTime as any).tick();
 
   _clockWithTime.stop();
 
@@ -252,7 +252,7 @@ test('FixedClock accumulator precision is maintained', () => {
   // Simulate many frames with slight timing variations
   for (let i = 0; i < 100; i++) {
     currentTime += DT_MS + (Math.random() - 0.5) * 2; // ±1ms variation
-    _clockWithTime.tick();
+    (_clockWithTime as any).tick();
   }
 
   _clockWithTime.stop();
