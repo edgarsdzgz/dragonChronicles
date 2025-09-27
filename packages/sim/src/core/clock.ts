@@ -21,7 +21,7 @@ export class StepClock {
    * Creates a new step clock
    * @param now - Function to get current time (default: performance.now)
    */
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars -- parameter used as class property
   constructor(private now: () => number = () => performance.now()) {}
 
   /**

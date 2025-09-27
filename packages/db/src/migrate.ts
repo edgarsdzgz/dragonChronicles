@@ -30,8 +30,7 @@ export interface MigrationStatus {
 // Migration Registry
 // ============================================================================
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type MigrationFunction = (_data: any) => Promise<any>;
+type MigrationFunction = (_data: unknown) => Promise<unknown>;
 
 const migrations: Record<number, MigrationFunction> = {
   // Future migrations will be added here

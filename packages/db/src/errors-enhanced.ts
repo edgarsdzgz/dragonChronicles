@@ -11,11 +11,11 @@
 export class DatabaseError extends Error {
   constructor(
     message: string,
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars -- parameter used as class property
     public operation: string,
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars -- parameter used as class property
     public cause?: unknown,
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars -- parameter used as class property
     public context?: Record<string, unknown>,
   ) {
     super(message);
@@ -162,7 +162,7 @@ export const createMigrationError = (
 export class ErrorContext {
   private context: Record<string, unknown> = {};
 
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars -- parameter used as class property
   constructor(public operation: string) {}
 
   add(key: string, value: unknown): this {
