@@ -43,7 +43,7 @@
 
 **Issues**:
 
-- MD051/link-fragments violation in `CODE*OPTIMIZATION*GUIDE.md`
+- MD051/link-fragments violation in `CODE_OPTIMIZATION_GUIDE.md`
 
 - MD024/no-duplicate-heading violations in `OPTIMIZATION_BLUEPRINT.md`
 
@@ -80,7 +80,7 @@
 
 ### Documentation Files
 
-- `docs/optimization/CODE*OPTIMIZATION*GUIDE.md` - Fixed link fragments
+- `docs/optimization/CODE_OPTIMIZATION_GUIDE.md` - Fixed link fragments
 
 - `docs/optimization/OPTIMIZATION_BLUEPRINT.md` - Fixed duplicate headings
 

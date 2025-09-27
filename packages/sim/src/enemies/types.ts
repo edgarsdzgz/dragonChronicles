@@ -54,12 +54,14 @@ export type SpawnedEnemy = Enemy & {
 /**
  * Enemy AI states (for future integration with P1-E2-S2)
  */
+/* eslint-disable no-unused-vars */
 export enum EnemyState {
   APPROACH = 'approach',
   STOP = 'stop',
   ATTACK = 'attack',
   DEATH = 'death',
 }
+/* eslint-enable no-unused-vars */
 
 /**
  * Enemy spawn configuration for different families

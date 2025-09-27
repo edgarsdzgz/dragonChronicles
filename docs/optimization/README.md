@@ -6,7 +6,7 @@ implemented for Draconia Chronicles.
 
 ## 📚 Documentation Overview
 
-- **[OPTIMIZATION*JOURNEY*SUMMARY.md](./OPTIMIZATION*JOURNEY*SUMMARY.md)** - Complete summary of the
+- **[OPTIMIZATION_JOURNEY_SUMMARY.md](./OPTIMIZATION_JOURNEY_SUMMARY.md)** - Complete summary of the
 
   optimization journey
 
@@ -14,7 +14,7 @@ implemented for Draconia Chronicles.
 
   optimization efforts
 
-- **[CODE*OPTIMIZATION*GUIDE.md](./CODE*OPTIMIZATION*GUIDE.md)** - Comprehensive optimization guide
+- **[CODE_OPTIMIZATION_GUIDE.md](./CODE_OPTIMIZATION_GUIDE.md)** - Comprehensive optimization guide
 
   and reference
 

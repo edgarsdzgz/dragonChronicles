@@ -80,11 +80,11 @@ Performance optimization framework and implementation:
 
   framework
 
-- [Code Optimization Guide](./optimization/CODE*OPTIMIZATION*GUIDE.md) - Comprehensive optimization
+- [Code Optimization Guide](./optimization/CODE_OPTIMIZATION_GUIDE.md) - Comprehensive optimization
 
   techniques
 
-- [Optimization Journey](./optimization/OPTIMIZATION*JOURNEY*SUMMARY.md) - Complete optimization
+- [Optimization Journey](./optimization/OPTIMIZATION_JOURNEY_SUMMARY.md) - Complete optimization
 
   journey timeline
 

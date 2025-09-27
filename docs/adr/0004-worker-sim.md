@@ -268,6 +268,6 @@ class SimulationWorker {
 
 - [W3 Implementation](../engineering/development-workflow.md)
 
-- [Performance Optimization Guide](../optimization/CODE*OPTIMIZATION*GUIDE.md)
+- [Performance Optimization Guide](../optimization/CODE_OPTIMIZATION_GUIDE.md)
 
 ````

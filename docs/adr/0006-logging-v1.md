@@ -396,6 +396,6 @@ The logging system was established during W5 and has proven successful:
 
 - [Database Integration](../engineering/database-persistence.md)
 
-- [Performance Monitoring Guide](../optimization/CODE*OPTIMIZATION*GUIDE.md)
+- [Performance Monitoring Guide](../optimization/CODE_OPTIMIZATION_GUIDE.md)
 
 ````
