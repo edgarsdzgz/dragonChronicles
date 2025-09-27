@@ -1,11 +1,18 @@
 import { Application } from 'pixi.js';
 import { clampDPR } from './dpr';
-import { createBackgroundSim, type BgSimHandle } from '../sim/background';
+// Lazy load background simulation to reduce initial bundle size
+let createBackgroundSim: any = null;
 
 export type PixiHandle = {
   app: Application;
   resize: () => void;
   destroy: () => void;
+};
+
+export type BgSimHandle = {
+  start: () => void;
+  stop: () => void;
+  isRunning: () => boolean;
 };
 
 export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> {
@@ -18,6 +25,12 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     backgroundAlpha: 0,
   });
   await app.init({ resizeTo: canvas.parentElement ?? window });
+
+  // Lazy load background simulation
+  if (!createBackgroundSim) {
+    const bgSimModule = await import('../sim/background');
+    createBackgroundSim = bgSimModule.createBackgroundSim;
+  }
 
   // New: render-only pause; keep background sim running while hidden
   const bg: BgSimHandle = createBackgroundSim(2); // 2 Hz is thrifty and predictable

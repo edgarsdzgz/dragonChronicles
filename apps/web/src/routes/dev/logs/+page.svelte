@@ -1,6 +1,6 @@
 <script>
   import { onDestroy } from 'svelte';
-  import { logger } from '$lib/logging/logger';
+  import { getLogger } from '$lib/logging/logger';
 
   let rate = 100; // logs/sec
   let seconds = 10;
@@ -10,12 +10,13 @@
   let _startTs = 0;
   let handle;
 
-  function start() {
+  async function start() {
     running = true;
     produced = 0;
     dropped = 0;
     _startTs = performance.now();
 
+    const logger = await getLogger();
     const interval = 1000 / rate;
     handle = setInterval(() => {
       const perTick = 1; // keep simple; adjust if needed
@@ -47,6 +48,7 @@
   onDestroy(stop);
 
   async function exportLogs() {
+    const logger = await getLogger();
     const blob = await logger.exportNDJSON();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

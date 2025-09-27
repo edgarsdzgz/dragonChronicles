@@ -1,18 +1,29 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import { hudEnabled, appFlags } from '$lib/flags/store';
-  import { FpsCounter } from '$lib/pixi/hud';
-  import { getFlagDisplayName } from '$lib/flags/query';
 
   let fps = 0;
+  let FpsCounter: any = null;
+  let getFlagDisplayName: any = null;
 
-  onMount(() => {
-    const c = new FpsCounter();
-    const id = setInterval(() => {
-      const s = c.sample();
-      if (s.fps) fps = Math.round(s.fps);
-    }, 250);
-    return () => clearInterval(id);
+  onMount(async () => {
+    // Lazy load HUD components only when HUD is enabled
+    if ($hudEnabled) {
+      const [{ FpsCounter: FpsCounterClass }, { getFlagDisplayName: getFlagDisplayNameFn }] = await Promise.all([
+        import('$lib/pixi/hud'),
+        import('$lib/flags/query')
+      ]);
+      
+      FpsCounter = FpsCounterClass;
+      getFlagDisplayName = getFlagDisplayNameFn;
+      
+      const c = new FpsCounter();
+      const id = setInterval(() => {
+        const s = c.sample();
+        if (s.fps) fps = Math.round(s.fps);
+      }, 250);
+      return () => clearInterval(id);
+    }
   });
 </script>
 
@@ -25,7 +36,7 @@
       <div style="margin-top:4px; font-size:10px; opacity:0.8;">
         Active flags:
         {#each Object.entries($appFlags) as [key, value] (key)}
-          {#if value === true}
+          {#if value === true && getFlagDisplayName}
             <span style="color:#4ade80;">{getFlagDisplayName(key)}</span>
           {/if}
         {/each}

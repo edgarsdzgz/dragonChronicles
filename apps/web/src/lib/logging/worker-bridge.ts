@@ -1,7 +1,8 @@
 import type { SimToUI } from '@draconia/shared/protocol';
-import { logger } from './logger';
+import { getLogger } from './logger';
 
-export function bindWorkerLogs(w: Worker) {
+export async function bindWorkerLogs(w: Worker) {
+  const logger = await getLogger();
   w.addEventListener('message', (ev: MessageEvent<SimToUI>) => {
     if (ev.data.t === 'log') {
       logger.log({
