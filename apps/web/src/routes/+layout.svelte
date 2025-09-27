@@ -13,14 +13,18 @@
 
   onMount(async () => {
     handle = await mountPixi(canvas);
-    
+
     // Lazy load PWA components
-    const [{ default: UpdateToastComponent }, { default: InstallPromptComponent }, { default: DevMenuComponent }] = await Promise.all([
+    const [
+      { default: UpdateToastComponent },
+      { default: InstallPromptComponent },
+      { default: DevMenuComponent },
+    ] = await Promise.all([
       import('$lib/pwa/UpdateToast.svelte'),
       import('$lib/pwa/InstallPrompt.svelte'),
-      import('$lib/ui/DevMenu.svelte')
+      import('$lib/ui/DevMenu.svelte'),
     ]);
-    
+
     UpdateToast = UpdateToastComponent;
     InstallPrompt = InstallPromptComponent;
     DevMenu = DevMenuComponent;

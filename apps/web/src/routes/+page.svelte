@@ -9,14 +9,12 @@
   onMount(async () => {
     // Lazy load HUD components only when HUD is enabled
     if ($hudEnabled) {
-      const [{ FpsCounter: FpsCounterClass }, { getFlagDisplayName: getFlagDisplayNameFn }] = await Promise.all([
-        import('$lib/pixi/hud'),
-        import('$lib/flags/query')
-      ]);
-      
+      const [{ FpsCounter: FpsCounterClass }, { getFlagDisplayName: getFlagDisplayNameFn }] =
+        await Promise.all([import('$lib/pixi/hud'), import('$lib/flags/query')]);
+
       FpsCounter = FpsCounterClass;
       getFlagDisplayName = getFlagDisplayNameFn;
-      
+
       const c = new FpsCounter();
       const id = setInterval(() => {
         const s = c.sample();

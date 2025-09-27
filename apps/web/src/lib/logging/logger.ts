@@ -21,5 +21,5 @@ export const logger = new Proxy({} as Record<string, unknown>, {
       const actualLogger = await getLogger();
       return (actualLogger as Record<string, unknown>)[prop as string](...args);
     };
-  }
+  },
 });

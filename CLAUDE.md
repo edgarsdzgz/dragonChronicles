@@ -17,6 +17,7 @@ project.
 ### CI Lighthouse Configuration Fix (2025-09-27)
 
 **Issue**: CI workflow failing due to Lighthouse configuration file path error
+
 - **Error**: `ENOENT: no such file or directory` when reading inline JSON config
 - **Root Cause**: Inline JSON configuration instead of file reference
 - **Solution**: Updated `.lighthouserc.json` and CI workflow to use file reference
