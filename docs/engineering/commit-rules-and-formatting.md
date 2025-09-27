@@ -473,4 +473,5 @@ ci(github): fix workflow configuration
 ---
 
 **Remember**: Good commits save time, improve collaboration, and make debugging easier. Follow these rules consistently to focus on game development instead of fixing commit messages!
+
 ````

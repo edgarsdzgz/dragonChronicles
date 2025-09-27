@@ -4,7 +4,9 @@
 
 ## Overview
 
-Every story must include testing and validation as part of the implementation, not as a separate testing phase..
+Every story must include testing and validation as part of the implementation, not as a separate
+testing
+phase..
 This prevents bugs from accumulating and makes debugging more focused.
 
 ## Mandatory Testing Requirements
@@ -405,4 +407,5 @@ it('should complete within performance budget', () => {
 ---
 
 **Remember**: Testing is not a separate phase - it's part of the implementation process. Every line of code should be tested as it's written, not after the fact.
+
 ````
