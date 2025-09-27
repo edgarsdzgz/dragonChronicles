@@ -32,7 +32,7 @@ export class EnhancedAIManager {
   /**
    * Add an enemy to AI management
    */
-  addEnemy(enemy: SpawnedEnemy, config: AIBehaviorConfig): void {
+  addEnemy(enemy: SpawnedEnemy, _config: AIBehaviorConfig): void {
     // Create initial target (will be updated later)
     const initialTarget: Vector2 = { x: 0, y: 0 };
     const ai = new EnemyAI(enemy, initialTarget);

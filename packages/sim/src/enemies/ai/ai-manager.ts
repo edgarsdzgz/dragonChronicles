@@ -200,7 +200,7 @@ export class AIManager {
    * @param playerPosition - Player position
    */
   private handleAIStateTransitions(aiSystem: EnemyAISystem, playerPosition: Vector2): void {
-    const { ai, combat, enemy } = aiSystem;
+    const { ai, combat } = aiSystem;
     const currentState = ai.getState();
 
     // Handle approach -> stop transition

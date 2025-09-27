@@ -3,17 +3,19 @@
  * @description P1-E2-S2: Core AI state management for enemy behavior
  */
 
-import type { SpawnedEnemy, Vector2, Family } from '../types.js';
+import type { SpawnedEnemy, Vector2, Family, EnemyState } from '../types.js';
 
 /**
  * AI state machine states
  */
+/* eslint-disable no-unused-vars */
 export enum AIState {
   APPROACH = 'approach',
   STOP = 'stop', 
   ATTACK = 'attack',
   DEATH = 'death',
 }
+/* eslint-enable no-unused-vars */
 
 /**
  * AI behavior configuration for different enemy families
@@ -104,7 +106,7 @@ export class EnemyAI {
    * Update current AI state
    * @param deltaTime - Time elapsed since last update
    */
-  private updateState(deltaTime: number): void {
+  private updateState(_deltaTime: number): void {
     const distanceToTarget = this.getDistanceToTarget();
     const currentTime = Date.now();
     
@@ -243,7 +245,7 @@ export class EnemyAI {
     this.stateData.stateEntryTime = Date.now();
     
     // Update enemy state
-    this.enemy.state = newState as any;
+    this.enemy.state = newState as EnemyState;
   }
 
   /**

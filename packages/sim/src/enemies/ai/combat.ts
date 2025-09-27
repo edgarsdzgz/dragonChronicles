@@ -119,7 +119,7 @@ export class EnemyCombat {
    * @param deltaTime - Time elapsed
    * @returns Attack result if attack completed, null otherwise
    */
-  private updateAttackState(deltaTime: number): AttackResult | null {
+  private updateAttackState(_deltaTime: number): AttackResult | null {
     const currentTime = Date.now();
     const attackElapsed = currentTime - this.combatState.attackStartTime;
     
