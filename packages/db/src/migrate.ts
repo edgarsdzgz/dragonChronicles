@@ -6,7 +6,7 @@
  */
 
 import { db } from './db.js';
-import type { SaveV1 as _SaveV1 } from './schema.v1.js';
+import type { SaveV1 } from './schema.v1.js';
 
 // ============================================================================
 // Migration Types
@@ -30,7 +30,7 @@ export interface MigrationStatus {
 // Migration Registry
 // ============================================================================
 
-type MigrationFunction = (_data: unknown) => Promise<unknown>;
+type MigrationFunction = (_data: unknown) => Promise<SaveV1>;
 
 const migrations: Record<number, MigrationFunction> = {
   // Future migrations will be added here
