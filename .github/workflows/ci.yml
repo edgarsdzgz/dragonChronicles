@@ -196,17 +196,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: 'http://localhost:4173'
-          configPath: |
-            {
-              "ci": {
-                "assert": {
-                  "assertions": {
-                    "categories:accessibility": ["error", {"minScore": ${{ env.LIGHTHOUSE_MIN_A11Y }}}],
-                    "categories:performance": ["warn", {"minScore": 0.90}]
-                  }
-                }
-              }
-            }
+          configPath: .lighthouserc.json
           uploadArtifacts: true
           runs: 1
 
