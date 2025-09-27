@@ -4,10 +4,10 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { SpawnManager, SimpleRngImpl } from '../../src/enemies/spawn-manager.js';
+import { SpawnManager, _SimpleRngImpl } from '../../src/enemies/spawn-manager.js';
 import { PoolManager, DEFAULT_POOL_MANAGER_CONFIG } from '../../src/enemies/pool-manager.js';
-import { createSpawnConfig, calculateSpawnRate } from '../../src/enemies/spawn-config.js';
-import type { Vector2, WardId, LandId, SpawnStats, PoolStats } from '../../src/enemies/types.js';
+import { _createSpawnConfig, _calculateSpawnRate } from '../../src/enemies/spawn-config.js';
+import type { Vector2, WardId, _LandId, _SpawnStats, _PoolStats } from '../../src/enemies/types.js';
 
 describe('Spawn System Integration', () => {
   let spawnManager: SpawnManager;
@@ -15,46 +15,46 @@ describe('Spawn System Integration', () => {
 
   beforeEach(() => {
     poolManager = new PoolManager(DEFAULT_POOL_MANAGER_CONFIG);
-    spawnManager = new SpawnManager(poolManager, new SimpleRngImpl());
+    spawnManager = new SpawnManager(poolManager, new _SimpleRngImpl());
   });
 
   describe('Complete Spawn Flow', () => {
     it('should integrate spawn manager with pool manager and spawn config', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
+      const currentLand: _LandId = 1;
       const distance = 1000;
-      const deltaTime = 1000; // 1 second
+      const _deltaTime = 1000; // 1 second
 
       // Initial state
-      const initialPoolStats = poolManager.getStats();
-      const initialSpawnStats = spawnManager.getStats();
+      const initial_PoolStats = poolManager.getStats();
+      const initial_SpawnStats = spawnManager.getStats();
 
-      expect(initialPoolStats.activeCount).toBe(0);
-      expect(initialSpawnStats.spawnedEnemies).toBe(0);
+      expect(initial_PoolStats.activeCount).toBe(0);
+      expect(initial_SpawnStats.spawnedEnemies).toBe(0);
 
       // Update spawn manager
       spawnManager.update(1000, distance, playerPosition, currentWard, currentLand, deltaTime);
 
       // Verify integration worked
-      const finalPoolStats = poolManager.getStats();
-      const finalSpawnStats = spawnManager.getStats();
+      const final_PoolStats = poolManager.getStats();
+      const final_SpawnStats = spawnManager.getStats();
 
-      expect(finalSpawnStats.spawnAttempts).toBeGreaterThan(0);
-      expect(finalSpawnStats.currentSpawnRate).toBeGreaterThan(0);
-      expect(finalPoolStats.activeCount).toBeGreaterThan(0);
-      expect(finalSpawnStats.spawnedEnemies).toBe(finalPoolStats.activeCount);
+      expect(final_SpawnStats.spawnAttempts).toBeGreaterThan(0);
+      expect(final_SpawnStats.currentSpawnRate).toBeGreaterThan(0);
+      expect(final_PoolStats.activeCount).toBeGreaterThan(0);
+      expect(final_SpawnStats.spawnedEnemies).toBe(final_PoolStats.activeCount);
     });
 
     it('should handle distance-based spawn rate scaling', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Test at different distances
       const distances = [0, 100, 500, 1000, 5000];
-      const spawnRates: number[] = [];
+      const _spawnRates: number[] = [];
 
       for (const distance of distances) {
         spawnManager.update(1000, distance, playerPosition, currentWard, currentLand, deltaTime);
@@ -73,17 +73,17 @@ describe('Spawn System Integration', () => {
     });
 
     it('should maintain pool utilization efficiency', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Simulate extended gameplay
       for (let i = 0; i < 10; i++) {
         spawnManager.update(i * 1000, i * 100, playerPosition, currentWard, currentLand, deltaTime);
       }
 
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
       const spawnStats = spawnManager.getStats();
 
       // Pool should be utilized but not overwhelmed
@@ -96,15 +96,15 @@ describe('Spawn System Integration', () => {
     });
 
     it('should handle enemy lifecycle correctly', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Spawn some enemies
       spawnManager.update(1000, 1000, playerPosition, currentWard, currentLand, deltaTime);
 
-      const poolStatsAfterSpawn = poolManager.getStats();
+      const _poolStatsAfterSpawn = poolManager.getStats();
       const spawnStatsAfterSpawn = spawnManager.getStats();
 
       expect(poolStatsAfterSpawn.activeCount).toBeGreaterThan(0);
@@ -113,7 +113,7 @@ describe('Spawn System Integration', () => {
       // Destroy all enemies using spawn manager
       spawnManager.destroyAllEnemies();
 
-      const poolStatsAfterDestroy = poolManager.getStats();
+      const _poolStatsAfterDestroy = poolManager.getStats();
       const spawnStatsAfterDestroy = spawnManager.getStats();
 
       expect(poolStatsAfterDestroy.activeCount).toBeLessThan(poolStatsAfterSpawn.activeCount);
@@ -123,10 +123,10 @@ describe('Spawn System Integration', () => {
 
   describe('Configuration Integration', () => {
     it('should use spawn configuration for enemy properties', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       spawnManager.update(1000, 1000, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -146,11 +146,11 @@ describe('Spawn System Integration', () => {
     });
 
     it('should respect ward-specific spawn configurations', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const ward1: WardId = 1;
       const ward2: WardId = 2;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Spawn in ward 1
       spawnManager.update(1000, 1000, playerPosition, ward1, currentLand, deltaTime);
@@ -177,10 +177,10 @@ describe('Spawn System Integration', () => {
 
   describe('Performance Integration', () => {
     it('should maintain performance with high spawn rates', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       const startTime = performance.now();
 
@@ -195,7 +195,7 @@ describe('Spawn System Integration', () => {
       // Should complete quickly
       expect(duration).toBeLessThan(500); // Less than 500ms
 
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
       const spawnStats = spawnManager.getStats();
 
       expect(spawnStats.spawnedEnemies).toBeGreaterThan(0);
@@ -203,17 +203,17 @@ describe('Spawn System Integration', () => {
     });
 
     it('should handle pool expansion efficiently', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Force spawn many enemies to trigger pool expansion
       for (let i = 0; i < 20; i++) {
         spawnManager.forceSpawn({ x: 100 + i * 10, y: 100 + i * 10 }, currentWard, currentLand);
       }
 
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
       const spawnStats = spawnManager.getStats();
 
       expect(spawnStats.spawnedEnemies).toBe(20);
@@ -224,16 +224,16 @@ describe('Spawn System Integration', () => {
 
   describe('Statistics Integration', () => {
     it('should maintain consistent statistics across components', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Generate activity
       spawnManager.update(1000, 1000, playerPosition, currentWard, currentLand, deltaTime);
       spawnManager.forceSpawn({ x: 600, y: 600 }, currentWard, currentLand);
 
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
       const spawnStats = spawnManager.getStats();
 
       // Statistics should be consistent
@@ -261,10 +261,10 @@ describe('Spawn System Integration', () => {
 
   describe('Edge Case Integration', () => {
     it('should handle rapid spawn/destroy cycles', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 100;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 100;
 
       // Rapid cycles
       for (let i = 0; i < 10; i++) {
@@ -275,7 +275,7 @@ describe('Spawn System Integration', () => {
         }
       }
 
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
       const spawnStats = spawnManager.getStats();
 
       // System should remain stable
@@ -285,10 +285,10 @@ describe('Spawn System Integration', () => {
     });
 
     it('should handle zero spawn rate gracefully', () => {
-      const playerPosition: Vector2 = { x: 500, y: 500 };
+      const _playerPosition: Vector2 = { x: 500, y: 500 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 1000;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 1000;
 
       // Test at very low distance (should have low spawn rate)
       spawnManager.update(1000, 0, playerPosition, currentWard, currentLand, deltaTime);

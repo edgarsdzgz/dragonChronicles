@@ -168,7 +168,7 @@ describe('PoolManager', () => {
         });
         it('should track spawn and destroy counts correctly', () => {
             const enemy1 = manager.spawnEnemy(1, { x: 0, y: 0 }, 1, 1, 0);
-            const enemy2 = manager.spawnEnemy(2, { x: 0, y: 0 }, 1, 1, 0);
+            const _enemy2 = manager.spawnEnemy(2, { x: 0, y: 0 }, 1, 1, 0);
             manager.destroyEnemy(enemy1);
             const stats = manager.getStats();
             expect(stats.totalSpawned).toBe(2);

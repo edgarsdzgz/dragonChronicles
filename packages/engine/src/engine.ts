@@ -3,7 +3,7 @@
  * @description Phase 1 Story 1: Bootstrap API for creating and managing the simulation engine
  */
 
-import type { UiToSim, SimToUi, SimCtx, EngineConfig } from './shared/types.js';
+import type { UiToSim, SimToUi, SimCtx, EngineConfig, SimStats } from './shared/types.js';
 import type { SimMode } from './shared/enums.js';
 import { createStandardStreams } from './sim/rng/streams.js';
 import { FixedClock } from './sim/clock/accumulator.js';
@@ -272,7 +272,7 @@ export class DraconiaEngine {
    * @param stats - Tick statistics
    */
   private emitTick(stats: Record<string, unknown>): void {
-    const tickMsg = SimToUiMessageFactory.tick((stats as any).now, stats.stats as any);
+    const tickMsg = SimToUiMessageFactory.tick(stats.now as number, stats.stats as SimStats);
     this.onSimMessage(tickMsg);
   }
 

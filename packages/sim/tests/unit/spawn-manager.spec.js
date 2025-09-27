@@ -65,10 +65,10 @@ describe('Spawn Manager', () => {
     });
     describe('Spawn Rate Calculation', () => {
         it('should calculate spawn rate based on distance', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             // Test at distance 0 (base rate)
             spawnManager.update(1000, 0, playerPosition, currentWard, currentLand, deltaTime);
             const statsAt0 = spawnManager.getStats();
@@ -79,10 +79,10 @@ describe('Spawn Manager', () => {
             expect(statsAt1000.currentSpawnRate).toBeGreaterThan(statsAt0.currentSpawnRate);
         });
         it('should handle negative distance', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             spawnManager.update(1000, -100, playerPosition, currentWard, currentLand, deltaTime);
             const stats = spawnManager.getStats();
             expect(stats.currentSpawnRate).toBeGreaterThan(0);
@@ -90,10 +90,10 @@ describe('Spawn Manager', () => {
     });
     describe('Enemy Spawning', () => {
         it('should spawn enemies based on spawn rate', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             const initialStats = spawnManager.getStats();
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const finalStats = spawnManager.getStats();
@@ -103,15 +103,15 @@ describe('Spawn Manager', () => {
         it('should not spawn when pool is full', () => {
             // Fill up the pool
             const poolManager = spawnManager.getPoolManager();
-            const poolStats = poolManager.getStats();
+            const _poolStats = poolManager.getStats();
             // Spawn until pool is nearly full
             while (poolManager.canSpawn()) {
                 poolManager.spawnEnemy(1, { x: 0, y: 0 }, 1, 1, 0);
             }
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             const initialStats = spawnManager.getStats();
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const finalStats = spawnManager.getStats();
@@ -119,10 +119,10 @@ describe('Spawn Manager', () => {
             expect(finalStats.spawnedEnemies).toBe(initialStats.spawnedEnemies); // No new spawns
         });
         it('should spawn enemies at appropriate distances from player', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const activeEnemies = poolManager.getActiveEnemies();
             expect(activeEnemies.length).toBeGreaterThan(0);
@@ -133,10 +133,10 @@ describe('Spawn Manager', () => {
             }
         });
         it('should apply enemy configuration correctly', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const activeEnemies = poolManager.getActiveEnemies();
             expect(activeEnemies.length).toBeGreaterThan(0);
@@ -185,10 +185,10 @@ describe('Spawn Manager', () => {
     });
     describe('Statistics', () => {
         it('should track spawn attempts and successes', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             const initialStats = spawnManager.getStats();
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const finalStats = spawnManager.getStats();
@@ -208,10 +208,10 @@ describe('Spawn Manager', () => {
             expect(finalStats.despawnedEnemies).toBe(2);
         });
         it('should update current spawn rate', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             spawnManager.update(1000, 1000, playerPosition, currentWard, currentLand, deltaTime);
             const stats = spawnManager.getStats();
             expect(stats.currentSpawnRate).toBeGreaterThan(0);
@@ -226,10 +226,10 @@ describe('Spawn Manager', () => {
             };
             spawnManager.updateConfig(newConfig);
             // Configuration is private, but we can test behavior
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const stats = spawnManager.getStats();
             expect(stats.spawnAttempts).toBeLessThanOrEqual(5); // Should respect max attempts
@@ -260,29 +260,29 @@ describe('Spawn Manager', () => {
     });
     describe('Edge Cases', () => {
         it('should handle zero delta time', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 0;
+            const _deltaTime = 0;
             const initialStats = spawnManager.getStats();
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const finalStats = spawnManager.getStats();
             expect(finalStats.spawnAttempts).toBe(initialStats.spawnAttempts);
         });
         it('should handle very large delta time', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 10000; // 10 seconds
+            const _deltaTime = 10000; // 10 seconds
             spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
             const stats = spawnManager.getStats();
             expect(stats.spawnAttempts).toBeGreaterThan(0);
         });
         it('should handle invalid ward ID', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const invalidWard = 999;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             const initialStats = spawnManager.getStats();
             spawnManager.update(1000, 500, playerPosition, invalidWard, currentLand, deltaTime);
             const finalStats = spawnManager.getStats();
@@ -292,10 +292,10 @@ describe('Spawn Manager', () => {
     });
     describe('Performance', () => {
         it('should handle high spawn rates efficiently', () => {
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             const startTime = performance.now();
             // Simulate high distance (high spawn rate)
             spawnManager.update(1000, 10000, playerPosition, currentWard, currentLand, deltaTime);
@@ -310,10 +310,10 @@ describe('Spawn Manager', () => {
                 maxSpawnAttempts: 3,
             };
             const manager = new SpawnManager(poolManager, mockRng, customConfig);
-            const playerPosition = { x: 100, y: 100 };
+            const _playerPosition = { x: 100, y: 100 };
             const currentWard = 1;
             const currentLand = 1;
-            const deltaTime = 2000; // 2 seconds to ensure spawn
+            const _deltaTime = 2000; // 2 seconds to ensure spawn
             manager.update(1000, 10000, playerPosition, currentWard, currentLand, deltaTime);
             const stats = manager.getStats();
             expect(stats.spawnAttempts).toBeLessThanOrEqual(3);

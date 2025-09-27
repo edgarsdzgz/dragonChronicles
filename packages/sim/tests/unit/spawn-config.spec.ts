@@ -7,14 +7,14 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import {
   DEFAULT_SPAWN_CONFIG,
   createWardConfigs,
-  calculateSpawnRate,
+  _calculateSpawnRate,
   getEnemyConfig,
   selectEnemyFamily,
-  createSpawnConfig,
+  _createSpawnConfig,
   validateSpawnConfig,
   type SpawnConfig,
 } from '../../src/enemies/spawn-config.js';
-import type { Family, LandId, WardId } from '../../src/enemies/types.js';
+import type { Family, _LandId, WardId } from '../../src/enemies/types.js';
 
 describe('Spawn Configuration', () => {
   describe('Default Configuration', () => {
@@ -76,21 +76,21 @@ describe('Spawn Configuration', () => {
 
   describe('Spawn Rate Calculation', () => {
     it('should calculate base spawn rate at distance 0', () => {
-      const rate = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 0);
+      const rate = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 0);
       expect(rate).toBe(DEFAULT_SPAWN_CONFIG.baseRate);
     });
 
     it('should increase spawn rate with distance', () => {
-      const rate0 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 0);
-      const rate100 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 100);
-      const rate500 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 500);
+      const rate0 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 0);
+      const rate100 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 100);
+      const rate500 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 500);
 
       expect(rate100).toBeGreaterThan(rate0);
       expect(rate500).toBeGreaterThan(rate100);
     });
 
     it('should apply distance threshold multipliers', () => {
-      const rate100 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 100);
+      const rate100 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 100);
       const expectedRate = DEFAULT_SPAWN_CONFIG.baseRate * 1.2; // First threshold multiplier
 
       expect(rate100).toBeCloseTo(expectedRate, 1);
@@ -98,20 +98,20 @@ describe('Spawn Configuration', () => {
 
     it('should apply exponential growth factor beyond highest threshold', () => {
       // Test exponential growth beyond the highest threshold (5000)
-      const rate5000 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 5000);
-      const rate5100 = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 5100);
+      const rate5000 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 5000);
+      const rate5100 = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 5100);
 
       // Should have exponential growth beyond highest threshold
       expect(rate5100).toBeCloseTo(rate5000 * 1.1, 2); // Growth factor applied
     });
 
     it('should cap at maximum spawn rate', () => {
-      const rate = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 10000);
+      const rate = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, 10000);
       expect(rate).toBeLessThanOrEqual(DEFAULT_SPAWN_CONFIG.maxSpawnRate);
     });
 
     it('should handle negative distance', () => {
-      const rate = calculateSpawnRate(DEFAULT_SPAWN_CONFIG, -100);
+      const rate = _calculateSpawnRate(DEFAULT_SPAWN_CONFIG, -100);
       expect(rate).toBe(DEFAULT_SPAWN_CONFIG.baseRate);
     });
   });
@@ -120,7 +120,7 @@ describe('Spawn Configuration', () => {
     let config: SpawnConfig;
 
     beforeEach(() => {
-      config = createSpawnConfig();
+      config = _createSpawnConfig();
     });
 
     it('should get enemy configuration for valid ward and family', () => {
@@ -145,7 +145,7 @@ describe('Spawn Configuration', () => {
     let config: SpawnConfig;
 
     beforeEach(() => {
-      config = createSpawnConfig();
+      config = _createSpawnConfig();
     });
 
     it('should select enemy family based on weights', () => {
@@ -188,7 +188,7 @@ describe('Spawn Configuration', () => {
 
   describe('Spawn Configuration Creation', () => {
     it('should create complete spawn configuration', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
 
       expect(config.baseRate).toBe(DEFAULT_SPAWN_CONFIG.baseRate);
       expect(config.distanceMultiplier).toBe(DEFAULT_SPAWN_CONFIG.distanceMultiplier);
@@ -198,7 +198,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should have populated ward configurations', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
 
       for (const [wardId, wardConfig] of config.wardConfigs) {
         expect(wardConfig.wardId).toBe(wardId);
@@ -210,13 +210,13 @@ describe('Spawn Configuration', () => {
 
   describe('Configuration Validation', () => {
     it('should validate correct configuration', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       const errors = validateSpawnConfig(config);
       expect(errors).toHaveLength(0);
     });
 
     it('should detect invalid base rate', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.baseRate = 0;
 
       const errors = validateSpawnConfig(config);
@@ -224,7 +224,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect invalid maximum spawn rate', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.maxSpawnRate = config.baseRate;
 
       const errors = validateSpawnConfig(config);
@@ -232,7 +232,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect invalid distance multiplier', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.distanceMultiplier = 1.0;
 
       const errors = validateSpawnConfig(config);
@@ -240,7 +240,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect missing ward configurations', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.wardConfigs.clear();
 
       const errors = validateSpawnConfig(config);
@@ -248,7 +248,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect unsorted distance thresholds', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.distanceThresholds = [
         { distance: 100, spawnRateMultiplier: 1.2 },
         { distance: 50, spawnRateMultiplier: 1.1 }, // Out of order
@@ -260,7 +260,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect ward with no enemy types', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       const wardConfig = config.wardConfigs.get(1 as WardId);
       if (wardConfig) {
         wardConfig.availableEnemyTypes = [];
@@ -273,7 +273,7 @@ describe('Spawn Configuration', () => {
     });
 
     it('should detect ward with invalid spawn rate multiplier', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       const wardConfig = config.wardConfigs.get(1 as WardId);
       if (wardConfig) {
         wardConfig.spawnRateMultiplier = 0;
@@ -288,24 +288,24 @@ describe('Spawn Configuration', () => {
 
   describe('Edge Cases', () => {
     it('should handle empty distance thresholds', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.distanceThresholds = [];
 
-      const rate = calculateSpawnRate(config, 100);
+      const rate = _calculateSpawnRate(config, 100);
       expect(rate).toBeGreaterThan(0);
     });
 
     it('should handle single distance threshold', () => {
-      const config = createSpawnConfig();
+      const config = _createSpawnConfig();
       config.distanceThresholds = [{ distance: 0, spawnRateMultiplier: 1.0 }];
 
-      const rate = calculateSpawnRate(config, 100);
+      const rate = _calculateSpawnRate(config, 100);
       expect(rate).toBeGreaterThan(0);
     });
 
     it('should handle very large distances', () => {
-      const config = createSpawnConfig();
-      const rate = calculateSpawnRate(config, 1000000);
+      const config = _createSpawnConfig();
+      const rate = _calculateSpawnRate(config, 1000000);
 
       expect(rate).toBeLessThanOrEqual(config.maxSpawnRate);
       expect(rate).toBeGreaterThan(0);

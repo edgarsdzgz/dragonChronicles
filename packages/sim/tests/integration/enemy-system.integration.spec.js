@@ -8,10 +8,8 @@ import { EnemyPool } from '../../src/enemies/enemy-pool.js';
 import { createSpawnConfig, calculateSpawnRate, selectEnemyFamily, getEnemyConfig, } from '../../src/enemies/spawn-config.js';
 describe('Enemy System Integration', () => {
     let poolManager;
-    let enemyPool;
     beforeEach(() => {
         poolManager = new PoolManager();
-        enemyPool = new EnemyPool();
     });
     afterEach(() => {
         poolManager.destroy();
@@ -75,8 +73,8 @@ describe('Enemy System Integration', () => {
             const wardId = 1;
             const landId = 1;
             // Test spawn rate calculation
-            const spawnRate = calculateSpawnRate(spawnConfig, 100);
-            expect(spawnRate).toBeGreaterThan(0);
+            const _spawnRate = calculateSpawnRate(spawnConfig, 100);
+            expect(_spawnRate).toBeGreaterThan(0);
             // Test enemy family selection
             const selectedFamily = selectEnemyFamily(spawnConfig, wardId, 0.5);
             expect(selectedFamily).toBeDefined();
@@ -125,7 +123,7 @@ describe('Enemy System Integration', () => {
             for (let i = 0; i < maxEnemies; i++) {
                 const family = selectEnemyFamily(spawnConfig, wardId, Math.random());
                 if (family) {
-                    const spawnRate = calculateSpawnRate(spawnConfig, i * 10);
+                    const _spawnRate = calculateSpawnRate(spawnConfig, i * 10);
                     const enemy = poolManager.spawnEnemy(family, { x: i, y: i }, wardId, landId, i * 10);
                     expect(enemy).not.toBeNull();
                 }

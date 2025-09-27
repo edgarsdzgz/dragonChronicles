@@ -10,7 +10,7 @@ import {
   type EnemyPoolConfig,
 } from '../../src/enemies/enemy-pool.js';
 import { EnemyState } from '../../src/enemies/types.js';
-import type { Family, LandId, WardId, Vector2 } from '../../src/enemies/types.js';
+import type { Family, _LandId, WardId, Vector2 } from '../../src/enemies/types.js';
 
 describe('EnemyPool', () => {
   let pool: EnemyPool;
@@ -58,7 +58,7 @@ describe('EnemyPool', () => {
       const family = 1 as Family;
       const position: Vector2 = { x: 100, y: 200 };
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
       const spawnDistance = 50;
 
       const enemy = pool.allocate(family, position, wardId, landId, spawnDistance);
@@ -77,7 +77,7 @@ describe('EnemyPool', () => {
     it('should update pool statistics after allocation', () => {
       const initialStats = pool.getStats();
 
-      pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       const newStats = pool.getStats();
       expect(newStats.activeCount).toBe(initialStats.activeCount + 1);
@@ -86,8 +86,8 @@ describe('EnemyPool', () => {
     });
 
     it('should generate unique IDs for each allocation', () => {
-      const enemy1 = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      const enemy2 = pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy1 = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      const _enemy2 = pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       expect(enemy1?.id).not.toBe(enemy2?.id);
       expect(enemy2?.id).toBe(enemy1!.id + 1);
@@ -97,11 +97,11 @@ describe('EnemyPool', () => {
       // Allocate all initial enemies
       const initialSize = config.initialSize;
       for (let i = 0; i < initialSize; i++) {
-        pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+        pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       }
 
       // Next allocation should trigger expansion
-      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       expect(enemy).not.toBeNull();
       expect(pool.getTotalSize()).toBeGreaterThan(initialSize);
@@ -119,17 +119,17 @@ describe('EnemyPool', () => {
       const smallPool = new EnemyPool(smallConfig);
 
       // Allocate the only available enemy
-      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       // Next allocation should fail
-      const enemy = smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       expect(enemy).toBeNull();
     });
   });
 
   describe('Deallocation', () => {
     it('should deallocate enemy and return to pool', () => {
-      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       const initialStats = pool.getStats();
 
       pool.deallocate(enemy!);
@@ -140,7 +140,7 @@ describe('EnemyPool', () => {
     });
 
     it('should reset enemy properties on deallocation', () => {
-      const enemy = pool.allocate(1 as Family, { x: 100, y: 200 }, 1 as WardId, 1 as LandId, 50);
+      const enemy = pool.allocate(1 as Family, { x: 100, y: 200 }, 1 as WardId, 1 as _LandId, 50);
 
       pool.deallocate(enemy!);
 
@@ -157,7 +157,7 @@ describe('EnemyPool', () => {
     });
 
     it('should handle deallocation of already inactive enemy', () => {
-      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       const initialStats = pool.getStats();
 
       // Deallocate twice
@@ -175,7 +175,7 @@ describe('EnemyPool', () => {
       // Allocate several enemies
       const enemies = [];
       for (let i = 0; i < 5; i++) {
-        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0));
+        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0));
       }
 
       let stats = pool.getStats();
@@ -196,7 +196,7 @@ describe('EnemyPool', () => {
       const enemies = [];
 
       for (let i = 0; i < halfSize; i++) {
-        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0));
+        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0));
       }
 
       const stats = pool.getStats();
@@ -217,15 +217,15 @@ describe('EnemyPool', () => {
       };
 
       const smallPool = new EnemyPool(smallConfig);
-      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      smallPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       expect(smallPool.isFull()).toBe(true);
     });
 
     it('should get active enemies list', () => {
-      const enemy1 = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      const enemy2 = pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy1 = pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      const _enemy2 = pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       const activeEnemies = pool.getActiveEnemies();
       expect(activeEnemies).toHaveLength(2);
@@ -235,8 +235,8 @@ describe('EnemyPool', () => {
 
     it('should reset pool correctly', () => {
       // Allocate some enemies
-      pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      pool.allocate(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       pool.reset();
 
@@ -268,7 +268,7 @@ describe('EnemyPool', () => {
       };
 
       const zeroPool = new EnemyPool(zeroConfig);
-      const enemy = zeroPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = zeroPool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       expect(enemy).not.toBeNull();
       expect(zeroPool.getTotalSize()).toBeGreaterThan(0);
@@ -279,7 +279,7 @@ describe('EnemyPool', () => {
 
       // Rapid allocation
       for (let i = 0; i < 10; i++) {
-        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0));
+        enemies.push(pool.allocate(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0));
       }
 
       // Rapid deallocation

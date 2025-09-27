@@ -6,12 +6,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   SpawnManager,
-  SimpleRngImpl,
+  _SimpleRngImpl,
   type SimpleRng,
   DEFAULT_SPAWN_MANAGER_CONFIG,
 } from '../../src/enemies/spawn-manager.js';
 import { PoolManager, DEFAULT_POOL_MANAGER_CONFIG } from '../../src/enemies/pool-manager.js';
-import type { Vector2, WardId, LandId, Family } from '../../src/enemies/types.js';
+import type { Vector2, WardId, _LandId, Family } from '../../src/enemies/types.js';
 
 /**
  * Mock RNG for deterministic testing
@@ -87,10 +87,10 @@ describe('Spawn Manager', () => {
 
   describe('Spawn Rate Calculation', () => {
     it('should calculate spawn rate based on distance', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       // Test at distance 0 (base rate)
       spawnManager.update(1000, 0, playerPosition, currentWard, currentLand, deltaTime);
@@ -104,10 +104,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should handle negative distance', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       spawnManager.update(1000, -100, playerPosition, currentWard, currentLand, deltaTime);
       const stats = spawnManager.getStats();
@@ -117,10 +117,10 @@ describe('Spawn Manager', () => {
 
   describe('Enemy Spawning', () => {
     it('should spawn enemies based on spawn rate', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       const initialStats = spawnManager.getStats();
 
@@ -134,17 +134,17 @@ describe('Spawn Manager', () => {
     it('should not spawn when pool is full', () => {
       // Fill up the pool
       const poolManager = spawnManager.getPoolManager();
-      const poolStats = poolManager.getStats();
+      const _poolStats = poolManager.getStats();
 
       // Spawn until pool is nearly full
       while (poolManager.canSpawn()) {
         poolManager.spawnEnemy(1, { x: 0, y: 0 }, 1, 1, 0);
       }
 
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       const initialStats = spawnManager.getStats();
 
@@ -156,10 +156,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should spawn enemies at appropriate distances from player', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -176,10 +176,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should apply enemy configuration correctly', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -200,7 +200,7 @@ describe('Spawn Manager', () => {
     it('should force spawn enemy at specific position', () => {
       const position: Vector2 = { x: 200, y: 300 };
       const wardId: WardId = 1;
-      const landId: LandId = 1;
+      const landId: _LandId = 1;
 
       const enemy = spawnManager.forceSpawn(position, wardId, landId);
 
@@ -214,7 +214,7 @@ describe('Spawn Manager', () => {
     it('should force spawn enemy with specific family', () => {
       const position: Vector2 = { x: 200, y: 300 };
       const wardId: WardId = 1;
-      const landId: LandId = 1;
+      const landId: _LandId = 1;
       const family: Family = 2; // Ranged
 
       const enemy = spawnManager.forceSpawn(position, wardId, landId, family);
@@ -232,7 +232,7 @@ describe('Spawn Manager', () => {
 
       const position: Vector2 = { x: 200, y: 300 };
       const wardId: WardId = 1;
-      const landId: LandId = 1;
+      const landId: _LandId = 1;
 
       const enemy = spawnManager.forceSpawn(position, wardId, landId);
       expect(enemy).toBeNull();
@@ -241,10 +241,10 @@ describe('Spawn Manager', () => {
 
   describe('Statistics', () => {
     it('should track spawn attempts and successes', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       const initialStats = spawnManager.getStats();
 
@@ -272,10 +272,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should update current spawn rate', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       spawnManager.update(1000, 1000, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -295,10 +295,10 @@ describe('Spawn Manager', () => {
       spawnManager.updateConfig(newConfig);
 
       // Configuration is private, but we can test behavior
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -340,10 +340,10 @@ describe('Spawn Manager', () => {
 
   describe('Edge Cases', () => {
     it('should handle zero delta time', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 0;
+      const currentLand: _LandId = 1;
+      const _deltaTime = 0;
 
       const initialStats = spawnManager.getStats();
 
@@ -354,10 +354,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should handle very large delta time', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 10000; // 10 seconds
+      const currentLand: _LandId = 1;
+      const _deltaTime = 10000; // 10 seconds
 
       spawnManager.update(1000, 500, playerPosition, currentWard, currentLand, deltaTime);
 
@@ -366,10 +366,10 @@ describe('Spawn Manager', () => {
     });
 
     it('should handle invalid ward ID', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const invalidWard: WardId = 999;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       const initialStats = spawnManager.getStats();
 
@@ -383,10 +383,10 @@ describe('Spawn Manager', () => {
 
   describe('Performance', () => {
     it('should handle high spawn rates efficiently', () => {
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       const startTime = performance.now();
 
@@ -408,10 +408,10 @@ describe('Spawn Manager', () => {
 
       const manager = new SpawnManager(poolManager, mockRng, customConfig);
 
-      const playerPosition: Vector2 = { x: 100, y: 100 };
+      const _playerPosition: Vector2 = { x: 100, y: 100 };
       const currentWard: WardId = 1;
-      const currentLand: LandId = 1;
-      const deltaTime = 2000; // 2 seconds to ensure spawn
+      const currentLand: _LandId = 1;
+      const _deltaTime = 2000; // 2 seconds to ensure spawn
 
       manager.update(1000, 10000, playerPosition, currentWard, currentLand, deltaTime);
 

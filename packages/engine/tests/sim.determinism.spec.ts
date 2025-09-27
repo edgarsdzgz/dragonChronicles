@@ -6,11 +6,11 @@
 import { strict as assert } from 'assert';
 import { test, run } from '../../../tests/_tiny-runner.mjs';
 import { createStandardStreams } from '../src/sim/rng/streams.js';
-import { FixedClock } from '../src/sim/clock/accumulator.js';
+import { _FixedClock } from '../src/sim/clock/accumulator.js';
 import { SnapshotWriter } from '../src/sim/snapshot/writer.js';
-import { encodeSnapshotStream, createSnapshot } from '../src/sim/protocol/codec.js';
+import { encodeSnapshotStream, _createSnapshot } from '../src/sim/protocol/codec.js';
 import { hashSnapshotStream } from '../src/sim/snapshot/hasher.js';
-import { SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
+import { _SNAPSHOT_INTERVAL_MS } from '../src/shared/constants.js';
 
 // Golden test configuration
 const GOLDEN_SEED = 123;

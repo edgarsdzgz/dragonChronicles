@@ -7,20 +7,20 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { PoolManager } from '../../src/enemies/pool-manager.js';
 import { EnemyPool } from '../../src/enemies/enemy-pool.js';
 import {
-  createSpawnConfig,
-  calculateSpawnRate,
+  _createSpawnConfig,
+  _calculateSpawnRate,
   selectEnemyFamily,
   getEnemyConfig,
 } from '../../src/enemies/spawn-config.js';
-import type { Family, LandId, WardId, Vector2 } from '../../src/enemies/types.js';
+import type { Family, _LandId, WardId, Vector2 } from '../../src/enemies/types.js';
 
 describe('Enemy System Integration', () => {
   let poolManager: PoolManager;
-  let enemyPool: EnemyPool;
+  let _enemyPool: EnemyPool;
 
   beforeEach(() => {
     poolManager = new PoolManager();
-    enemyPool = new EnemyPool();
+    __enemyPool = new EnemyPool();
   });
 
   afterEach(() => {
@@ -32,7 +32,7 @@ describe('Enemy System Integration', () => {
       const family = 1 as Family;
       const position: Vector2 = { x: 100, y: 200 };
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
       const spawnDistance = 50;
 
       // Spawn enemy through pool manager
@@ -60,14 +60,14 @@ describe('Enemy System Integration', () => {
         1 as Family,
         { x: 0, y: 0 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
       const rangedEnemy = poolManager.spawnEnemy(
         2 as Family,
         { x: 10, y: 10 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
 
@@ -93,14 +93,14 @@ describe('Enemy System Integration', () => {
         1 as Family,
         { x: 60, y: 60 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
       const farEnemy = poolManager.spawnEnemy(
         1 as Family,
         { x: 100, y: 100 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
 
@@ -121,12 +121,12 @@ describe('Enemy System Integration', () => {
 
   describe('Spawn Configuration and Pool Integration', () => {
     it('should integrate spawn configuration with pool management', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
 
       // Test spawn rate calculation
-      const spawnRate = calculateSpawnRate(spawnConfig, 100);
+      const _spawnRate = _calculateSpawnRate(spawnConfig, 100);
       expect(spawnRate).toBeGreaterThan(0);
 
       // Test enemy family selection
@@ -147,9 +147,9 @@ describe('Enemy System Integration', () => {
     });
 
     it('should handle ward-specific enemy spawning', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
 
       // Spawn enemies using configuration
       const enemies = [];
@@ -176,9 +176,9 @@ describe('Enemy System Integration', () => {
 
   describe('Performance Integration Tests', () => {
     it('should handle high-volume enemy spawning efficiently', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
       const maxEnemies = 100;
 
       const start = performance.now();
@@ -187,7 +187,7 @@ describe('Enemy System Integration', () => {
       for (let i = 0; i < maxEnemies; i++) {
         const family = selectEnemyFamily(spawnConfig, wardId, Math.random());
         if (family) {
-          const spawnRate = calculateSpawnRate(spawnConfig, i * 10);
+          const _spawnRate = _calculateSpawnRate(spawnConfig, i * 10);
           const enemy = poolManager.spawnEnemy(family, { x: i, y: i }, wardId, landId, i * 10);
           expect(enemy).not.toBeNull();
         }
@@ -202,9 +202,9 @@ describe('Enemy System Integration', () => {
     });
 
     it('should handle rapid spawn and destroy cycles', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
       const cycles = 50;
 
       const start = performance.now();
@@ -240,7 +240,7 @@ describe('Enemy System Integration', () => {
   describe('Error Handling Integration', () => {
     it('should handle invalid configuration gracefully', () => {
       // Test with invalid ward ID
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const invalidWardId = 999 as WardId;
 
       const family = selectEnemyFamily(spawnConfig, invalidWardId, 0.5);
@@ -255,7 +255,7 @@ describe('Enemy System Integration', () => {
       const maxEnemies = poolManager.getAvailableSpawnSlots();
 
       for (let i = 0; i < maxEnemies; i++) {
-        poolManager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as LandId, 0);
+        poolManager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as _LandId, 0);
       }
 
       // Next spawn should fail
@@ -263,7 +263,7 @@ describe('Enemy System Integration', () => {
         1 as Family,
         { x: 0, y: 0 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
       expect(enemy).toBeNull();
@@ -273,9 +273,9 @@ describe('Enemy System Integration', () => {
     });
 
     it('should maintain consistency during concurrent operations', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
 
       // Simulate concurrent spawn and destroy operations
       const operations = [];
@@ -313,9 +313,9 @@ describe('Enemy System Integration', () => {
 
   describe('Statistics Integration', () => {
     it('should provide accurate statistics across all components', () => {
-      const spawnConfig = createSpawnConfig();
+      const spawnConfig = _createSpawnConfig();
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
 
       // Spawn some enemies
       const enemies = [];

@@ -9,8 +9,8 @@
  */
 export interface SimpleRng {
   randomFloat(): number;
-  randomFloat(min: number, max: number): number;
-  randomInt(min: number, max: number): number;
+  randomFloat(_min: number, _max: number): number;
+  randomInt(_min: number, _max: number): number;
 }
 
 /**

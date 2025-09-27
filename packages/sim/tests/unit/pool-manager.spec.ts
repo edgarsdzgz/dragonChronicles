@@ -9,7 +9,7 @@ import {
   DEFAULT_POOL_MANAGER_CONFIG,
   type PoolManagerConfig,
 } from '../../src/enemies/pool-manager.js';
-import type { Family, LandId, WardId, Vector2 } from '../../src/enemies/types.js';
+import type { Family, _LandId, WardId, Vector2 } from '../../src/enemies/types.js';
 
 describe('PoolManager', () => {
   let manager: PoolManager;
@@ -63,7 +63,7 @@ describe('PoolManager', () => {
       const family = 1 as Family;
       const position: Vector2 = { x: 100, y: 200 };
       const wardId = 1 as WardId;
-      const landId = 1 as LandId;
+      const landId = 1 as _LandId;
       const spawnDistance = 50;
 
       const enemy = manager.spawnEnemy(family, position, wardId, landId, spawnDistance);
@@ -80,19 +80,19 @@ describe('PoolManager', () => {
       // Spawn enemies up to the limit
       const enemies = [];
       for (let i = 0; i < config.maxActiveEnemies; i++) {
-        enemies.push(manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0));
+        enemies.push(manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0));
       }
 
       // Next spawn should fail
-      const enemy = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       expect(enemy).toBeNull();
     });
 
     it('should track spawn statistics', () => {
       const initialStats = manager.getStats();
 
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       const newStats = manager.getStats();
       expect(newStats.totalSpawned).toBe(initialStats.totalSpawned + 2);
@@ -103,7 +103,7 @@ describe('PoolManager', () => {
 
       // Fill up the pool
       for (let i = 0; i < config.maxActiveEnemies; i++) {
-        manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+        manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       }
 
       expect(manager.canSpawn()).toBe(false);
@@ -112,8 +112,8 @@ describe('PoolManager', () => {
     it('should calculate available spawn slots', () => {
       expect(manager.getAvailableSpawnSlots()).toBe(config.maxActiveEnemies);
 
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       expect(manager.getAvailableSpawnSlots()).toBe(config.maxActiveEnemies - 2);
     });
@@ -121,7 +121,7 @@ describe('PoolManager', () => {
 
   describe('Enemy Destruction', () => {
     it('should destroy enemy and return to pool', () => {
-      const enemy = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
       const initialStats = manager.getStats();
 
       manager.destroyEnemy(enemy!);
@@ -133,9 +133,9 @@ describe('PoolManager', () => {
 
     it('should destroy enemies by family', () => {
       // Spawn mixed enemies
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       const destroyed = manager.destroyEnemiesByFamily(1 as Family);
       expect(destroyed).toBe(2);
@@ -150,9 +150,9 @@ describe('PoolManager', () => {
       const radius = 50;
 
       // Spawn enemies at different distances
-      manager.spawnEnemy(1 as Family, { x: 120, y: 120 }, 1 as WardId, 1 as LandId, 0); // Inside radius
-      manager.spawnEnemy(1 as Family, { x: 200, y: 200 }, 1 as WardId, 1 as LandId, 0); // Outside radius
-      manager.spawnEnemy(2 as Family, { x: 110, y: 110 }, 1 as WardId, 1 as LandId, 0); // Inside radius
+      manager.spawnEnemy(1 as Family, { x: 120, y: 120 }, 1 as WardId, 1 as _LandId, 0); // Inside radius
+      manager.spawnEnemy(1 as Family, { x: 200, y: 200 }, 1 as WardId, 1 as _LandId, 0); // Outside radius
+      manager.spawnEnemy(2 as Family, { x: 110, y: 110 }, 1 as WardId, 1 as _LandId, 0); // Inside radius
 
       const destroyed = manager.destroyEnemiesInRadius(center, radius);
       expect(destroyed).toBe(2);
@@ -166,9 +166,9 @@ describe('PoolManager', () => {
   describe('Enemy Queries', () => {
     beforeEach(() => {
       // Spawn some test enemies
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(1 as Family, { x: 10, y: 10 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 20, y: 20 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 10, y: 10 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 20, y: 20 }, 1 as WardId, 1 as _LandId, 0);
     });
 
     it('should get all active enemies', () => {
@@ -207,9 +207,9 @@ describe('PoolManager', () => {
   describe('Statistics', () => {
     it('should provide comprehensive statistics', () => {
       // Spawn some enemies
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       const stats = manager.getStats();
 
@@ -221,8 +221,8 @@ describe('PoolManager', () => {
     });
 
     it('should track spawn and destroy counts correctly', () => {
-      const enemy1 = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      const enemy2 = manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      const enemy1 = manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      const _enemy2 = manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       manager.destroyEnemy(enemy1!);
 
@@ -257,8 +257,8 @@ describe('PoolManager', () => {
   describe('Reset and Cleanup', () => {
     it('should reset manager state', () => {
       // Spawn some enemies
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
-      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
+      manager.spawnEnemy(2 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       manager.reset();
 
@@ -269,7 +269,7 @@ describe('PoolManager', () => {
     });
 
     it('should destroy manager and cleanup resources', () => {
-      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as LandId, 0);
+      manager.spawnEnemy(1 as Family, { x: 0, y: 0 }, 1 as WardId, 1 as _LandId, 0);
 
       manager.destroy();
 
@@ -284,7 +284,7 @@ describe('PoolManager', () => {
 
       // Spawn many enemies rapidly
       for (let i = 0; i < 100; i++) {
-        manager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as LandId, 0);
+        manager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as _LandId, 0);
       }
 
       const duration = performance.now() - start;
@@ -295,7 +295,7 @@ describe('PoolManager', () => {
       // Spawn enemies first
       const enemies = [];
       for (let i = 0; i < 50; i++) {
-        enemies.push(manager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as LandId, 0));
+        enemies.push(manager.spawnEnemy(1 as Family, { x: i, y: i }, 1 as WardId, 1 as _LandId, 0));
       }
 
       const start = performance.now();
@@ -325,7 +325,7 @@ describe('PoolManager', () => {
         1 as Family,
         { x: 0, y: 0 },
         1 as WardId,
-        1 as LandId,
+        1 as _LandId,
         0,
       );
       expect(enemy).toBeNull();
@@ -346,7 +346,7 @@ describe('PoolManager', () => {
         spawnTime: 0,
         spawnDistance: 0,
         wardId: 0 as WardId,
-        landId: 0 as LandId,
+        landId: 0 as _LandId,
         isActive: false,
         poolIndex: 0,
         state: 'approach' as any,
