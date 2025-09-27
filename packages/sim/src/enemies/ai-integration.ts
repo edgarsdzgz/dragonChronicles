@@ -5,7 +5,7 @@
 
 import type { SpawnedEnemy, Vector2 } from './types.js';
 import { AIManager } from './ai/ai-manager.js';
-import type { AIManagerConfig } from './ai/ai-manager.js';
+import type { AIManagerConfig, EnemyAISystem } from './ai/ai-manager.js';
 import type { EnemyAI } from './ai/state-machine.js';
 
 /**
@@ -115,7 +115,7 @@ export class AIIntegration {
    * Get all AI systems
    * @returns Map of all AI systems
    */
-  getAllAI(): Map<number, EnemyAI> {
+  getAllAI(): Map<number, EnemyAISystem> {
     return this.aiManager.getAllAISystems();
   }
 

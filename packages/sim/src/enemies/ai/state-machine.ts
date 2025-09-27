@@ -245,7 +245,7 @@ export class EnemyAI {
     this.stateData.stateEntryTime = Date.now();
     
     // Update enemy state
-    this.enemy.state = newState as EnemyState;
+    this.enemy.state = newState as unknown as EnemyState;
   }
 
   /**
