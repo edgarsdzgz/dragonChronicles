@@ -1,7 +1,7 @@
 import { Application } from 'pixi.js';
 import { clampDPR } from './dpr';
 // Lazy load background simulation to reduce initial bundle size
-let createBackgroundSim: any = null;
+let createBackgroundSim: typeof import('../sim/background').createBackgroundSim | null = null;
 
 export type PixiHandle = {
   app: Application;
