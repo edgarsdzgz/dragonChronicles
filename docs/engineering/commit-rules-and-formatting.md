@@ -1,6 +1,7 @@
 # Commit Rules and Formatting Guide
 
-**Purpose**: Comprehensive guide for consistent, error-free commits that follow project standards and reduce development friction.
+**Purpose**: Comprehensive guide for consistent, error-free commits that follow project
+standards and reduce development friction.
 
 ## Overview
 
@@ -472,6 +473,8 @@ ci(github): fix workflow configuration
 
 ---
 
-**Remember**: Good commits save time, improve collaboration, and make debugging easier. Follow these rules consistently to focus on game development instead of fixing commit messages!
+**Remember**: Good commits save time, improve collaboration, and make debugging easier.
+Follow these rules consistently to focus on game development instead of fixing commit
+messages!
 
 ````

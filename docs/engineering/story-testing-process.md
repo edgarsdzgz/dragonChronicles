@@ -1,6 +1,7 @@
 # Story Testing Process (MANDATORY)
 
-**Purpose**: Ensure every story has comprehensive testing and validation before proceeding to the next story.
+**Purpose**: Ensure every story has comprehensive testing and validation before
+proceeding to the next story.
 
 ## Overview
 
@@ -406,6 +407,7 @@ it('should complete within performance budget', () => {
 
 ---
 
-**Remember**: Testing is not a separate phase - it's part of the implementation process. Every line of code should be tested as it's written, not after the fact.
+**Remember**: Testing is not a separate phase - it's part of the implementation process.
+Every line of code should be tested as it's written, not after the fact.
 
 ````

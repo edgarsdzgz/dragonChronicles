@@ -296,6 +296,8 @@ The enemy spawning system is **production-ready** and provides a solid foundatio
 
 ---
 
-**Story Completion**: P1-E2-S1 successfully delivers a high-performance, well-tested enemy spawning system ready for integration with the game engine and subsequent AI development phases.
+**Story Completion**: P1-E2-S1 successfully delivers a high-performance, well-tested
+enemy spawning system ready for integration with the game engine and subsequent AI
+development phases.
 
 ````
