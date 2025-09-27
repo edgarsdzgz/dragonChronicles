@@ -77,20 +77,20 @@ export interface Rng {
  * UI → Sim message types
  */
 export type UiToSim =
-  | { t: MessageType.Boot; seed: number; build: string }
-  | { t: MessageType.Start; land: LandId; ward: WardId }
-  | { t: MessageType.Stop }
-  | { t: MessageType.Ability; id: AbilityId }
-  | { t: MessageType.Offline; elapsedMs: number };
+  | { t: MessageType._Boot; seed: number; build: string }
+  | { t: MessageType._Start; land: LandId; ward: WardId }
+  | { t: MessageType._Stop }
+  | { t: MessageType._Ability; id: AbilityId }
+  | { t: MessageType._Offline; elapsedMs: number };
 
 /**
  * Sim → UI message types
  */
 export type SimToUi =
-  | { t: MessageType.Ready }
-  | { t: MessageType.Tick; now: number; stats: SimStats }
-  | { t: MessageType.Log; lvl: LogLvl; msg: string }
-  | { t: MessageType.Fatal; reason: string };
+  | { t: MessageType._Ready }
+  | { t: MessageType._Tick; now: number; stats: SimStats }
+  | { t: MessageType._Log; lvl: LogLvl; msg: string }
+  | { t: MessageType._Fatal; reason: string };
 
 /**
  * Snapshot data for determinism verification

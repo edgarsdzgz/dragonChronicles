@@ -5,8 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "rootDir": "src",
     "outDir": "dist",
+    "rootDir": "src",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022",
@@ -15,5 +15,6 @@
     "sourceMap": false
   },
   "include": ["src"],
-  "references": [{ "path": "../shared" }, { "path": "../logger" }]
+  "exclude": ["tests"],
+  "references": [{ "path": "../shared" }]
 }

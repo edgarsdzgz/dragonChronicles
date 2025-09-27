@@ -19,21 +19,21 @@ export function isUiToSim(x: unknown): x is UiToSim {
   const msg = x as Record<string, unknown>;
 
   switch (msg.t) {
-    case MessageType.Boot:
+    case MessageType._Boot:
       return Number.isFinite(msg.seed) && typeof msg.build === 'string' && msg.build.length > 0;
 
-    case MessageType.Start:
+    case MessageType._Start:
       return isLandId(msg.land) && isWardId(msg.ward);
 
-    case MessageType.Stop:
+    case MessageType._Stop:
       return true;
 
-    case MessageType.Ability:
+    case MessageType._Ability:
       return (
         typeof msg.id === 'number' && Object.values(AbilityIdEnum).includes(msg.id as AbilityId)
       );
 
-    case MessageType.Offline:
+    case MessageType._Offline:
       return (
         Number.isFinite(msg.elapsedMs as number) &&
         (msg.elapsedMs as number) >= 0 &&
@@ -56,10 +56,10 @@ export function isSimToUi(x: unknown): x is SimToUi {
   const msg = x as Record<string, unknown>;
 
   switch (msg.t) {
-    case MessageType.Ready:
+    case MessageType._Ready:
       return true;
 
-    case MessageType.Tick:
+    case MessageType._Tick:
       return (
         Number.isFinite(msg.now) &&
         typeof msg.stats === 'object' &&
@@ -70,14 +70,14 @@ export function isSimToUi(x: unknown): x is SimToUi {
         Number.isFinite((msg.stats as Record<string, unknown>).dps)
       );
 
-    case MessageType.Log:
+    case MessageType._Log:
       return (
         typeof msg.lvl === 'string' &&
         Object.values(LogLvlEnum).includes(msg.lvl as LogLvl) &&
         typeof msg.msg === 'string'
       );
 
-    case MessageType.Fatal:
+    case MessageType._Fatal:
       return typeof msg.reason === 'string';
 
     default:
@@ -161,21 +161,21 @@ export class ValidationContext {
     const uiMsg = msg as UiToSim;
 
     switch (uiMsg.t) {
-      case MessageType.Boot:
+      case MessageType._Boot:
         if (!validateBuildVersion(uiMsg.build)) {
           this.errorCount++;
           return { valid: false, error: 'Build version mismatch' };
         }
         break;
 
-      case MessageType.Ability:
+      case MessageType._Ability:
         if (!this.canUseAbility(performance.now())) {
           this.errorCount++;
           return { valid: false, error: 'Ability cooldown active' };
         }
         break;
 
-      case MessageType.Offline:
+      case MessageType._Offline:
         if (!validateOfflineTime(uiMsg.elapsedMs)) {
           this.errorCount++;
           return { valid: false, error: 'Invalid offline time' };

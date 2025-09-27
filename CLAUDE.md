@@ -375,6 +375,129 @@ if (this.renderer && this.stage) {
 
 - **Documentation Gates**: Verify documentation updates
 
+#### Focus and Task Management Rules (CRITICAL)
+
+- **MAINTAIN FOCUS**: When given a specific task (epic planning, story implementation, etc.), stay focused on that task ONLY
+
+- **IGNORE DISTRACTIONS**: Do NOT fix CI/CD failures, linting errors, or other issues unless they directly block the current task
+
+- **PLANNING PHASE**: During epic planning, story planning, or issue creation, ignore ALL errors and focus solely on planning
+
+- **IMPLEMENTATION PHASE**: Only address errors that prevent the current story/feature from working
+
+- **ERROR PRIORITY**:
+  - **Blocking Errors**: Fix immediately if they prevent current task completion
+  - **Non-Blocking Errors**: Document and address later, do not interrupt current work
+  - **CI/CD Failures**: Only address if they prevent deployment of current feature
+
+- **WORKFLOW DISCIPLINE**: Follow the established workflow: Plan → Branch → Implement → Test → Commit → PR
+
+#### Commit Rules and Formatting (MANDATORY)
+
+- **CONVENTIONAL COMMITS**: All commits must follow conventional commit format: `type(scope): description`
+
+- **HEADER LENGTH**: Maximum 72 characters total for the header (everything before first line break)
+
+- **REQUIRED SCOPE**: Scope is mandatory - never commit without a scope (use `p1-e2-s1`, `engine`, `sim`, `web`, `docs`, `ci`, `build`, `deps`)
+
+- **ALLOWED TYPES**: `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`, `chore`, `revert`
+
+- **VALIDATION**: Project uses commitlint with husky hooks - commits will fail if format is incorrect
+
+- **REFERENCE GUIDE**: See `docs/engineering/commit-rules-and-formatting.md` for complete rules and examples
+
+- **COMMON MISTAKES**:
+  - Header too long (>72 chars) - use body for details
+  - Missing scope - always include appropriate scope
+  - Wrong type - use allowed types only
+  - Vague descriptions - be specific and actionable
+
+#### Story Testing Process (MANDATORY)
+
+- **TESTING REQUIRED**: Every story must include comprehensive testing during implementation
+
+- **UNIT TESTS**: All public functions and methods must have unit tests (minimum 80% coverage)
+
+- **INTEGRATION TESTS**: All component interactions must be tested
+
+- **PERFORMANCE TESTS**: Required for performance-critical code
+
+- **QUALITY GATES**: ESLint (zero errors), TypeScript strict (zero errors), Prettier formatting
+
+- **TEST-FIRST APPROACH**: Write tests during implementation, not after
+
+- **COMPLETION CRITERIA**: Story not complete until all tests pass and quality gates met
+
+- **REFERENCE GUIDE**: See `docs/engineering/story-testing-process.md` for complete process
+
+- **TESTING WORKFLOW**:
+  1. Write function/method
+  2. Write unit test immediately
+  3. Run tests to verify
+  4. Write integration tests for interactions
+  5. Run quality gates (lint, type-check, format)
+  6. Verify all tests pass in CI/CD
+
+#### Epic-Story Workflow (MANDATORY)
+
+**Branch Hierarchy**: `main` > `epic/{epic-name}` > `feature/{story-name}`
+
+**Epic Level Process**:
+1. **Epic Creation**: Create epic from Epic of Epics (Issue #1)
+2. **Epic Planning**: Create detailed planning document for epic
+3. **Epic Branch**: Create `epic/{epic-name}` branch from main
+4. **Story Creation**: Create individual GitHub issues for each story in epic
+5. **Epic Documentation**: Update roadmap and documentation
+
+**Story Level Process**:
+1. **Story Planning**: Plan first story in epic
+2. **Story Branch**: Create `feature/{story-name}` branch from `epic/{epic-name}`
+3. **Implementation**: Implement story features and tests
+4. **Story Completion**: Test, commit, and create PR to epic branch
+5. **Story Merge**: Merge story branch into epic branch
+6. **MANDATORY**: Check off completed deliverables in GitHub issue
+7. **Next Story**: Repeat for each story in epic
+
+**Epic Completion Process**:
+1. **Epic Testing**: Ensure all stories complete and tested
+2. **Epic PR**: Create PR from epic branch to main
+3. **Epic Merge**: Merge epic branch into main
+4. **MANDATORY**: Check off all epic deliverables in GitHub issue
+5. **Epic Cleanup**: Delete epic and story branches
+6. **Documentation**: Update project documentation and roadmap
+
+#### Story/Epic Completion Verification (MANDATORY)
+
+**After Each Story Completion**:
+1. **Review GitHub Issue**: Go to the story's GitHub issue
+2. **Check Deliverables**: Mark all completed deliverables as checked
+3. **Verify Completion**: Ensure all acceptance criteria are met
+4. **Update Status**: Mark story as complete if applicable
+5. **Document Progress**: Note any additional achievements
+
+**After Each Epic Completion**:
+1. **Review Epic Issue**: Go to the epic's GitHub issue
+2. **Check Epic Deliverables**: Mark all epic-level deliverables as checked
+3. **Verify All Stories**: Ensure all stories are completed and checked
+4. **Update Epic Status**: Mark epic as complete
+5. **Document Final Results**: Note epic achievements and metrics
+
+**Benefits**:
+- **Clear Progress Tracking**: Visual confirmation of completed work
+- **Deliverable Verification**: Ensures nothing is missed
+- **Stakeholder Visibility**: Clear progress indicators for all stakeholders
+- **Process Compliance**: Maintains systematic completion verification
+
+**Quality Gates**:
+- Each story must pass all tests before merging to epic branch
+- Epic must pass all tests before merging to main
+- All documentation must be updated at each level
+- **COMMIT VALIDATION**: All commits must pass commitlint validation
+- **SCOPE REQUIREMENT**: Every commit must include a valid scope (never empty)
+- **PRE-COMMIT HOOKS**: Husky hooks must pass before commit is accepted
+- **LOCKFILE SYNC**: pnpm-lock.yaml must be updated and committed when dependencies change
+- **CI VERIFICATION**: All workflows must pass before PR merge
+
 #### Performance Optimization
 
 - **Bundle Optimization**: Tree shaking, code splitting, asset optimization

@@ -6,6 +6,7 @@
     { "path": "./packages/logger" },
     { "path": "./packages/db" },
     { "path": "./packages/sim" },
+    { "path": "./packages/engine" },
     { "path": "./apps/sandbox" }
   ],
   "compilerOptions": {

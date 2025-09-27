@@ -260,4 +260,5 @@ The system includes debug information showing:
 - Real-time speed adjustments in UI
 
 Access the dragon animation test page at `/dev/dragon-animated` to test movement patterns.
+
 ````

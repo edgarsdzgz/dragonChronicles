@@ -4,7 +4,7 @@
  */
 
 import { strict as assert } from 'assert';
-import { test, run } from '../../tests/_tiny-runner.mjs';
+import { test, run } from '../../../tests/_tiny-runner.mjs';
 import { PCG32, makeRng, makeRngFromString } from '../src/sim/rng/pcg32.js';
 import { RngStreams, createStandardStreams } from '../src/sim/rng/streams.js';
 import { clampSeed, deriveSubSeed, hashStr32 } from '../src/sim/rng/seed.js';
