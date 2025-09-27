@@ -106,7 +106,7 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\r\n<html lang="en">\r\n  <head>\r\n    <meta charset="utf-8" />\r\n    <link rel="icon" href="' + assets2 + '/favicon.svg" />\r\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\r\n    <title>Draconia Chronicles</title>\r\n    \r\n    <!-- PWA Manifest -->\r\n    <link rel="manifest" href="' + assets2 + '/manifest.json" />\r\n    \r\n    <!-- PWA Meta Tags -->\r\n    <meta name="theme-color" content="#4a90e2" />\r\n    <meta name="apple-mobile-web-app-capable" content="yes" />\r\n    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />\r\n    <meta name="apple-mobile-web-app-title" content="Draconia" />\r\n    \r\n    <!-- Apple Touch Icons -->\r\n    <link rel="apple-touch-icon" href="' + assets2 + '/icons/icon-192.png" />\r\n    <link rel="apple-touch-icon" sizes="152x152" href="' + assets2 + '/icons/icon-152.png" />\r\n    <link rel="apple-touch-icon" sizes="180x180" href="' + assets2 + '/icons/icon-192.png" />\r\n    \r\n    <!-- Microsoft Tiles -->\r\n    <meta name="msapplication-TileColor" content="#1a1a1a" />\r\n    <meta name="msapplication-TileImage" content="' + assets2 + '/icons/icon-144.png" />\r\n    \r\n    ' + head + '\r\n  </head>\r\n  <body data-sveltekit-preload-data="hover">\r\n    <div style="display: contents">' + body + "</div>\r\n  </body>\r\n</html>",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <link rel="icon" href="' + assets2 + '/favicon.svg" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <title>Draconia Chronicles</title>\n    \n    <!-- PWA Manifest -->\n    <link rel="manifest" href="' + assets2 + '/manifest.json" />\n    \n    <!-- PWA Meta Tags -->\n    <meta name="theme-color" content="#4a90e2" />\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />\n    <meta name="apple-mobile-web-app-title" content="Draconia" />\n    \n    <!-- Apple Touch Icons -->\n    <link rel="apple-touch-icon" href="' + assets2 + '/icons/icon-192.png" />\n    <link rel="apple-touch-icon" sizes="152x152" href="' + assets2 + '/icons/icon-152.png" />\n    <link rel="apple-touch-icon" sizes="180x180" href="' + assets2 + '/icons/icon-192.png" />\n    \n    <!-- Microsoft Tiles -->\n    <meta name="msapplication-TileColor" content="#1a1a1a" />\n    <meta name="msapplication-TileImage" content="' + assets2 + '/icons/icon-144.png" />\n    \n    ' + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -178,7 +178,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "omuiom"
+  version_hash: "wacfxv"
 };
 function get_hooks() {
   return {};

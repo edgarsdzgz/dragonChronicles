@@ -2,15 +2,32 @@
   import { onMount, onDestroy } from 'svelte';
   import { mountPixi } from '$lib/pixi/app';
   import { hudEnabled } from '$lib/flags/store';
-  import UpdateToast from '$lib/pwa/UpdateToast.svelte';
-  import InstallPrompt from '$lib/pwa/InstallPrompt.svelte';
-  import DevMenu from '$lib/ui/DevMenu.svelte';
 
   let canvas: HTMLCanvasElement;
   let handle: Awaited<ReturnType<typeof mountPixi>> | null = null;
 
+  // Lazy load PWA components only when needed
+  let UpdateToast: any = null;
+  let InstallPrompt: any = null;
+  let DevMenu: any = null;
+
   onMount(async () => {
     handle = await mountPixi(canvas);
+
+    // Lazy load PWA components
+    const [
+      { default: UpdateToastComponent },
+      { default: InstallPromptComponent },
+      { default: DevMenuComponent },
+    ] = await Promise.all([
+      import('$lib/pwa/UpdateToast.svelte'),
+      import('$lib/pwa/InstallPrompt.svelte'),
+      import('$lib/ui/DevMenu.svelte'),
+    ]);
+
+    UpdateToast = UpdateToastComponent;
+    InstallPrompt = InstallPromptComponent;
+    DevMenu = DevMenuComponent;
   });
 
   onDestroy(() => handle?.destroy());
@@ -24,12 +41,18 @@
 </div>
 
 <!-- PWA Update Toast -->
-<UpdateToast />
+{#if UpdateToast}
+  <svelte:component this={UpdateToast} />
+{/if}
 
 <!-- PWA Install Prompt -->
-<InstallPrompt />
+{#if InstallPrompt}
+  <svelte:component this={InstallPrompt} />
+{/if}
 
 <!-- Developer Menu -->
-<DevMenu />
+{#if DevMenu}
+  <svelte:component this={DevMenu} />
+{/if}
 
 <slot />

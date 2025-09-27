@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import { dev } from '$app/environment';
-  import { logger } from '$lib/logging/logger';
+  import { getLogger } from '$lib/logging/logger';
 
   let errorDetails: string = '';
   let isExporting = false;
@@ -40,6 +40,7 @@
     isExporting = true;
     try {
       // Use the existing logger's exportNDJSON method
+      const logger = await getLogger();
       const blob = await logger.exportNDJSON();
 
       // Create and download the file

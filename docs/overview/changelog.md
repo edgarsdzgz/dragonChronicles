@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **CI Lighthouse Configuration**: Fixed workflow failure due to configuration file path issue
+  - Updated `.lighthouserc.json` to match workflow requirements
+  - Changed CI workflow to reference file instead of inline JSON
+  - Resolved ENOENT error in Lighthouse CI action
+  - Note: Accessibility scores still need improvement (0.89 vs 0.95 target)
+
 ### Added
 
 - **P1-S1**: Core Determinism Engine Foundation ✅

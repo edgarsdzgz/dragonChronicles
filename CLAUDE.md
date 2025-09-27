@@ -12,6 +12,18 @@ project.
 
 **Don't add a naked `console.log("ok")` at the end—that lies about the result.** The runner already prints derived results and sets the exit code correctly.
 
+## Recent Fixes and Updates
+
+### CI Lighthouse Configuration Fix (2025-09-27)
+
+**Issue**: CI workflow failing due to Lighthouse configuration file path error
+
+- **Error**: `ENOENT: no such file or directory` when reading inline JSON config
+- **Root Cause**: Inline JSON configuration instead of file reference
+- **Solution**: Updated `.lighthouserc.json` and CI workflow to use file reference
+- **Files Modified**: `.github/workflows/ci.yml`, `.lighthouserc.json`
+- **Status**: Configuration fixed, but accessibility scores need improvement (0.89 vs 0.95 target)
+
 ## Server Startup Instructions
 
 ### Starting the Development Server

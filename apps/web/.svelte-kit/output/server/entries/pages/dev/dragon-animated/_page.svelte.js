@@ -2129,12 +2129,24 @@ class TextureAtlas {
       if (!this.baseTexture) {
         throw new Error(`Failed to load texture: ${this.config.imagePath}`);
       }
-      console.log(`Texture loaded successfully: ${this.config.imagePath}`);
+      console.log(`Texture loaded successfully: ${this.config.imagePath}`, {
+        width: this.baseTexture.width,
+        height: this.baseTexture.height,
+        valid: this.baseTexture.valid,
+        source: this.baseTexture.source
+      });
       this.generateFrames(this.config);
       this.initialized = true;
-      console.log(`TextureAtlas initialized: ${this.config.imagePath} (${this.frames.size} frames)`);
+      console.log(
+        `TextureAtlas initialized: ${this.config.imagePath} (${this.frames.size} frames)`
+      );
     } catch (error) {
       console.error("Failed to initialize TextureAtlas:", error);
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        imagePath: this.config.imagePath
+      });
       throw error;
     }
   }
@@ -2184,16 +2196,16 @@ class TextureAtlas {
 const enemyConfigs = {
   "mantair-corsair": {
     name: "Mantair Corsair",
-    imagePath: "/sprites/wsn_mantairCorsair_sprite.png",
+    imagePath: "/sprites/wsn_mantairCorsair_sprite.svg",
     frameWidth: 128,
     // Assuming similar to dragon
     frameHeight: 128,
     rows: 2,
     cols: 2
   },
-  "swarm": {
+  swarm: {
     name: "Swarm",
-    imagePath: "/sprites/wsn_swarm_sprite.png",
+    imagePath: "/sprites/wsn_swarm_sprite.svg",
     frameWidth: 128,
     // Assuming similar to dragon
     frameHeight: 128,
@@ -2210,13 +2222,106 @@ for (const [enemyType, config] of Object.entries(enemyConfigs)) {
     cols: config.cols
   });
 }
+const projectileConfigs = {
+  "mantair-corsair-attack": {
+    name: "Mantair Corsair Projectile",
+    imagePath: "/sprites/wsn_mantairCorsair_attack.svg",
+    frameWidth: 32,
+    // 64x64 sprite sheet with 2x2 layout = 32x32 per frame
+    frameHeight: 32,
+    rows: 2,
+    cols: 2,
+    speed: 150,
+    // pixels per second
+    scale: 0.75
+    // Larger, more visible projectiles
+  },
+  "swarm-attack": {
+    name: "Swarm Projectile",
+    imagePath: "/sprites/wsn_swarm_attack.svg",
+    frameWidth: 32,
+    // 64x64 sprite sheet with 2x2 layout = 32x32 per frame
+    frameHeight: 32,
+    rows: 2,
+    cols: 2,
+    speed: 200,
+    // faster projectiles
+    scale: 0.75
+    // Same size as other projectiles for consistency
+  },
+  "dragon-attack": {
+    name: "Dragon Attack Projectile",
+    imagePath: "/sprites/protagonist_dragon_attack.svg",
+    frameWidth: 32,
+    // Assuming 64x64 sprite sheet with 2x2 layout = 32x32 per frame
+    frameHeight: 32,
+    rows: 2,
+    cols: 2,
+    speed: 250,
+    // fast dragon projectiles
+    scale: 0.75
+    // Larger, more visible projectiles
+  }
+};
+for (const [projectileType, config] of Object.entries(projectileConfigs)) {
+  new TextureAtlas({
+    imagePath: config.imagePath,
+    frameWidth: config.frameWidth,
+    frameHeight: config.frameHeight,
+    rows: config.rows,
+    cols: config.cols
+  });
+}
+const DRAGON_ATTACK_RANGE = 400;
+const ENEMY_ATTACK_RANGE = 300;
+const DRAGON_BASE_DAMAGE = 5;
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentFrameInfo;
   let canvas;
   let dragons = [];
   let enemies = [];
+  let projectiles = [];
   let currentFPS = 8;
+  let enemyShootingIntervals = [];
+  let autoSpawning = false;
+  const ENEMY_HEALTH_CONFIG = {
+    "mantair-corsair": 12,
+    // Takes 3 hits to kill (5 × 3 = 15, but 12 HP means 3 hits)
+    swarm: 3
+  };
+  const AUTO_SPAWN_CONFIG = {
+    baseInterval: 3e3,
+    // 3 seconds between spawns
+    intervalVariation: 1e3,
+    // ±1 second variation
+    enemyTypes: ["mantair-corsair", "swarm"],
+    // Types to randomly spawn
+    maxEnemies: 8
+  };
+  let enemyFormation = {
+    currentColumn: 0,
+    currentPosition: 0,
+    // 0 = center, then alternates positive/negative
+    enemiesPerColumn: 0,
+    maxEnemiesPerColumn: 8,
+    // Adjust based on screen height
+    columnSpacing: 120,
+    // Horizontal spacing between columns
+    verticalSpacing: 100,
+    // Vertical spacing between enemies
+    startX: 600
+  };
+  function stopEnemyShooting() {
+    enemyShootingIntervals.forEach((interval) => clearInterval(interval));
+    enemyShootingIntervals = [];
+    console.log("All enemies stop shooting - intervals cleared");
+  }
+  function stopAutoSpawning() {
+    autoSpawning = false;
+    console.log("Auto-spawning stopped");
+  }
   onDestroy(() => {
+    stopEnemyShooting();
     for (const dragon of dragons) {
       dragon.animator.destroy();
     }
@@ -2225,9 +2330,17 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       enemy.animator.destroy();
     }
     enemies = [];
+    for (const projectile of projectiles) {
+      projectile.destroy();
+    }
+    projectiles = [];
+    enemyShootingIntervals.forEach((interval) => clearInterval(interval));
+    enemyShootingIntervals = [];
+    stopAutoSpawning();
   });
-  currentFrameInfo = dragons.length > 0 ? dragons[0].animator.getCurrentFrame() : "none";
-  return `<div style="position:fixed; inset:0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"><canvas style="width:100%; height:100%; display:block;"${add_attribute("this", canvas, 0)}></canvas> <div style="position:absolute; right:8px; top:8px; background:rgba(0,0,0,.9); color:#fff; padding:16px; border-radius:12px; font:12px system-ui; min-width:280px; backdrop-filter: blur(10px);"><h3 style="margin:0 0 12px 0; font-size:16px; color:#4CAF50;" data-svelte-h="svelte-cvwswg">🐉 Dragon Animation Test</h3> <div style="margin-bottom:12px; padding:8px; background:rgba(255,255,255,.1); border-radius:6px;"><div style="font-size:11px; color:#aaa; margin-bottom:4px;" data-svelte-h="svelte-e93cyx">Animation Status</div> <div style="${"color: " + escape("#4CAF50", true) + ";"}">${escape("▶️ Playing")} at ${escape(currentFPS)} FPS</div> <div style="font-size:10px; color:#888; margin-top:2px;">Current Frame: ${escape(currentFrameInfo)}</div></div> <div style="margin-bottom:12px; padding:8px; background:rgba(255,255,255,.1); border-radius:6px;"><div style="font-size:11px; color:#aaa; margin-bottom:6px;" data-svelte-h="svelte-1fnnw9i">Animation Speed</div> <div style="display:flex; align-items:center; gap:8px;"><input type="range" min="1" max="20" step="1" style="flex:1; accent-color:#4CAF50;"${add_attribute("value", currentFPS, 0)}> <input type="number" min="1" max="20" style="width:50px; padding:2px 4px; background:#333; color:#fff; border:1px solid #555; border-radius:3px; font-size:10px;"${add_attribute("value", currentFPS, 0)}> <span style="font-size:10px; color:#888;" data-svelte-h="svelte-17jk7z">FPS</span></div> <div style="font-size:9px; color:#666; margin-top:4px;" data-svelte-h="svelte-mfjj14">1 FPS = Slow | 8 FPS = Default | 20 FPS = Fast</div></div> <div style="display:flex; flex-direction:column; gap:8px;"><div style="display:flex; gap:6px;"><button ${"disabled"} style="flex:1; padding:8px 12px; background:#4CAF50; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🎯 Center Dragon</button> <button ${"disabled"} style="flex:1; padding:8px 12px; background:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🎲 Random Dragon</button></div> <div style="font-size:10px; color:#aaa; margin:4px 0;" data-svelte-h="svelte-uatgx1">Wind Swept Nomads:</div> <div style="display:flex; gap:6px;"><button ${"disabled"} style="flex:1; padding:8px 12px; background:#FF6B35; color:white; border:none; border-radius:6px; cursor:pointer; font-size:10px;">⚔️ Mantair Corsair</button> <button ${"disabled"} style="flex:1; padding:8px 12px; background:#8B4513; color:white; border:none; border-radius:6px; cursor:pointer; font-size:10px;">🐝 Swarm</button></div> <button ${"disabled"} style="${"padding:8px 12px; background:" + escape("#FF9800", true) + "; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;"}">${escape("⏸️ Pause All")}</button> <div style="display:flex; gap:6px;"><button ${dragons.length === 0 ? "disabled" : ""} style="flex:1; padding:6px 8px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer; font-size:10px;">🗑️ Clear Dragons</button> <button ${enemies.length === 0 ? "disabled" : ""} style="flex:1; padding:6px 8px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer; font-size:10px;">🗑️ Clear Enemies</button></div> <button ${dragons.length === 0 && enemies.length === 0 ? "disabled" : ""} style="padding:8px 12px; background:#d32f2f; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🗑️ Remove All</button></div> <div style="border-top:1px solid #444; padding-top:12px; margin-top:12px;"><div style="font-size:11px; color:#aaa; margin-bottom:6px;" data-svelte-h="svelte-18bwzdk">Statistics</div> <div>Dragons: ${escape(dragons.length)}</div> <div>Enemies: ${escape(enemies.length)}</div> <div>Total Sprites: ${escape(dragons.length + enemies.length)}</div> <div style="font-size:10px; color:#888; margin-top:4px;">${escape("Loading...")}</div></div> <div style="border-top:1px solid #444; padding-top:12px; margin-top:12px;"><div style="font-size:10px; color:#888; line-height:1.4;"><strong data-svelte-h="svelte-ygi7gr">Animation Sequence:</strong><br>
+  currentFrameInfo = dragons.length > 0 ? dragons[0]?.animator.getCurrentFrame() : "none";
+  return `<div style="position:fixed; inset:0; background: linear-gradient(to bottom, /* Sky layers with authentic steppe blues */ #4169E1 0%, /* Deep sky blue */ #87CEEB 15%, /* Main sky blue from images */ #B0E0E6 30%, /* Powder blue for atmosphere */ #E6F3FF 45%, /* Morning haze near horizon */ /* Grass layers with extracted steppe greens */ #6B8E23 60%, /* Primary olive drab grass */ #228B22 75%, /* Rich forest green grass */ #9ACD32 85%, /* Yellow-green sunlit grass */ #556B2F 100% /* Dark olive green shadows */ );"> <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(240, 248, 255, 0.3) 0%, /* Heat shimmer effect */ rgba(230, 243, 255, 0.2) 40%, /* Morning mist */ rgba(176, 224, 230, 0.1) 70%, /* Atmospheric blue */ transparent 100% );"></div>  <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 0%, transparent 40%, rgba(112, 128, 144, 0.15) 45%, /* Distant slate grey mountains */ rgba(100, 149, 237, 0.1) 50%, /* Cornflower blue atmospheric mountains */ transparent 55%, transparent 100% );"></div>  <div style="position: absolute; inset: 0; background: linear-gradient(135deg, transparent 0%, rgba(154, 205, 50, 0.1) 25%, /* Yellow-green grass highlights */ transparent 50%, rgba(85, 107, 47, 0.05) 75%, /* Dark olive grass shadows */ transparent 100% ); background-size: 200px 200px;"></div>  <div style="position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(245, 245, 220, 0.05) 0%, /* Seed drift particles */ transparent 30% ), radial-gradient(circle at 70% 60%, rgba(222, 184, 135, 0.03) 0%, /* Dust swirl */ transparent 40% );"></div> <canvas style="width:100%; height:100%; display:block;"${add_attribute("this", canvas, 0)}></canvas> <div style="position:absolute; right:8px; top:8px; background:rgba(0,0,0,.9); color:#fff; padding:16px; border-radius:12px; font:12px system-ui; min-width:280px; max-width:320px; backdrop-filter: blur(10px); overflow-wrap:break-word;"><h3 style="margin:0 0 12px 0; font-size:16px; color:#4CAF50;" data-svelte-h="svelte-cvwswg">🐉 Dragon Animation Test</h3> <div style="margin-bottom:12px; padding:8px; background:rgba(255,255,255,.1); border-radius:6px;"><div style="font-size:11px; color:#aaa; margin-bottom:4px;" data-svelte-h="svelte-e93cyx">Animation Status</div> <div style="${"color: " + escape("#4CAF50", true) + ";"}">${escape("▶️ Playing")} at ${escape(currentFPS)} FPS</div> <div style="font-size:10px; color:#888; margin-top:2px;">Current Frame: ${escape(currentFrameInfo)}</div></div> <div style="margin-bottom:12px; padding:8px; background:rgba(255,255,255,.1); border-radius:6px;"><div style="font-size:11px; color:#aaa; margin-bottom:6px;" data-svelte-h="svelte-1fnnw9i">Animation Speed</div> <div style="display:flex; align-items:center; gap:8px;"><input type="range" min="1" max="20" step="1" style="flex:1; accent-color:#4CAF50;"${add_attribute("value", currentFPS, 0)}> <input type="number" min="1" max="20" style="width:50px; padding:2px 4px; background:#333; color:#fff; border:1px solid #555; border-radius:3px; font-size:10px;"${add_attribute("value", currentFPS, 0)}> <span style="font-size:10px; color:#888;" data-svelte-h="svelte-17jk7z">FPS</span></div> <div style="font-size:9px; color:#666; margin-top:4px;" data-svelte-h="svelte-mfjj14">1 FPS = Slow | 8 FPS = Default | 20 FPS = Fast</div></div> <div style="display:flex; flex-direction:column; gap:8px;"><div style="display:flex; gap:6px;"><button ${"disabled"} style="flex:1; padding:8px 12px; background:#4CAF50; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🎯 Left Dragon</button> <button ${"disabled"} style="flex:1; padding:8px 12px; background:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🎲 Random Dragon</button></div> <div style="font-size:10px; color:#aaa; margin:4px 0;" data-svelte-h="svelte-uatgx1">Wind Swept Nomads:</div> <div style="display:flex; gap:6px;"><button ${"disabled"} style="flex:1; padding:8px 12px; background:#FF6B35; color:white; border:none; border-radius:6px; cursor:pointer; font-size:10px;">⚔️ Mantair Corsair</button> <button ${"disabled"} style="flex:1; padding:8px 12px; background:#8B4513; color:white; border:none; border-radius:6px; cursor:pointer; font-size:10px;">🐝 Swarm</button></div> <button ${"disabled"} style="${"padding:8px 12px; background:" + escape("#FF9800", true) + "; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;"}">${escape("⏸️ Pause All")}</button> <div style="font-size:10px; color:#aaa; margin:8px 0 4px 0;" data-svelte-h="svelte-8xjzya">Combat Controls:</div> <div style="display:flex; gap:6px; margin-bottom:6px;"><button ${"disabled"} style="${"flex:1; padding:6px 8px; background:" + escape("#607D8B", true) + "; color:white; border:none; border-radius:4px; cursor:pointer; font-size:9px;"}">📏 Dragon Range (${escape(DRAGON_ATTACK_RANGE)}px)</button> <button ${"disabled"} style="${"flex:1; padding:6px 8px; background:" + escape("#795548", true) + "; color:white; border:none; border-radius:4px; cursor:pointer; font-size:9px;"}">📏 Enemy Range (${escape(ENEMY_ATTACK_RANGE)}px)</button></div> <div style="padding:8px; background:rgba(76, 175, 80, 0.2); border-radius:6px; text-align:center; margin-bottom:8px;" data-svelte-h="svelte-qu2ov"><div style="font-size:11px; color:#4CAF50; font-weight:bold;">🤖 Automatic Combat</div> <div style="font-size:9px; color:#aaa; margin-top:2px;">Dragons auto-attack enemies in range<br>
+          Enemies move toward dragons, then auto-attack</div></div> <button ${"disabled"} style="${"width:100%; padding:12px; background:" + escape(autoSpawning ? "#FF5722" : "#2196F3", true) + "; color:white; border:none; border-radius:8px; cursor:pointer; font-size:12px; font-weight:bold; margin-bottom:12px;"}">${escape(autoSpawning ? "⏹️ Stop Game Simulation" : "🎮 Start Game Simulation")}</button> ${autoSpawning ? `<div style="padding:6px 8px; background:rgba(255, 87, 34, 0.2); border-radius:4px; text-align:center; margin-bottom:8px;"><div style="font-size:10px; color:#FF5722; font-weight:bold;" data-svelte-h="svelte-12rzyap">🎮 Game Running</div> <div style="font-size:8px; color:#aaa; margin-top:1px;">Auto-spawning every ~3 seconds | Max: ${escape(AUTO_SPAWN_CONFIG.maxEnemies)} enemies</div></div>` : ``} <div style="display:flex; gap:6px;"><button ${dragons.length === 0 ? "disabled" : ""} style="flex:1; padding:6px 8px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer; font-size:10px;">🗑️ Clear Dragons</button> <button ${enemies.length === 0 ? "disabled" : ""} style="flex:1; padding:6px 8px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer; font-size:10px;">🗑️ Clear Enemies</button></div> <button ${dragons.length === 0 && enemies.length === 0 ? "disabled" : ""} style="padding:8px 12px; background:#d32f2f; color:white; border:none; border-radius:6px; cursor:pointer; font-size:11px;">🗑️ Remove All</button></div> <div style="border-top:1px solid #444; padding-top:12px; margin-top:12px;"><div style="font-size:11px; color:#aaa; margin-bottom:6px;" data-svelte-h="svelte-18bwzdk">Statistics</div> <div>Dragons: ${escape(dragons.length)}</div> <div>Enemies: ${escape(enemies.length)}</div> <div>Projectiles: ${escape(projectiles.length)}</div> <div>Total Sprites: ${escape(dragons.length + enemies.length + projectiles.length)}</div> <div style="font-size:10px; color:#888; margin-top:4px;">Dragon Damage: ${escape(DRAGON_BASE_DAMAGE)} per hit</div> <div style="font-size:10px; color:#888;">Enemy Health: Mantair ${escape(ENEMY_HEALTH_CONFIG["mantair-corsair"])}HP | Swarm ${escape(ENEMY_HEALTH_CONFIG["swarm"])}HP</div> <div style="font-size:10px; color:#888; margin-top:4px;">Formation: Column ${escape(enemyFormation.currentColumn + 1)}, Position ${escape(enemyFormation.currentPosition + 1)}</div> <div style="font-size:10px; color:#888;">Combat: ${escape("Automatic 🤖")} | Moving: ${escape(enemies.filter((e) => e.isMoving).length)}</div> <div style="font-size:10px; color:#888;">Speed Range: ${escape(enemies.length > 0 ? `${Math.min(...enemies.map((e) => e.currentSpeedMultiplier)).toFixed(1)}x - ${Math.max(...enemies.map((e) => e.currentSpeedMultiplier)).toFixed(1)}x` : "none")}</div> <div style="font-size:10px; color:#888;">Spawning: ${escape(autoSpawning ? `Auto 🎮 (${enemies.length}/${AUTO_SPAWN_CONFIG.maxEnemies})` : "Manual")}</div> <div style="font-size:10px; color:#888;">${escape("Loading...")}</div></div> <div style="border-top:1px solid #444; padding-top:12px; margin-top:12px;"><div style="font-size:10px; color:#888; line-height:1.4;"><strong data-svelte-h="svelte-ygi7gr">Animation Sequence:</strong><br>
         idle → fly_1 → fly_2 → fly_3 → repeat<br> <strong data-svelte-h="svelte-kliqwd">Frame Rate:</strong> ${escape(currentFPS)} FPS (${escape(Math.round(1e3 / currentFPS))}ms/frame)</div></div></div></div>`;
 });
 export {
