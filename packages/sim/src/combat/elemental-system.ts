@@ -6,13 +6,9 @@
 import type { 
   ElementalType, 
   ElementalCategory, 
-  ElementalEffectiveness, 
   StatusEffect, 
-  StatusEffectType,
   DamageCalculation,
-  DamageSource,
-  ElementalSystemConfig,
-  StatusEffectConfig
+  DamageSource
 } from './types.js';
 
 // ============================================================================
@@ -20,7 +16,7 @@ import type {
 // ============================================================================
 
 export class ElementalSystem {
-  private config: ElementalSystemConfig;
+  private config: Record<string, unknown>;
   private effectivenessMatrix: Map<string, number>;
 
   constructor() {
@@ -28,7 +24,7 @@ export class ElementalSystem {
     this.effectivenessMatrix = this.buildEffectivenessMatrix();
   }
 
-  private createDefaultConfig(): ElementalSystemConfig {
+  private createDefaultConfig(): Record<string, unknown> {
     return {
       metaTriangle: {
         heat: 'heat',
@@ -45,7 +41,7 @@ export class ElementalSystem {
     };
   }
 
-  private createStatusEffectConfigs(): StatusEffectConfig[] {
+  private createStatusEffectConfigs(): Record<string, unknown>[] {
     return [
       // Heat effects
       { type: 'burn', elementalType: 'fire', duration: 5, damage: 0.02, debuff: {} },
@@ -172,10 +168,10 @@ export class ElementalSystem {
    */
   public calculateDamage(
     source: DamageSource, 
-    defenderElementalType: ElementalType,
+    _defenderElementalType: ElementalType,
     defenderResistances: Map<ElementalType, number> = new Map()
   ): DamageCalculation {
-    const effectiveness = this.calculateEffectiveness(source.elementalType, defenderElementalType);
+    const effectiveness = this.calculateEffectiveness(source.elementalType, _defenderElementalType);
     const resistance = defenderResistances.get(source.elementalType) || 0;
     const resistanceReduction = 1 - (resistance / 100);
     
@@ -190,14 +186,14 @@ export class ElementalSystem {
       resistanceReduction: resistanceReduction,
       statusEffectBonus: 0, // TODO: Implement status effect bonuses
       finalDamage: Math.round(finalDamage),
-      statusEffectApplied: this.rollStatusEffect(source, defenderElementalType)
+      statusEffectApplied: this.rollStatusEffect(source, _defenderElementalType)
     };
   }
 
   /**
    * Roll for status effect application
    */
-  private rollStatusEffect(source: DamageSource, defender: ElementalType): StatusEffect | undefined {
+  private rollStatusEffect(source: DamageSource, _defender: ElementalType): StatusEffect | undefined {
     if (Math.random() > source.statusEffectChance) {
       return undefined;
     }
@@ -263,13 +259,13 @@ export class ElementalSystem {
   /**
    * Get recommended enemy elemental types for a land/ward
    */
-  public getRecommendedEnemyElements(landLevel: number, wardLevel: number): ElementalType[] {
+  public getRecommendedEnemyElements(landLevel: number, _wardLevel: number): ElementalType[] {
     const theme = this.getLandElementalTheme(landLevel);
     const primaryElements = this.getElementsInCategory(theme.primary);
     const secondaryElements = this.getElementsInCategory(theme.secondary);
     
     // Mix primary and secondary elements based on ward progression
-    const primaryWeight = Math.min(0.8, 0.4 + (wardLevel - 1) * 0.1);
+    const primaryWeight = Math.min(0.8, 0.4 + (_wardLevel - 1) * 0.1);
     const elements = [...primaryElements];
     
     if (Math.random() > primaryWeight) {

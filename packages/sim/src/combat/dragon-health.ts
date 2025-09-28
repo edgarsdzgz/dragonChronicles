@@ -6,12 +6,9 @@
 import type { 
   DragonHealth, 
   HealthConfig, 
-  PushbackConfig, 
-  LandWardPosition,
   PushbackResult,
   ElementalResistance,
-  StatusEffect,
-  CombatState
+  StatusEffect
 } from './types.js';
 import { ElementalSystem } from './elemental-system.js';
 
@@ -231,7 +228,7 @@ export class DragonHealthImpl implements DragonHealth {
 
   public takeElementalDamage(
     baseDamage: number, 
-    elementalType: string, 
+    _elementalType: string, 
     statusEffectChance: number = 0.1
   ): void {
     if (!this.isAlive || this.isRecovering) {
@@ -239,7 +236,7 @@ export class DragonHealthImpl implements DragonHealth {
     }
 
     // Apply elemental resistance
-    const resistance = this.elementalResistances[elementalType as keyof ElementalResistance] || 0;
+    const resistance = this.elementalResistances[_elementalType as keyof ElementalResistance] || 0;
     const resistanceMultiplier = 1 - (resistance / 100);
     const finalDamage = baseDamage * resistanceMultiplier;
 
@@ -247,11 +244,11 @@ export class DragonHealthImpl implements DragonHealth {
 
     // Roll for status effect
     if (Math.random() < statusEffectChance) {
-      this.applyStatusEffect(elementalType);
+      this.applyStatusEffect(_elementalType);
     }
   }
 
-  private applyStatusEffect(elementalType: string): void {
+  private applyStatusEffect(_elementalType: string): void {
     // TODO: Implement status effect application based on elemental type
     // This would integrate with the ElementalSystem to get the appropriate status effect
   }
@@ -339,7 +336,7 @@ export class DragonHealthImpl implements DragonHealth {
 
   public setElementalResistance(elementalType: string, resistance: number): void {
     const clampedResistance = Math.max(0, Math.min(100, resistance));
-    (this.elementalResistances as any)[elementalType] = clampedResistance;
+    (this.elementalResistances as Record<string, number>)[elementalType] = clampedResistance;
   }
 }
 
@@ -378,10 +375,10 @@ export class DragonHealthManager {
 
   public takeElementalDamage(
     baseDamage: number, 
-    elementalType: string, 
+    _elementalType: string, 
     statusEffectChance: number = 0.1
   ): void {
-    this.health.takeElementalDamage(baseDamage, elementalType, statusEffectChance);
+    this.health.takeElementalDamage(baseDamage, _elementalType, statusEffectChance);
   }
 
   public heal(amount: number): void {

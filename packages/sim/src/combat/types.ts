@@ -15,10 +15,10 @@ export interface DragonHealth {
   recoveryProgress: number; // 0.0 to 1.0
   pushbackDistance: number;
   pushbackPercentage: number; // Percentage of current distance to push back
-  takeDamage(amount: number): void;
-  heal(amount: number): void;
-  startRecovery(currentDistance: number, landLevel: number, wardLevel: number): void;
-  updateRecovery(deltaTime: number): void;
+  takeDamage(_amount: number): void;
+  heal(_amount: number): void;
+  startRecovery(_currentDistance: number, _landLevel: number, _wardLevel: number): void;
+  updateRecovery(_deltaTime: number): void;
   getPushbackDistance(): number;
   respawn(): void;
 }
@@ -176,7 +176,7 @@ export interface CombatState {
 export interface CombatEvent {
   type: 'damage' | 'heal' | 'status_effect' | 'death' | 'recovery';
   timestamp: number;
-  data: any;
+  data: unknown;
 }
 
 // ============================================================================
