@@ -207,6 +207,149 @@ const LAND_ELEMENTAL_THEMES = {
 };
 ```
 
+#### Elemental System Introduction Strategy
+
+##### **Phase 1: Meta-Triangle Introduction (Weeks 1-2)**
+**Objective**: Teach players the core Heat > Cold > Energy > Heat relationship
+
+**Land 1: Horizon Steppe - Meta-Triangle Tutorial**
+```
+Ward 1: Heat Enemies (Fire-based)
+├── Enemy Types: Fire-breathing creatures, lava golems
+├── Player Strategy: Use Cold attacks (Ice, Frost, Mist)
+├── Tutorial: "Heat beats Cold, but Cold beats Energy"
+└── Visual Cues: Red enemies, blue attack indicators
+
+Ward 2: Cold Enemies (Ice-based)
+├── Enemy Types: Ice elementals, frost wolves
+├── Player Strategy: Use Energy attacks (Lightning, Plasma, Void)
+├── Tutorial: "Cold beats Energy, but Energy beats Heat"
+└── Visual Cues: Blue enemies, yellow attack indicators
+
+Ward 3: Energy Enemies (Lightning-based)
+├── Enemy Types: Storm elementals, electric beasts
+├── Player Strategy: Use Heat attacks (Fire, Lava, Steam)
+├── Tutorial: "Energy beats Heat, completing the triangle"
+└── Visual Cues: Yellow enemies, red attack indicators
+```
+
+**Player Experience:**
+- Learn basic triangle relationships
+- See clear 150% damage bonuses
+- Understand strategic thinking
+- Build confidence with simple system
+
+##### **Phase 2: Sub-Triangle Introduction (Weeks 3-4)**
+**Objective**: Introduce internal triangle relationships and status effects
+
+**Land 2: Ember Reaches - Sub-Triangle Mastery**
+```
+Ward 1: Heat Sub-Triangle (Fire > Lava > Steam > Fire)
+├── Fire Enemies: Pure flame damage, burn status
+├── Lava Enemies: Armor penetration, melt status
+├── Steam Enemies: Area denial, scorch status
+└── Tutorial: "Within Heat, Fire beats Lava, Lava beats Steam, Steam beats Fire"
+
+Ward 2: Cold Sub-Triangle (Ice > Frost > Mist > Ice)
+├── Ice Enemies: Freezing damage, freeze status
+├── Frost Enemies: Slowing effects, chill status
+├── Mist Enemies: Concealment, blind status
+└── Tutorial: "Within Cold, Ice beats Frost, Frost beats Mist, Mist beats Ice"
+
+Ward 3: Energy Sub-Triangle (Lightning > Plasma > Void > Lightning)
+├── Lightning Enemies: Electrical damage, stun status
+├── Plasma Enemies: Explosive damage, overheat status
+├── Void Enemies: Dark energy, corrupt status
+└── Tutorial: "Within Energy, Lightning beats Plasma, Plasma beats Void, Void beats Lightning"
+```
+
+**Player Experience:**
+- Master internal triangle relationships
+- Learn status effects and tactical advantages
+- Develop specialized strategies
+- Understand cross-triangle rules
+
+##### **Phase 3: Advanced Combinations (Week 5+)**
+**Objective**: Master complex elemental interactions and combinations
+
+**Land 3: Mistral Peaks - Advanced Tactics**
+```
+Ward 1: Mixed Elemental Encounters
+├── Heat + Cold combinations
+├── Energy + Heat combinations
+├── Cold + Energy combinations
+└── Tutorial: "Combine elements for maximum effectiveness"
+
+Ward 2: Dynamic Elemental Phases
+├── Enemies that change elemental affinity
+├── Bosses with multiple elemental phases
+├── Environmental elemental interactions
+└── Tutorial: "Adapt to changing elemental threats"
+
+Ward 3: Master Elemental Challenges
+├── All 9 elements in single encounters
+├── Complex status effect combinations
+├── Advanced tactical decision-making
+└── Tutorial: "Master the complete elemental system"
+```
+
+**Player Experience:**
+- Handle complex elemental combinations
+- Master status effect synergies
+- Develop advanced tactical strategies
+- Achieve elemental system mastery
+
+##### **Visual Design Progression**
+```typescript
+const VISUAL_DESIGN_PROGRESSION = {
+  phase1: {
+    heat: 'Bright Red',
+    cold: 'Bright Blue', 
+    energy: 'Bright Yellow',
+    indicators: 'Simple color coding'
+  },
+  phase2: {
+    fire: 'Bright Red',
+    lava: 'Orange-Red',
+    steam: 'Light Red',
+    ice: 'Bright Blue',
+    frost: 'Light Blue',
+    mist: 'Pale Blue',
+    lightning: 'Bright Yellow',
+    plasma: 'Orange-Yellow',
+    void: 'Dark Purple',
+    indicators: 'Subtle variations within colors'
+  },
+  phase3: {
+    combinations: 'Complex visual effects',
+    status: 'Particle effects and animations',
+    interactions: 'Dynamic visual feedback',
+    indicators: 'Advanced visual communication'
+  }
+};
+```
+
+##### **Tutorial Integration Strategy**
+```typescript
+const TUTORIAL_PROGRESSION = {
+  phase1: {
+    tooltips: 'Heat beats Cold, Cold beats Energy, Energy beats Heat',
+    indicators: 'Clear damage bonus notifications',
+    feedback: 'Visual and audio confirmation of effectiveness'
+  },
+  phase2: {
+    tooltips: 'Internal triangle relationships and status effects',
+    indicators: 'Status effect duration and effects',
+    feedback: 'Tactical advantage explanations'
+  },
+  phase3: {
+    tooltips: 'Advanced combinations and synergies',
+    indicators: 'Complex interaction explanations',
+    feedback: 'Mastery achievement recognition'
+  }
+};
+```
+
 ### Breath Weapon Mechanics
 
 ```typescript
