@@ -30,7 +30,7 @@ describe('EnemyAI', () => {
       poolIndex: 0,
       state: 'approach',
     };
-    
+
     target = { x: 100, y: 100 };
     ai = new EnemyAI(enemy, target);
   });
@@ -57,9 +57,9 @@ describe('EnemyAI', () => {
       // Move enemy close to target (within attack range of 50)
       enemy.position.x = 80;
       enemy.position.y = 80;
-      
+
       ai.update(100, target);
-      
+
       expect(ai.getState()).toBe('stop');
     });
 
@@ -67,11 +67,11 @@ describe('EnemyAI', () => {
       // Move enemy to attack range (within 50 units)
       enemy.position.x = 80;
       enemy.position.y = 80;
-      
+
       // First update to get to stop state
       ai.update(100, target);
       expect(ai.getState()).toBe('stop');
-      
+
       // Second update to transition to attack
       ai.update(100, target);
       expect(ai.getState()).toBe('attack');
@@ -83,11 +83,11 @@ describe('EnemyAI', () => {
       enemy.position.y = 80;
       ai.update(100, target);
       expect(ai.getState()).toBe('stop');
-      
+
       // Move target far away
       const farTarget = { x: 200, y: 200 };
       ai.update(100, farTarget);
-      
+
       expect(ai.getState()).toBe('approach');
     });
   });
@@ -96,9 +96,9 @@ describe('EnemyAI', () => {
     it('should move toward target in approach state', () => {
       const initialX = enemy.position.x;
       const initialY = enemy.position.y;
-      
+
       ai.update(100, target);
-      
+
       // Should have moved toward target
       expect(enemy.position.x).toBeGreaterThan(initialX);
       expect(enemy.position.y).toBeGreaterThan(initialY);
@@ -109,16 +109,16 @@ describe('EnemyAI', () => {
       enemy.position.x = 80;
       enemy.position.y = 80;
       ai.update(100, target);
-      
+
       // Should be in stop state
       expect(ai.getState()).toBe('stop');
-      
+
       const stopX = enemy.position.x;
       const stopY = enemy.position.y;
-      
+
       // Update again
       ai.update(100, target);
-      
+
       // Should not have moved
       expect(enemy.position.x).toBe(stopX);
       expect(enemy.position.y).toBe(stopY);
@@ -129,7 +129,7 @@ describe('EnemyAI', () => {
     it('should update target position', () => {
       const newTarget = { x: 200, y: 200 };
       ai.setTarget(newTarget);
-      
+
       const stateData = ai.getStateData();
       expect(stateData.target).toEqual(newTarget);
     });
@@ -148,15 +148,15 @@ describe('EnemyAI', () => {
       const meleeEnemy: SpawnedEnemy = { ...enemy, family: 1 };
       const meleeAI = new EnemyAI(meleeEnemy, target);
       const meleeConfig = meleeAI.getStateData().config;
-      
+
       // Test ranged family
       const rangedEnemy: SpawnedEnemy = { ...enemy, family: 2 };
       const rangedAI = new EnemyAI(rangedEnemy, target);
       const rangedConfig = rangedAI.getStateData().config;
-      
+
       // Ranged should have longer attack range
       expect(rangedConfig.attackRange).toBeGreaterThan(meleeConfig.attackRange);
-      
+
       // Ranged should have faster attack cooldown
       expect(rangedConfig.attackCooldown).toBeLessThan(meleeConfig.attackCooldown);
     });

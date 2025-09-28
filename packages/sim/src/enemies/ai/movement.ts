@@ -51,7 +51,7 @@ export class EnemyMovement {
 
   constructor(enemy: SpawnedEnemy, target: Vector2, config?: Partial<MovementConfig>) {
     this.enemy = enemy;
-    
+
     const defaultConfig: MovementConfig = {
       baseSpeed: enemy.spd,
       speedMultiplier: 1.0,
@@ -61,7 +61,7 @@ export class EnemyMovement {
       avoidanceRadius: 30,
       updateFrequency: 60, // 60 FPS
     };
-    
+
     this.movementState = {
       velocity: { x: 0, y: 0 },
       target,
@@ -81,22 +81,22 @@ export class EnemyMovement {
     // Update target
     this.movementState.target = target;
     this.obstacles = obstacles;
-    
+
     // Accumulate update time
     this.movementState.updateAccumulator += deltaTime;
-    
+
     // Check if it's time to update based on frequency
     const updateInterval = 1000 / this.movementState.config.updateFrequency;
     if (this.movementState.updateAccumulator < updateInterval) {
       return;
     }
-    
+
     // Reset accumulator
     this.movementState.updateAccumulator = 0;
-    
+
     // Update movement
     this.updateMovement(deltaTime);
-    
+
     // Apply movement to enemy
     this.applyMovement(deltaTime);
   }
@@ -107,22 +107,22 @@ export class EnemyMovement {
    */
   private updateMovement(deltaTime: number): void {
     const distanceToTarget = this.getDistanceToTarget();
-    
+
     // If very close to target, stop moving
     if (distanceToTarget < 5) {
       this.stopMovement();
       return;
     }
-    
+
     // Calculate desired velocity toward target
     const desiredVelocity = this.calculateDesiredVelocity();
-    
+
     // Apply collision avoidance
     const avoidanceVelocity = this.calculateAvoidanceVelocity();
-    
+
     // Combine velocities
     const finalVelocity = this.combineVelocities(desiredVelocity, avoidanceVelocity);
-    
+
     // Apply acceleration/deceleration
     this.applyAcceleration(finalVelocity, deltaTime);
   }
@@ -135,11 +135,11 @@ export class EnemyMovement {
     const dx = this.movementState.target.x - this.enemy.position.x;
     const dy = this.movementState.target.y - this.enemy.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (distance === 0) {
       return { x: 0, y: 0 };
     }
-    
+
     // Normalize direction and apply speed
     const speed = this.movementState.config.baseSpeed * this.movementState.config.speedMultiplier;
     return {
@@ -155,24 +155,26 @@ export class EnemyMovement {
   private calculateAvoidanceVelocity(): Vector2 {
     let avoidanceX = 0;
     let avoidanceY = 0;
-    
+
     for (const obstacle of this.obstacles) {
       const dx = this.enemy.position.x - obstacle.x;
       const dy = this.enemy.position.y - obstacle.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       // If obstacle is within avoidance radius
       if (distance < this.movementState.config.avoidanceRadius && distance > 0) {
         // Calculate avoidance force (stronger when closer)
-        const avoidanceForce = (this.movementState.config.avoidanceRadius - distance) / this.movementState.config.avoidanceRadius;
+        const avoidanceForce =
+          (this.movementState.config.avoidanceRadius - distance) /
+          this.movementState.config.avoidanceRadius;
         const normalizedDx = dx / distance;
         const normalizedDy = dy / distance;
-        
+
         avoidanceX += normalizedDx * avoidanceForce;
         avoidanceY += normalizedDy * avoidanceForce;
       }
     }
-    
+
     return { x: avoidanceX, y: avoidanceY };
   }
 
@@ -186,7 +188,7 @@ export class EnemyMovement {
     // Weight the velocities (desired is primary, avoidance is secondary)
     const desiredWeight = 0.7;
     const avoidanceWeight = 0.3;
-    
+
     return {
       x: desired.x * desiredWeight + avoidance.x * avoidanceWeight,
       y: desired.y * desiredWeight + avoidance.y * avoidanceWeight,
@@ -201,15 +203,17 @@ export class EnemyMovement {
   private applyAcceleration(targetVelocity: Vector2, deltaTime: number): void {
     const currentVelocity = this.movementState.velocity;
     const deltaTimeSeconds = deltaTime / 1000;
-    
+
     // Calculate acceleration needed
-    const accelerationX = (targetVelocity.x - currentVelocity.x) * this.movementState.config.acceleration;
-    const accelerationY = (targetVelocity.y - currentVelocity.y) * this.movementState.config.acceleration;
-    
+    const accelerationX =
+      (targetVelocity.x - currentVelocity.x) * this.movementState.config.acceleration;
+    const accelerationY =
+      (targetVelocity.y - currentVelocity.y) * this.movementState.config.acceleration;
+
     // Apply acceleration
     const newVelocityX = currentVelocity.x + accelerationX * deltaTimeSeconds;
     const newVelocityY = currentVelocity.y + accelerationY * deltaTimeSeconds;
-    
+
     // Limit maximum velocity
     const magnitude = Math.sqrt(newVelocityX * newVelocityX + newVelocityY * newVelocityY);
     if (magnitude > this.movementState.config.maxVelocity) {
@@ -228,11 +232,11 @@ export class EnemyMovement {
    */
   private applyMovement(deltaTime: number): void {
     const deltaTimeSeconds = deltaTime / 1000;
-    
+
     // Update enemy position
     this.enemy.position.x += this.movementState.velocity.x * deltaTimeSeconds;
     this.enemy.position.y += this.movementState.velocity.y * deltaTimeSeconds;
-    
+
     // Update enemy velocity
     this.enemy.velocity.x = this.movementState.velocity.x;
     this.enemy.velocity.y = this.movementState.velocity.y;
@@ -297,7 +301,7 @@ export class EnemyMovement {
   isMoving(): boolean {
     const magnitude = Math.sqrt(
       this.movementState.velocity.x * this.movementState.velocity.x +
-      this.movementState.velocity.y * this.movementState.velocity.y
+        this.movementState.velocity.y * this.movementState.velocity.y,
     );
     return magnitude > 0.1; // Small threshold to account for floating point precision
   }

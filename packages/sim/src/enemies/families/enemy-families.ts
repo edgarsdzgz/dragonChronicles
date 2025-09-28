@@ -59,7 +59,7 @@ export class EnemyFamilyManager {
     // Create AI with family-specific configuration
     const ai = new EnemyAI(enemy, target);
     this.activeEnemies.set(enemy.id, ai);
-    
+
     return ai;
   }
 

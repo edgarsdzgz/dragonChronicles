@@ -30,7 +30,7 @@ describe('EnemyCombat', () => {
       poolIndex: 0,
       state: 'approach',
     };
-    
+
     target = { x: 100, y: 100 };
     combat = new EnemyCombat(enemy, target);
   });
@@ -54,7 +54,7 @@ describe('EnemyCombat', () => {
       // Move enemy to attack range
       enemy.position.x = 50;
       enemy.position.y = 50;
-      
+
       expect(combat.isTargetInRange()).toBe(true);
     });
 
@@ -62,7 +62,7 @@ describe('EnemyCombat', () => {
       // Move enemy far from target
       enemy.position.x = 200;
       enemy.position.y = 200;
-      
+
       expect(combat.isTargetInRange()).toBe(false);
     });
   });
@@ -72,9 +72,9 @@ describe('EnemyCombat', () => {
       // Move enemy to attack range
       enemy.position.x = 50;
       enemy.position.y = 50;
-      
+
       const attackResult = combat.attemptAttack();
-      
+
       expect(attackResult).toBeDefined();
       expect(attackResult?.success).toBe(true);
       expect(attackResult?.damage).toBeGreaterThan(0);
@@ -84,9 +84,9 @@ describe('EnemyCombat', () => {
       // Move enemy out of range
       enemy.position.x = 200;
       enemy.position.y = 200;
-      
+
       const attackResult = combat.attemptAttack();
-      
+
       expect(attackResult).toBeNull();
     });
 
@@ -95,10 +95,10 @@ describe('EnemyCombat', () => {
       enemy.position.x = 50;
       enemy.position.y = 50;
       combat.attemptAttack();
-      
+
       // Try to attack again immediately
       const attackResult = combat.attemptAttack();
-      
+
       expect(attackResult).toBeNull();
     });
 
@@ -107,7 +107,7 @@ describe('EnemyCombat', () => {
       enemy.position.x = 50;
       enemy.position.y = 50;
       combat.attemptAttack();
-      
+
       const history = combat.getAttackHistory();
       expect(history.length).toBe(1);
       expect(history[0].success).toBe(true);
@@ -120,13 +120,13 @@ describe('EnemyCombat', () => {
       enemy.position.x = 50;
       enemy.position.y = 50;
       combat.attemptAttack();
-      
+
       const initialCooldown = combat.getCooldownRemaining();
       expect(initialCooldown).toBeGreaterThan(0);
-      
+
       // Update with time
       combat.update(1000, target);
-      
+
       const newCooldown = combat.getCooldownRemaining();
       expect(newCooldown).toBeLessThan(initialCooldown);
     });
@@ -136,14 +136,14 @@ describe('EnemyCombat', () => {
       enemy.position.x = 50;
       enemy.position.y = 50;
       const attackResult = combat.attemptAttack();
-      
+
       expect(attackResult).toBeDefined();
       expect(combat.isAttacking()).toBe(true);
-      
+
       // Update with attack duration
       const combatState = combat.getCombatState();
       combat.update(combatState.config.attackDuration, target);
-      
+
       expect(combat.isAttacking()).toBe(false);
     });
   });
@@ -151,33 +151,33 @@ describe('EnemyCombat', () => {
   describe('Configuration', () => {
     it('should update attack range', () => {
       combat.setAttackRange(200);
-      
+
       // Move enemy to new range
       enemy.position.x = 150;
       enemy.position.y = 150;
-      
+
       expect(combat.isTargetInRange()).toBe(true);
     });
 
     it('should update attack damage', () => {
       combat.setAttackDamage(50);
-      
+
       // Move enemy to range and attack
       enemy.position.x = 50;
       enemy.position.y = 50;
       const attackResult = combat.attemptAttack();
-      
+
       expect(attackResult?.damage).toBeGreaterThanOrEqual(50);
     });
 
     it('should update attack cooldown', () => {
       combat.setAttackCooldown(500);
-      
+
       // Move enemy to range and attack
       enemy.position.x = 50;
       enemy.position.y = 50;
       combat.attemptAttack();
-      
+
       const cooldown = combat.getCooldownRemaining();
       expect(cooldown).toBeLessThanOrEqual(500);
     });
@@ -187,7 +187,7 @@ describe('EnemyCombat', () => {
     it('should update target position', () => {
       const newTarget = { x: 200, y: 200 };
       combat.setTarget(newTarget);
-      
+
       const combatState = combat.getCombatState();
       expect(combatState.target).toEqual(newTarget);
     });
@@ -199,10 +199,10 @@ describe('EnemyCombat', () => {
       enemy.position.x = 50;
       enemy.position.y = 50;
       combat.attemptAttack();
-      
+
       // Reset
       combat.reset();
-      
+
       expect(combat.isAttackReady()).toBe(true);
       expect(combat.isAttacking()).toBe(false);
       expect(combat.getCooldownRemaining()).toBe(0);

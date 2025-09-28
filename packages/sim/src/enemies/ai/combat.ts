@@ -67,7 +67,7 @@ export class EnemyCombat {
 
   constructor(enemy: SpawnedEnemy, target: Vector2, config?: Partial<CombatConfig>) {
     this.enemy = enemy;
-    
+
     const defaultConfig: CombatConfig = {
       attackRange: 100,
       attackDamage: 20,
@@ -77,7 +77,7 @@ export class EnemyCombat {
       criticalMultiplier: 2.0,
       animationDuration: 300,
     };
-    
+
     this.combatState = {
       lastAttackTime: 0,
       target,
@@ -97,7 +97,7 @@ export class EnemyCombat {
   update(deltaTime: number, target: Vector2): AttackResult | null {
     // Update target
     this.combatState.target = target;
-    
+
     // Update cooldown
     if (this.combatState.cooldownRemaining > 0) {
       this.combatState.cooldownRemaining -= deltaTime;
@@ -105,12 +105,12 @@ export class EnemyCombat {
         this.combatState.cooldownRemaining = 0;
       }
     }
-    
+
     // Update attack state
     if (this.combatState.isAttacking) {
       return this.updateAttackState(deltaTime);
     }
-    
+
     return null;
   }
 
@@ -122,18 +122,18 @@ export class EnemyCombat {
   private updateAttackState(_deltaTime: number): AttackResult | null {
     const currentTime = Date.now();
     const attackElapsed = currentTime - this.combatState.attackStartTime;
-    
+
     // Check if attack duration is complete
     if (attackElapsed >= this.combatState.config.attackDuration) {
       // Complete the attack
       this.combatState.isAttacking = false;
       this.combatState.cooldownRemaining = this.combatState.config.attackCooldown;
       this.combatState.lastAttackTime = currentTime;
-      
+
       // Calculate attack result
       return this.calculateAttackResult();
     }
-    
+
     return null;
   }
 
@@ -146,21 +146,21 @@ export class EnemyCombat {
     if (this.combatState.cooldownRemaining > 0) {
       return null;
     }
-    
+
     // Check if target is in range
     if (!this.isTargetInRange()) {
       return null;
     }
-    
+
     // Check if already attacking
     if (this.combatState.isAttacking) {
       return null;
     }
-    
+
     // Start attack
     this.combatState.isAttacking = true;
     this.combatState.attackStartTime = Date.now();
-    
+
     // Return immediate attack result (for instant attacks)
     return this.calculateAttackResult();
   }
@@ -190,34 +190,34 @@ export class EnemyCombat {
    */
   private calculateAttackResult(): AttackResult {
     const currentTime = Date.now();
-    
+
     // Calculate base damage
     let damage = this.combatState.config.attackDamage;
-    
+
     // Apply enemy damage bonus
     damage += this.enemy.contactDmg;
-    
+
     // Check for critical hit
     const isCritical = Math.random() < this.combatState.config.criticalChance;
     if (isCritical) {
       damage *= this.combatState.config.criticalMultiplier;
     }
-    
+
     const result: AttackResult = {
       success: true,
       damage: Math.floor(damage),
       critical: isCritical,
       timestamp: currentTime,
     };
-    
+
     // Store attack in history
     this.attackHistory.push(result);
-    
+
     // Limit attack history size
     if (this.attackHistory.length > 100) {
       this.attackHistory = this.attackHistory.slice(-50);
     }
-    
+
     return result;
   }
 

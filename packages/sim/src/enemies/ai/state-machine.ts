@@ -11,7 +11,7 @@ import type { SpawnedEnemy, Vector2, Family, EnemyState } from '../types.js';
 /* eslint-disable no-unused-vars */
 export enum AIState {
   APPROACH = 'approach',
-  STOP = 'stop', 
+  STOP = 'stop',
   ATTACK = 'attack',
   DEATH = 'death',
 }
@@ -64,9 +64,9 @@ export class EnemyAI {
   constructor(enemy: SpawnedEnemy, target: Vector2) {
     this.enemy = enemy;
     this.familyConfigs = this.createFamilyConfigs();
-    
+
     const config = this.familyConfigs.get(enemy.family) || this.getDefaultConfig();
-    
+
     this.stateData = {
       state: AIState.APPROACH,
       target,
@@ -85,19 +85,19 @@ export class EnemyAI {
   update(deltaTime: number, currentTarget: Vector2): void {
     // Update target position
     this.stateData.target = currentTarget;
-    
+
     // Accumulate update time
     this.stateData.updateAccumulator += deltaTime;
-    
+
     // Check if it's time to update based on frequency
     const updateInterval = 1000 / this.stateData.config.updateFrequency;
     if (this.stateData.updateAccumulator < updateInterval) {
       return;
     }
-    
+
     // Reset accumulator
     this.stateData.updateAccumulator = 0;
-    
+
     // Update based on current state
     this.updateState(deltaTime);
   }
@@ -109,20 +109,20 @@ export class EnemyAI {
   private updateState(_deltaTime: number): void {
     const distanceToTarget = this.getDistanceToTarget();
     const currentTime = Date.now();
-    
+
     switch (this.stateData.state) {
       case AIState.APPROACH:
         this.updateApproachState(distanceToTarget);
         break;
-        
+
       case AIState.STOP:
         this.updateStopState(distanceToTarget);
         break;
-        
+
       case AIState.ATTACK:
         this.updateAttackState(distanceToTarget, currentTime);
         break;
-        
+
       case AIState.DEATH:
         // Death state - no updates needed
         break;
@@ -139,7 +139,7 @@ export class EnemyAI {
       this.transitionToState(AIState.STOP);
       return;
     }
-    
+
     // Move toward target
     this.moveTowardTarget();
   }
@@ -154,13 +154,13 @@ export class EnemyAI {
       this.transitionToState(AIState.APPROACH);
       return;
     }
-    
+
     // If close enough and attack is ready, start attacking
     if (distanceToTarget <= this.stateData.config.attackRange && this.canAttack()) {
       this.transitionToState(AIState.ATTACK);
       return;
     }
-    
+
     // Stop moving (velocity = 0)
     this.enemy.velocity.x = 0;
     this.enemy.velocity.y = 0;
@@ -177,13 +177,13 @@ export class EnemyAI {
       this.transitionToState(AIState.APPROACH);
       return;
     }
-    
+
     // Perform attack if cooldown is ready
     if (this.canAttack()) {
       this.performAttack();
       this.stateData.lastAttackTime = currentTime;
     }
-    
+
     // Stop moving while attacking
     this.enemy.velocity.x = 0;
     this.enemy.velocity.y = 0;
@@ -196,13 +196,13 @@ export class EnemyAI {
     const dx = this.stateData.target.x - this.enemy.position.x;
     const dy = this.stateData.target.y - this.enemy.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
     if (distance > 0) {
       // Normalize direction and apply speed
       const speed = this.enemy.spd * this.stateData.config.speedMultiplier;
       this.enemy.velocity.x = (dx / distance) * speed;
       this.enemy.velocity.y = (dy / distance) * speed;
-      
+
       // Update position based on velocity (assuming 60 FPS)
       const deltaTime = 16.67; // ~16.67ms for 60 FPS
       if (this.enemy.velocity.x !== 0 || this.enemy.velocity.y !== 0) {
@@ -240,10 +240,10 @@ export class EnemyAI {
     if (this.stateData.state === newState) {
       return;
     }
-    
+
     this.stateData.state = newState;
     this.stateData.stateEntryTime = Date.now();
-    
+
     // Update enemy state
     this.enemy.state = newState as unknown as EnemyState;
   }
@@ -264,7 +264,7 @@ export class EnemyAI {
    */
   private createFamilyConfigs(): Map<Family, AIBehaviorConfig> {
     const configs = new Map<Family, AIBehaviorConfig>();
-    
+
     // Melee family (1) - Close combat, high damage, slow attack
     configs.set(1, {
       speedMultiplier: 1.0,
@@ -274,7 +274,7 @@ export class EnemyAI {
       stopDistance: 45,
       updateFrequency: 30, // 30 FPS
     });
-    
+
     // Ranged family (2) - Long range, lower damage, fast attack
     configs.set(2, {
       speedMultiplier: 0.8,
@@ -284,7 +284,7 @@ export class EnemyAI {
       stopDistance: 140,
       updateFrequency: 60, // 60 FPS
     });
-    
+
     return configs;
   }
 

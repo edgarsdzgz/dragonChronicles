@@ -14,7 +14,7 @@ describe('AIManager', () => {
 
   beforeEach(() => {
     aiManager = new AIManager();
-    
+
     enemy = {
       id: 1,
       family: 1,
@@ -32,14 +32,14 @@ describe('AIManager', () => {
       poolIndex: 0,
       state: 'approach',
     };
-    
+
     target = { x: 100, y: 100 };
   });
 
   describe('AI System Creation', () => {
     it('should create AI system for enemy', () => {
       const aiSystem = aiManager.createAISystem(enemy, target);
-      
+
       expect(aiSystem).toBeDefined();
       expect(aiSystem.enemy).toBe(enemy);
       expect(aiSystem.ai).toBeDefined();
@@ -49,7 +49,7 @@ describe('AIManager', () => {
 
     it('should track created AI systems', () => {
       aiManager.createAISystem(enemy, target);
-      
+
       const aiSystem = aiManager.getAISystem(enemy.id);
       expect(aiSystem).toBeDefined();
     });
@@ -62,7 +62,7 @@ describe('AIManager', () => {
 
     it('should remove AI system', () => {
       aiManager.removeAISystem(enemy.id);
-      
+
       const aiSystem = aiManager.getAISystem(enemy.id);
       expect(aiSystem).toBeUndefined();
     });
@@ -76,7 +76,7 @@ describe('AIManager', () => {
     it('should get AI systems by family', () => {
       const meleeSystems = aiManager.getAISystemsByFamily(1);
       expect(meleeSystems.length).toBe(1);
-      
+
       const rangedSystems = aiManager.getAISystemsByFamily(2);
       expect(rangedSystems.length).toBe(0);
     });
@@ -89,18 +89,18 @@ describe('AIManager', () => {
 
     it('should update AI systems', () => {
       const initialX = enemy.position.x;
-      
+
       aiManager.update(100, target);
-      
+
       // AI should have updated enemy position
       expect(enemy.position.x).not.toBe(initialX);
     });
 
     it('should handle dead enemies', () => {
       enemy.hp = 0;
-      
+
       aiManager.update(100, target);
-      
+
       const aiSystem = aiManager.getAISystem(enemy.id);
       expect(aiSystem?.ai.getState()).toBe('death');
     });
@@ -110,7 +110,7 @@ describe('AIManager', () => {
     it('should track performance statistics', () => {
       aiManager.createAISystem(enemy, target);
       aiManager.update(100, target);
-      
+
       const stats = aiManager.getPerformanceStats();
       expect(stats.totalSystems).toBe(1);
       expect(stats.activeSystems).toBe(1);
@@ -120,7 +120,7 @@ describe('AIManager', () => {
     it('should update statistics after removal', () => {
       aiManager.createAISystem(enemy, target);
       aiManager.removeAISystem(enemy.id);
-      
+
       const stats = aiManager.getPerformanceStats();
       expect(stats.totalSystems).toBe(0);
       expect(stats.activeSystems).toBe(0);
@@ -133,9 +133,9 @@ describe('AIManager', () => {
         maxUpdatesPerFrame: 100,
         updateFrequency: 30,
       };
-      
+
       aiManager.updateConfig(newConfig);
-      
+
       // Configuration should be updated
       expect(aiManager).toBeDefined();
     });
@@ -148,17 +148,17 @@ describe('AIManager', () => {
 
     it('should reset AI manager', () => {
       aiManager.reset();
-      
+
       const allSystems = aiManager.getAllAISystems();
       expect(allSystems.size).toBe(0);
-      
+
       const stats = aiManager.getPerformanceStats();
       expect(stats.totalSystems).toBe(0);
     });
 
     it('should destroy AI manager', () => {
       aiManager.destroy();
-      
+
       const allSystems = aiManager.getAllAISystems();
       expect(allSystems.size).toBe(0);
     });

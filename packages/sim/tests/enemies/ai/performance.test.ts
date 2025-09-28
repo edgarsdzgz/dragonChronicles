@@ -9,24 +9,25 @@ import type { SpawnedEnemy, Vector2 } from '../../../dist/enemies/types.js';
 import type { AIBehaviorConfig } from '../../../dist/enemies/ai/state-machine.js';
 
 describe('Enhanced AI Performance', () => {
-  const createMockEnemy = (id: number): SpawnedEnemy => ({
-    id: `enemy-${id}`,
-    type: 'mantair-corsair',
-    position: { x: Math.random() * 1000, y: Math.random() * 1000 },
-    velocity: { x: 0, y: 0 },
-    spawnTime: Date.now(),
-    spawnDistance: 200,
-    wardId: 'test-ward',
-    landId: 'test-land',
-    isActive: true,
-    poolIndex: id,
-    state: 'approach' as any,
-    // Add required properties
-    hp: 10,
-    spd: 50,
-    atk: 5,
-    def: 2,
-  } as SpawnedEnemy);
+  const createMockEnemy = (id: number): SpawnedEnemy =>
+    ({
+      id: `enemy-${id}`,
+      type: 'mantair-corsair',
+      position: { x: Math.random() * 1000, y: Math.random() * 1000 },
+      velocity: { x: 0, y: 0 },
+      spawnTime: Date.now(),
+      spawnDistance: 200,
+      wardId: 'test-ward',
+      landId: 'test-land',
+      isActive: true,
+      poolIndex: id,
+      state: 'approach' as any,
+      // Add required properties
+      hp: 10,
+      spd: 50,
+      atk: 5,
+      def: 2,
+    }) as SpawnedEnemy;
 
   const createMockConfig = (): AIBehaviorConfig => ({
     speedMultiplier: 1.0,
@@ -41,12 +42,12 @@ describe('Enhanced AI Performance', () => {
     it('should handle 200+ enemies efficiently', () => {
       const aiManager = new EnhancedAIManager();
       const enemyCount = 250; // Test with 250 enemies
-      
+
       // Create targets
       const targets: Vector2[] = [
         { x: 500, y: 500 },
         { x: 300, y: 300 },
-        { x: 700, y: 700 }
+        { x: 700, y: 700 },
       ];
       aiManager.setTargets(targets);
 
@@ -72,7 +73,9 @@ describe('Enhanced AI Performance', () => {
 
       console.log(`Updated ${enemyCount} enemies for 100 frames in ${updateDuration.toFixed(2)}ms`);
       console.log(`Average time per frame: ${(updateDuration / 100).toFixed(2)}ms`);
-      console.log(`Average time per enemy per frame: ${(updateDuration / 100 / enemyCount).toFixed(4)}ms`);
+      console.log(
+        `Average time per enemy per frame: ${(updateDuration / 100 / enemyCount).toFixed(4)}ms`,
+      );
 
       // Performance assertions
       expect(updateDuration).toBeLessThan(1000); // Should complete in under 1 second
@@ -86,7 +89,7 @@ describe('Enhanced AI Performance', () => {
     it('should maintain performance with mixed enemy types', () => {
       const aiManager = new EnhancedAIManager();
       const enemyCount = 200;
-      
+
       const targets: Vector2[] = [{ x: 500, y: 500 }];
       aiManager.setTargets(targets);
 
@@ -198,13 +201,13 @@ describe('Enhanced AI Performance', () => {
     it('should efficiently find closest targets for many enemies', () => {
       const aiManager = new EnhancedAIManager();
       const enemyCount = 200;
-      
+
       // Create many targets
       const targets: Vector2[] = [];
       for (let i = 0; i < 20; i++) {
         targets.push({
           x: Math.random() * 1000,
-          y: Math.random() * 1000
+          y: Math.random() * 1000,
         });
       }
       aiManager.setTargets(targets);
@@ -226,7 +229,9 @@ describe('Enhanced AI Performance', () => {
       const endTime = performance.now();
       const duration = endTime - startTime;
 
-      console.log(`Target finding (${enemyCount} enemies, 20 targets, 100 frames): ${duration.toFixed(2)}ms`);
+      console.log(
+        `Target finding (${enemyCount} enemies, 20 targets, 100 frames): ${duration.toFixed(2)}ms`,
+      );
       expect(duration).toBeLessThan(1000);
 
       aiManager.destroy();

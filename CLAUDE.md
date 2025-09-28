@@ -31,7 +31,7 @@ project.
 - **Implementation**: Enhanced AI system with proven logic from dragon animation test page
 - **Performance**: 250+ enemies at 0.08ms per frame (60+ FPS capable)
 - **Architecture**: State machine (approach/stop/attack/death) with movement and combat systems
-- **Files Added**: 
+- **Files Added**:
   - `packages/sim/src/enemies/ai/enhanced-ai-manager.ts` - Core AI management
   - `packages/sim/src/enemies/ai/enhanced-integration.ts` - Integration layer
   - `packages/sim/tests/enemies/ai/enhanced-ai-manager.test.ts` - AI manager tests

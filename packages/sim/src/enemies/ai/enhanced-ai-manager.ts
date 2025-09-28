@@ -95,10 +95,11 @@ export class EnhancedAIManager {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       // Movement logic (from test page)
-      if (aiState.isMoving && distance > 300) { // Attack range
+      if (aiState.isMoving && distance > 300) {
+        // Attack range
         // Move toward target
         const moveDistance = 50 * aiState.currentSpeedMultiplier * (deltaTime / 1000);
-        
+
         if (distance > 0) {
           const moveX = (dx / distance) * moveDistance;
           const moveY = (dy / distance) * moveDistance;
@@ -138,7 +139,7 @@ export class EnhancedAIManager {
       const dx = target.x - enemyPos.x;
       const dy = target.y - enemyPos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (distance < closestDistance) {
         closestDistance = distance;
         closest = target;

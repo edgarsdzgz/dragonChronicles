@@ -19,7 +19,7 @@ export interface EnhancedAIIntegration {
  */
 export function createEnhancedAIIntegration(): EnhancedAIIntegration {
   const aiManager = new EnhancedAIManager();
-  
+
   return {
     aiManager,
     isActive: false,
@@ -33,7 +33,7 @@ export function createEnhancedAIIntegration(): EnhancedAIIntegration {
 export function addEnemyToEnhancedAI(
   integration: EnhancedAIIntegration,
   enemy: SpawnedEnemy,
-  enemyType: 'mantair-corsair' | 'swarm' = 'mantair-corsair'
+  enemyType: 'mantair-corsair' | 'swarm' = 'mantair-corsair',
 ): void {
   // Create AI behavior config based on enemy type
   const aiConfig: AIBehaviorConfig = {
@@ -47,7 +47,7 @@ export function addEnemyToEnhancedAI(
 
   // Add to AI manager
   integration.aiManager.addEnemy(enemy, aiConfig);
-  
+
   console.log(`Added ${enemyType} to enhanced AI system`);
 }
 
@@ -56,7 +56,7 @@ export function addEnemyToEnhancedAI(
  */
 export function removeEnemyFromEnhancedAI(
   integration: EnhancedAIIntegration,
-  poolIndex: number
+  poolIndex: number,
 ): void {
   integration.aiManager.removeEnemy(poolIndex);
   console.log(`Removed enemy ${poolIndex} from enhanced AI system`);
@@ -67,7 +67,7 @@ export function removeEnemyFromEnhancedAI(
  */
 export function setAITargets(
   integration: EnhancedAIIntegration,
-  targets: Array<{ x: number; y: number }>
+  targets: Array<{ x: number; y: number }>,
 ): void {
   integration.targets = targets;
   integration.aiManager.setTargets(targets);
@@ -79,7 +79,7 @@ export function setAITargets(
  */
 export function updateEnhancedAI(integration: EnhancedAIIntegration): void {
   if (!integration.isActive) return;
-  
+
   integration.aiManager.update();
 }
 
@@ -108,7 +108,7 @@ export function getAIStatistics(integration: EnhancedAIIntegration): {
   isActive: boolean;
 } {
   const aiStates = integration.aiManager.getAIStates();
-  
+
   return {
     activeEnemies: aiStates.size,
     targets: integration.targets.length,
@@ -119,10 +119,7 @@ export function getAIStatistics(integration: EnhancedAIIntegration): {
 /**
  * Get AI state for specific enemy
  */
-export function getEnemyAIState(
-  integration: EnhancedAIIntegration,
-  poolIndex: number
-) {
+export function getEnemyAIState(integration: EnhancedAIIntegration, poolIndex: number) {
   return integration.aiManager.getAIState(poolIndex);
 }
 
