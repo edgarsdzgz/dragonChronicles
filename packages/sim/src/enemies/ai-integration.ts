@@ -6,7 +6,6 @@
 import type { SpawnedEnemy, Vector2 } from './types.js';
 import { AIManager } from './ai/ai-manager.js';
 import type { AIManagerConfig, EnemyAISystem } from './ai/ai-manager.js';
-import type { EnemyAI } from './ai/state-machine.js';
 
 /**
  * AI integration configuration
