@@ -15,10 +15,16 @@
 
 ### Requirements Summary
 - Dragon must have health points (HP) that decrease when taking damage
-- Dragon can die and respawn with full health
+- **Death/Respawn Logic**: When dragon health reaches 0:
+  - Clear all projectiles and enemies from screen
+  - Dragon enters "idle" mode
+  - Health bar progressively recovers from 0% to 100%
+  - During recovery, dragon loses journey distance (pushback effect)
+  - Once health is fully restored, enemies resume spawning and attacking
+  - Journey continues automatically (no Arcana lost)
 - Health system integrates with damage calculation
 - Health state persists during combat sessions
-- Death triggers appropriate game state changes
+- **Journey End**: Only occurs when player manually hits "Return to Draconia"
 
 ## Implementation Plan
 
@@ -31,12 +37,16 @@
 2. **Implement Health Manager**
    - Create `DragonHealthManager` class
    - Implement HP tracking and damage application
-   - Add death detection and respawn logic
+   - Add death detection and pushback respawn logic
+   - Implement progressive health recovery system
+   - Add distance pushback calculation based on land/ward levels
 
 3. **Integration Points**
    - Connect with existing enemy AI system
-   - Prepare for damage system integration
+   - Integrate with journey distance tracking
+   - Implement pushback distance calculation
    - Set up health state persistence
+   - Connect with projectile/enemy clearing system
 
 ### Phase 2: Testing and Validation
 1. **Unit Tests**
@@ -83,13 +93,20 @@
 - [ ] Create `packages/sim/src/combat/types.ts` - Health and damage type definitions
 - [ ] Create `packages/sim/src/combat/dragon-health.ts` - Dragon health management
 - [ ] Implement `DragonHealthManager` class with core functionality
+- [ ] Implement pushback distance calculation based on land/ward levels
+- [ ] Implement progressive health recovery system
 - [ ] Add health state persistence
 - [ ] Integrate with existing enemy AI system
+- [ ] Integrate with journey distance tracking
+- [ ] Implement projectile/enemy clearing on death
 
 ### Testing
 - [ ] Create `packages/sim/tests/combat/dragon-health.test.ts` - Health system tests
 - [ ] Unit tests for health state management
+- [ ] Unit tests for pushback distance calculation
+- [ ] Unit tests for progressive recovery system
 - [ ] Integration tests with enemy AI
+- [ ] Integration tests with journey distance tracking
 - [ ] Performance tests under load
 - [ ] State persistence verification
 
@@ -108,10 +125,14 @@
 
 ### Functional Requirements
 - [ ] Dragon has health points (HP) that decrease when taking damage
-- [ ] Dragon can die and respawn with full health
+- [ ] Dragon can die and enter recovery mode with progressive health restoration
+- [ ] Death clears all projectiles and enemies from screen
+- [ ] During recovery, dragon loses journey distance (pushback effect)
+- [ ] Pushback distance calculated based on land and ward levels
 - [ ] Health system integrates with damage calculation
 - [ ] Health state persists during combat sessions
-- [ ] Death triggers appropriate game state changes
+- [ ] Journey continues automatically after recovery (no Arcana lost)
+- [ ] Journey only ends when player manually returns to Draconia
 
 ### Technical Requirements
 - [ ] All unit tests pass
@@ -126,6 +147,47 @@
 - [ ] Memory usage within limits
 - [ ] State persistence verified
 
+## Pushback Distance Calculation
+
+### Research Findings
+Based on research of Unnamed Space Idle and similar idle games, the pushback mechanic should:
+
+1. **Base Pushback Distance**: Start with a fixed base distance (e.g., 100-200 meters)
+2. **Land/Ward Modifiers**: Higher land and ward levels reduce pushback distance
+3. **Progressive Recovery**: Health recovery time correlates with pushback distance
+4. **Minimum Pushback**: Ensure minimum pushback to maintain challenge
+
+### Proposed Formula
+```typescript
+// Base pushback distance (meters)
+const BASE_PUSHBACK = 150;
+
+// Land and ward influence factors
+const LAND_FACTOR = 0.1;  // 10% reduction per land level
+const WARD_FACTOR = 0.05; // 5% reduction per ward level
+
+// Calculate pushback distance
+function calculatePushbackDistance(landLevel: number, wardLevel: number): number {
+  const landReduction = landLevel * LAND_FACTOR;
+  const wardReduction = wardLevel * WARD_FACTOR;
+  const totalReduction = Math.min(landReduction + wardReduction, 0.8); // Max 80% reduction
+  
+  const pushbackDistance = BASE_PUSHBACK * (1 - totalReduction);
+  return Math.max(pushbackDistance, 20); // Minimum 20 meters pushback
+}
+```
+
+### Recovery Time Calculation
+```typescript
+// Health recovery time (seconds)
+const RECOVERY_TIME = 8; // 8 seconds to fully recover
+
+// Pushback rate (meters per second)
+function calculatePushbackRate(pushbackDistance: number): number {
+  return pushbackDistance / RECOVERY_TIME;
+}
+```
+
 ## Technical Architecture
 
 ### Core Components
@@ -136,8 +198,13 @@ interface DragonHealth {
   currentHP: number;
   maxHP: number;
   isAlive: boolean;
+  isRecovering: boolean;
+  recoveryProgress: number; // 0.0 to 1.0
+  pushbackDistance: number;
   takeDamage(amount: number): void;
   heal(amount: number): void;
+  startRecovery(pushbackDistance: number): void;
+  updateRecovery(deltaTime: number): void;
   respawn(): void;
 }
 ```
@@ -147,12 +214,18 @@ interface DragonHealth {
 class DragonHealthManager {
   private health: DragonHealth;
   private config: HealthConfig;
+  private landLevel: number;
+  private wardLevel: number;
   
-  constructor(config: HealthConfig);
+  constructor(config: HealthConfig, landLevel: number, wardLevel: number);
   update(deltaTime: number): void;
   takeDamage(amount: number): void;
   heal(amount: number): void;
   isAlive(): boolean;
+  isRecovering(): boolean;
+  getRecoveryProgress(): number;
+  getPushbackDistance(): number;
+  startRecovery(): void;
   respawn(): void;
 }
 ```
