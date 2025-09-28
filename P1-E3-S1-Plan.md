@@ -93,8 +93,9 @@
 - [ ] Create `packages/sim/src/combat/types.ts` - Health and damage type definitions
 - [ ] Create `packages/sim/src/combat/dragon-health.ts` - Dragon health management
 - [ ] Implement `DragonHealthManager` class with core functionality
-- [ ] Implement pushback distance calculation based on land/ward levels
-- [ ] Implement progressive health recovery system
+- [ ] Implement percentage-based pushback calculation (3-15% based on land/ward)
+- [ ] Implement progressive health recovery system with scaling recovery time
+- [ ] Implement ward/land transition logic during pushback
 - [ ] Add health state persistence
 - [ ] Integrate with existing enemy AI system
 - [ ] Integrate with journey distance tracking
@@ -103,10 +104,12 @@
 ### Testing
 - [ ] Create `packages/sim/tests/combat/dragon-health.test.ts` - Health system tests
 - [ ] Unit tests for health state management
-- [ ] Unit tests for pushback distance calculation
+- [ ] Unit tests for percentage-based pushback calculation
+- [ ] Unit tests for ward/land transition logic
 - [ ] Unit tests for progressive recovery system
 - [ ] Integration tests with enemy AI
 - [ ] Integration tests with journey distance tracking
+- [ ] Edge case tests (pushback at distance 0, ward boundaries)
 - [ ] Performance tests under load
 - [ ] State persistence verification
 
@@ -127,8 +130,10 @@
 - [ ] Dragon has health points (HP) that decrease when taking damage
 - [ ] Dragon can die and enter recovery mode with progressive health restoration
 - [ ] Death clears all projectiles and enemies from screen
-- [ ] During recovery, dragon loses journey distance (pushback effect)
-- [ ] Pushback distance calculated based on land and ward levels
+- [ ] During recovery, dragon loses journey distance (percentage-based pushback)
+- [ ] Pushback percentage: 3% (L1W1) to 15% (L3W3+) based on land/ward
+- [ ] Ward/land transitions handled correctly during pushback
+- [ ] Pushback never results in negative distance (minimum 0)
 - [ ] Health system integrates with damage calculation
 - [ ] Health state persists during combat sessions
 - [ ] Journey continues automatically after recovery (no Arcana lost)
@@ -159,32 +164,93 @@ Based on research of Unnamed Space Idle and similar idle games, the pushback mec
 
 ### Proposed Formula
 ```typescript
-// Base pushback distance (meters)
-const BASE_PUSHBACK = 150;
+// Percentage-based pushback system
+const PUSHBACK_PERCENTAGES = {
+  // Base percentages by land/ward combination
+  '1-1': 0.03,  // Land 1, Ward 1: 3% pushback
+  '1-2': 0.05,  // Land 1, Ward 2: 5% pushback
+  '1-3': 0.07,  // Land 1, Ward 3: 7% pushback
+  '2-1': 0.05,  // Land 2, Ward 1: 5% pushback
+  '2-2': 0.08,  // Land 2, Ward 2: 8% pushback
+  '2-3': 0.10,  // Land 2, Ward 3: 10% pushback
+  '3-1': 0.08,  // Land 3, Ward 1: 8% pushback
+  '3-2': 0.12,  // Land 3, Ward 2: 12% pushback
+  '3-3': 0.15,  // Land 3, Ward 3: 15% pushback
+  // Higher lands/wards can have up to 15% pushback
+};
 
-// Land and ward influence factors
-const LAND_FACTOR = 0.1;  // 10% reduction per land level
-const WARD_FACTOR = 0.05; // 5% reduction per ward level
-
-// Calculate pushback distance
-function calculatePushbackDistance(landLevel: number, wardLevel: number): number {
-  const landReduction = landLevel * LAND_FACTOR;
-  const wardReduction = wardLevel * WARD_FACTOR;
-  const totalReduction = Math.min(landReduction + wardReduction, 0.8); // Max 80% reduction
+// Calculate pushback distance based on current distance and land/ward
+function calculatePushbackDistance(
+  currentDistance: number, 
+  landLevel: number, 
+  wardLevel: number
+): number {
+  const key = `${landLevel}-${wardLevel}`;
+  const pushbackPercentage = PUSHBACK_PERCENTAGES[key] || 0.10; // Default 10%
   
-  const pushbackDistance = BASE_PUSHBACK * (1 - totalReduction);
-  return Math.max(pushbackDistance, 20); // Minimum 20 meters pushback
+  // Calculate pushback distance
+  const pushbackDistance = currentDistance * pushbackPercentage;
+  
+  // Ensure we don't go below 0 distance
+  const maxSafePushback = currentDistance;
+  const finalPushback = Math.min(pushbackDistance, maxSafePushback);
+  
+  return Math.max(finalPushback, 0); // Never negative
 }
 ```
 
 ### Recovery Time Calculation
 ```typescript
-// Health recovery time (seconds)
-const RECOVERY_TIME = 8; // 8 seconds to fully recover
+// Health recovery time (seconds) - scales with pushback distance
+const BASE_RECOVERY_TIME = 6; // Base 6 seconds
+const MAX_RECOVERY_TIME = 12; // Maximum 12 seconds
+
+// Calculate recovery time based on pushback percentage
+function calculateRecoveryTime(pushbackPercentage: number): number {
+  // Longer recovery for larger pushbacks
+  const recoveryTime = BASE_RECOVERY_TIME + (pushbackPercentage * 100);
+  return Math.min(recoveryTime, MAX_RECOVERY_TIME);
+}
 
 // Pushback rate (meters per second)
-function calculatePushbackRate(pushbackDistance: number): number {
-  return pushbackDistance / RECOVERY_TIME;
+function calculatePushbackRate(pushbackDistance: number, recoveryTime: number): number {
+  return pushbackDistance / recoveryTime;
+}
+```
+
+### Ward/Land Transition Logic
+```typescript
+// Handle ward/land transitions during pushback
+function handlePushbackTransition(
+  currentDistance: number, 
+  pushbackDistance: number, 
+  landLevel: number, 
+  wardLevel: number
+): { newDistance: number; newLand: number; newWard: number } {
+  const newDistance = Math.max(currentDistance - pushbackDistance, 0);
+  
+  // Determine new land/ward based on distance
+  const newLand = determineLandFromDistance(newDistance);
+  const newWard = determineWardFromDistance(newDistance, newLand);
+  
+  return {
+    newDistance,
+    newLand,
+    newWard
+  };
+}
+
+// Example ward boundaries (from documentation)
+function determineWardFromDistance(distance: number, land: number): number {
+  if (land === 1) {
+    if (distance < 500) return 1;      // Sunwake Downs (0-500m)
+    if (distance < 1000) return 2;      // Waystone Mile (500-1000m)
+    if (distance < 1500) return 3;      // Skylark Flats (1000-1500m)
+    if (distance < 2000) return 4;     // Longgrass Reach (1500-2000m)
+    return 5; // Bluewind Shelf (2000m+)
+  }
+  // Add other land boundaries as needed
+  return 1; // Default
 }
 ```
 
@@ -201,10 +267,12 @@ interface DragonHealth {
   isRecovering: boolean;
   recoveryProgress: number; // 0.0 to 1.0
   pushbackDistance: number;
+  pushbackPercentage: number; // Percentage of current distance to push back
   takeDamage(amount: number): void;
   heal(amount: number): void;
-  startRecovery(pushbackDistance: number): void;
+  startRecovery(currentDistance: number, landLevel: number, wardLevel: number): void;
   updateRecovery(deltaTime: number): void;
+  getPushbackDistance(): number;
   respawn(): void;
 }
 ```
@@ -216,8 +284,9 @@ class DragonHealthManager {
   private config: HealthConfig;
   private landLevel: number;
   private wardLevel: number;
+  private currentDistance: number;
   
-  constructor(config: HealthConfig, landLevel: number, wardLevel: number);
+  constructor(config: HealthConfig, landLevel: number, wardLevel: number, currentDistance: number);
   update(deltaTime: number): void;
   takeDamage(amount: number): void;
   heal(amount: number): void;
@@ -225,7 +294,9 @@ class DragonHealthManager {
   isRecovering(): boolean;
   getRecoveryProgress(): number;
   getPushbackDistance(): number;
+  getPushbackPercentage(): number;
   startRecovery(): void;
+  handleWardTransition(): { newLand: number; newWard: number; newDistance: number };
   respawn(): void;
 }
 ```
