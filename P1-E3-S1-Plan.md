@@ -131,7 +131,7 @@
 - [ ] Dragon can die and enter recovery mode with progressive health restoration
 - [ ] Death clears all projectiles and enemies from screen
 - [ ] During recovery, dragon loses journey distance (percentage-based pushback)
-- [ ] Pushback percentage: 3% (L1W1) to 15% (L3W3+) based on land/ward
+- [ ] Pushback percentage: 3% (new land tutorial) to 15% (final ward) with land difficulty spikes
 - [ ] Ward/land transitions handled correctly during pushback
 - [ ] Pushback never results in negative distance (minimum 0)
 - [ ] Health system integrates with damage calculation
@@ -157,26 +157,67 @@
 ### Research Findings
 Based on research of Unnamed Space Idle and similar idle games, the pushback mechanic should:
 
-1. **Base Pushback Distance**: Start with a fixed base distance (e.g., 100-200 meters)
-2. **Land/Ward Modifiers**: Higher land and ward levels reduce pushback distance
-3. **Progressive Recovery**: Health recovery time correlates with pushback distance
-4. **Minimum Pushback**: Ensure minimum pushback to maintain challenge
+1. **Percentage-Based System**: Pushback as percentage of current distance (3-15%)
+2. **Land Difficulty Spikes**: New lands start with gentle 3% pushback to ease into difficulty
+3. **Ward Progression**: Within each land, pushback increases from 3% to 15% across wards
+4. **Progressive Recovery**: Health recovery time scales with pushback percentage
+5. **Minimum Pushback**: Ensure minimum pushback to maintain challenge
+
+### Progression Pattern
+```
+Land 1: Horizon Steppe
+├── Ward 1: 3% (tutorial)
+├── Ward 2: 5% (basic)
+├── Ward 3: 7% (air combat)
+├── Ward 4: 10% (accuracy)
+└── Ward 5: 12% (crosswind)
+
+Land 2: Ember Reaches (Difficulty Spike!)
+├── Ward 1: 3% (new land tutorial - gentle)
+├── Ward 2: 6% (fire basics)
+├── Ward 3: 9% (heat resistance)
+├── Ward 4: 12% (lava flows)
+└── Ward 5: 15% (ember mastery)
+
+Land 3: Mistral Peaks (Difficulty Spike!)
+├── Ward 1: 3% (new land tutorial - gentle)
+├── Ward 2: 7% (wind basics)
+├── Ward 3: 11% (ice resistance)
+├── Ward 4: 14% (storm peaks)
+└── Ward 5: 15% (summit mastery)
+```
 
 ### Proposed Formula
 ```typescript
-// Percentage-based pushback system
+// Percentage-based pushback system with land difficulty spikes
 const PUSHBACK_PERCENTAGES = {
-  // Base percentages by land/ward combination
-  '1-1': 0.03,  // Land 1, Ward 1: 3% pushback
-  '1-2': 0.05,  // Land 1, Ward 2: 5% pushback
-  '1-3': 0.07,  // Land 1, Ward 3: 7% pushback
-  '2-1': 0.05,  // Land 2, Ward 1: 5% pushback
-  '2-2': 0.08,  // Land 2, Ward 2: 8% pushback
-  '2-3': 0.10,  // Land 2, Ward 3: 10% pushback
-  '3-1': 0.08,  // Land 3, Ward 1: 8% pushback
-  '3-2': 0.12,  // Land 3, Ward 2: 12% pushback
-  '3-3': 0.15,  // Land 3, Ward 3: 15% pushback
-  // Higher lands/wards can have up to 15% pushback
+  // Land 1: Horizon Steppe (Tutorial → Advanced)
+  '1-1': 0.03,  // Sunwake Downs: 3% (gentle tutorial)
+  '1-2': 0.05,  // Waystone Mile: 5% (basic progression)
+  '1-3': 0.07,  // Skylark Flats: 7% (air combat intro)
+  '1-4': 0.10,  // Longgrass Reach: 10% (accuracy challenges)
+  '1-5': 0.12,  // Bluewind Shelf: 12% (crosswind mechanics)
+  
+  // Land 2: Ember Reaches (Difficulty spike → Advanced)
+  '2-1': 0.03,  // New land tutorial: 3% (ease into difficulty spike)
+  '2-2': 0.06,  // Fire progression: 6% (learning fire mechanics)
+  '2-3': 0.09,  // Heat challenges: 9% (fire resistance)
+  '2-4': 0.12,  // Lava flows: 12% (advanced fire combat)
+  '2-5': 0.15,  // Ember peaks: 15% (master fire mechanics)
+  
+  // Land 3: Mistral Peaks (Difficulty spike → Advanced)
+  '3-1': 0.03,  // New land tutorial: 3% (ease into wind/ice)
+  '3-2': 0.07,  // Wind currents: 7% (learning wind mechanics)
+  '3-3': 0.11,  // Ice challenges: 11% (ice resistance)
+  '3-4': 0.14,  // Storm peaks: 14% (advanced wind/ice)
+  '3-5': 0.15,  // Summit: 15% (master wind/ice mechanics)
+  
+  // Land 4+: Additional Lands (Same pattern)
+  '4-1': 0.03,  // New land tutorial: 3% (ease into new mechanics)
+  '4-2': 0.08,  // Mid-progression: 8% (learning new systems)
+  '4-3': 0.12,  // Advanced: 12% (mastering new mechanics)
+  '4-4': 0.15,  // Expert: 15% (endgame challenge)
+  '4-5': 0.15,  // Master: 15% (maximum difficulty)
 };
 
 // Calculate pushback distance based on current distance and land/ward
@@ -196,6 +237,27 @@ function calculatePushbackDistance(
   const finalPushback = Math.min(pushbackDistance, maxSafePushback);
   
   return Math.max(finalPushback, 0); // Never negative
+}
+
+// Alternative dynamic calculation for any land/ward combination
+function calculateDynamicPushbackPercentage(landLevel: number, wardLevel: number): number {
+  // Base percentage for new land (always 3%)
+  const newLandPercentage = 0.03;
+  
+  // Maximum percentage for final ward (15%)
+  const maxPercentage = 0.15;
+  
+  // If it's the first ward of a new land, use gentle pushback
+  if (wardLevel === 1) {
+    return newLandPercentage;
+  }
+  
+  // Calculate progression within the land
+  const wardProgression = (wardLevel - 1) / 4; // 0.0 to 1.0 across 5 wards
+  const percentageRange = maxPercentage - newLandPercentage;
+  const dynamicPercentage = newLandPercentage + (percentageRange * wardProgression);
+  
+  return Math.min(dynamicPercentage, maxPercentage);
 }
 ```
 
