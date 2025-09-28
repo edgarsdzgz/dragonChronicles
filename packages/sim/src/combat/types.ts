@@ -40,10 +40,16 @@ export interface PushbackConfig {
 // ELEMENTAL SYSTEM TYPES
 // ============================================================================
 
-export type ElementalType = 
-  | 'fire' | 'lava' | 'steam'    // Heat triangle
-  | 'ice' | 'frost' | 'mist'     // Cold triangle  
-  | 'lightning' | 'plasma' | 'void'; // Energy triangle
+export type ElementalType =
+  | 'fire'
+  | 'lava'
+  | 'steam' // Heat triangle
+  | 'ice'
+  | 'frost'
+  | 'mist' // Cold triangle
+  | 'lightning'
+  | 'plasma'
+  | 'void'; // Energy triangle
 
 export type ElementalCategory = 'heat' | 'cold' | 'energy';
 
@@ -84,10 +90,16 @@ export interface StatusEffect {
   debuff?: StatusDebuff;
 }
 
-export type StatusEffectType = 
-  | 'burn' | 'melt' | 'scorch'     // Heat effects
-  | 'freeze' | 'chill' | 'blind'   // Cold effects
-  | 'stun' | 'overheat' | 'corrupt'; // Energy effects
+export type StatusEffectType =
+  | 'burn'
+  | 'melt'
+  | 'scorch' // Heat effects
+  | 'freeze'
+  | 'chill'
+  | 'blind' // Cold effects
+  | 'stun'
+  | 'overheat'
+  | 'corrupt'; // Energy effects
 
 export interface StatusDebuff {
   armorReduction?: number; // Percentage armor reduction

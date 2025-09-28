@@ -3,13 +3,13 @@
  * Implements the nested triangle system with meta-triangle and sub-triangles
  */
 
-import type { 
-  ElementalType, 
-  ElementalCategory, 
-  StatusEffect, 
+import type {
+  ElementalType,
+  ElementalCategory,
+  StatusEffect,
   StatusEffectType,
   DamageCalculation,
-  DamageSource
+  DamageSource,
 } from './types.js';
 
 // ============================================================================
@@ -29,16 +29,16 @@ export class ElementalSystem {
     return {
       metaTriangle: {
         heat: 'heat',
-        cold: 'cold', 
-        energy: 'energy'
+        cold: 'cold',
+        energy: 'energy',
       },
       subTriangles: {
         heat: ['fire', 'lava', 'steam'],
         cold: ['ice', 'frost', 'mist'],
-        energy: ['lightning', 'plasma', 'void']
+        energy: ['lightning', 'plasma', 'void'],
       },
       effectivenessMatrix: [],
-      statusEffects: this.createStatusEffectConfigs()
+      statusEffects: this.createStatusEffectConfigs(),
     };
   }
 
@@ -46,18 +46,66 @@ export class ElementalSystem {
     return [
       // Heat effects
       { type: 'burn', elementalType: 'fire', duration: 5, damage: 0.02, debuff: {} },
-      { type: 'melt', elementalType: 'lava', duration: 8, damage: 0, debuff: { armorReduction: 0.25 } },
-      { type: 'scorch', elementalType: 'steam', duration: 6, damage: 0, debuff: { accuracyReduction: 0.30 } },
-      
+      {
+        type: 'melt',
+        elementalType: 'lava',
+        duration: 8,
+        damage: 0,
+        debuff: { armorReduction: 0.25 },
+      },
+      {
+        type: 'scorch',
+        elementalType: 'steam',
+        duration: 6,
+        damage: 0,
+        debuff: { accuracyReduction: 0.3 },
+      },
+
       // Cold effects
-      { type: 'freeze', elementalType: 'ice', duration: 3, damage: 0, debuff: { actionPrevention: true } },
-      { type: 'chill', elementalType: 'frost', duration: 8, damage: 0, debuff: { speedReduction: 0.40 } },
-      { type: 'blind', elementalType: 'mist', duration: 4, damage: 0, debuff: { accuracyReduction: 0.50 } },
-      
+      {
+        type: 'freeze',
+        elementalType: 'ice',
+        duration: 3,
+        damage: 0,
+        debuff: { actionPrevention: true },
+      },
+      {
+        type: 'chill',
+        elementalType: 'frost',
+        duration: 8,
+        damage: 0,
+        debuff: { speedReduction: 0.4 },
+      },
+      {
+        type: 'blind',
+        elementalType: 'mist',
+        duration: 4,
+        damage: 0,
+        debuff: { accuracyReduction: 0.5 },
+      },
+
       // Energy effects
-      { type: 'stun', elementalType: 'lightning', duration: 2, damage: 0, debuff: { actionPrevention: true } },
-      { type: 'overheat', elementalType: 'plasma', duration: 6, damage: 0, debuff: { damageIncrease: 0.25 } },
-      { type: 'corrupt', elementalType: 'void', duration: 10, damage: 0, debuff: { healingPrevention: true } }
+      {
+        type: 'stun',
+        elementalType: 'lightning',
+        duration: 2,
+        damage: 0,
+        debuff: { actionPrevention: true },
+      },
+      {
+        type: 'overheat',
+        elementalType: 'plasma',
+        duration: 6,
+        damage: 0,
+        debuff: { damageIncrease: 0.25 },
+      },
+      {
+        type: 'corrupt',
+        elementalType: 'void',
+        duration: 10,
+        damage: 0,
+        debuff: { healingPrevention: true },
+      },
     ];
   }
 
@@ -66,10 +114,10 @@ export class ElementalSystem {
 
     // Meta-triangle: Heat > Cold > Energy > Heat
     this.addMetaTriangleEffectiveness(matrix);
-    
+
     // Sub-triangles: Internal relationships
     this.addSubTriangleEffectiveness(matrix);
-    
+
     // Cross-triangle rules
     this.addCrossTriangleRules(matrix);
 
@@ -132,19 +180,37 @@ export class ElementalSystem {
     // Opposite triangle: 75% damage (weakness)
     const oppositeTriangles = [
       // Heat vs Energy (Energy beats Heat, so Heat is weak)
-      ['fire', 'lightning'], ['fire', 'plasma'], ['fire', 'void'],
-      ['lava', 'lightning'], ['lava', 'plasma'], ['lava', 'void'],
-      ['steam', 'lightning'], ['steam', 'plasma'], ['steam', 'void'],
-      
+      ['fire', 'lightning'],
+      ['fire', 'plasma'],
+      ['fire', 'void'],
+      ['lava', 'lightning'],
+      ['lava', 'plasma'],
+      ['lava', 'void'],
+      ['steam', 'lightning'],
+      ['steam', 'plasma'],
+      ['steam', 'void'],
+
       // Cold vs Heat (Heat beats Cold, so Cold is weak)
-      ['ice', 'fire'], ['ice', 'lava'], ['ice', 'steam'],
-      ['frost', 'fire'], ['frost', 'lava'], ['frost', 'steam'],
-      ['mist', 'fire'], ['mist', 'lava'], ['mist', 'steam'],
-      
+      ['ice', 'fire'],
+      ['ice', 'lava'],
+      ['ice', 'steam'],
+      ['frost', 'fire'],
+      ['frost', 'lava'],
+      ['frost', 'steam'],
+      ['mist', 'fire'],
+      ['mist', 'lava'],
+      ['mist', 'steam'],
+
       // Energy vs Cold (Cold beats Energy, so Energy is weak)
-      ['lightning', 'ice'], ['lightning', 'frost'], ['lightning', 'mist'],
-      ['plasma', 'ice'], ['plasma', 'frost'], ['plasma', 'mist'],
-      ['void', 'ice'], ['void', 'frost'], ['void', 'mist']
+      ['lightning', 'ice'],
+      ['lightning', 'frost'],
+      ['lightning', 'mist'],
+      ['plasma', 'ice'],
+      ['plasma', 'frost'],
+      ['plasma', 'mist'],
+      ['void', 'ice'],
+      ['void', 'frost'],
+      ['void', 'mist'],
     ];
 
     oppositeTriangles.forEach(([attacker, defender]) => {
@@ -168,18 +234,16 @@ export class ElementalSystem {
    * Calculate complete damage with elemental modifiers
    */
   public calculateDamage(
-    source: DamageSource, 
+    source: DamageSource,
     _defenderElementalType: ElementalType,
-    defenderResistances: Map<ElementalType, number> = new Map()
+    defenderResistances: Map<ElementalType, number> = new Map(),
   ): DamageCalculation {
     const effectiveness = this.calculateEffectiveness(source.elementalType, _defenderElementalType);
     const resistance = defenderResistances.get(source.elementalType) || 0;
-    const resistanceReduction = 1 - (resistance / 100);
-    
+    const resistanceReduction = 1 - resistance / 100;
+
     const elementalMultiplier = effectiveness;
-    const finalDamage = Math.max(0, 
-      source.baseDamage * elementalMultiplier * resistanceReduction
-    );
+    const finalDamage = Math.max(0, source.baseDamage * elementalMultiplier * resistanceReduction);
 
     return {
       baseDamage: source.baseDamage,
@@ -187,22 +251,29 @@ export class ElementalSystem {
       resistanceReduction: resistanceReduction,
       statusEffectBonus: 0, // TODO: Implement status effect bonuses
       finalDamage: Math.round(finalDamage),
-      statusEffectApplied: this.rollStatusEffect(source, _defenderElementalType)
+      statusEffectApplied: this.rollStatusEffect(source, _defenderElementalType),
     };
   }
 
   /**
    * Roll for status effect application
    */
-  private rollStatusEffect(source: DamageSource, _defender: ElementalType): StatusEffect | undefined {
+  private rollStatusEffect(
+    source: DamageSource,
+    _defender: ElementalType,
+  ): StatusEffect | undefined {
     if (Math.random() > source.statusEffectChance) {
       return undefined;
     }
 
-    const statusEffects = this.config.statusEffects as Array<{ elementalType: string; type: string; duration: number; damage: number; debuff: Record<string, unknown> }>;
-    const config = statusEffects.find(
-      effect => effect.elementalType === source.elementalType
-    );
+    const statusEffects = this.config.statusEffects as Array<{
+      elementalType: string;
+      type: string;
+      duration: number;
+      damage: number;
+      debuff: Record<string, unknown>;
+    }>;
+    const config = statusEffects.find((effect) => effect.elementalType === source.elementalType);
 
     if (!config) {
       return undefined;
@@ -213,7 +284,7 @@ export class ElementalSystem {
       duration: config.duration,
       intensity: 1.0,
       damage: config.damage,
-      debuff: config.debuff
+      debuff: config.debuff,
     };
   }
 
@@ -251,9 +322,21 @@ export class ElementalSystem {
     resistance: ElementalCategory;
   } {
     const themes = {
-      1: { primary: 'cold' as ElementalCategory, secondary: 'energy' as ElementalCategory, resistance: 'heat' as ElementalCategory },    // Horizon Steppe
-      2: { primary: 'heat' as ElementalCategory, secondary: 'cold' as ElementalCategory, resistance: 'energy' as ElementalCategory },  // Ember Reaches
-      3: { primary: 'energy' as ElementalCategory, secondary: 'cold' as ElementalCategory, resistance: 'heat' as ElementalCategory }   // Mistral Peaks
+      1: {
+        primary: 'cold' as ElementalCategory,
+        secondary: 'energy' as ElementalCategory,
+        resistance: 'heat' as ElementalCategory,
+      }, // Horizon Steppe
+      2: {
+        primary: 'heat' as ElementalCategory,
+        secondary: 'cold' as ElementalCategory,
+        resistance: 'energy' as ElementalCategory,
+      }, // Ember Reaches
+      3: {
+        primary: 'energy' as ElementalCategory,
+        secondary: 'cold' as ElementalCategory,
+        resistance: 'heat' as ElementalCategory,
+      }, // Mistral Peaks
     };
 
     return themes[landLevel as keyof typeof themes] || themes[1];
@@ -266,15 +349,15 @@ export class ElementalSystem {
     const theme = this.getLandElementalTheme(landLevel);
     const primaryElements = this.getElementsInCategory(theme.primary);
     const secondaryElements = this.getElementsInCategory(theme.secondary);
-    
+
     // Mix primary and secondary elements based on ward progression
     const primaryWeight = Math.min(0.8, 0.4 + (_wardLevel - 1) * 0.1);
     const elements = [...primaryElements];
-    
+
     if (Math.random() > primaryWeight) {
       elements.push(...secondaryElements);
     }
-    
+
     return elements;
   }
 }

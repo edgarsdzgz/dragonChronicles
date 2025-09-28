@@ -19,8 +19,8 @@ describe('DragonHealthImpl', () => {
       pushbackConfig: {
         basePercentage: 0.03,
         maxPercentage: 0.15,
-        landDifficultySpikes: true
-      }
+        landDifficultySpikes: true,
+      },
     };
     health = new DragonHealthImpl(config, {} as any); // Mock elemental system
   });
@@ -90,7 +90,7 @@ describe('DragonHealthImpl', () => {
     it('should update recovery progress', () => {
       health.takeDamage(100);
       health.startRecovery(1000, 1, 1);
-      
+
       // Simulate time passing
       health.updateRecovery(3000); // 3 seconds
       expect(health.recoveryProgress).toBeGreaterThan(0);
@@ -100,7 +100,7 @@ describe('DragonHealthImpl', () => {
     it('should complete recovery after full duration', () => {
       health.takeDamage(100);
       health.startRecovery(1000, 1, 1);
-      
+
       // Simulate full recovery time (9 seconds for Land 1 Ward 1: 6 + 3% * 100 = 9)
       health.updateRecovery(9000); // 9 seconds
       expect(health.recoveryProgress).toBe(1);
@@ -226,8 +226,8 @@ describe('DragonHealthManager', () => {
       pushbackConfig: {
         basePercentage: 0.03,
         maxPercentage: 0.15,
-        landDifficultySpikes: true
-      }
+        landDifficultySpikes: true,
+      },
     };
     manager = new DragonHealthManager(config, 1, 1, 1000);
   });
@@ -349,8 +349,8 @@ describe('Pushback Percentage Progression', () => {
       pushbackConfig: {
         basePercentage: 0.03,
         maxPercentage: 0.15,
-        landDifficultySpikes: true
-      }
+        landDifficultySpikes: true,
+      },
     };
     manager = new DragonHealthManager(config, 1, 1, 1000);
   });
@@ -360,8 +360,8 @@ describe('Pushback Percentage Progression', () => {
       { ward: 1, expected: 0.03 },
       { ward: 2, expected: 0.05 },
       { ward: 3, expected: 0.07 },
-      { ward: 4, expected: 0.10 },
-      { ward: 5, expected: 0.12 }
+      { ward: 4, expected: 0.1 },
+      { ward: 5, expected: 0.12 },
     ];
 
     land1Wards.forEach(({ ward, expected }) => {
@@ -379,7 +379,7 @@ describe('Pushback Percentage Progression', () => {
       { ward: 2, expected: 0.06 },
       { ward: 3, expected: 0.09 },
       { ward: 4, expected: 0.12 },
-      { ward: 5, expected: 0.15 }
+      { ward: 5, expected: 0.15 },
     ];
 
     land2Wards.forEach(({ ward, expected }) => {
@@ -397,7 +397,7 @@ describe('Pushback Percentage Progression', () => {
       { ward: 2, expected: 0.07 },
       { ward: 3, expected: 0.11 },
       { ward: 4, expected: 0.14 },
-      { ward: 5, expected: 0.15 }
+      { ward: 5, expected: 0.15 },
     ];
 
     land3Wards.forEach(({ ward, expected }) => {
@@ -421,8 +421,8 @@ describe('Edge Cases', () => {
       pushbackConfig: {
         basePercentage: 0.03,
         maxPercentage: 0.15,
-        landDifficultySpikes: true
-      }
+        landDifficultySpikes: true,
+      },
     };
     manager = new DragonHealthManager(config, 1, 1, 1000);
   });

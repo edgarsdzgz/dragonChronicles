@@ -3,12 +3,12 @@
  * Handles health, death/respawn, pushback mechanics, and elemental integration
  */
 
-import type { 
-  DragonHealth, 
-  HealthConfig, 
+import type {
+  DragonHealth,
+  HealthConfig,
   PushbackResult,
   ElementalResistance,
-  StatusEffect
+  StatusEffect,
 } from './types.js';
 import { ElementalSystem } from './elemental-system.js';
 
@@ -18,32 +18,32 @@ import { ElementalSystem } from './elemental-system.js';
 
 const PUSHBACK_PERCENTAGES: Record<string, number> = {
   // Land 1: Horizon Steppe (Tutorial → Advanced)
-  '1-1': 0.03,  // Sunwake Downs: 3% (gentle tutorial)
-  '1-2': 0.05,  // Waystone Mile: 5% (basic progression)
-  '1-3': 0.07,  // Skylark Flats: 7% (air combat intro)
-  '1-4': 0.10,  // Longgrass Reach: 10% (accuracy challenges)
-  '1-5': 0.12,  // Bluewind Shelf: 12% (crosswind mechanics)
-  
+  '1-1': 0.03, // Sunwake Downs: 3% (gentle tutorial)
+  '1-2': 0.05, // Waystone Mile: 5% (basic progression)
+  '1-3': 0.07, // Skylark Flats: 7% (air combat intro)
+  '1-4': 0.1, // Longgrass Reach: 10% (accuracy challenges)
+  '1-5': 0.12, // Bluewind Shelf: 12% (crosswind mechanics)
+
   // Land 2: Ember Reaches (Difficulty spike → Advanced)
-  '2-1': 0.03,  // New land tutorial: 3% (ease into difficulty spike)
-  '2-2': 0.06,  // Fire progression: 6% (learning fire mechanics)
-  '2-3': 0.09,  // Heat challenges: 9% (fire resistance)
-  '2-4': 0.12,  // Lava flows: 12% (advanced fire combat)
-  '2-5': 0.15,  // Ember peaks: 15% (master fire mechanics)
-  
+  '2-1': 0.03, // New land tutorial: 3% (ease into difficulty spike)
+  '2-2': 0.06, // Fire progression: 6% (learning fire mechanics)
+  '2-3': 0.09, // Heat challenges: 9% (fire resistance)
+  '2-4': 0.12, // Lava flows: 12% (advanced fire combat)
+  '2-5': 0.15, // Ember peaks: 15% (master fire mechanics)
+
   // Land 3: Mistral Peaks (Difficulty spike → Advanced)
-  '3-1': 0.03,  // New land tutorial: 3% (ease into wind/ice)
-  '3-2': 0.07,  // Wind currents: 7% (learning wind mechanics)
-  '3-3': 0.11,  // Ice challenges: 11% (ice resistance)
-  '3-4': 0.14,  // Storm peaks: 14% (advanced wind/ice)
-  '3-5': 0.15,  // Summit: 15% (master wind/ice mechanics)
-  
+  '3-1': 0.03, // New land tutorial: 3% (ease into wind/ice)
+  '3-2': 0.07, // Wind currents: 7% (learning wind mechanics)
+  '3-3': 0.11, // Ice challenges: 11% (ice resistance)
+  '3-4': 0.14, // Storm peaks: 14% (advanced wind/ice)
+  '3-5': 0.15, // Summit: 15% (master wind/ice mechanics)
+
   // Land 4+: Additional Lands (Same pattern)
-  '4-1': 0.03,  // New land tutorial: 3% (ease into new mechanics)
-  '4-2': 0.08,  // Mid-progression: 8% (learning new systems)
-  '4-3': 0.12,  // Advanced: 12% (mastering new mechanics)
-  '4-4': 0.15,  // Expert: 15% (endgame challenge)
-  '4-5': 0.15,  // Master: 15% (maximum difficulty)
+  '4-1': 0.03, // New land tutorial: 3% (ease into new mechanics)
+  '4-2': 0.08, // Mid-progression: 8% (learning new systems)
+  '4-3': 0.12, // Advanced: 12% (mastering new mechanics)
+  '4-4': 0.15, // Expert: 15% (endgame challenge)
+  '4-5': 0.15, // Master: 15% (maximum difficulty)
 };
 
 // ============================================================================
@@ -92,7 +92,7 @@ export class DragonHealthImpl implements DragonHealth {
     }
 
     this.currentHP = Math.max(0, this.currentHP - amount);
-    
+
     if (this.currentHP <= 0) {
       this.die();
     }
@@ -125,7 +125,7 @@ export class DragonHealthImpl implements DragonHealth {
     this.isRecovering = true;
     this.recoveryProgress = 0;
     this.recoveryStartTime = Date.now();
-    
+
     // Clear all status effects on death
     this.activeStatusEffects = [];
   }
@@ -138,10 +138,10 @@ export class DragonHealthImpl implements DragonHealth {
     // Calculate pushback percentage based on land/ward
     this.pushbackPercentage = this.calculatePushbackPercentage(landLevel, wardLevel);
     this.pushbackDistance = Math.max(0, currentDistance * this.pushbackPercentage);
-    
+
     // Calculate recovery time based on pushback percentage
     this.recoveryDuration = this.calculateRecoveryTime(this.pushbackPercentage);
-    
+
     // Reset recovery progress
     this.recoveryProgress = 0;
     this.recoveryStartTime = Date.now();
@@ -184,7 +184,7 @@ export class DragonHealthImpl implements DragonHealth {
   private calculatePushbackPercentage(landLevel: number, wardLevel: number): number {
     const key = `${landLevel}-${wardLevel}`;
     const percentage = PUSHBACK_PERCENTAGES[key];
-    
+
     if (percentage !== undefined) {
       return percentage;
     }
@@ -196,29 +196,29 @@ export class DragonHealthImpl implements DragonHealth {
   private calculateDynamicPushbackPercentage(landLevel: number, wardLevel: number): number {
     // Base percentage for new land (always 3%)
     const newLandPercentage = 0.03;
-    
+
     // Maximum percentage for final ward (15%)
     const maxPercentage = 0.15;
-    
+
     // If it's the first ward of a new land, use gentle pushback
     if (wardLevel === 1) {
       return newLandPercentage;
     }
-    
+
     // Calculate progression within the land
     const wardProgression = (wardLevel - 1) / 4; // 0.0 to 1.0 across 5 wards
     const percentageRange = maxPercentage - newLandPercentage;
-    const dynamicPercentage = newLandPercentage + (percentageRange * wardProgression);
-    
+    const dynamicPercentage = newLandPercentage + percentageRange * wardProgression;
+
     return Math.min(dynamicPercentage, maxPercentage);
   }
 
   private calculateRecoveryTime(pushbackPercentage: number): number {
     const baseTime = this.config.baseRecoveryTime;
     const maxTime = this.config.maxRecoveryTime;
-    
+
     // Longer recovery for larger pushbacks
-    const recoveryTime = baseTime + (pushbackPercentage * 100);
+    const recoveryTime = baseTime + pushbackPercentage * 100;
     return Math.min(recoveryTime, maxTime);
   }
 
@@ -227,9 +227,9 @@ export class DragonHealthImpl implements DragonHealth {
   // ============================================================================
 
   public takeElementalDamage(
-    baseDamage: number, 
-    _elementalType: string, 
-    statusEffectChance: number = 0.1
+    baseDamage: number,
+    _elementalType: string,
+    statusEffectChance: number = 0.1,
   ): void {
     if (!this.isAlive || this.isRecovering) {
       return;
@@ -237,7 +237,7 @@ export class DragonHealthImpl implements DragonHealth {
 
     // Apply elemental resistance
     const resistance = this.elementalResistances[_elementalType as keyof ElementalResistance] || 0;
-    const resistanceMultiplier = 1 - (resistance / 100);
+    const resistanceMultiplier = 1 - resistance / 100;
     const finalDamage = baseDamage * resistanceMultiplier;
 
     this.takeDamage(finalDamage);
@@ -254,7 +254,7 @@ export class DragonHealthImpl implements DragonHealth {
   }
 
   public updateStatusEffects(deltaTime: number): void {
-    this.activeStatusEffects = this.activeStatusEffects.filter(effect => {
+    this.activeStatusEffects = this.activeStatusEffects.filter((effect) => {
       effect.duration -= deltaTime / 1000;
       return effect.duration > 0;
     });
@@ -265,14 +265,14 @@ export class DragonHealthImpl implements DragonHealth {
   // ============================================================================
 
   public handleWardTransition(
-    currentDistance: number, 
-    landLevel: number, 
-    wardLevel: number
+    currentDistance: number,
+    landLevel: number,
+    wardLevel: number,
   ): PushbackResult {
     const pushbackPercentage = this.calculatePushbackPercentage(landLevel, wardLevel);
     const pushbackAmount = Math.max(0, currentDistance * pushbackPercentage);
     const newDistance = Math.max(0, currentDistance - pushbackAmount);
-    
+
     // Determine new land/ward based on distance
     const newLand = this.determineLandFromDistance(newDistance);
     const newWard = this.determineWardFromDistance(newDistance, newLand);
@@ -283,31 +283,31 @@ export class DragonHealthImpl implements DragonHealth {
       newLand,
       newWard,
       pushbackAmount,
-      recoveryTime
+      recoveryTime,
     };
   }
 
   private determineLandFromDistance(distance: number): number {
     // Example land boundaries - should be configured based on game design
-    if (distance < 2000) return 1;      // Horizon Steppe
-    if (distance < 5000) return 2;       // Ember Reaches  
-    if (distance < 10000) return 3;     // Mistral Peaks
+    if (distance < 2000) return 1; // Horizon Steppe
+    if (distance < 5000) return 2; // Ember Reaches
+    if (distance < 10000) return 3; // Mistral Peaks
     return 4; // Additional lands
   }
 
   private determineWardFromDistance(distance: number, land: number): number {
     if (land === 1) {
-      if (distance < 500) return 1;      // Sunwake Downs (0-500m)
-      if (distance < 1000) return 2;     // Waystone Mile (500-1000m)
-      if (distance < 1500) return 3;     // Skylark Flats (1000-1500m)
-      if (distance < 2000) return 4;     // Longgrass Reach (1500-2000m)
+      if (distance < 500) return 1; // Sunwake Downs (0-500m)
+      if (distance < 1000) return 2; // Waystone Mile (500-1000m)
+      if (distance < 1500) return 3; // Skylark Flats (1000-1500m)
+      if (distance < 2000) return 4; // Longgrass Reach (1500-2000m)
       return 5; // Bluewind Shelf (2000m+)
     }
     if (land === 2) {
-      if (distance < 2500) return 1;     // New land tutorial
-      if (distance < 3000) return 2;     // Fire progression
-      if (distance < 3500) return 3;     // Heat challenges
-      if (distance < 4000) return 4;     // Lava flows
+      if (distance < 2500) return 1; // New land tutorial
+      if (distance < 3000) return 2; // Fire progression
+      if (distance < 3500) return 3; // Heat challenges
+      if (distance < 4000) return 4; // Lava flows
       return 5; // Ember peaks
     }
     // Add other land boundaries as needed
@@ -351,12 +351,7 @@ export class DragonHealthManager {
   private wardLevel: number;
   private currentDistance: number;
 
-  constructor(
-    config: HealthConfig, 
-    landLevel: number, 
-    wardLevel: number, 
-    currentDistance: number
-  ) {
+  constructor(config: HealthConfig, landLevel: number, wardLevel: number, currentDistance: number) {
     this.elementalSystem = new ElementalSystem();
     this.health = new DragonHealthImpl(config, this.elementalSystem);
     this.landLevel = landLevel;
@@ -374,9 +369,9 @@ export class DragonHealthManager {
   }
 
   public takeElementalDamage(
-    baseDamage: number, 
-    _elementalType: string, 
-    statusEffectChance: number = 0.1
+    baseDamage: number,
+    _elementalType: string,
+    statusEffectChance: number = 0.1,
   ): void {
     this.health.takeElementalDamage(baseDamage, _elementalType, statusEffectChance);
   }

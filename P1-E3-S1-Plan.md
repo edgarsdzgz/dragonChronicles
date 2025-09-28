@@ -21,7 +21,6 @@
 - Dragon must have health points (HP) that decrease when taking damage
 
 - **Death/Respawn Logic**: When dragon health reaches 0:
-
   - Clear all projectiles and enemies from screen
 
   - Dragon enters "idle" mode
@@ -45,74 +44,67 @@
 ### Phase 1: Core Health System
 
 1. **Create Health Types and Interfaces**
+   - Define `DragonHealth` interface
 
-    - Define `DragonHealth` interface
+   - Create health-related type definitions
 
-    - Create health-related type definitions
-
-    - Set up health configuration options
+   - Set up health configuration options
 
 1. **Implement Health Manager**
+   - Create `DragonHealthManager` class
 
-    - Create `DragonHealthManager` class
+   - Implement HP tracking and damage application
 
-    - Implement HP tracking and damage application
+   - Add death detection and pushback respawn logic
 
-    - Add death detection and pushback respawn logic
+   - Implement progressive health recovery system
 
-    - Implement progressive health recovery system
-
-    - Add distance pushback calculation based on land/ward levels
+   - Add distance pushback calculation based on land/ward levels
 
 1. **Integration Points**
+   - Connect with existing enemy AI system
 
-    - Connect with existing enemy AI system
+   - Integrate with journey distance tracking
 
-    - Integrate with journey distance tracking
+   - Implement pushback distance calculation
 
-    - Implement pushback distance calculation
+   - Set up health state persistence
 
-    - Set up health state persistence
-
-    - Connect with projectile/enemy clearing system
+   - Connect with projectile/enemy clearing system
 
 ### Phase 2: Testing and Validation
 
 1. **Unit Tests**
+   - Health state management tests
 
-    - Health state management tests
+   - Damage application tests
 
-    - Damage application tests
+   - Death/respawn logic tests
 
-    - Death/respawn logic tests
-
-    - Performance tests
+   - Performance tests
 
 1. **Integration Tests**
+   - Health system with enemy AI
 
-    - Health system with enemy AI
+   - State persistence verification
 
-    - State persistence verification
-
-    - Performance under load
+   - Performance under load
 
 ### Phase 3: Documentation and Cleanup
 
 1. **Code Documentation**
+   - Add comprehensive JSDoc comments
 
-    - Add comprehensive JSDoc comments
+   - Update architecture documentation
 
-    - Update architecture documentation
-
-    - Create usage examples
+   - Create usage examples
 
 1. **Performance Optimization**
+   - Ensure health updates are efficient
 
-    - Ensure health updates are efficient
+   - Optimize memory usage
 
-    - Optimize memory usage
-
-    - Validate performance targets
+   - Validate performance targets
 
 ## Risk Assessment
 
@@ -268,7 +260,7 @@ Based on research of Unnamed Space Idle and similar idle games, the pushback mec
 
 ### Progression Pattern
 
-```text
+````text
 
 Land 1: Horizon Steppe
 ├── Ward 1: 3% (tutorial)
@@ -563,3 +555,4 @@ class DragonHealthManager {
 **Created**: 2025-01-28
 **Status**: Planning Complete
 **Next**: User Approval Required
+````

@@ -178,9 +178,7 @@ describe('ElementalSystem', () => {
       const elements = elementalSystem.getRecommendedEnemyElements(1, 1);
       expect(elements.length).toBeGreaterThan(0);
       // Should primarily be cold elements for Land 1
-      const coldElements = elements.filter(el => 
-        ['ice', 'frost', 'mist'].includes(el)
-      );
+      const coldElements = elements.filter((el) => ['ice', 'frost', 'mist'].includes(el));
       expect(coldElements.length).toBeGreaterThan(0);
     });
 
@@ -188,9 +186,7 @@ describe('ElementalSystem', () => {
       const elements = elementalSystem.getRecommendedEnemyElements(2, 1);
       expect(elements.length).toBeGreaterThan(0);
       // Should primarily be heat elements for Land 2
-      const heatElements = elements.filter(el => 
-        ['fire', 'lava', 'steam'].includes(el)
-      );
+      const heatElements = elements.filter((el) => ['fire', 'lava', 'steam'].includes(el));
       expect(heatElements.length).toBeGreaterThan(0);
     });
 
@@ -198,9 +194,7 @@ describe('ElementalSystem', () => {
       const elements = elementalSystem.getRecommendedEnemyElements(3, 1);
       expect(elements.length).toBeGreaterThan(0);
       // Should primarily be energy elements for Land 3
-      const energyElements = elements.filter(el => 
-        ['lightning', 'plasma', 'void'].includes(el)
-      );
+      const energyElements = elements.filter((el) => ['lightning', 'plasma', 'void'].includes(el));
       expect(energyElements.length).toBeGreaterThan(0);
     });
   });
@@ -212,13 +206,13 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 0.1,
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
       const calculation = elementalSystem.calculateDamage(
-        source, 
+        source,
         'ice', // Fire beats Ice (1.5x)
-        new Map()
+        new Map(),
       );
 
       expect(calculation.baseDamage).toBe(100);
@@ -232,16 +226,16 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 0.1,
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
       const resistances = new Map<ElementalType, number>();
       resistances.set('fire', 50); // 50% resistance
 
       const calculation = elementalSystem.calculateDamage(
-        source, 
+        source,
         'ice', // Fire beats Ice (1.5x)
-        resistances
+        resistances,
       );
 
       expect(calculation.baseDamage).toBe(100);
@@ -256,13 +250,13 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 0.1,
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
       const calculation = elementalSystem.calculateDamage(
-        source, 
+        source,
         'lightning', // Fire weak vs Lightning (0.75x)
-        new Map()
+        new Map(),
       );
 
       expect(calculation.baseDamage).toBe(100);
@@ -276,17 +270,13 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 0.1,
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
       const resistances = new Map<ElementalType, number>();
       resistances.set('fire', 200); // 200% resistance (impossible but test edge case)
 
-      const calculation = elementalSystem.calculateDamage(
-        source, 
-        'ice',
-        resistances
-      );
+      const calculation = elementalSystem.calculateDamage(source, 'ice', resistances);
 
       expect(calculation.finalDamage).toBeGreaterThanOrEqual(0);
     });
@@ -299,14 +289,10 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 1.0, // 100% chance
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
-      const calculation = elementalSystem.calculateDamage(
-        source, 
-        'ice',
-        new Map()
-      );
+      const calculation = elementalSystem.calculateDamage(source, 'ice', new Map());
 
       // With 100% chance, should always get status effect
       expect(calculation.statusEffectApplied).toBeDefined();
@@ -322,14 +308,10 @@ describe('ElementalSystem', () => {
         elementalType: 'fire' as ElementalType,
         statusEffectChance: 0.0, // 0% chance
         criticalChance: 0.1,
-        criticalMultiplier: 1.5
+        criticalMultiplier: 1.5,
       };
 
-      const calculation = elementalSystem.calculateDamage(
-        source, 
-        'ice',
-        new Map()
-      );
+      const calculation = elementalSystem.calculateDamage(source, 'ice', new Map());
 
       expect(calculation.statusEffectApplied).toBeUndefined();
     });
@@ -337,14 +319,20 @@ describe('ElementalSystem', () => {
 
   describe('Comprehensive Effectiveness Matrix', () => {
     const allElements: ElementalType[] = [
-      'fire', 'lava', 'steam',
-      'ice', 'frost', 'mist', 
-      'lightning', 'plasma', 'void'
+      'fire',
+      'lava',
+      'steam',
+      'ice',
+      'frost',
+      'mist',
+      'lightning',
+      'plasma',
+      'void',
     ];
 
     it('should have consistent effectiveness values', () => {
-      allElements.forEach(attacker => {
-        allElements.forEach(defender => {
+      allElements.forEach((attacker) => {
+        allElements.forEach((defender) => {
           const effectiveness = elementalSystem.calculateEffectiveness(attacker, defender);
           expect(effectiveness).toBeGreaterThan(0);
           expect(effectiveness).toBeLessThanOrEqual(1.5);
@@ -354,7 +342,7 @@ describe('ElementalSystem', () => {
     });
 
     it('should have neutral effectiveness for same elements', () => {
-      allElements.forEach(element => {
+      allElements.forEach((element) => {
         const effectiveness = elementalSystem.calculateEffectiveness(element, element);
         expect(effectiveness).toBe(1.0);
       });
@@ -365,12 +353,12 @@ describe('ElementalSystem', () => {
       expect(elementalSystem.calculateEffectiveness('fire', 'ice')).toBe(1.5);
       expect(elementalSystem.calculateEffectiveness('lava', 'frost')).toBe(1.5);
       expect(elementalSystem.calculateEffectiveness('steam', 'mist')).toBe(1.5);
-      
+
       // Cold > Energy
       expect(elementalSystem.calculateEffectiveness('ice', 'lightning')).toBe(1.5);
       expect(elementalSystem.calculateEffectiveness('frost', 'plasma')).toBe(1.5);
       expect(elementalSystem.calculateEffectiveness('mist', 'void')).toBe(1.5);
-      
+
       // Energy > Heat
       expect(elementalSystem.calculateEffectiveness('lightning', 'fire')).toBe(1.5);
       expect(elementalSystem.calculateEffectiveness('plasma', 'lava')).toBe(1.5);

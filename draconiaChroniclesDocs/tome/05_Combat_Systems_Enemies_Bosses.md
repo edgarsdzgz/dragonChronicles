@@ -48,7 +48,7 @@ export interface DragonHealth {
   recoveryProgress: number; // 0.0 to 1.0
   pushbackDistance: number;
   pushbackPercentage: number;
-  
+
   // Health management
   takeDamage(amount: number): void;
   heal(amount: number): void;
@@ -173,12 +173,12 @@ const ELEMENTAL_EFFECTS = {
   fire: { name: 'Burn', damage: '2% max HP per second', duration: '5 seconds' },
   lava: { name: 'Melt', damage: 'Reduces armor by 25%', duration: '8 seconds' },
   steam: { name: 'Scorch', damage: 'Reduces accuracy by 30%', duration: '6 seconds' },
-  
+
   // Cold effects
   ice: { name: 'Freeze', damage: 'Immobilizes for 3 seconds', duration: '3 seconds' },
   frost: { name: 'Chill', damage: 'Reduces speed by 40%', duration: '8 seconds' },
   mist: { name: 'Blind', damage: 'Reduces accuracy by 50%', duration: '4 seconds' },
-  
+
   // Energy effects
   lightning: { name: 'Stun', damage: 'Prevents actions for 2 seconds', duration: '2 seconds' },
   plasma: { name: 'Overheat', damage: 'Increases damage taken by 25%', duration: '6 seconds' },
@@ -304,7 +304,7 @@ Ward 3: Master Elemental Challenges
 const VISUAL_DESIGN_PROGRESSION = {
   phase1: {
     heat: 'Bright Red',
-    cold: 'Bright Blue', 
+    cold: 'Bright Blue',
     energy: 'Bright Yellow',
     indicators: 'Simple color coding'
   },
