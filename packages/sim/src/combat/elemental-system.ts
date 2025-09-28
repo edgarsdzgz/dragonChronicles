@@ -7,6 +7,7 @@ import type {
   ElementalType, 
   ElementalCategory, 
   StatusEffect, 
+  StatusEffectType,
   DamageCalculation,
   DamageSource
 } from './types.js';
@@ -198,7 +199,8 @@ export class ElementalSystem {
       return undefined;
     }
 
-    const config = this.config.statusEffects.find(
+    const statusEffects = this.config.statusEffects as Array<{ elementalType: string; type: string; duration: number; damage: number; debuff: Record<string, unknown> }>;
+    const config = statusEffects.find(
       effect => effect.elementalType === source.elementalType
     );
 
@@ -207,7 +209,7 @@ export class ElementalSystem {
     }
 
     return {
-      type: config.type,
+      type: config.type as StatusEffectType,
       duration: config.duration,
       intensity: 1.0,
       damage: config.damage,
@@ -236,7 +238,8 @@ export class ElementalSystem {
    * Get all elements in a category
    */
   public getElementsInCategory(category: ElementalCategory): ElementalType[] {
-    return this.config.subTriangles[category];
+    const subTriangles = this.config.subTriangles as Record<ElementalCategory, ElementalType[]>;
+    return subTriangles[category];
   }
 
   /**
