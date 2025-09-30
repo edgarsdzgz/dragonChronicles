@@ -3,20 +3,50 @@
  * Uses Workbox for caching strategies and offline functionality
  */
 
-// Import Workbox modules
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.3.0/workbox-sw.js');
+// Import Workbox modules with fallback
+try {
+  importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.3.0/workbox-sw.js');
+} catch (error) {
+  console.warn('Failed to load Workbox from CDN, using minimal service worker functionality');
+  // Define minimal workbox-like objects for fallback
+  self.workbox = {
+    precaching: {
+      precacheAndRoute: () => {},
+      cleanupOutdatedCaches: () => {}
+    },
+    routing: {
+      registerRoute: () => {},
+      NavigationRoute: class NavigationRoute {}
+    },
+    strategies: {
+      StaleWhileRevalidate: class StaleWhileRevalidate {},
+      CacheFirst: class CacheFirst {},
+      NetworkFirst: class NetworkFirst {}
+    },
+    expiration: {
+      ExpirationPlugin: class ExpirationPlugin {}
+    },
+    cacheableResponse: {
+      CacheableResponsePlugin: class CacheableResponsePlugin {}
+    }
+  };
+}
 
-const { precacheAndRoute, cleanupOutdatedCaches } = workbox.precaching;
-const { registerRoute, NavigationRoute } = workbox.routing;
-const { StaleWhileRevalidate, CacheFirst, NetworkFirst } = workbox.strategies;
-const { ExpirationPlugin } = workbox.expiration;
-const { CacheableResponsePlugin } = workbox.cacheableResponse;
+const { precacheAndRoute, cleanupOutdatedCaches } = self.workbox.precaching;
+const { registerRoute, NavigationRoute } = self.workbox.routing;
+const { StaleWhileRevalidate, CacheFirst, NetworkFirst } = self.workbox.strategies;
+const { ExpirationPlugin } = self.workbox.expiration;
+const { CacheableResponsePlugin } = self.workbox.cacheableResponse;
 
 // Clean up outdated caches
 cleanupOutdatedCaches();
 
 // Precache and route all static assets
-precacheAndRoute(self.__WB_MANIFEST);
+if (self.__WB_MANIFEST) {
+  precacheAndRoute(self.__WB_MANIFEST);
+} else {
+  console.warn('Workbox manifest not available, skipping precaching');
+}
 
 // Handle navigation requests (SPA routing)
 registerRoute(
