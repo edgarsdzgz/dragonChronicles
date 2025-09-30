@@ -7,7 +7,11 @@
  */
 
 import { STEP_MS, StepClock } from './clock.js';
-import type { SimMode } from '@draconia/shared';
+
+/**
+ * Simulation mode type
+ */
+export type SimMode = 'fg' | 'bg';
 
 /**
  * Simulation loop with mode-aware execution
