@@ -192,6 +192,134 @@ export interface CombatEvent {
 }
 
 // ============================================================================
+// TARGETING SYSTEM TYPES
+// ============================================================================
+
+export type TargetingStrategy =
+  | 'closest' // Default: Target nearest enemy
+  | 'highest_threat' // Target highest threat enemy
+  | 'lowest_threat' // Target lowest threat enemy (easiest to kill)
+  | 'highest_hp' // Target enemy with most HP
+  | 'lowest_hp' // Target enemy with least HP
+  | 'highest_damage' // Target enemy dealing most damage
+  | 'lowest_damage' // Target enemy dealing least damage
+  | 'fastest' // Target fastest moving enemy
+  | 'slowest' // Target slowest moving enemy
+  | 'highest_armor' // Target enemy with most armor
+  | 'lowest_armor' // Target enemy with least armor
+  | 'shielded' // Target shielded enemies first
+  | 'unshielded' // Target unshielded enemies first
+  | 'elemental_weak' // Target enemies weak to dragon's element
+  | 'elemental_strong' // Target enemies strong against dragon's element
+  | 'custom'; // Custom strategy (future expansion)
+
+export type TargetPersistenceMode =
+  | 'keep_target' // Default: Keep current target until it dies or goes out of range
+  | 'switch_freely' // Switch targets based on strategy changes
+  | 'switch_aggressive' // Switch targets frequently for optimal strategy
+  | 'manual_only'; // Only switch targets when player manually changes strategy
+
+export interface TargetingConfig {
+  primaryStrategy: TargetingStrategy;
+  fallbackStrategy: TargetingStrategy;
+  range: number;
+  updateInterval: number; // How often to recalculate target (ms)
+  switchThreshold: number; // Minimum difference to switch targets (0-1)
+  enabledStrategies: TargetingStrategy[]; // Player-unlocked strategies
+  persistenceMode: TargetPersistenceMode; // How to handle target switching
+  targetLockDuration: number; // How long to keep target locked (ms)
+}
+
+export interface TargetingState {
+  currentTarget: Enemy | null;
+  lastTarget: Enemy | null;
+  targetHistory: Enemy[];
+  lastUpdateTime: number;
+  strategy: TargetingStrategy;
+  isTargetLocked: boolean; // Prevent target switching temporarily
+  targetLockStartTime: number; // When target was locked
+  targetSwitchCount: number; // How many times target has switched
+  lastStrategyChange: number; // When strategy was last changed
+}
+
+export interface TargetingSystem {
+  config: TargetingConfig;
+  state: TargetingState;
+  findTarget(_enemies: Enemy[]): Enemy | null;
+  updateTarget(_enemies: Enemy[]): void;
+  switchStrategy(_strategy: TargetingStrategy): void;
+  lockTarget(_enemy: Enemy): void;
+  unlockTarget(): void;
+  isInRange(_enemy: Enemy): boolean;
+  calculateThreatLevel(_enemy: Enemy): number;
+  shouldSwitchTarget(_enemies: Enemy[]): boolean;
+  canSwitchTarget(): boolean;
+  setPersistenceMode(_mode: TargetPersistenceMode): void;
+}
+
+export interface Enemy {
+  id: string;
+  position: { x: number; y: number };
+  health: { current: number; max: number };
+  damage: number;
+  speed: number;
+  armor: number;
+  shield: number;
+  elementalType?: ElementalType;
+  elementalResistance?: ElementalResistance;
+  isAlive: boolean;
+  threatLevel: number;
+  distance: number;
+}
+
+export interface Dragon {
+  position: { x: number; y: number };
+  attackRange: number;
+  elementalType: ElementalType;
+  targetingConfig: TargetingConfig;
+}
+
+export interface ThreatFactor {
+  type: 'proximity' | 'health' | 'damage' | 'speed' | 'armor' | 'shield' | 'elemental';
+  weight: number; // 0-1, how much this factor influences targeting
+  value: number; // Calculated value for this enemy
+  normalizedValue: number; // 0-1 normalized value
+}
+
+export interface ThreatAssessment {
+  enemy: Enemy;
+  totalThreat: number;
+  factors: ThreatFactor[];
+  strategy: TargetingStrategy;
+}
+
+export interface RangeDetection {
+  getTargetsInRange(_enemies: Enemy[], _dragon: Dragon): Enemy[];
+  calculateDistance(_dragon: Dragon, _enemy: Enemy): number;
+  isWithinRange(_dragon: Dragon, _enemy: Enemy): boolean;
+  getOptimalRange(_dragon: Dragon): number;
+}
+
+export interface TargetingStrategyHandler {
+  strategy: TargetingStrategy;
+  calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
+  getDescription(): string;
+  isUnlocked(): boolean;
+}
+
+export interface TargetPersistenceHandler {
+  mode: TargetPersistenceMode;
+  shouldSwitchTarget(
+    _currentTarget: Enemy | null,
+    _newTarget: Enemy | null,
+    _state: TargetingState,
+    _config: TargetingConfig,
+  ): boolean;
+  getDescription(): string;
+  isUnlocked(): boolean;
+}
+
+// ============================================================================
 // UTILITY TYPES
 // ============================================================================
 
