@@ -35,3 +35,9 @@ export * from './economy/enchant-types.js';
 export * from './economy/enchant-costs.js';
 export * from './economy/enchant-manager.js';
 export * from './economy/soul-forging.js';
+
+// Export enhanced Soul Forging system components
+export * from './economy/soul-forging-manager.js';
+export * from './economy/soul-forging-costs.js';
+export * from './economy/soul-forging-persistence.js';
+export * from './economy/soul-forging-analytics.js';

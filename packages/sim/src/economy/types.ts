@@ -361,3 +361,43 @@ export type {
   SoulForgingTransaction,
   EnchantAnalytics,
 } from './enchant-types.js';
+
+// Re-export enhanced Soul Forging types for convenience
+export type {
+  EnhancedSoulForgingSystem,
+  SoulForgingProgression,
+  SoulForgingMilestone,
+  SoulForgingAchievement,
+  SoulForgingReward,
+  SoulForgingAnalytics,
+  SoulForgingProgressionStats,
+  SoulForgingCostEfficiency,
+  SoulForgingRecommendation,
+  SoulForgingValidation,
+  SoulForgingState,
+} from './soul-forging-manager.js';
+
+export type {
+  SoulForgingCostCalculation,
+  SoulForgingCostPrediction,
+  SoulForgingBulkPurchase,
+  SoulForgingCostOptimizer,
+} from './soul-forging-costs.js';
+
+export type {
+  SoulForgingPersistenceStorage,
+  SoulForgingStateValidator,
+  SoulForgingStateValidation,
+  SoulForgingPersistenceManager,
+} from './soul-forging-persistence.js';
+
+export type {
+  SoulForgingAnalyticsData,
+  SoulForgingProgressionAnalytics,
+  SoulForgingCostAnalytics,
+  SoulForgingPerformanceAnalytics,
+  SoulForgingTrendAnalytics,
+  SoulForgingRecommendations,
+  SoulForgingAnalyticsReport,
+  SoulForgingAnalyticsEngine,
+} from './soul-forging-analytics.js';
