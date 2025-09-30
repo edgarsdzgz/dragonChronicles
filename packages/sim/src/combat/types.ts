@@ -288,7 +288,6 @@ export interface Enemy {
   threatLevel: number;
   distance: number;
   type: string;
-  maxHealth: number;
 }
 
 export interface Dragon {
@@ -321,9 +320,9 @@ export interface RangeDetection {
 
 export interface TargetingStrategyHandler {
   strategy: TargetingStrategy;
-  calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
+  calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null | Promise<Enemy | null>;
   getDescription(): string;
-  isUnlocked: boolean;
+  isUnlocked(): boolean;
 }
 
 export interface TargetPersistenceHandler {

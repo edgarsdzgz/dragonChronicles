@@ -589,7 +589,7 @@ export class PerformanceMonitor {
     if (sortedValues.length === 0) return 0;
 
     const index = Math.ceil(sortedValues.length * percentile) - 1;
-    return sortedValues[Math.max(0, index)];
+    return sortedValues[Math.max(0, index)] || 0;
   }
 
   /**

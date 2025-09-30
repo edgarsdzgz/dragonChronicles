@@ -705,7 +705,7 @@ export class TargetingUnlockSystem {
 
     const nextRequirement = unlock.requirements.find((req) => !req.isMet);
 
-    return { unlock, progress, nextRequirement };
+    return { unlock, progress, nextRequirement: nextRequirement || undefined };
   }
 
   /**
@@ -848,6 +848,6 @@ export const TargetingUnlockUtils = {
     }));
 
     scoredUnlocks.sort((a, b) => b.score - a.score);
-    return scoredUnlocks[0].unlock;
+    return scoredUnlocks[0]?.unlock || null;
   },
 };

@@ -615,9 +615,9 @@ export class TargetingUIManager {
       'closest',
       'highest_threat',
       'lowest_threat',
-      'highest_health',
-      'lowest_health',
-      'elemental_weakness',
+      'highest_hp',
+      'lowest_hp',
+      'elemental_weak',
     ];
   }
 
@@ -636,8 +636,8 @@ export class TargetingUIManager {
       closest: 'Closest',
       highest_threat: 'Highest Threat',
       lowest_threat: 'Lowest Threat',
-      highest_health: 'Highest Health',
-      lowest_health: 'Lowest Health',
+      highest_hp: 'Highest Health',
+      lowest_hp: 'Lowest Health',
       highest_damage: 'Highest Damage',
       lowest_damage: 'Lowest Damage',
       fastest: 'Fastest',
@@ -646,7 +646,7 @@ export class TargetingUIManager {
       lowest_armor: 'Lowest Armor',
       highest_shield: 'Highest Shield',
       lowest_shield: 'Lowest Shield',
-      elemental_weakness: 'Elemental Weakness',
+      elemental_weak: 'Elemental Weakness',
       elemental_strength: 'Elemental Strength',
       custom: 'Custom',
     };
@@ -661,8 +661,8 @@ export class TargetingUIManager {
       closest: 'Target the nearest enemy',
       highest_threat: 'Target the most dangerous enemy',
       lowest_threat: 'Target the least dangerous enemy',
-      highest_health: 'Target the enemy with most health',
-      lowest_health: 'Target the enemy with least health',
+      highest_hp: 'Target the enemy with most health',
+      lowest_hp: 'Target the enemy with least health',
       highest_damage: 'Target the enemy dealing most damage',
       lowest_damage: 'Target the enemy dealing least damage',
       fastest: 'Target the fastest moving enemy',
@@ -671,7 +671,7 @@ export class TargetingUIManager {
       lowest_armor: 'Target the enemy with least armor',
       highest_shield: 'Target the enemy with most shield',
       lowest_shield: 'Target the enemy with least shield',
-      elemental_weakness: 'Target enemies weak to your element',
+      elemental_weak: 'Target enemies weak to your element',
       elemental_strength: 'Target enemies strong against your element',
       custom: 'Use custom targeting logic',
     };

@@ -17,16 +17,20 @@ import { createThreatAssessment } from './threat-assessment.js';
  * Base strategy handler implementation
  */
 abstract class BaseStrategyHandler implements TargetingStrategyHandler {
+  public strategy: TargetingStrategy;
+
   constructor(
-    public _strategy: TargetingStrategy,
-    public _isUnlocked: boolean = true,
-  ) {}
+    strategy: TargetingStrategy,
+    private _isUnlocked: boolean = true,
+  ) {
+    this.strategy = strategy;
+  }
 
   abstract calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
   abstract getDescription(): string;
 
   isUnlocked(): boolean {
-    return this.isUnlocked;
+    return this._isUnlocked;
   }
 
   /**

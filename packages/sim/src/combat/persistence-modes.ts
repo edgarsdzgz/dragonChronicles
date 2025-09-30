@@ -16,10 +16,14 @@ import { createThreatAssessment } from './threat-assessment.js';
  * Base persistence handler implementation
  */
 abstract class BasePersistenceHandler implements TargetPersistenceHandler {
+  public mode: TargetPersistenceMode;
+
   constructor(
-    public _mode: TargetPersistenceMode,
-    public _isUnlocked: boolean = true,
-  ) {}
+    mode: TargetPersistenceMode,
+    private _isUnlocked: boolean = true,
+  ) {
+    this.mode = mode;
+  }
 
   abstract shouldSwitchTarget(
     _currentTarget: Enemy | null,
@@ -31,7 +35,7 @@ abstract class BasePersistenceHandler implements TargetPersistenceHandler {
   abstract getDescription(): string;
 
   isUnlocked(): boolean {
-    return this.isUnlocked;
+    return this._isUnlocked;
   }
 
   /**

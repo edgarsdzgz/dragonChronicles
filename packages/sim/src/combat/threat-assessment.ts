@@ -497,7 +497,7 @@ export const ThreatUtils = {
     if (totalWeight === 0) return 0;
 
     const weightedSum = values.reduce((sum, value, index) => {
-      return sum + value * weights[index];
+      return sum + value * (weights[index] || 0);
     }, 0);
 
     return weightedSum / totalWeight;

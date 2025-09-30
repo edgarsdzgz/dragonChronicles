@@ -464,20 +464,20 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
   public strategy: TargetingStrategy;
   private definition: CustomStrategyDefinition;
   private executor: CustomStrategyExecutor;
-  private isUnlocked: boolean;
+  private _isUnlocked: boolean;
 
   constructor(definition: CustomStrategyDefinition, isUnlocked: boolean = true) {
     this.definition = definition;
     this.strategy = definition.id as TargetingStrategy;
     this.executor = new CustomStrategyExecutor();
-    this.isUnlocked = isUnlocked;
+    this._isUnlocked = isUnlocked;
   }
 
   /**
    * Calculate target using custom strategy
    */
   async calculate(enemies: Enemy[], dragon: Dragon): Promise<Enemy | null> {
-    if (!this.isUnlocked) {
+    if (!this._isUnlocked) {
       return null;
     }
 
@@ -515,7 +515,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
    * Check if strategy is unlocked
    */
   isUnlocked(): boolean {
-    return this.isUnlocked;
+    return this._isUnlocked;
   }
 
   /**
@@ -531,7 +531,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
 
       calculateThreatLevel: (enemy: Enemy, dragon: Dragon) => {
         // Simplified threat calculation
-        return enemy.health / enemy.maxHealth;
+        return enemy.health.current / enemy.health.max;
       },
 
       isInRange: (dragon: Dragon, enemy: Enemy) => {
@@ -560,7 +560,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
 
       filterByHealth: (enemies: Enemy[], minHealth: number, maxHealth: number) => {
         return enemies.filter((enemy) => {
-          const healthPercent = enemy.health / enemy.maxHealth;
+          const healthPercent = enemy.health.current / enemy.health.max;
           return healthPercent >= minHealth && healthPercent <= maxHealth;
         });
       },

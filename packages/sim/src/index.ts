@@ -22,3 +22,4 @@ export * from './enemies/spawn-manager.js';
 // Export combat system components
 export * from './combat/elemental-system.js';
 export * from './combat/dragon-health.js';
+export * from './combat/types.js';

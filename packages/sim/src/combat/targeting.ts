@@ -11,6 +11,7 @@ import type {
   TargetingState,
   TargetingStrategy,
   TargetPersistenceMode,
+  TargetingMetrics,
 } from './types.js';
 import { DefaultRangeDetection, createRangeDetection } from './range-detection.js';
 import { DefaultThreatAssessment, createThreatAssessment } from './threat-assessment.js';
@@ -18,22 +19,14 @@ import { DefaultThreatAssessment, createThreatAssessment } from './threat-assess
 /**
  * Performance metrics for targeting system
  */
-interface TargetingMetrics {
-  targetSelectionTime: number;
-  rangeDetectionTime: number;
-  threatAssessmentTime: number;
-  totalUpdateTime: number;
-  targetSwitchCount: number;
-  averageTargetLifetime: number;
-  strategyEffectiveness: Map<TargetingStrategy, number>;
-}
 
 /**
  * Default targeting system implementation
  * Provides comprehensive targeting functionality with configurable strategies
  */
 export class DefaultTargetingSystem implements TargetingSystem {
-  private readonly rangeDetection: DefaultRangeDetection;
+  public state: TargetingState;
+  private rangeDetection: DefaultRangeDetection;
   private readonly threatAssessment: DefaultThreatAssessment;
   private readonly metrics: TargetingMetrics;
   private readonly performanceHistory: number[] = [];
@@ -41,18 +34,20 @@ export class DefaultTargetingSystem implements TargetingSystem {
 
   constructor(
     public config: TargetingConfig,
-    public _state: TargetingState,
+    state: TargetingState,
   ) {
+    this.state = state;
     this.rangeDetection = createRangeDetection(config.range);
     this.threatAssessment = createThreatAssessment();
     this.metrics = {
       targetSelectionTime: 0,
       rangeDetectionTime: 0,
-      threatAssessmentTime: 0,
+      threatCalculationTime: 0,
       totalUpdateTime: 0,
-      targetSwitchCount: 0,
-      averageTargetLifetime: 0,
-      strategyEffectiveness: new Map(),
+      targetsEvaluated: 0,
+      targetSwitches: 0,
+      strategyChanges: 0,
+      performanceScore: 0,
     };
   }
 
@@ -465,6 +460,13 @@ export function createDefaultTargetingConfig(): TargetingConfig {
     ],
     persistenceMode: 'keep_target',
     targetLockDuration: 5000, // 5 seconds
+    threatWeights: {
+      proximity: 0.4,
+      health: 0.3,
+      damage: 0.2,
+      speed: 0.1,
+    },
+    customSettings: {},
   };
 }
 

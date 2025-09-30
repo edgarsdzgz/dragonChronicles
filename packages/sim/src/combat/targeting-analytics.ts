@@ -376,7 +376,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
 
     for (let i = 0; i < toRemove; i++) {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.removeItem(events[i].key);
+        if (events[i]) window.localStorage.removeItem(events[i].key);
       }
     }
   }
@@ -551,9 +551,9 @@ export class TargetingAnalytics {
 
       const summary: SessionAnalyticsData = {
         sessionId: this.sessionId,
-        startTime: events[0].timestamp,
-        endTime: events[events.length - 1].timestamp,
-        duration: events[events.length - 1].timestamp - events[0].timestamp,
+        startTime: events[0]?.timestamp || 0,
+        endTime: events[events.length - 1]?.timestamp || 0,
+        duration: (events[events.length - 1]?.timestamp || 0) - (events[0]?.timestamp || 0),
         totalTargetSelections: 0,
         totalTargetSwitches: 0,
         strategiesUsed: [],
@@ -702,7 +702,7 @@ export class TargetingAnalytics {
   endSession(): void {
     if (this.isEnabled) {
       this.addEvent('session_end', {
-        sessionDuration: Date.now() - this.sessionId,
+        sessionDuration: Date.now() - Number(this.sessionId),
         totalEvents: this.eventQueue.length,
       });
       this.flush();
@@ -722,7 +722,8 @@ export class TargetingAnalytics {
       metadata: {
         version: '1.0.0',
         platform: typeof window !== 'undefined' ? 'browser' : 'node',
-        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+        userAgent:
+          typeof window !== 'undefined' ? window.navigator.userAgent || 'unknown' : 'unknown',
       },
     };
 
@@ -885,7 +886,7 @@ export const AnalyticsUtils = {
       persistenceMode,
       targetId: target?.id || 'null',
       targetType: target?.type || 'null',
-      targetHealth: target ? target.health / target.maxHealth : 0,
+      targetHealth: target ? target.health.current / target.health.max : 0,
       targetDistance: target
         ? Math.sqrt(
             Math.pow(dragon.position.x - target.position.x, 2) +
