@@ -19,7 +19,7 @@ export interface PerformanceMeasurement {
   memoryBefore: number;
   memoryAfter: number;
   memoryDelta: number;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 }
 
 /**
@@ -46,7 +46,7 @@ export interface PerformanceAlert {
   threshold: number;
   actualValue: number;
   timestamp: number;
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 }
 
 /**
@@ -126,7 +126,7 @@ export class PerformanceMonitor {
   /**
    * Start performance measurement
    */
-  startMeasurement(operation: string, metadata: Record<string, any> = {}): string {
+  startMeasurement(operation: string, metadata: Record<string, unknown> = {}): string {
     if (!this.shouldMeasure()) return '';
 
     const measurementId = this.generateMeasurementId();
@@ -606,8 +606,8 @@ export class PerformanceMonitor {
   private getCurrentMemoryUsage(): number {
     if (!this.config.enableMemoryTracking) return 0;
 
-    if (typeof performance !== 'undefined' && (performance as any).memory) {
-      return (performance as any).memory.usedJSHeapSize;
+    if (typeof performance !== 'undefined' && (performance as { memory?: { usedJSHeapSize: number } }).memory) {
+      return (performance as { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize;
     }
 
     return 0;

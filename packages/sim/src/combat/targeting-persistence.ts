@@ -15,8 +15,8 @@ import { createTargetingUnlockSystem } from './targeting-unlock.js';
  * Persistence storage interface
  */
 export interface TargetingPersistenceStorage {
-  save(_key: string, _data: any): Promise<void>;
-  load(_key: string): Promise<any>;
+  save(_key: string, _data: unknown): Promise<void>;
+  load(_key: string): Promise<unknown>;
   remove(_key: string): Promise<void>;
   clear(): Promise<void>;
 }
@@ -25,7 +25,7 @@ export interface TargetingPersistenceStorage {
  * Local storage implementation
  */
 export class LocalStoragePersistence implements TargetingPersistenceStorage {
-  async save(key: string, data: any): Promise<void> {
+  async save(key: string, data: unknown): Promise<void> {
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
         const serialized = JSON.stringify(data);
@@ -115,7 +115,7 @@ export class IndexedDBPersistence implements TargetingPersistenceStorage {
     });
   }
 
-  async save(key: string, data: any): Promise<void> {
+  async save(key: string, data: unknown): Promise<void> {
     if (!this.db) {
       await this.init();
     }

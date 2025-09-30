@@ -32,7 +32,7 @@ export interface AnalyticsEvent {
   type: AnalyticsEventType;
   timestamp: number;
   sessionId: string;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   metadata: {
     version: string;
     platform: string;
@@ -123,7 +123,7 @@ export interface SessionAnalyticsData {
     type: string;
     message: string;
     timestamp: number;
-    context: Record<string, any>;
+    context: Record<string, unknown>;
   }>;
 }
 
@@ -530,7 +530,7 @@ export class TargetingAnalytics {
   /**
    * Track error event
    */
-  trackError(error: Error, context: Record<string, any> = {}): void {
+  trackError(error: Error, context: Record<string, unknown> = {}): void {
     if (!this.shouldTrack() || !this.config.enableErrorTracking) return;
 
     this.addEvent('error_occurred', {
@@ -712,7 +712,7 @@ export class TargetingAnalytics {
   /**
    * Add event to queue
    */
-  private addEvent(type: AnalyticsEventType, data: Record<string, any>): void {
+  private addEvent(type: AnalyticsEventType, data: Record<string, unknown>): void {
     const event: AnalyticsEvent = {
       id: this.generateEventId(),
       type,
@@ -803,7 +803,7 @@ export class TargetingAnalytics {
   /**
    * Anonymize data for privacy
    */
-  private anonymizeData(data: Record<string, any>): Record<string, any> {
+  private anonymizeData(data: Record<string, unknown>): Record<string, unknown> {
     const anonymized = { ...data };
 
     // Remove or hash sensitive data
@@ -859,7 +859,7 @@ export const AnalyticsUtils = {
       threatCalculationTime: metrics.threatCalculationTime,
       totalUpdateTime:
         metrics.targetSelectionTime + metrics.rangeDetectionTime + metrics.threatCalculationTime,
-      memoryUsage: (performance as any).memory?.usedJSHeapSize || 0,
+      memoryUsage: (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0,
       enemyCount,
       enemiesInRange,
       cacheHitRate: 0,
