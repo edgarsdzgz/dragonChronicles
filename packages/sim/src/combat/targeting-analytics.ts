@@ -363,7 +363,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           try {
             const event = JSON.parse(window.localStorage.getItem(key) || '{}');
             events.push({ key, timestamp: event.timestamp });
-          } catch (error) {
+          } catch (_error) {
             // Remove corrupted data
             window.localStorage.removeItem(key);
           }
@@ -593,8 +593,8 @@ export class TargetingAnalytics {
       }
 
       return summary;
-    } catch (error) {
-      console.error('Failed to get session summary:', error);
+    } catch (_error) {
+      console.error('Failed to get session summary:', _error);
       return null;
     }
   }

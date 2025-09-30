@@ -529,7 +529,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
         return Math.sqrt(dx * dx + dy * dy);
       },
 
-      calculateThreatLevel: (enemy: Enemy, dragon: Dragon) => {
+      calculateThreatLevel: (enemy: Enemy, _dragon: Dragon) => {
         // Simplified threat calculation
         return enemy.health.current / enemy.health.max;
       },
