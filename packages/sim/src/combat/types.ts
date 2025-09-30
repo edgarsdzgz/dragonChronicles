@@ -247,7 +247,7 @@ export interface TargetingConfig {
     damage: number;
     speed: number;
   };
-  customSettings: Record<string, any>;
+  customSettings: Record<string, unknown>;
 }
 
 export interface TargetingState {
@@ -376,5 +376,5 @@ export interface PlayerTargetingPreferences {
   unlockedPersistenceModes: TargetPersistenceMode[];
   favoriteStrategies?: TargetingStrategy[];
   favoritePersistenceModes?: TargetPersistenceMode[];
-  customSettings?: Record<string, any>;
+  customSettings?: Record<string, unknown>;
 }
