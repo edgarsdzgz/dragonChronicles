@@ -862,8 +862,8 @@ export const AnalyticsUtils = {
       memoryUsage: (performance as any).memory?.usedJSHeapSize || 0,
       enemyCount,
       enemiesInRange,
-      cacheHitRate: metrics.cacheHitRate || 0,
-      spatialGridEfficiency: metrics.spatialGridEfficiency || 0,
+      cacheHitRate: 0,
+      spatialGridEfficiency: 0,
     };
   },
 

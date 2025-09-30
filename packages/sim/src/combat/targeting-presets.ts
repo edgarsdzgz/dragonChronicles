@@ -374,6 +374,9 @@ export class TargetingPresetsManager {
         fallbackStrategy: 'highest_threat',
         persistenceMode: 'keep_target',
         range: 400,
+        updateInterval: 100,
+        switchThreshold: 0.1,
+        enabledStrategies: ['closest', 'highest_threat'],
         targetLockDuration: 2000,
         threatWeights: {
           proximity: 0.4,
@@ -384,11 +387,18 @@ export class TargetingPresetsManager {
         customSettings: {},
       },
       preferences: {
+        preferredStrategies: ['closest', 'highest_threat'],
+        preferredPersistenceMode: 'keep_target',
+        customWeights: {
+          proximity: 0.4,
+          health: 0.3,
+          damage: 0.2,
+          speed: 0.1,
+        },
+        autoSwitchEnabled: false,
+        manualOverrideEnabled: true,
         unlockedStrategies: ['closest', 'highest_threat'],
         unlockedPersistenceModes: ['keep_target'],
-        favoriteStrategies: ['closest'],
-        favoritePersistenceModes: ['keep_target'],
-        customSettings: {},
       },
       tags: ['beginner', 'balanced', 'safe'],
       isDefault: true,
@@ -412,6 +422,9 @@ export class TargetingPresetsManager {
         fallbackStrategy: 'highest_damage',
         persistenceMode: 'switch_aggressive',
         range: 600,
+        updateInterval: 50,
+        switchThreshold: 0.05,
+        enabledStrategies: ['highest_threat', 'highest_damage', 'fastest'],
         targetLockDuration: 500,
         threatWeights: {
           proximity: 0.2,
@@ -422,11 +435,18 @@ export class TargetingPresetsManager {
         customSettings: {},
       },
       preferences: {
+        preferredStrategies: ['highest_threat', 'highest_damage', 'fastest'],
+        preferredPersistenceMode: 'switch_aggressive',
+        customWeights: {
+          proximity: 0.2,
+          health: 0.2,
+          damage: 0.4,
+          speed: 0.2,
+        },
+        autoSwitchEnabled: true,
+        manualOverrideEnabled: true,
         unlockedStrategies: ['highest_threat', 'highest_damage', 'fastest'],
         unlockedPersistenceModes: ['switch_aggressive', 'switch_freely'],
-        favoriteStrategies: ['highest_threat'],
-        favoritePersistenceModes: ['switch_aggressive'],
-        customSettings: {},
       },
       tags: ['aggressive', 'damage', 'threat'],
       isDefault: true,
@@ -450,6 +470,9 @@ export class TargetingPresetsManager {
         fallbackStrategy: 'slowest',
         persistenceMode: 'keep_target',
         range: 300,
+        updateInterval: 200,
+        switchThreshold: 0.2,
+        enabledStrategies: ['lowest_threat', 'slowest', 'closest'],
         targetLockDuration: 3000,
         threatWeights: {
           proximity: 0.5,
@@ -460,11 +483,18 @@ export class TargetingPresetsManager {
         customSettings: {},
       },
       preferences: {
+        preferredStrategies: ['lowest_threat', 'slowest', 'closest'],
+        preferredPersistenceMode: 'keep_target',
+        customWeights: {
+          proximity: 0.3,
+          health: 0.4,
+          damage: 0.1,
+          speed: 0.2,
+        },
+        autoSwitchEnabled: false,
+        manualOverrideEnabled: true,
         unlockedStrategies: ['lowest_threat', 'slowest', 'closest'],
         unlockedPersistenceModes: ['keep_target'],
-        favoriteStrategies: ['lowest_threat'],
-        favoritePersistenceModes: ['keep_target'],
-        customSettings: {},
       },
       tags: ['defensive', 'survival', 'safe'],
       isDefault: true,
@@ -488,6 +518,9 @@ export class TargetingPresetsManager {
         fallbackStrategy: 'highest_threat',
         persistenceMode: 'switch_freely',
         range: 500,
+        updateInterval: 100,
+        switchThreshold: 0.1,
+        enabledStrategies: ['elemental_weak', 'highest_threat', 'elemental_strong'],
         targetLockDuration: 1000,
         threatWeights: {
           proximity: 0.3,
@@ -501,13 +534,18 @@ export class TargetingPresetsManager {
         },
       },
       preferences: {
-        unlockedStrategies: ['elemental_weak', 'elemental_strength', 'highest_threat'],
-        unlockedPersistenceModes: ['switch_freely', 'keep_target'],
-        favoriteStrategies: ['elemental_weak'],
-        favoritePersistenceModes: ['switch_freely'],
-        customSettings: {
-          elementalFocus: true,
+        preferredStrategies: ['elemental_weak', 'elemental_strong', 'highest_threat'],
+        preferredPersistenceMode: 'switch_freely',
+        customWeights: {
+          proximity: 0.2,
+          health: 0.2,
+          damage: 0.3,
+          speed: 0.3,
         },
+        autoSwitchEnabled: true,
+        manualOverrideEnabled: true,
+        unlockedStrategies: ['elemental_weak', 'elemental_strong', 'highest_threat'],
+        unlockedPersistenceModes: ['switch_freely', 'keep_target'],
       },
       tags: ['elemental', 'specialized', 'advanced'],
       isDefault: true,
@@ -531,6 +569,9 @@ export class TargetingPresetsManager {
         fallbackStrategy: 'elemental_weak',
         persistenceMode: 'manual_only',
         range: 450,
+        updateInterval: 150,
+        switchThreshold: 0.15,
+        enabledStrategies: ['highest_threat', 'elemental_weak', 'closest', 'highest_damage'],
         targetLockDuration: 800,
         threatWeights: {
           proximity: 0.25,
@@ -545,14 +586,18 @@ export class TargetingPresetsManager {
         },
       },
       preferences: {
+        preferredStrategies: ['highest_threat', 'elemental_weak', 'closest', 'highest_damage'],
+        preferredPersistenceMode: 'manual_only',
+        customWeights: {
+          proximity: 0.25,
+          health: 0.25,
+          damage: 0.25,
+          speed: 0.25,
+        },
+        autoSwitchEnabled: false,
+        manualOverrideEnabled: true,
         unlockedStrategies: ['highest_threat', 'elemental_weak', 'closest', 'highest_damage'],
         unlockedPersistenceModes: ['manual_only', 'switch_freely'],
-        favoriteStrategies: ['highest_threat'],
-        favoritePersistenceModes: ['manual_only'],
-        customSettings: {
-          adaptiveMode: true,
-          expertMode: true,
-        },
       },
       tags: ['expert', 'adaptive', 'tactical'],
       isDefault: true,
@@ -645,7 +690,7 @@ export class TargetingPresetsManager {
    * Categorize presets
    */
   private categorizePresets(): void {
-    for (const preset of this.presets.values()) {
+    for (const preset of Array.from(this.presets.values())) {
       const category = this.categories.get(preset.category);
       if (category) {
         category.presets.push(preset);
@@ -758,7 +803,7 @@ export class TargetingPresetsManager {
    * Update unlock status
    */
   private updateUnlockStatus(): void {
-    for (const preset of this.presets.values()) {
+    for (const preset of Array.from(this.presets.values())) {
       if (preset.isDefault) {
         preset.isUnlocked = true;
       } else if (preset.unlockRequirements) {
@@ -815,11 +860,13 @@ export const TargetingPresetsUtils = {
       difficulty: 'intermediate',
       config,
       preferences: {
+        preferredStrategies: [config.primaryStrategy, config.fallbackStrategy],
+        preferredPersistenceMode: config.persistenceMode,
+        customWeights: config.threatWeights,
+        autoSwitchEnabled: config.persistenceMode !== 'keep_target',
+        manualOverrideEnabled: true,
         unlockedStrategies: [config.primaryStrategy, config.fallbackStrategy],
         unlockedPersistenceModes: [config.persistenceMode],
-        favoriteStrategies: [config.primaryStrategy],
-        favoritePersistenceModes: [config.persistenceMode],
-        customSettings: {},
       },
       tags: [],
       isDefault: false,
@@ -944,7 +991,7 @@ export const TargetingPresetsUtils = {
       shielded: 2,
       unshielded: 2,
       elemental_weak: 3,
-      elemental_strength: 3,
+      elemental_strong: 3,
       custom: 5,
     };
 

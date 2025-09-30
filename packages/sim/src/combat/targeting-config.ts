@@ -99,6 +99,13 @@ export class TargetingConfigManager {
       enabledStrategies: ['closest', 'highest_threat', 'lowest_threat'],
       persistenceMode: 'keep_target',
       targetLockDuration: 5000,
+      threatWeights: {
+        proximity: 0.4,
+        health: 0.3,
+        damage: 0.2,
+        speed: 0.1,
+      },
+      customSettings: {},
     };
   }
 
@@ -120,6 +127,13 @@ export class TargetingConfigManager {
           enabledStrategies: ['closest', 'highest_threat', 'lowest_threat'],
           persistenceMode: 'switch_freely',
           targetLockDuration: 3000,
+          threatWeights: {
+            proximity: 0.3,
+            health: 0.3,
+            damage: 0.3,
+            speed: 0.1,
+          },
+          customSettings: {},
         },
         strategy: 'highest_threat',
         persistenceMode: 'switch_freely',
@@ -138,6 +152,13 @@ export class TargetingConfigManager {
           enabledStrategies: ['highest_damage', 'highest_threat', 'closest'],
           persistenceMode: 'switch_aggressive',
           targetLockDuration: 1000,
+          threatWeights: {
+            proximity: 0.2,
+            health: 0.2,
+            damage: 0.5,
+            speed: 0.1,
+          },
+          customSettings: {},
         },
         strategy: 'highest_damage',
         persistenceMode: 'switch_aggressive',
@@ -157,6 +178,13 @@ export class TargetingConfigManager {
           enabledStrategies: ['lowest_threat', 'closest', 'highest_armor'],
           persistenceMode: 'keep_target',
           targetLockDuration: 8000,
+          threatWeights: {
+            proximity: 0.5,
+            health: 0.2,
+            damage: 0.1,
+            speed: 0.2,
+          },
+          customSettings: {},
         },
         strategy: 'lowest_threat',
         persistenceMode: 'keep_target',
@@ -176,6 +204,13 @@ export class TargetingConfigManager {
           enabledStrategies: ['fastest', 'highest_threat', 'closest'],
           persistenceMode: 'switch_freely',
           targetLockDuration: 2000,
+          threatWeights: {
+            proximity: 0.3,
+            health: 0.2,
+            damage: 0.2,
+            speed: 0.3,
+          },
+          customSettings: {},
         },
         strategy: 'fastest',
         persistenceMode: 'switch_freely',
@@ -551,7 +586,7 @@ export const TargetingConfigUtils = {
    * Get recommended configuration for dragon type
    */
   getRecommendedConfigForDragon(dragon: Dragon): TargetingConfig {
-    const baseConfig = {
+    const baseConfig: TargetingConfig = {
       primaryStrategy: 'closest' as TargetingStrategy,
       fallbackStrategy: 'highest_threat' as TargetingStrategy,
       range: dragon.attackRange,
@@ -560,6 +595,13 @@ export const TargetingConfigUtils = {
       enabledStrategies: ['closest', 'highest_threat', 'lowest_threat'],
       persistenceMode: 'keep_target' as TargetPersistenceMode,
       targetLockDuration: 5000,
+      threatWeights: {
+        proximity: 0.4,
+        health: 0.3,
+        damage: 0.2,
+        speed: 0.1,
+      },
+      customSettings: {},
     };
 
     // Adjust based on dragon's elemental type

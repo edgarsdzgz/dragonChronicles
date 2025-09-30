@@ -571,17 +571,20 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
 
       getRandomEnemy: (enemies: Enemy[]) => {
         if (enemies.length === 0) return null;
-        return enemies[Math.floor(Math.random() * enemies.length)];
+        const randomIndex = Math.floor(Math.random() * enemies.length);
+        return enemies[randomIndex] || null;
       },
 
       getClosestEnemy: (enemies: Enemy[], dragon: Dragon) => {
         if (enemies.length === 0) return null;
-        return this.createUtilities().sortByDistance(enemies, dragon)[0];
+        const sorted = this.createUtilities().sortByDistance(enemies, dragon);
+        return sorted[0] || null;
       },
 
       getHighestThreatEnemy: (enemies: Enemy[], dragon: Dragon) => {
         if (enemies.length === 0) return null;
-        return this.createUtilities().sortByThreat(enemies, dragon)[0];
+        const sorted = this.createUtilities().sortByThreat(enemies, dragon);
+        return sorted[0] || null;
       },
     };
   }

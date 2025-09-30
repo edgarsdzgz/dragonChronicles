@@ -705,7 +705,7 @@ export class TargetingUnlockSystem {
 
     const nextRequirement = unlock.requirements.find((req) => !req.isMet);
 
-    return { unlock, progress, nextRequirement: nextRequirement || undefined };
+    return { unlock, progress, ...(nextRequirement && { nextRequirement }) };
   }
 
   /**

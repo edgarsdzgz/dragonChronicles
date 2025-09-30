@@ -18,12 +18,11 @@ import { createThreatAssessment } from './threat-assessment.js';
  */
 abstract class BaseStrategyHandler implements TargetingStrategyHandler {
   public strategy: TargetingStrategy;
+  private _isUnlocked: boolean;
 
-  constructor(
-    strategy: TargetingStrategy,
-    private _isUnlocked: boolean = true,
-  ) {
+  constructor(strategy: TargetingStrategy, isUnlocked: boolean = true) {
     this.strategy = strategy;
+    this._isUnlocked = isUnlocked;
   }
 
   abstract calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
@@ -751,7 +750,7 @@ export class TargetingStrategyRegistry {
    * Get unlocked strategies only
    */
   getUnlockedStrategies(): TargetingStrategyHandler[] {
-    return this.getAllStrategies().filter((strategy) => strategy.isUnlocked());
+    return this.getAllStrategies().filter((strategy) => strategy.isUnlocked);
   }
 
   /**

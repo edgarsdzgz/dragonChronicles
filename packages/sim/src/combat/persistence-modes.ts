@@ -17,12 +17,11 @@ import { createThreatAssessment } from './threat-assessment.js';
  */
 abstract class BasePersistenceHandler implements TargetPersistenceHandler {
   public mode: TargetPersistenceMode;
+  public isUnlocked: boolean;
 
-  constructor(
-    mode: TargetPersistenceMode,
-    private _isUnlocked: boolean = true,
-  ) {
+  constructor(mode: TargetPersistenceMode, isUnlocked: boolean = true) {
     this.mode = mode;
+    this.isUnlocked = isUnlocked;
   }
 
   abstract shouldSwitchTarget(
@@ -33,10 +32,6 @@ abstract class BasePersistenceHandler implements TargetPersistenceHandler {
   ): boolean;
 
   abstract getDescription(): string;
-
-  isUnlocked(): boolean {
-    return this._isUnlocked;
-  }
 
   /**
    * Check if current target is still valid (alive and in range)
@@ -280,7 +275,7 @@ export class PersistenceModeRegistry {
    * Get unlocked persistence modes only
    */
   getUnlockedModes(): TargetPersistenceHandler[] {
-    return this.getAllModes().filter((mode) => mode.isUnlocked());
+    return this.getAllModes().filter((mode) => mode.isUnlocked);
   }
 
   /**

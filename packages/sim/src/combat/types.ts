@@ -217,10 +217,13 @@ export interface TargetingMetrics {
   targetSelectionTime: number;
   rangeDetectionTime: number;
   threatAssessmentTime: number;
+  threatCalculationTime: number;
   totalUpdateTime: number;
   targetSwitchCount: number;
   averageTargetLifetime: number;
   strategyEffectiveness: Map<TargetingStrategy, number>;
+  cacheHitRate?: number;
+  spatialGridEfficiency?: number;
 }
 
 export type TargetPersistenceMode =
@@ -379,4 +382,9 @@ export interface PlayerTargetingPreferences {
   customWeights: Partial<ThreatWeights>;
   autoSwitchEnabled: boolean;
   manualOverrideEnabled: boolean;
+  unlockedStrategies: TargetingStrategy[];
+  unlockedPersistenceModes: TargetPersistenceMode[];
+  favoriteStrategies?: TargetingStrategy[];
+  favoritePersistenceModes?: TargetPersistenceMode[];
+  customSettings?: Record<string, any>;
 }
