@@ -80,7 +80,7 @@ export interface SoulForgingAnalyticsEngine {
   analyze(state: SoulForgingState): SoulForgingAnalyticsData;
   generateReport(
     state: SoulForgingState,
-    period?: { start: number; end: number },
+    period?: { start: number; end: number; duration?: number },
   ): SoulForgingAnalyticsReport;
   getProgressionAnalytics(state: SoulForgingState): SoulForgingProgressionAnalytics;
   getCostAnalytics(state: SoulForgingState): SoulForgingCostAnalytics;
@@ -129,11 +129,17 @@ export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEn
   ): SoulForgingAnalyticsReport {
     const analytics = this.analyze(state);
     const now = Date.now();
-    const reportPeriod = period || {
-      start: state.lastUpdated,
-      end: now,
-      duration: now - state.lastUpdated,
-    };
+    const reportPeriod = period
+      ? {
+          start: period.start,
+          end: period.end,
+          duration: (period as any).duration || period.end - period.start,
+        }
+      : {
+          start: state.lastUpdated,
+          end: now,
+          duration: now - state.lastUpdated,
+        };
 
     const summary = this.generateSummary(analytics);
     const keyMetrics = this.extractKeyMetrics(analytics);
@@ -470,7 +476,7 @@ export function analyzeSoulForgingState(state: SoulForgingState): SoulForgingAna
 
 export function generateSoulForgingReport(
   state: SoulForgingState,
-  period?: { start: number; end: number },
+  period?: { start: number; end: number; duration?: number },
 ): SoulForgingAnalyticsReport {
   const engine = createSoulForgingAnalyticsEngine();
   return engine.generateReport(state, period);

@@ -165,7 +165,7 @@ export class DefaultSoulForgingCostOptimizer implements SoulForgingCostOptimizer
     return maxAffordable;
   }
 
-  private calculateSingleCost(type: 'temporary' | 'permanent', level: number): number {
+  public calculateSingleCost(type: 'temporary' | 'permanent', level: number): number {
     if (type === 'temporary') {
       return this.calculateTemporaryCost(level);
     } else {
@@ -183,7 +183,7 @@ export class DefaultSoulForgingCostOptimizer implements SoulForgingCostOptimizer
     return this.config.permanentSoulForgingCost;
   }
 
-  private calculateCumulativeCost(
+  public calculateCumulativeCost(
     type: 'temporary' | 'permanent',
     fromLevel: number,
     amount: number,
@@ -238,7 +238,7 @@ export class DefaultSoulForgingCostOptimizer implements SoulForgingCostOptimizer
 /**
  * Utility functions for Soul Forging cost calculations
  */
-export function calculateSoulForgingCost(
+export function calculateSoulForgingCostFromConfig(
   type: 'temporary' | 'permanent',
   level: number,
   config: EnchantConfig,

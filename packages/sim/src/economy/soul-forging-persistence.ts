@@ -239,7 +239,11 @@ export class DefaultSoulForgingStateValidator implements SoulForgingStateValidat
     }
 
     // Minor version should be compatible
-    if (currentParts[1] < stateParts[1]) {
+    if (
+      currentParts[1] !== undefined &&
+      stateParts[1] !== undefined &&
+      currentParts[1] < stateParts[1]
+    ) {
       return false;
     }
 

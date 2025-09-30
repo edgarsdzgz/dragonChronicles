@@ -1,145 +1,65 @@
-# Quick Reference: CI/CD Continuation Guide
+# Quick Reference - CI Pipeline Debugging
 
-## 🚀 Immediate Actions for New Machine
+## Current Status (2025-09-30)
 
-### 1. Check Current Status
+- **Pipeline**: 0/6 workflows passing
+- **Branch**: `feat/p1-e4-s3-soul-forging-system`
+- **PR**: #58
+- **Main Issue**: TypeScript compilation errors
 
-````bash
+## Immediate Actions Required
 
-# Check workflow status
+### 1. Fix Missing Dependencies
 
+```bash
+pnpm add -D @types/uuid
+```
+
+### 2. Fix Export Issues
+
+- Export `EnchantCostCalculator` interface from `enchant-costs.ts`
+- Export missing classes from scaling files
+- Fix duplicate exports in `index.ts`
+
+### 3. Fix Type Mismatches
+
+- Align interface definitions with implementations
+- Fix return type mismatches in `enchant-manager.ts`
+- Add missing properties to interfaces
+
+### 4. Fix Private Method Access
+
+- Make private methods public or create public wrappers
+- Update method access in `soul-forging-costs.ts`
+
+### 5. Fix Null Safety
+
+- Add null checks in `soul-forging-persistence.ts`
+- Handle undefined objects properly
+
+## Commands to Run
+
+```bash
+# Check current status
 gh run list --limit 5
 
-# Check Pages Deploys specifically
+# Run local type check
+pnpm run type-check
 
-gh run view [LATEST*PAGES*RUN_ID] --log
+# Run local tests
+pnpm run test:all
 
-```bash
+# Fix and commit
+git add .
+git commit -m "fix: resolve TypeScript compilation errors"
+git push
+```
 
-### 2. If Pages Deploys is Still Failing
+## Files to Fix (Priority Order)
 
-```bash
-
-# Check deployment logs
-
-gh run view [RUN_ID] --log-failed
-
-# Verify environment settings
-
-gh api
-repos/edgarsdzgz/dragonChronicles/environments/github-pages/deployment-branch-policies
-
-```text
-
-### 3. If Pages Deploys is Passing ✅
-
-Move to E2E Smoke workflow:
-
-```bash
-
-# Check E2E workflow logs
-
-gh run view [E2E*RUN*ID] --log
-
-# Look for: "Project(s) 'chromium' not found"
-
-```text
-
-## 🔧 Key Commands
-
-### Workflow Management
-
-```bash
-
-gh run list --limit 10
-gh run view [RUN_ID] --log
-gh run view [RUN_ID] --log-failed
-
-```bash
-
-### Local Testing
-
-```bash
-
-pnpm run docs:lint
-pnpm run build
-pnpm run test
-
-```bash
-
-### Git Operations
-
-```bash
-
-git status
-git log --oneline -5
-git push origin feat/w7-cicd-previews
-
-```text
-
-## 📋 Current State Summary
-
-### ✅ FIXED (4/6 workflows)
-
-- **CI**: Prettier formatting issues resolved
-
-- **Checks**: Linting issues resolved
-
-- **Lighthouse**: Was already working
-
-- **Docs**: Markdownlint issues resolved (MD051, MD024)
-
-### 🔄 IN PROGRESS
-
-- **Pages Deploys**: Environment protection rules fix applied, deployment succeeds but PR comment
-
-  fails due to permissions
-  fails due to permissions
-
-### ❌ REMAINING
-
-- **E2E Smoke**: Playwright configuration issue
-
-## 🎯 Next Steps Priority
-
-1. **Verify Pages Deploys fix** (environment protection rules)
-
-1. **Fix E2E Smoke workflow** (Playwright configuration)
-
-1. **Clean up temporary fixes** (remove `continue-on-error: true`)
-
-1. **Document final solutions**
-
-## 📚 Key Files to Reference
-
-- `docs/engineering/ci-workflow-debugging-session.md` - Complete session documentation
-
-- `CLAUDE.md` - Updated with current status and solutions
-
-- `.github/workflows/` - All workflow configurations
-
-- `scripts/` - Automation scripts created during debugging
-
-## 🧠 User Preferences (from memories)
-
-- **Automation**: Prefers bash scripts for repetitive tasks
-
-- **Sequential**: One issue at a time approach
-
-- **Testing**: Local testing before CI
-
-- **Documentation**: All docs in `/docs/` folder
-
-- **Feature Branches**: Work on feature branches, not main
-
-## 🎉 Success Metrics
-
-**Before**: 1/6 workflows passing (16.7%)
-**Current**: 4/6 workflows passing (66.7%)
-**Target**: 6/6 workflows passing (100%)
-
----
-
-**Ready for continuation!** 🚀
-
-````
+1. `packages/sim/src/economy/enchant-costs.ts` - Export interface
+2. `packages/sim/src/economy/arcana-scaling.ts` - Export class
+3. `packages/sim/src/economy/soul-power-scaling.ts` - Export class
+4. `packages/sim/src/economy/enchant-manager.ts` - Fix type mismatches
+5. `packages/sim/src/economy/soul-forging-*.ts` - Fix remaining issues
+6. `packages/sim/src/index.ts` - Fix duplicate exports

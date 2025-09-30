@@ -112,7 +112,7 @@ export interface EnchantManager {
   ): EnchantTransaction;
 
   // Soul Forging operations
-  purchaseSoulForging(type: 'temporary' | 'permanent', amount: number): SoulForgingTransaction;
+  purchaseSoulForging(type: 'temporary' | 'permanent', amount: number): EnchantTransaction;
 
   // Location management
   setLocation(location: LocationType): void;
@@ -121,7 +121,7 @@ export interface EnchantManager {
   // State management
   resetTemporaryEnchants(): void;
   getTransactionHistory(): EnchantTransaction[];
-  getSoulForgingHistory(): SoulForgingTransaction[];
+  getSoulForgingHistory(): EnchantTransaction[];
 }
 
 export interface EnchantCostCalculator {
