@@ -177,7 +177,7 @@ export class TargetingUIManager {
    * Get current targeting configuration
    */
   getCurrentConfig(): TargetingConfig {
-    return this.configManager.getConfig();
+    return this.configManager.config;
   }
 
   /**
@@ -402,7 +402,7 @@ export class TargetingUIManager {
         const target = e.target as HTMLElement;
         if (target.classList.contains('preset-btn')) {
           const preset = target.dataset.preset;
-          this.selectPreset(preset);
+          if (preset) this.selectPreset(preset);
         }
       });
     }
@@ -644,8 +644,8 @@ export class TargetingUIManager {
       slowest: 'Slowest',
       highest_armor: 'Highest Armor',
       lowest_armor: 'Lowest Armor',
-      highest_shield: 'Highest Shield',
-      lowest_shield: 'Lowest Shield',
+      shielded: 'Shielded',
+      unshielded: 'Unshielded',
       elemental_weak: 'Elemental Weakness',
       elemental_strength: 'Elemental Strength',
       custom: 'Custom',
@@ -669,8 +669,8 @@ export class TargetingUIManager {
       slowest: 'Target the slowest moving enemy',
       highest_armor: 'Target the enemy with most armor',
       lowest_armor: 'Target the enemy with least armor',
-      highest_shield: 'Target the enemy with most shield',
-      lowest_shield: 'Target the enemy with least shield',
+      shielded: 'Target enemies with shields',
+      unshielded: 'Target enemies without shields',
       elemental_weak: 'Target enemies weak to your element',
       elemental_strength: 'Target enemies strong against your element',
       custom: 'Use custom targeting logic',

@@ -376,7 +376,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
 
     for (let i = 0; i < toRemove; i++) {
       if (typeof window !== 'undefined' && window.localStorage) {
-        if (events[i]) window.localStorage.removeItem(events[i].key);
+        if (events[i]?.key) window.localStorage.removeItem(events[i].key);
       }
     }
   }
