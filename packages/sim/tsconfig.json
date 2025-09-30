@@ -15,6 +15,5 @@
     "sourceMap": false
   },
   "include": ["src"],
-  "exclude": ["tests"],
-  "references": [{ "path": "../shared" }]
+  "exclude": ["tests"]
 }

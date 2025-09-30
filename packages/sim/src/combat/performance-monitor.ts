@@ -3,10 +3,7 @@
  * Monitors and tracks performance metrics for targeting operations
  */
 
-import type {
-  TargetingStrategy,
-  TargetPersistenceMode,
-} from './types.js';
+import type { TargetingStrategy, TargetPersistenceMode } from './types.js';
 
 /**
  * Performance measurement data
@@ -606,8 +603,12 @@ export class PerformanceMonitor {
   private getCurrentMemoryUsage(): number {
     if (!this.config.enableMemoryTracking) return 0;
 
-    if (typeof performance !== 'undefined' && (performance as { memory?: { usedJSHeapSize: number } }).memory) {
-      return (performance as { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize;
+    if (
+      typeof performance !== 'undefined' &&
+      (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory
+    ) {
+      return (performance as unknown as { memory: { usedJSHeapSize: number } }).memory
+        .usedJSHeapSize;
     }
 
     return 0;

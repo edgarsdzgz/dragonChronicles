@@ -3,11 +3,7 @@
  * Handles saving and loading targeting configurations and state across sessions
  */
 
-import type {
-  TargetingConfig,
-  TargetingState,
-  PlayerTargetingPreferences,
-} from './types.js';
+import type { TargetingConfig, TargetingState, PlayerTargetingPreferences } from './types.js';
 import { createTargetingConfigManager } from './targeting-config.js';
 import { createTargetingUnlockSystem } from './targeting-unlock.js';
 
@@ -228,7 +224,7 @@ export class TargetingPersistenceManager {
    */
   async loadTargetingConfig(profileId: string = 'default'): Promise<TargetingConfig | null> {
     const key = `config_${profileId}`;
-    return await this.storage.load(key);
+    return (await this.storage.load(key)) as TargetingConfig | null;
   }
 
   /**
@@ -256,7 +252,7 @@ export class TargetingPersistenceManager {
    */
   async loadTargetingState(profileId: string = 'default'): Promise<Partial<TargetingState> | null> {
     const key = `state_${profileId}`;
-    return await this.storage.load(key);
+    return (await this.storage.load(key)) as Partial<TargetingState> | null;
   }
 
   /**
@@ -277,7 +273,7 @@ export class TargetingPersistenceManager {
     profileId: string = 'default',
   ): Promise<PlayerTargetingPreferences | null> {
     const key = `preferences_${profileId}`;
-    return await this.storage.load(key);
+    return (await this.storage.load(key)) as PlayerTargetingPreferences | null;
   }
 
   /**
@@ -560,8 +556,8 @@ export const TargetingPersistenceUtils = {
       if (sourceState.config) {
         await manager.saveCompleteState(
           sourceState.config,
-          sourceState.state as unknown,
-          sourceState.preferences as unknown,
+          sourceState.state as TargetingState,
+          sourceState.preferences as PlayerTargetingPreferences,
           targetProfileId,
         );
         return true;

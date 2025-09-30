@@ -296,7 +296,10 @@ export class CustomStrategyValidator {
   /**
    * Execute code in sandbox
    */
-  private executeInSandbox(code: string, sandbox: Record<string, unknown>): Record<string, unknown> {
+  private executeInSandbox(
+    code: string,
+    sandbox: Record<string, unknown>,
+  ): Record<string, unknown> {
     // Create function with sandbox context
     const func = new Function(
       'sandbox',
@@ -325,7 +328,8 @@ export class CustomStrategyExecutor {
     context: CustomStrategyContext,
   ): Promise<CustomStrategyResult> {
     const startTime = performance.now();
-    const startMemory = (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
+    const startMemory =
+      (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
 
     try {
       // Validate strategy
@@ -352,7 +356,8 @@ export class CustomStrategyExecutor {
       const result = this.executeInSandbox(strategy.code, sandbox);
 
       const executionTime = performance.now() - startTime;
-      const endMemory = (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
+      const endMemory =
+        (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
       const memoryUsage = endMemory - startMemory;
 
       // Validate result
@@ -372,16 +377,16 @@ export class CustomStrategyExecutor {
       }
 
       return {
-        target: result.target || null,
-        confidence: Math.max(0, Math.min(1, result.confidence || 0)),
-        reasoning: result.reasoning || 'No reasoning provided',
+        target: (result as { target?: Enemy }).target || null,
+        confidence: Math.max(0, Math.min(1, (result as { confidence?: number }).confidence || 0)),
+        reasoning: (result as { reasoning?: string }).reasoning || 'No reasoning provided',
         metrics: {
           executionTime,
           memoryUsage,
-          iterations: result.iterations || 0,
+          iterations: (result as { iterations?: number }).iterations || 0,
         },
-        errors: result.errors || [],
-        warnings: result.warnings || [],
+        errors: (result as { errors?: string[] }).errors || [],
+        warnings: (result as { warnings?: string[] }).warnings || [],
       };
     } catch (error) {
       return {
@@ -442,7 +447,10 @@ export class CustomStrategyExecutor {
   /**
    * Execute code in sandbox
    */
-  private executeInSandbox(code: string, sandbox: Record<string, unknown>): Record<string, unknown> {
+  private executeInSandbox(
+    code: string,
+    sandbox: Record<string, unknown>,
+  ): Record<string, unknown> {
     // Create function with sandbox context
     const func = new Function(
       'sandbox',

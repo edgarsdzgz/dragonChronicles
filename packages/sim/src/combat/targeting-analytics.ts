@@ -313,25 +313,35 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
     switch (event.type) {
       case 'target_selected':
         session.totalTargetSelections++;
-        if (event.data.strategy && !session.strategiesUsed.includes(event.data.strategy)) {
-          session.strategiesUsed.push(event.data.strategy);
+        const data = event.data as {
+          strategy?: string;
+          persistenceMode?: string;
+          [key: string]: unknown;
+        };
+        if (data.strategy && !session.strategiesUsed.includes(data.strategy as TargetingStrategy)) {
+          session.strategiesUsed.push(data.strategy as TargetingStrategy);
         }
         if (
-          event.data.persistenceMode &&
-          !session.persistenceModesUsed.includes(event.data.persistenceMode)
+          data.persistenceMode &&
+          !session.persistenceModesUsed.includes(data.persistenceMode as TargetPersistenceMode)
         ) {
-          session.persistenceModesUsed.push(event.data.persistenceMode);
+          session.persistenceModesUsed.push(data.persistenceMode as TargetPersistenceMode);
         }
         break;
       case 'target_switched':
         session.totalTargetSwitches++;
         break;
       case 'error_occurred':
+        const errorData = event.data as {
+          type?: string;
+          message?: string;
+          context?: Record<string, unknown>;
+        };
         session.errors.push({
-          type: event.data.type || 'unknown',
-          message: event.data.message || 'Unknown error',
+          type: errorData.type || 'unknown',
+          message: errorData.message || 'Unknown error',
           timestamp: event.timestamp,
-          context: event.data.context || {},
+          context: errorData.context || {},
         });
         break;
     }
@@ -568,25 +578,40 @@ export class TargetingAnalytics {
         switch (event.type) {
           case 'target_selected':
             summary.totalTargetSelections++;
-            if (event.data.strategy && !summary.strategiesUsed.includes(event.data.strategy)) {
-              summary.strategiesUsed.push(event.data.strategy);
+            const eventData = event.data as {
+              strategy?: string;
+              persistenceMode?: string;
+              [key: string]: unknown;
+            };
+            if (
+              eventData.strategy &&
+              !summary.strategiesUsed.includes(eventData.strategy as TargetingStrategy)
+            ) {
+              summary.strategiesUsed.push(eventData.strategy as TargetingStrategy);
             }
             if (
-              event.data.persistenceMode &&
-              !summary.persistenceModesUsed.includes(event.data.persistenceMode)
+              eventData.persistenceMode &&
+              !summary.persistenceModesUsed.includes(
+                eventData.persistenceMode as TargetPersistenceMode,
+              )
             ) {
-              summary.persistenceModesUsed.push(event.data.persistenceMode);
+              summary.persistenceModesUsed.push(eventData.persistenceMode as TargetPersistenceMode);
             }
             break;
           case 'target_switched':
             summary.totalTargetSwitches++;
             break;
           case 'error_occurred':
+            const errorEventData = event.data as {
+              type?: string;
+              message?: string;
+              context?: Record<string, unknown>;
+            };
             summary.errors.push({
-              type: event.data.type || 'unknown',
-              message: event.data.message || 'Unknown error',
+              type: errorEventData.type || 'unknown',
+              message: errorEventData.message || 'Unknown error',
               timestamp: event.timestamp,
-              context: event.data.context || {},
+              context: errorEventData.context || {},
             });
             break;
         }
@@ -625,19 +650,19 @@ export class TargetingAnalytics {
       }
 
       const totalSelectionTime = performanceEvents.reduce(
-        (sum, e) => sum + (e.data.targetSelectionTime || 0),
+        (sum, e) => sum + ((e.data as { targetSelectionTime?: number }).targetSelectionTime || 0),
         0,
       );
       const totalUpdateTime = performanceEvents.reduce(
-        (sum, e) => sum + (e.data.totalUpdateTime || 0),
+        (sum, e) => sum + ((e.data as { totalUpdateTime?: number }).totalUpdateTime || 0),
         0,
       );
       const totalMemoryUsage = performanceEvents.reduce(
-        (sum, e) => sum + (e.data.memoryUsage || 0),
+        (sum, e) => sum + ((e.data as { memoryUsage?: number }).memoryUsage || 0),
         0,
       );
       const totalCacheHits = performanceEvents.reduce(
-        (sum, e) => sum + (e.data.cacheHitRate || 0),
+        (sum, e) => sum + ((e.data as { cacheHitRate?: number }).cacheHitRate || 0),
         0,
       );
 
@@ -808,10 +833,10 @@ export class TargetingAnalytics {
 
     // Remove or hash sensitive data
     if (anonymized.targetId) {
-      anonymized.targetId = this.hashString(anonymized.targetId);
+      anonymized.targetId = this.hashString(anonymized.targetId as string);
     }
     if (anonymized.sessionId) {
-      anonymized.sessionId = this.hashString(anonymized.sessionId);
+      anonymized.sessionId = this.hashString(anonymized.sessionId as string);
     }
 
     return anonymized;
@@ -859,7 +884,8 @@ export const AnalyticsUtils = {
       threatCalculationTime: metrics.threatCalculationTime,
       totalUpdateTime:
         metrics.targetSelectionTime + metrics.rangeDetectionTime + metrics.threatCalculationTime,
-      memoryUsage: (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0,
+      memoryUsage:
+        (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0,
       enemyCount,
       enemiesInRange,
       cacheHitRate: 0,
