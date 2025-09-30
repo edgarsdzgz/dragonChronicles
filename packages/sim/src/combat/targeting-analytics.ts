@@ -311,7 +311,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
 
   private processEventForSession(session: SessionAnalyticsData, event: AnalyticsEvent): void {
     switch (event.type) {
-      case 'target_selected':
+      case 'target_selected': {
         session.totalTargetSelections++;
         const data = event.data as {
           strategy?: string;
@@ -328,10 +328,11 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           session.persistenceModesUsed.push(data.persistenceMode as TargetPersistenceMode);
         }
         break;
+      }
       case 'target_switched':
         session.totalTargetSwitches++;
         break;
-      case 'error_occurred':
+      case 'error_occurred': {
         const errorData = event.data as {
           type?: string;
           message?: string;
@@ -344,6 +345,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           context: errorData.context || {},
         });
         break;
+      }
     }
   }
 
@@ -576,7 +578,7 @@ export class TargetingAnalytics {
       // Process events
       for (const event of events) {
         switch (event.type) {
-          case 'target_selected':
+          case 'target_selected': {
             summary.totalTargetSelections++;
             const eventData = event.data as {
               strategy?: string;
@@ -598,10 +600,11 @@ export class TargetingAnalytics {
               summary.persistenceModesUsed.push(eventData.persistenceMode as TargetPersistenceMode);
             }
             break;
+          }
           case 'target_switched':
             summary.totalTargetSwitches++;
             break;
-          case 'error_occurred':
+          case 'error_occurred': {
             const errorEventData = event.data as {
               type?: string;
               message?: string;
@@ -614,6 +617,7 @@ export class TargetingAnalytics {
               context: errorEventData.context || {},
             });
             break;
+          }
         }
       }
 
