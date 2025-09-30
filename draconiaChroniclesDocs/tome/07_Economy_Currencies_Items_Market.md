@@ -71,6 +71,10 @@ interface SoulPowerSystem {
 
 - **Perform permanent Soul Forging** (extend level caps permanently)
 
+- **Location Restriction**: Can ONLY be spent in Draconia (main town/base)
+
+- **Journey Restriction**: Cannot be spent during journeys - only between journeys
+
 - Typical node cost growth: **×1.90** per rank
 
 #### Gold (Quality of Life Currency)
