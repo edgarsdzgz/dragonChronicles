@@ -83,17 +83,17 @@ export interface CustomStrategyContext {
  * Custom strategy utilities
  */
 export interface CustomStrategyUtilities {
-  calculateDistance(dragon: Dragon, enemy: Enemy): number;
-  calculateThreatLevel(enemy: Enemy, dragon: Dragon): number;
-  isInRange(dragon: Dragon, enemy: Enemy): boolean;
-  getEnemiesInRange(enemies: Enemy[], dragon: Dragon): Enemy[];
-  sortByDistance(enemies: Enemy[], dragon: Dragon): Enemy[];
-  sortByThreat(enemies: Enemy[], dragon: Dragon): Enemy[];
-  filterByHealth(enemies: Enemy[], minHealth: number, maxHealth: number): Enemy[];
-  filterByElement(enemies: Enemy[], element: string): Enemy[];
-  getRandomEnemy(enemies: Enemy[]): Enemy | null;
-  getClosestEnemy(enemies: Enemy[], dragon: Dragon): Enemy | null;
-  getHighestThreatEnemy(enemies: Enemy[], dragon: Dragon): Enemy | null;
+  calculateDistance(_dragon: Dragon, _enemy: Enemy): number;
+  calculateThreatLevel(_enemy: Enemy, _dragon: Dragon): number;
+  isInRange(_dragon: Dragon, _enemy: Enemy): boolean;
+  getEnemiesInRange(_enemies: Enemy[], _dragon: Dragon): Enemy[];
+  sortByDistance(_enemies: Enemy[], _dragon: Dragon): Enemy[];
+  sortByThreat(_enemies: Enemy[], _dragon: Dragon): Enemy[];
+  filterByHealth(_enemies: Enemy[], _minHealth: number, _maxHealth: number): Enemy[];
+  filterByElement(_enemies: Enemy[], _element: string): Enemy[];
+  getRandomEnemy(_enemies: Enemy[]): Enemy | null;
+  getClosestEnemy(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
+  getHighestThreatEnemy(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
 }
 
 /**

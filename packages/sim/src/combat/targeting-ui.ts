@@ -7,7 +7,6 @@ import type {
   TargetingStrategy,
   TargetPersistenceMode,
   TargetingConfig,
-  PlayerTargetingPreferences,
 } from './types.js';
 import { createTargetingConfigManager } from './targeting-config.js';
 import { createTargetingUnlockSystem } from './targeting-unlock.js';
@@ -65,7 +64,7 @@ export class TargetingUIManager {
   private configManager = createTargetingConfigManager();
   private unlockSystem = createTargetingUnlockSystem();
   private components: Map<string, TargetingUIComponent> = new Map();
-  private eventListeners: Map<string, (event: TargetingUIEvent) => void> = new Map();
+  private eventListeners: Map<string, (_event: TargetingUIEvent) => void> = new Map();
   private isOpen = false;
   private container: HTMLElement | null = null;
 

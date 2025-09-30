@@ -147,12 +147,12 @@ export interface AnalyticsConfig {
  * Analytics storage interface
  */
 export interface AnalyticsStorage {
-  save(event: AnalyticsEvent): Promise<void>;
-  saveBatch(events: AnalyticsEvent[]): Promise<void>;
-  getEvents(sessionId: string): Promise<AnalyticsEvent[]>;
-  getSessions(limit?: number): Promise<SessionAnalyticsData[]>;
-  clearOldData(retentionDays: number): Promise<void>;
-  exportData(format: 'json' | 'csv'): Promise<string>;
+  save(_event: AnalyticsEvent): Promise<void>;
+  saveBatch(_events: AnalyticsEvent[]): Promise<void>;
+  getEvents(_sessionId: string): Promise<AnalyticsEvent[]>;
+  getSessions(_limit?: number): Promise<SessionAnalyticsData[]>;
+  clearOldData(_retentionDays: number): Promise<void>;
+  exportData(_format: 'json' | 'csv'): Promise<string>;
 }
 
 /**

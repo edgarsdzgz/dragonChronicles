@@ -7,8 +7,6 @@ import type {
   TargetingConfig,
   TargetingState,
   PlayerTargetingPreferences,
-  TargetingStrategy,
-  TargetPersistenceMode,
 } from './types.js';
 import { createTargetingConfigManager } from './targeting-config.js';
 import { createTargetingUnlockSystem } from './targeting-unlock.js';
@@ -17,9 +15,9 @@ import { createTargetingUnlockSystem } from './targeting-unlock.js';
  * Persistence storage interface
  */
 export interface TargetingPersistenceStorage {
-  save(key: string, data: any): Promise<void>;
-  load(key: string): Promise<any>;
-  remove(key: string): Promise<void>;
+  save(_key: string, _data: any): Promise<void>;
+  load(_key: string): Promise<any>;
+  remove(_key: string): Promise<void>;
   clear(): Promise<void>;
 }
 

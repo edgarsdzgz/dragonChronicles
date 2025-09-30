@@ -13,7 +13,7 @@ import type {
   TargetPersistenceMode,
   TargetingMetrics,
 } from './types.js';
-import { DefaultRangeDetection, createRangeDetection } from './range-detection.js';
+import { createRangeDetection } from './range-detection.js';
 import { DefaultThreatAssessment, createThreatAssessment } from './threat-assessment.js';
 
 /**

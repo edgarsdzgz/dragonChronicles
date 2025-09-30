@@ -4,9 +4,6 @@
  */
 
 import type {
-  TargetingMetrics,
-  Enemy,
-  Dragon,
   TargetingStrategy,
   TargetPersistenceMode,
 } from './types.js';

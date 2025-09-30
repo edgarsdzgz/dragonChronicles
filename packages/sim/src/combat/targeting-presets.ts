@@ -4,8 +4,6 @@
  */
 
 import type {
-  TargetingStrategy,
-  TargetPersistenceMode,
   TargetingConfig,
   PlayerTargetingPreferences,
 } from './types.js';

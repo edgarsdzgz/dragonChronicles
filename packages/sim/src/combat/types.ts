@@ -358,16 +358,6 @@ export interface PushbackResult {
   recoveryTime: number;
 }
 
-export interface TargetingMetrics {
-  targetSelectionTime: number;
-  rangeDetectionTime: number;
-  threatCalculationTime: number;
-  totalUpdateTime: number;
-  targetsEvaluated: number;
-  targetSwitches: number;
-  strategyChanges: number;
-  performanceScore: number;
-}
 
 export interface ThreatWeights {
   proximity: number;
