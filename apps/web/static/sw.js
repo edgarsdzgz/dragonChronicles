@@ -12,23 +12,23 @@ try {
   self.workbox = {
     precaching: {
       precacheAndRoute: () => {},
-      cleanupOutdatedCaches: () => {}
+      cleanupOutdatedCaches: () => {},
     },
     routing: {
       registerRoute: () => {},
-      NavigationRoute: class NavigationRoute {}
+      NavigationRoute: class NavigationRoute {},
     },
     strategies: {
       StaleWhileRevalidate: class StaleWhileRevalidate {},
       CacheFirst: class CacheFirst {},
-      NetworkFirst: class NetworkFirst {}
+      NetworkFirst: class NetworkFirst {},
     },
     expiration: {
-      ExpirationPlugin: class ExpirationPlugin {}
+      ExpirationPlugin: class ExpirationPlugin {},
     },
     cacheableResponse: {
-      CacheableResponsePlugin: class CacheableResponsePlugin {}
-    }
+      CacheableResponsePlugin: class CacheableResponsePlugin {},
+    },
   };
 }
 
