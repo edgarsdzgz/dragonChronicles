@@ -29,3 +29,9 @@ export * from './economy/arcana-drop-manager.js';
 export * from './economy/arcana-scaling.js';
 export * from './economy/soul-power-drop-manager.js';
 export * from './economy/soul-power-scaling.js';
+
+// Export enchant system components
+export * from './economy/enchant-types.js';
+export * from './economy/enchant-costs.js';
+export * from './economy/enchant-manager.js';
+export * from './economy/soul-forging.js';

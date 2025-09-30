@@ -348,3 +348,16 @@ export interface SoulPowerScaling {
     arcanaAmount: number,
   ): SoulPowerScalingResult;
 }
+
+// Re-export enchant types for convenience
+export type {
+  EnchantType,
+  EnchantCategory,
+  LocationType,
+  EnchantSystem,
+  EnchantConfig,
+  EnchantManager,
+  EnchantTransaction,
+  SoulForgingTransaction,
+  EnchantAnalytics,
+} from './enchant-types.js';
