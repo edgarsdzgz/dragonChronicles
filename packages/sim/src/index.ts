@@ -27,3 +27,5 @@ export * from './combat/dragon-health.js';
 export * from './economy/types.js';
 export * from './economy/arcana-drop-manager.js';
 export * from './economy/arcana-scaling.js';
+export * from './economy/soul-power-drop-manager.js';
+export * from './economy/soul-power-scaling.js';
