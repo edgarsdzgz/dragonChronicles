@@ -22,7 +22,8 @@ export const BALANCING_CONSTANTS = {
   // Cost Growth Rates
   ARCANA*COST*GROWTH: 1.12,        // ×1.12 per level
   SOUL*COST*GROWTH: 1.90,          // ×1.90 per rank
-  TIER*UP*MULTIPLIER: 20,          // 15-25× last level cost
+  SOUL*FORGING*MULTIPLIER: 20,      // 15-25× last level cost (temporary)
+  SOUL*FORGING*PERMANENT*COST: 5000, // High Soul Power cost (permanent)
 
   // Enemy Scaling
   ENEMY*HP*GROWTH: 1.18,           // ×1.18 per ward
@@ -58,10 +59,14 @@ export function calculateEnchantCost(
   return Math.floor(baseCost * Math.pow(growthRate, level));
 }
 
-export function calculateTierUpCost(
+export function calculateSoulForgingCost(
   lastLevelCost: number,
-  multiplier: number = BALANCING*CONSTANTS.TIER*UP_MULTIPLIER
+  isPermanent: boolean = false
 ): number {
+  if (isPermanent) {
+    return BALANCING_CONSTANTS.SOUL_FORGING_PERMANENT_COST;
+  }
+  const multiplier = BALANCING_CONSTANTS.SOUL_FORGING_MULTIPLIER;
   return Math.floor(lastLevelCost * multiplier);
 }
 

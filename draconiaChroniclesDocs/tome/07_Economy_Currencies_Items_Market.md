@@ -39,7 +39,7 @@ interface ArcanaSystem {
 
 - Typical node cost growth: **×1.17** per level
 
-- Tier-Up costs: **15-25× last cost** (prevents runaway stacking)
+- **Soul Forging costs:** **15-25× last cost** (temporary) or high Soul Power cost (permanent)
 
 #### Soul Power (Meta Progression Currency)
 
@@ -68,6 +68,8 @@ interface SoulPowerSystem {
 - Unlock discovered nodes in tech trees
 
 - Purchase permanent "starts-at-level" bonuses
+
+- **Perform permanent Soul Forging** (extend level caps permanently)
 
 - Typical node cost growth: **×1.90** per rank
 
