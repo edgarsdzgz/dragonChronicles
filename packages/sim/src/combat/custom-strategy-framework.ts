@@ -38,7 +38,7 @@ export interface CustomStrategyDefinition {
 export interface CustomStrategyParameter {
   name: string;
   type: 'number' | 'string' | 'boolean' | 'enum' | 'range';
-  defaultValue: any;
+  defaultValue: unknown;
   min?: number;
   max?: number;
   step?: number;
@@ -74,8 +74,8 @@ export interface CustomStrategyContext {
   enemies: Enemy[];
   threatAssessment: ThreatAssessment;
   rangeDetection: RangeDetection;
-  parameters: Record<string, any>;
-  gameState: Record<string, any>;
+  parameters: Record<string, unknown>;
+  gameState: Record<string, unknown>;
   utilities: CustomStrategyUtilities;
 }
 
@@ -256,7 +256,7 @@ export class CustomStrategyValidator {
   /**
    * Create sandboxed execution environment
    */
-  private createSandbox(context: CustomStrategyContext): any {
+  private createSandbox(context: CustomStrategyContext): Record<string, unknown> {
     return {
       // Game objects
       dragon: context.dragon,
@@ -286,9 +286,9 @@ export class CustomStrategyValidator {
 
       // Console (limited)
       console: {
-        log: (...args: any[]) => console.log('[Custom Strategy]', ...args),
-        warn: (...args: any[]) => console.warn('[Custom Strategy]', ...args),
-        error: (...args: any[]) => console.error('[Custom Strategy]', ...args),
+        log: (...args: unknown[]) => console.log('[Custom Strategy]', ...args),
+        warn: (...args: unknown[]) => console.warn('[Custom Strategy]', ...args),
+        error: (...args: unknown[]) => console.error('[Custom Strategy]', ...args),
       },
     };
   }
@@ -296,7 +296,7 @@ export class CustomStrategyValidator {
   /**
    * Execute code in sandbox
    */
-  private executeInSandbox(code: string, sandbox: any): any {
+  private executeInSandbox(code: string, sandbox: Record<string, unknown>): Record<string, unknown> {
     // Create function with sandbox context
     const func = new Function(
       'sandbox',
@@ -325,7 +325,7 @@ export class CustomStrategyExecutor {
     context: CustomStrategyContext,
   ): Promise<CustomStrategyResult> {
     const startTime = performance.now();
-    const startMemory = (performance as any).memory?.usedJSHeapSize || 0;
+    const startMemory = (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
 
     try {
       // Validate strategy
@@ -352,7 +352,7 @@ export class CustomStrategyExecutor {
       const result = this.executeInSandbox(strategy.code, sandbox);
 
       const executionTime = performance.now() - startTime;
-      const endMemory = (performance as any).memory?.usedJSHeapSize || 0;
+      const endMemory = (performance as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
       const memoryUsage = endMemory - startMemory;
 
       // Validate result
@@ -402,7 +402,7 @@ export class CustomStrategyExecutor {
   /**
    * Create sandboxed execution environment
    */
-  private createSandbox(context: CustomStrategyContext): any {
+  private createSandbox(context: CustomStrategyContext): Record<string, unknown> {
     return {
       // Game objects
       dragon: context.dragon,
@@ -432,9 +432,9 @@ export class CustomStrategyExecutor {
 
       // Console (limited)
       console: {
-        log: (...args: any[]) => console.log('[Custom Strategy]', ...args),
-        warn: (...args: any[]) => console.warn('[Custom Strategy]', ...args),
-        error: (...args: any[]) => console.error('[Custom Strategy]', ...args),
+        log: (...args: unknown[]) => console.log('[Custom Strategy]', ...args),
+        warn: (...args: unknown[]) => console.warn('[Custom Strategy]', ...args),
+        error: (...args: unknown[]) => console.error('[Custom Strategy]', ...args),
       },
     };
   }
@@ -442,7 +442,7 @@ export class CustomStrategyExecutor {
   /**
    * Execute code in sandbox
    */
-  private executeInSandbox(code: string, sandbox: any): any {
+  private executeInSandbox(code: string, sandbox: Record<string, unknown>): Record<string, unknown> {
     // Create function with sandbox context
     const func = new Function(
       'sandbox',
@@ -492,7 +492,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
           acc[param.name] = param.defaultValue;
           return acc;
         },
-        {} as Record<string, any>,
+        {} as Record<string, unknown>,
       ),
       gameState: {},
       utilities: this.createUtilities(),

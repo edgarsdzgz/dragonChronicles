@@ -273,7 +273,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           if (event.timestamp < cutoffTime) {
             keysToRemove.push(key);
           }
-        } catch (error) {
+        } catch {
           // Remove corrupted data
           keysToRemove.push(key);
         }
@@ -363,7 +363,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           try {
             const event = JSON.parse(window.localStorage.getItem(key) || '{}');
             events.push({ key, timestamp: event.timestamp });
-          } catch (_error) {
+          } catch {
             // Remove corrupted data
             window.localStorage.removeItem(key);
           }
