@@ -213,6 +213,16 @@ export type TargetingStrategy =
   | 'elemental_strong' // Target enemies strong against dragon's element
   | 'custom'; // Custom strategy (future expansion)
 
+export interface TargetingMetrics {
+  targetSelectionTime: number;
+  rangeDetectionTime: number;
+  threatAssessmentTime: number;
+  totalUpdateTime: number;
+  targetSwitchCount: number;
+  averageTargetLifetime: number;
+  strategyEffectiveness: Map<TargetingStrategy, number>;
+}
+
 export type TargetPersistenceMode =
   | 'keep_target' // Default: Keep current target until it dies or goes out of range
   | 'switch_freely' // Switch targets based on strategy changes
@@ -228,6 +238,13 @@ export interface TargetingConfig {
   enabledStrategies: TargetingStrategy[]; // Player-unlocked strategies
   persistenceMode: TargetPersistenceMode; // How to handle target switching
   targetLockDuration: number; // How long to keep target locked (ms)
+  threatWeights: {
+    proximity: number;
+    health: number;
+    damage: number;
+    speed: number;
+  };
+  customSettings: Record<string, any>;
 }
 
 export interface TargetingState {
@@ -270,6 +287,8 @@ export interface Enemy {
   isAlive: boolean;
   threatLevel: number;
   distance: number;
+  type: string;
+  maxHealth: number;
 }
 
 export interface Dragon {
@@ -304,7 +323,7 @@ export interface TargetingStrategyHandler {
   strategy: TargetingStrategy;
   calculate(_enemies: Enemy[], _dragon: Dragon): Enemy | null;
   getDescription(): string;
-  isUnlocked(): boolean;
+  isUnlocked: boolean;
 }
 
 export interface TargetPersistenceHandler {
@@ -316,7 +335,7 @@ export interface TargetPersistenceHandler {
     _config: TargetingConfig,
   ): boolean;
   getDescription(): string;
-  isUnlocked(): boolean;
+  isUnlocked: boolean;
 }
 
 // ============================================================================
@@ -335,4 +354,30 @@ export interface PushbackResult {
   newWard: number;
   pushbackAmount: number;
   recoveryTime: number;
+}
+
+export interface TargetingMetrics {
+  targetSelectionTime: number;
+  rangeDetectionTime: number;
+  threatCalculationTime: number;
+  totalUpdateTime: number;
+  targetsEvaluated: number;
+  targetSwitches: number;
+  strategyChanges: number;
+  performanceScore: number;
+}
+
+export interface ThreatWeights {
+  proximity: number;
+  health: number;
+  damage: number;
+  speed: number;
+}
+
+export interface PlayerTargetingPreferences {
+  preferredStrategies: TargetingStrategy[];
+  preferredPersistenceMode: TargetPersistenceMode;
+  customWeights: Partial<ThreatWeights>;
+  autoSwitchEnabled: boolean;
+  manualOverrideEnabled: boolean;
 }
