@@ -8,8 +8,12 @@
 
 ## Story Overview
 
-Implement the dragon targeting system that allows the dragon to intelligently select and track enemies during combat..
-This system will determine which enemies to prioritize based on proximity, threat level, and combat state.
+Implement the dragon targeting system that allows the dragon to intelligently select and track
+enemies
+during
+combat..
+This system will determine which enemies to prioritize based on proximity, threat level, and combat
+state.
 
 ## Acceptance Criteria
 
@@ -304,4 +308,5 @@ interface ThreatAssessment {
 **Created**: 2025-09-30
 **Status**: Planning Complete
 **Next**: Implementation Phase
+
 ````

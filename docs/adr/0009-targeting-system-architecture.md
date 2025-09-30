@@ -6,7 +6,18 @@ Accepted
 
 ## Context
 
-The Draconia Chronicles combat system requires a sophisticated targeting system that can handle multiple enemy types (Mantair Corsair, Swarm) with different behaviors and characteristics..
+The Draconia Chronicles combat system requires a sophisticated targeting system that can handle
+multiple
+enemy
+types
+(Mantair
+Corsair,
+Swarm)
+with
+different
+behaviors
+and
+characteristics..
 The system needs to be:
 
 1. **Configurable**: Players should be able to customize targeting behavior
@@ -353,4 +364,5 @@ interface TargetingConfig {
 - Game Design Team
 
 - Performance Team
+
 ````
