@@ -12,6 +12,7 @@ import type {
   TargetingStrategy,
   TargetPersistenceMode,
   TargetingMetrics,
+  RangeDetection,
 } from './types.js';
 import { createRangeDetection } from './range-detection.js';
 import { DefaultThreatAssessment, createThreatAssessment } from './threat-assessment.js';
@@ -26,7 +27,7 @@ import { DefaultThreatAssessment, createThreatAssessment } from './threat-assess
  */
 export class DefaultTargetingSystem implements TargetingSystem {
   public state: TargetingState;
-  private rangeDetection: any;
+  private rangeDetection: RangeDetection;
   private readonly threatAssessment: DefaultThreatAssessment;
   private readonly metrics: TargetingMetrics;
   private readonly performanceHistory: number[] = [];

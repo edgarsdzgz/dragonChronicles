@@ -37,7 +37,7 @@ export class LocalStoragePersistence implements TargetingPersistenceStorage {
     }
   }
 
-  async load(key: string): Promise<any> {
+  async load(key: string): Promise<unknown> {
     if (typeof window !== 'undefined' && window.localStorage) {
       try {
         const serialized = window.localStorage.getItem(key);
@@ -132,7 +132,7 @@ export class IndexedDBPersistence implements TargetingPersistenceStorage {
     });
   }
 
-  async load(key: string): Promise<any> {
+  async load(key: string): Promise<unknown> {
     if (!this.db) {
       await this.init();
     }
@@ -283,7 +283,7 @@ export class TargetingPersistenceManager {
   /**
    * Save unlock progress
    */
-  async saveUnlockProgress(progress: any, profileId: string = 'default'): Promise<void> {
+  async saveUnlockProgress(progress: unknown, profileId: string = 'default'): Promise<void> {
     const key = `unlock_${profileId}`;
     await this.storage.save(key, progress);
   }
@@ -291,7 +291,7 @@ export class TargetingPersistenceManager {
   /**
    * Load unlock progress
    */
-  async loadUnlockProgress(profileId: string = 'default'): Promise<any> {
+  async loadUnlockProgress(profileId: string = 'default'): Promise<unknown> {
     const key = `unlock_${profileId}`;
     return await this.storage.load(key);
   }
@@ -560,8 +560,8 @@ export const TargetingPersistenceUtils = {
       if (sourceState.config) {
         await manager.saveCompleteState(
           sourceState.config,
-          sourceState.state as any,
-          sourceState.preferences as any,
+          sourceState.state as unknown,
+          sourceState.preferences as unknown,
           targetProfileId,
         );
         return true;

@@ -38,7 +38,7 @@ export type TargetingUIEventType =
  */
 export interface TargetingUIEvent {
   type: TargetingUIEventType;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   timestamp: number;
 }
 
@@ -932,7 +932,7 @@ export class TargetingUIManager {
   /**
    * Emit event
    */
-  private emitEvent(type: TargetingUIEventType, data: Record<string, any>): void {
+  private emitEvent(type: TargetingUIEventType, data: Record<string, unknown>): void {
     const event: TargetingUIEvent = {
       type,
       data,
