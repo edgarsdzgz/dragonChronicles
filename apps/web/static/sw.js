@@ -6,7 +6,7 @@
 // Import Workbox modules with fallback
 try {
   importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.3.0/workbox-sw.js');
-} catch (error) {
+} catch {
   console.warn('Failed to load Workbox from CDN, using minimal service worker functionality');
   // Define minimal workbox-like objects for fallback
   self.workbox = {
