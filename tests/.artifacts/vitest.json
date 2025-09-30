@@ -8,1304 +8,1464 @@
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1759063092964,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1759242665235,
   "success": true,
   "testResults": [
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should write save data atomically",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should write save data atomically",
           "status": "passed",
           "title": "should write save data atomically",
-          "duration": 54,
-          "failureMessages": []
+          "duration": 38.78244300000006,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should update active profile pointer",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should update active profile pointer",
           "status": "passed",
           "title": "should update active profile pointer",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 10.47297900000001,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
           "status": "passed",
           "title": "should prune old saves to keep only 3 backups",
-          "duration": 18,
-          "failureMessages": []
+          "duration": 14.46852899999999,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
           "status": "passed",
           "title": "should handle concurrent writes to different profiles",
-          "duration": 10,
-          "failureMessages": []
+          "duration": 8.992554000000041,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
           "status": "passed",
           "title": "should maintain data integrity during transaction failures",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 5.190534000000071,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should return the most recent save for a profile",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should return the most recent save for a profile",
           "status": "passed",
           "title": "should return the most recent save for a profile",
-          "duration": 13,
-          "failureMessages": []
+          "duration": 9.456718000000023,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should return null for non-existent profile",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should return null for non-existent profile",
           "status": "passed",
           "title": "should return null for non-existent profile",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 2.408126999999922,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
           "status": "passed",
           "title": "should handle profile with multiple saves correctly",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 5.829651000000013,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
-          "fullName": " Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
+          "ancestorTitles": ["Atomic Write Operations", "Database consistency"],
+          "fullName": "Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
           "status": "passed",
           "title": "should maintain referential integrity between saves and meta tables",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 6.361562999999933,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
-          "fullName": " Atomic Write Operations Database consistency should handle database corruption gracefully",
+          "ancestorTitles": ["Atomic Write Operations", "Database consistency"],
+          "fullName": "Atomic Write Operations Database consistency should handle database corruption gracefully",
           "status": "passed",
           "title": "should handle database corruption gracefully",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 8.125752999999918,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
-          "fullName": " Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
+          "ancestorTitles": ["Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": "Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
           "status": "passed",
           "title": "should preserve W3 time accounting fields during atomic writes",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 4.947485999999913,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
-          "fullName": " Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
+          "ancestorTitles": ["Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": "Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
           "status": "passed",
           "title": "should handle W3 time accounting updates correctly",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 4.464394000000084,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093940,
-      "endTime": 1759063094093,
+      "startTime": 1759242666188,
+      "endTime": 1759242666309.4644,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/atomic.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/atomic.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should export all profiles with correct format",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should export all profiles with correct format",
           "status": "passed",
           "title": "should export all profiles with correct format",
-          "duration": 71,
-          "failureMessages": []
+          "duration": 44.18550400000004,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
           "status": "passed",
           "title": "should include W3 time accounting fields in export",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 8.852032000000008,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
           "status": "passed",
           "title": "should generate valid checksum for export data",
-          "duration": 8,
-          "failureMessages": []
+          "duration": 6.486996999999974,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should handle empty database gracefully",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should handle empty database gracefully",
           "status": "passed",
           "title": "should handle empty database gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 5.975898999999913,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should import valid export data correctly",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should import valid export data correctly",
           "status": "passed",
           "title": "should import valid export data correctly",
-          "duration": 23,
-          "failureMessages": []
+          "duration": 12.241918999999939,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should validate checksum during import",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should validate checksum during import",
           "status": "passed",
           "title": "should validate checksum during import",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.140133999999989,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should reject import with wrong file version",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should reject import with wrong file version",
           "status": "passed",
           "title": "should reject import with wrong file version",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.413632000000007,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
           "status": "passed",
           "title": "should handle corrupted export data gracefully",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 2.3401020000000017,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
           "status": "passed",
           "title": "should preserve W3 time accounting during import",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 6.617042000000083,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
-          "fullName": " Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
+          "ancestorTitles": ["Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": "Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
           "status": "passed",
           "title": "should maintain data integrity through export-import cycle",
-          "duration": 18,
-          "failureMessages": []
+          "duration": 17.98468800000012,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
-          "fullName": " Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
+          "ancestorTitles": ["Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": "Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
           "status": "passed",
           "title": "should preserve all profile data during round-trip",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 7.003544000000147,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should encode and validate export data correctly",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should encode and validate export data correctly",
           "status": "passed",
           "title": "should encode and validate export data correctly",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 2.862863999999945,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should detect tampered export data",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should detect tampered export data",
           "status": "passed",
           "title": "should detect tampered export data",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 4.13125100000002,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should handle checksum generation consistently",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should handle checksum generation consistently",
           "status": "passed",
           "title": "should handle checksum generation consistently",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.8129149999999754,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
-          "fullName": " Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
+          "ancestorTitles": ["Export/Import Functionality", "Multiple profile handling"],
+          "fullName": "Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
           "status": "passed",
           "title": "should handle multiple profile pointers correctly",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 15.989043000000038,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
-          "fullName": " Export/Import Functionality Multiple profile handling should maintain profile independence during import",
+          "ancestorTitles": ["Export/Import Functionality", "Multiple profile handling"],
+          "fullName": "Export/Import Functionality Multiple profile handling should maintain profile independence during import",
           "status": "passed",
           "title": "should maintain profile independence during import",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 8.358185000000049,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093933,
-      "endTime": 1759063094127,
+      "startTime": 1759242666191,
+      "endTime": 1759242666345.3582,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/export-import.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/export-import.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should return version 1 for new database",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should return version 1 for new database",
           "status": "passed",
           "title": "should return version 1 for new database",
-          "duration": 29,
-          "failureMessages": []
+          "duration": 23.88536799999997,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should track database version in meta table",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should track database version in meta table",
           "status": "passed",
           "title": "should track database version in meta table",
-          "duration": 10,
-          "failureMessages": []
+          "duration": 5.5695630000000165,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should handle missing version gracefully",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should handle missing version gracefully",
           "status": "passed",
           "title": "should handle missing version gracefully",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 4.752000000000066,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Status"],
-          "fullName": " Migration System Migration Status should return correct migration status for fresh database",
+          "ancestorTitles": ["Migration System", "Migration Status"],
+          "fullName": "Migration System Migration Status should return correct migration status for fresh database",
           "status": "passed",
           "title": "should return correct migration status for fresh database",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 3.7258219999999937,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Status"],
-          "fullName": " Migration System Migration Status should handle database with version set",
+          "ancestorTitles": ["Migration System", "Migration Status"],
+          "fullName": "Migration System Migration Status should handle database with version set",
           "status": "passed",
           "title": "should handle database with version set",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 4.471448000000009,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should handle no migrations needed",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should handle no migrations needed",
           "status": "passed",
           "title": "should handle no migrations needed",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 3.735251000000062,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should complete successfully when no data exists",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should complete successfully when no data exists",
           "status": "passed",
           "title": "should complete successfully when no data exists",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 6.972324999999955,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should handle migration with existing data",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should handle migration with existing data",
           "status": "passed",
           "title": "should handle migration with existing data",
-          "duration": 20,
-          "failureMessages": []
+          "duration": 9.521041999999966,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should validate empty database successfully",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should validate empty database successfully",
           "status": "passed",
           "title": "should validate empty database successfully",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 4.124546000000009,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should validate valid save data",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should validate valid save data",
           "status": "passed",
           "title": "should validate valid save data",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 4.136977999999999,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should detect invalid save data structure",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should detect invalid save data structure",
           "status": "passed",
           "title": "should detect invalid save data structure",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 2.976285999999959,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should detect missing required fields",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should detect missing required fields",
           "status": "passed",
           "title": "should detect missing required fields",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 2.5638040000000046,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should create backup successfully for empty database",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should create backup successfully for empty database",
           "status": "passed",
           "title": "should create backup successfully for empty database",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.717104999999947,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should create backup with save data",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should create backup with save data",
           "status": "passed",
           "title": "should create backup with save data",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 4.276102000000037,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should store backup in meta table",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should store backup in meta table",
           "status": "passed",
           "title": "should store backup in meta table",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 3.8351239999999507,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should not backup other backups",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should not backup other backups",
           "status": "passed",
           "title": "should not backup other backups",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 5.178241999999955,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Integration Tests"],
-          "fullName": " Migration System Integration Tests should handle complete migration workflow",
+          "ancestorTitles": ["Migration System", "Integration Tests"],
+          "fullName": "Migration System Integration Tests should handle complete migration workflow",
           "status": "passed",
           "title": "should handle complete migration workflow",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 4.64081299999998,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Integration Tests"],
-          "fullName": " Migration System Integration Tests should maintain data integrity through migration process",
+          "ancestorTitles": ["Migration System", "Integration Tests"],
+          "fullName": "Migration System Integration Tests should maintain data integrity through migration process",
           "status": "passed",
           "title": "should maintain data integrity through migration process",
-          "duration": 10,
-          "failureMessages": []
+          "duration": 8.957074000000034,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093928,
-      "endTime": 1759063094066,
+      "startTime": 1759242666189,
+      "endTime": 1759242666296.957,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/migrate.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/migrate.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should validate a complete valid profile",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should validate a complete valid profile",
           "status": "passed",
           "title": "should validate a complete valid profile",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 5.404458000000091,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
           "status": "passed",
           "title": "should reject profile with missing W3 time accounting fields",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.633656999999971,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
           "status": "passed",
           "title": "should reject profile with invalid W3 time accounting",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.45368900000005397,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid name length",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid name length",
           "status": "passed",
           "title": "should reject profile with invalid name length",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5752820000000156,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with negative progress values",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with negative progress values",
           "status": "passed",
           "title": "should reject profile with negative progress values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4602540000000772,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with non-integer values",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with non-integer values",
           "status": "passed",
           "title": "should reject profile with non-integer values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.43762500000002547,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should validate a complete valid save",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should validate a complete valid save",
           "status": "passed",
           "title": "should validate a complete valid save",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8984379999999419,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with wrong version",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with wrong version",
           "status": "passed",
           "title": "should reject save with wrong version",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5748630000000503,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with no profiles",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with no profiles",
           "status": "passed",
           "title": "should reject save with no profiles",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6159999999999854,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with too many profiles",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with too many profiles",
           "status": "passed",
           "title": "should reject save with too many profiles",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 1.0300189999999247,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with invalid profile",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with invalid profile",
           "status": "passed",
           "title": "should reject save with invalid profile",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.7125209999999242,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should validate a complete valid export file",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should validate a complete valid export file",
           "status": "passed",
           "title": "should validate a complete valid export file",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8984379999999419,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with wrong file version",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with wrong file version",
           "status": "passed",
           "title": "should reject export with wrong file version",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4783429999999953,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with empty checksum",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with empty checksum",
           "status": "passed",
           "title": "should reject export with empty checksum",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4045209999999315,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with invalid data",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with invalid data",
           "status": "passed",
           "title": "should reject export with invalid data",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3874789999999848,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid save row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid save row",
           "status": "passed",
           "title": "should validate a complete valid save row",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.7801269999999931,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate save row with optional id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate save row with optional id",
           "status": "passed",
           "title": "should validate save row with optional id",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.27733999999998105,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject save row with invalid profile id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject save row with invalid profile id",
           "status": "passed",
           "title": "should reject save row with invalid profile id",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3492069999999785,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid meta row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid meta row",
           "status": "passed",
           "title": "should validate a complete valid meta row",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.37323200000003,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject meta row with empty key",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject meta row with empty key",
           "status": "passed",
           "title": "should reject meta row with empty key",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3075810000000274,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid log row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid log row",
           "status": "passed",
           "title": "should validate a complete valid log row",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5322600000000648,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate log row with optional id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate log row with optional id",
           "status": "passed",
           "title": "should validate log row with optional id",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.1807489999999916,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate log row with optional data",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate log row with optional data",
           "status": "passed",
           "title": "should validate log row with optional data",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.577656999999931,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with invalid level",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with invalid level",
           "status": "passed",
           "title": "should reject log row with invalid level",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.609365999999909,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with invalid source",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with invalid source",
           "status": "passed",
           "title": "should reject log row with invalid source",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5781460000000607,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with empty message",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with empty message",
           "status": "passed",
           "title": "should reject log row with empty message",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.47554999999999836,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063094360,
-      "endTime": 1759063094379,
+      "startTime": 1759242666117,
+      "endTime": 1759242666137.5781,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/schema.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/schema.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Flag Parsing", "DEFAULT_FLAGS"],
-          "fullName": " Flag Parsing DEFAULT_FLAGS should have correct default values",
+          "ancestorTitles": ["Flag Parsing", "DEFAULT_FLAGS"],
+          "fullName": "Flag Parsing DEFAULT_FLAGS should have correct default values",
           "status": "passed",
           "title": "should have correct default values",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.196647999999982,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should return empty object in production mode",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5204569999999649,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should return empty object when no env vars are set",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should return empty object when no env vars are set",
           "status": "passed",
           "title": "should return empty object when no env vars are set",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.26637400000004163,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse HUD flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse HUD flag from environment",
           "status": "passed",
           "title": "should parse HUD flag from environment",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.35905400000001464,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse dev menu flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse dev menu flag from environment",
           "status": "passed",
           "title": "should parse dev menu flag from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4267300000000205,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse console logging flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse console logging flag from environment",
           "status": "passed",
           "title": "should parse console logging flag from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.36527000000000953,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse legacy background sim flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse legacy background sim flag from environment",
           "status": "passed",
           "title": "should parse legacy background sim flag from environment",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.453200000000038,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse force mode from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse force mode from environment",
           "status": "passed",
           "title": "should parse force mode from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2517080000000078,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should ignore invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5530730000000403,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse multiple flags from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse multiple flags from environment",
           "status": "passed",
           "title": "should parse multiple flags from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.44893999999999323,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should return empty object in production mode",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3434790000000021,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should return empty object when no query params are present",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should return empty object when no query params are present",
           "status": "passed",
           "title": "should return empty object when no query params are present",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2768509999999651,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse HUD flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse HUD flag from query string",
           "status": "passed",
           "title": "should parse HUD flag from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3103049999999712,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse dev menu flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse dev menu flag from query string",
           "status": "passed",
           "title": "should parse dev menu flag from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.21099100000003546,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse console logging flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse console logging flag from query string",
           "status": "passed",
           "title": "should parse console logging flag from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22991700000000037,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse legacy background sim flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse legacy background sim flag from query string",
           "status": "passed",
           "title": "should parse legacy background sim flag from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3898539999999002,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse force mode from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse force mode from query string",
           "status": "passed",
           "title": "should parse force mode from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.18452100000001792,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should ignore invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.17264799999998104,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse multiple flags from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse multiple flags from query string",
           "status": "passed",
           "title": "should parse multiple flags from query string",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2219559999999774,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should ignore non-flag query parameters",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should ignore non-flag query parameters",
           "status": "passed",
           "title": "should ignore non-flag query parameters",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3108640000000378,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should merge flags with correct precedence: query > env > defaults",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should merge flags with correct precedence: query > env > defaults",
           "status": "passed",
           "title": "should merge flags with correct precedence: query > env > defaults",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2776890000000094,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should handle empty env and query flags",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should handle empty env and query flags",
           "status": "passed",
           "title": "should handle empty env and query flags",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.24220900000000256,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should handle partial flag overrides",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should handle partial flag overrides",
           "status": "passed",
           "title": "should handle partial flag overrides",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2171369999999797,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should create complete flag configuration from URL",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should create complete flag configuration from URL",
           "status": "passed",
           "title": "should create complete flag configuration from URL",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.44663500000001477,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should return defaults when no overrides are present",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should return defaults when no overrides are present",
           "status": "passed",
           "title": "should return defaults when no overrides are present",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6282919999999876,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should respect production mode restrictions",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should respect production mode restrictions",
           "status": "passed",
           "title": "should respect production mode restrictions",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3605209999999488,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "ForceMode type validation"],
-          "fullName": " Flag Parsing ForceMode type validation should accept valid force mode values",
+          "ancestorTitles": ["Flag Parsing", "ForceMode type validation"],
+          "fullName": "Flag Parsing ForceMode type validation should accept valid force mode values",
           "status": "passed",
           "title": "should accept valid force mode values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6481969999999819,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "ForceMode type validation"],
-          "fullName": " Flag Parsing ForceMode type validation should reject invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "ForceMode type validation"],
+          "fullName": "Flag Parsing ForceMode type validation should reject invalid force mode values",
           "status": "passed",
           "title": "should reject invalid force mode values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4433520000000044,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle malformed URLs gracefully",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle malformed URLs gracefully",
           "status": "passed",
           "title": "should handle malformed URLs gracefully",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.056489000000056,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle empty query parameter values",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle empty query parameter values",
           "status": "passed",
           "title": "should handle empty query parameter values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.17132100000003447,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle undefined environment variables",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle undefined environment variables",
           "status": "passed",
           "title": "should handle undefined environment variables",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.1348639999999932,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093834,
-      "endTime": 1759063093843,
+      "startTime": 1759242666034,
+      "endTime": 1759242666048.1714,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/parse.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/parse.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should initialize with default values",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should initialize with default values",
           "status": "passed",
           "title": "should initialize with default values",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.930958999999916,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should update when set is called",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should update when set is called",
           "status": "passed",
           "title": "should update when set is called",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4035430000000133,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should update when update is called",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should update when update is called",
           "status": "passed",
           "title": "should update when update is called",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3222480000000587,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should notify subscribers when values change",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should notify subscribers when values change",
           "status": "passed",
           "title": "should notify subscribers when values change",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.4876059999999143,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should not notify unsubscribed listeners",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should not notify unsubscribed listeners",
           "status": "passed",
           "title": "should not notify unsubscribed listeners",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5303750000000491,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive hudEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive hudEnabled correctly",
           "status": "passed",
           "title": "should derive hudEnabled correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5847109999999702,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive devMenuEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive devMenuEnabled correctly",
           "status": "passed",
           "title": "should derive devMenuEnabled correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2744760000000497,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive logConsoleEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive logConsoleEnabled correctly",
           "status": "passed",
           "title": "should derive logConsoleEnabled correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.27482499999996435,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive legacyBgSimEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive legacyBgSimEnabled correctly",
           "status": "passed",
           "title": "should derive legacyBgSimEnabled correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3486479999999119,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive forceMode correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive forceMode correctly",
           "status": "passed",
           "title": "should derive forceMode correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.37239400000009937,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should update derived stores when parent store changes",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should update derived stores when parent store changes",
           "status": "passed",
           "title": "should update derived stores when parent store changes",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5238100000000259,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should return a derived store for boolean flags",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should return a derived store for boolean flags",
           "status": "passed",
           "title": "should return a derived store for boolean flags",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2579240000000027,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should work with all boolean flags",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should work with all boolean flags",
           "status": "passed",
           "title": "should work with all boolean flags",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.49112400000001344,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should convert non-boolean values to boolean",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should convert non-boolean values to boolean",
           "status": "passed",
           "title": "should convert non-boolean values to boolean",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.18493999999998323,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should update when flag values change",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should update when flag values change",
           "status": "passed",
           "title": "should update when flag values change",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5294660000000704,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return current flag values",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return current flag values",
           "status": "passed",
           "title": "should return current flag values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3557710000000043,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return updated values after store changes",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return updated values after store changes",
           "status": "passed",
           "title": "should return updated values after store changes",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22090800000000854,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return a snapshot of current state",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return a snapshot of current state",
           "status": "passed",
           "title": "should return a snapshot of current state",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3118409999999585,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should maintain consistency across all derived stores",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should maintain consistency across all derived stores",
           "status": "passed",
           "title": "should maintain consistency across all derived stores",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4783429999999953,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should handle rapid updates correctly",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should handle rapid updates correctly",
           "status": "passed",
           "title": "should handle rapid updates correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.37190499999996973,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should handle partial updates correctly",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should handle partial updates correctly",
           "status": "passed",
           "title": "should handle partial updates correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.27719999999999345,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "edge cases"],
-          "fullName": " Flag Store edge cases should handle undefined values gracefully",
+          "ancestorTitles": ["Flag Store", "edge cases"],
+          "fullName": "Flag Store edge cases should handle undefined values gracefully",
           "status": "passed",
           "title": "should handle undefined values gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.4170100000000048,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "edge cases"],
-          "fullName": " Flag Store edge cases should handle multiple subscribers correctly",
+          "ancestorTitles": ["Flag Store", "edge cases"],
+          "fullName": "Flag Store edge cases should handle multiple subscribers correctly",
           "status": "passed",
           "title": "should handle multiple subscribers correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 2.163613000000055,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093833,
-      "endTime": 1759063093847,
+      "startTime": 1759242666243,
+      "endTime": 1759242666260.1636,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/store.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/store.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
           "status": "passed",
           "title": "should handle page reload functionality",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.228356000000076,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
           "status": "passed",
           "title": "should handle navigation to home",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.42016499999999724,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
           "status": "passed",
           "title": "should handle log export functionality",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 3.2678030000000717,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
           "status": "passed",
           "title": "should handle log export errors gracefully",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 8.906858000000057,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
           "status": "passed",
           "title": "should prevent multiple simultaneous log exports",
-          "duration": 102,
-          "failureMessages": []
+          "duration": 109.78951200000006,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": [
-            "",
-            "Error Boundary Integration Tests",
-            "Error Information Processing"
-          ],
-          "fullName": " Error Boundary Integration Tests Error Information Processing should generate detailed error information",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Information Processing"],
+          "fullName": "Error Boundary Integration Tests Error Information Processing should generate detailed error information",
           "status": "passed",
           "title": "should generate detailed error information",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.11983500000008,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": [
-            "",
-            "Error Boundary Integration Tests",
-            "Error Information Processing"
-          ],
-          "fullName": " Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Information Processing"],
+          "fullName": "Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
           "status": "passed",
           "title": "should handle missing error information gracefully",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.33733299999994415,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Download Functionality"],
-          "fullName": " Error Boundary Integration Tests Download Functionality should generate correct filename with current date",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Download Functionality"],
+          "fullName": "Error Boundary Integration Tests Download Functionality should generate correct filename with current date",
           "status": "passed",
           "title": "should generate correct filename with current date",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3307680000000346,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Download Functionality"],
-          "fullName": " Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Download Functionality"],
+          "fullName": "Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 1.7003559999999425,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Integration Scenarios"],
-          "fullName": " Error Boundary Integration Tests Integration Scenarios should handle complete error boundary workflow",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Integration Scenarios"],
+          "fullName": "Error Boundary Integration Tests Integration Scenarios should handle complete error boundary workflow",
           "status": "passed",
           "title": "should handle complete error boundary workflow",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.692056999999977,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Integration Scenarios"],
-          "fullName": " Error Boundary Integration Tests Integration Scenarios should handle rapid user interactions without issues",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Integration Scenarios"],
+          "fullName": "Error Boundary Integration Tests Integration Scenarios should handle rapid user interactions without issues",
           "status": "passed",
           "title": "should handle rapid user interactions without issues",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3321650000000318,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093808,
-      "endTime": 1759063093929,
+      "startTime": 1759242666006,
+      "endTime": 1759242666136.3323,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/error-boundary.int.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/error-boundary.int.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
           "status": "passed",
           "title": "should export logs as NDJSON blob",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 9.539481000000023,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should export empty logs when no logs are present",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should export empty logs when no logs are present",
           "status": "passed",
           "title": "should export empty logs when no logs are present",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8332069999999021,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should include proper NDJSON formatting",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should include proper NDJSON formatting",
           "status": "passed",
           "title": "should include proper NDJSON formatting",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.7878670000000056,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should handle multiple log entries correctly",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should handle multiple log entries correctly",
           "status": "passed",
           "title": "should handle multiple log entries correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8179809999999179,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should trigger download with correct filename",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should trigger download with correct filename",
           "status": "passed",
           "title": "should trigger download with correct filename",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.6943359999999075,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should generate filename with current date",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should generate filename with current date",
           "status": "passed",
           "title": "should generate filename with current date",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4451680000000806,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should handle download errors gracefully",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8202860000000101,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should redact sensitive information in exported logs",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should redact sensitive information in exported logs",
           "status": "passed",
           "title": "should redact sensitive information in exported logs",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.6690100000000712,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should preserve allowed data fields in exports",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should preserve allowed data fields in exports",
           "status": "passed",
           "title": "should preserve allowed data fields in exports",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8691049999999905,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
           "status": "passed",
           "title": "should handle nested objects in data field",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.7598029999999198,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Memory Management"],
-          "fullName": " Log Export Integration Tests Memory Management should respect memory limits during export",
+          "ancestorTitles": ["Log Export Integration Tests", "Memory Management"],
+          "fullName": "Log Export Integration Tests Memory Management should respect memory limits during export",
           "status": "passed",
           "title": "should respect memory limits during export",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.0181460000000015,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Memory Management"],
-          "fullName": " Log Export Integration Tests Memory Management should handle large exports efficiently",
+          "ancestorTitles": ["Log Export Integration Tests", "Memory Management"],
+          "fullName": "Log Export Integration Tests Memory Management should handle large exports efficiently",
           "status": "passed",
           "title": "should handle large exports efficiently",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 4.9209469999999556,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Error Handling"],
-          "fullName": " Log Export Integration Tests Error Handling should handle export errors gracefully",
+          "ancestorTitles": ["Log Export Integration Tests", "Error Handling"],
+          "fullName": "Log Export Integration Tests Error Handling should handle export errors gracefully",
           "status": "passed",
           "title": "should handle export errors gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 3.735320999999999,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Error Handling"],
-          "fullName": " Log Export Integration Tests Error Handling should handle corrupted log data",
+          "ancestorTitles": ["Log Export Integration Tests", "Error Handling"],
+          "fullName": "Log Export Integration Tests Error Handling should handle corrupted log data",
           "status": "passed",
           "title": "should handle corrupted log data",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.2722289999999248,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Integration with Error Boundary"],
-          "fullName": " Log Export Integration Tests Integration with Error Boundary should work correctly when called from error boundary",
+          "ancestorTitles": ["Log Export Integration Tests", "Integration with Error Boundary"],
+          "fullName": "Log Export Integration Tests Integration with Error Boundary should work correctly when called from error boundary",
           "status": "passed",
           "title": "should work correctly when called from error boundary",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.1181459999999106,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759063093793,
-      "endTime": 1759063093817,
+      "startTime": 1759242666016,
+      "endTime": 1759242666050.1182,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/export-logs.int.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/export-logs.int.spec.ts"
     }
   ]
 }

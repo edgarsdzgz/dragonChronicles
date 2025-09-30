@@ -22,3 +22,8 @@ export * from './enemies/spawn-manager.js';
 // Export combat system components
 export * from './combat/elemental-system.js';
 export * from './combat/dragon-health.js';
+
+// Export economic system components
+export * from './economy/types.js';
+export * from './economy/arcana-drop-manager.js';
+export * from './economy/arcana-scaling.js';

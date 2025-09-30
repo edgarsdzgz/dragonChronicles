@@ -7,8 +7,8 @@ v0.0.1-alpha.
 
 ## Project Status
 
-**Version**: 0.0.1-alpha (Phase 1/16 - P1-S1 Core Determinism Complete)
-**Phase**: Phase 1/16 (P1-S1 core determinism engine implemented)
+**Version**: 0.0.1-alpha (Phase 1/16 - P1-E3 Dragon Combat System Complete)
+**Phase**: Phase 1/16 (P1-S1 core determinism, P1-E2 enemy systems, P1-E3 dragon combat implemented)
 **Architecture**: TypeScript Monorepo with Deterministic Engine, Strict Mode Enforcement & Persistence
 **Development Model**: 16-phase development cycle (0.0.1-alpha → 0.7.0-beta)
 
