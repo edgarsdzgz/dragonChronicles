@@ -45,9 +45,7 @@ jobs:
           echo "=== Verifying hoisted structure for E2E ==="
           ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
 
-      - name: Build (Pages base path)
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}
+      - name: Build (E2E test - no base path)
         run: pnpm --filter @draconia/web build
 
       - name: Install Playwright browsers (cached)
