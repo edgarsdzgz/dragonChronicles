@@ -42,13 +42,15 @@ export class DefaultTargetingSystem implements TargetingSystem {
     this.metrics = {
       targetSelectionTime: 0,
       rangeDetectionTime: 0,
+      threatAssessmentTime: 0,
       threatCalculationTime: 0,
       totalUpdateTime: 0,
-      targetsEvaluated: 0,
-      targetSwitches: 0,
-      strategyChanges: 0,
-      performanceScore: 0,
-    } as TargetingMetrics;
+      targetSwitchCount: 0,
+      averageTargetLifetime: 0,
+      strategyEffectiveness: new Map(),
+      cacheHitRate: 0,
+      spatialGridEfficiency: 0,
+    };
   }
 
   /**
