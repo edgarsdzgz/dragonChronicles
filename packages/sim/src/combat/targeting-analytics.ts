@@ -177,7 +177,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
       }
 
       window.localStorage.setItem(key, serialized);
-    } catch (_error) {
+    } catch (error) {
       console.error('Failed to save analytics event:', error);
     }
   }
@@ -203,7 +203,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           if (event.sessionId === sessionId) {
             events.push(event);
           }
-        } catch (_error) {
+        } catch (error) {
           console.error('Failed to parse analytics event:', error);
         }
       }
@@ -246,7 +246,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
 
           // Process event data
           this.processEventForSession(session, event);
-        } catch (_error) {
+        } catch (error) {
           console.error('Failed to process analytics event:', error);
         }
       }
@@ -273,7 +273,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           if (event.timestamp < cutoffTime) {
             keysToRemove.push(key);
           }
-        } catch (_error) {
+        } catch (error) {
           // Remove corrupted data
           keysToRemove.push(key);
         }
@@ -295,7 +295,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           try {
             const event = JSON.parse(window.localStorage.getItem(key) || '{}');
             events.push(event);
-          } catch (_error) {
+          } catch (error) {
             console.error('Failed to parse event for export:', error);
           }
         }
@@ -363,7 +363,7 @@ export class LocalAnalyticsStorage implements AnalyticsStorage {
           try {
             const event = JSON.parse(window.localStorage.getItem(key) || '{}');
             events.push({ key, timestamp: event.timestamp });
-          } catch (_error) {
+          } catch (error) {
             // Remove corrupted data
             window.localStorage.removeItem(key);
           }
@@ -593,7 +593,7 @@ export class TargetingAnalytics {
       }
 
       return summary;
-    } catch (_error) {
+    } catch (error) {
       console.error('Failed to get session summary:', error);
       return null;
     }
@@ -648,7 +648,7 @@ export class TargetingAnalytics {
         cacheHitRate: totalCacheHits / performanceEvents.length,
         errorRate: errorEvents.length / events.length,
       };
-    } catch (_error) {
+    } catch (error) {
       console.error('Failed to get performance metrics:', error);
       return {
         averageSelectionTime: 0,
@@ -744,7 +744,7 @@ export class TargetingAnalytics {
     try {
       await this.storage.saveBatch([...this.eventQueue]);
       this.eventQueue = [];
-    } catch (_error) {
+    } catch (error) {
       console.error('Failed to flush analytics events:', error);
     }
   }
