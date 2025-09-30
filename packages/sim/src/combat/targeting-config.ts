@@ -61,10 +61,12 @@ export class TargetingConfigManager {
   private persistenceRegistry = createPersistenceModeRegistry();
   private playerPreferences: PlayerTargetingPreferences;
   private defaultConfig: TargetingConfig;
+  public config: TargetingConfig;
 
   constructor(initialPreferences?: Partial<PlayerTargetingPreferences>) {
     this.defaultConfig = this.createDefaultConfig();
     this.playerPreferences = this.initializePlayerPreferences(initialPreferences);
+    this.config = { ...this.defaultConfig };
   }
 
   /**

@@ -647,7 +647,7 @@ export class TargetingUIManager {
       shielded: 'Shielded',
       unshielded: 'Unshielded',
       elemental_weak: 'Elemental Weakness',
-      elemental_strength: 'Elemental Strength',
+      elemental_strong: 'Elemental Strength',
       custom: 'Custom',
     };
     return names[strategy] || strategy;
@@ -672,7 +672,7 @@ export class TargetingUIManager {
       shielded: 'Target enemies with shields',
       unshielded: 'Target enemies without shields',
       elemental_weak: 'Target enemies weak to your element',
-      elemental_strength: 'Target enemies strong against your element',
+      elemental_strong: 'Target enemies strong against your element',
       custom: 'Use custom targeting logic',
     };
     return descriptions[strategy] || 'Custom targeting strategy';

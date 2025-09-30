@@ -6,7 +6,7 @@
     "declarationMap": true,
     "emitDeclarationOnly": false,
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022",
@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "sourceMap": false
   },
-  "include": ["src", "../shared/src"],
+  "include": ["src"],
   "exclude": ["tests"],
   "references": [{ "path": "../shared" }]
 }
