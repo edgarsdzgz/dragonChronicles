@@ -45,9 +45,7 @@ jobs:
           echo "=== Verifying hoisted structure for E2E ==="
           ls -la node_modules/pixi.js/ 2>/dev/null && echo "✅ pixi.js is hoisted!" || echo "❌ pixi.js not hoisted"
 
-      - name: Build (Pages base path)
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}
+      - name: Build (E2E test - no base path)
         run: pnpm --filter @draconia/web build
 
       - name: Install Playwright browsers (cached)
@@ -75,12 +73,12 @@ jobs:
           echo "Current directory: $(pwd)"
           echo "Checking for build output directory..."
           
-          # Check for build output directory (now configured to use 'dist')
-          if [ -d "apps/web/dist" ]; then
-            echo "✅ Found dist directory"
-            BUILD_DIR="apps/web/dist"
+          # Check for build output directory (now configured to use 'build')
+          if [ -d "apps/web/build" ]; then
+            echo "✅ Found build directory"
+            BUILD_DIR="apps/web/build"
           else
-            echo "❌ Build failed - no dist directory found"
+            echo "❌ Build failed - no build directory found"
             echo "Checking apps/web directory structure:"
             ls -la apps/web/ || echo "apps/web directory not found"
             exit 1
@@ -114,10 +112,10 @@ jobs:
           cd apps/web
           echo "Changed to apps/web directory: $(pwd)"
           echo "Checking what vite preview expects to find:"
-          echo "Looking for dist directory:"
-          ls -la dist/ 2>/dev/null || echo "No dist directory found"
           echo "Looking for build directory:"
           ls -la build/ 2>/dev/null || echo "No build directory found"
+          echo "Looking for dist directory (legacy):"
+          ls -la dist/ 2>/dev/null || echo "No dist directory found"
           echo "Starting vite preview server on port 4173..."
           pnpm preview &
           echo "Preview server started in background"

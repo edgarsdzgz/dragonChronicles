@@ -8,10 +8,13 @@ import { test, run } from "./_tiny-runner.mjs";
 const must = (p) => assert.ok(fs.existsSync(p), `missing: ${p}`);
 
 if (!process.env.BUILD_ONCE) {
-  const r = spawnSync("pnpm", ["-w", "exec", "tsc", "-b"], { stdio: "pipe", encoding: "utf8" });
-  if (r.status !== 0) {
-    console.error(r.stderr || "");
-    process.exit(r.status ?? 1);
+  // Use cross-platform approach to find pnpm
+  const { execSync } = await import('node:child_process');
+  try {
+    execSync('pnpm -w exec tsc -b', { stdio: 'inherit' });
+  } catch (error) {
+    console.error('Build failed:', error.message);
+    process.exit(1);
   }
 }
 

@@ -36,6 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   - All CI/CD workflows passing (6/6 green)
 
+- **P1-E2-S1**: Enemy Spawning System ✅
+  - High-performance enemy spawning with object pooling (200+ enemies at 60 FPS)
+  - Deterministic RNG with PCG32 for consistent spawn patterns
+  - Enemy families: Mantair Corsair and Swarm with different behaviors
+  - Spawn configuration system with land/ward-based spawning
+  - Pool management for efficient memory usage
+  - Comprehensive test coverage (123 tests passing)
+
 - **P1-E2-S2**: Enhanced Enemy AI System ✅
   - High-performance AI system for 200+ enemies (0.08ms per frame)
 
@@ -52,6 +60,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Memory management with proper cleanup and no leaks
 
   - Two enemy families: Mantair Corsair and Swarm with different behaviors
+
+- **P1-E3-S1**: Dragon Health System ✅
+  - Dragon health management with progressive recovery (6-12 seconds)
+  - Percentage-based pushback system (3-15% by land/ward)
+  - Nested elemental triangle system (meta + sub-triangles)
+  - Elemental status effects (Burn, Freeze, Stun, etc.)
+  - Ward/land transition handling
+  - Comprehensive test coverage (162 tests passing: 80 combat + 82 others)
+  - Integration with existing enemy AI and spawn systems
 
 ### Added (2)
 
