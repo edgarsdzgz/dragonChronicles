@@ -533,7 +533,7 @@ export const TargetingPersistenceUtils = {
   /**
    * Get available profiles
    */
-  async getAvailableProfiles(manager: TargetingPersistenceManager): Promise<string[]> {
+  async getAvailableProfiles(_manager: TargetingPersistenceManager): Promise<string[]> {
     // This would need to be implemented based on the storage backend
     // For now, return default profile
     return ['default'];

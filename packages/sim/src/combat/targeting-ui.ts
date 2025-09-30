@@ -160,7 +160,7 @@ export class TargetingUIManager {
    */
   addEventListener(
     eventType: TargetingUIEventType,
-    listener: (event: TargetingUIEvent) => void,
+    listener: (_event: TargetingUIEvent) => void,
   ): void {
     this.eventListeners.set(eventType, listener);
   }

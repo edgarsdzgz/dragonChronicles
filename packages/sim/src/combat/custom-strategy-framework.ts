@@ -581,7 +581,7 @@ export class CustomStrategyHandler implements TargetingStrategyHandler {
         return sorted[0] || null;
       },
 
-      getHighestThreatEnemy: (enemies: Enemy[], dragon: Dragon) => {
+      getHighestThreatEnemy: (enemies: Enemy[], _dragon: Dragon) => {
         if (enemies.length === 0) return null;
         const sorted = this.createUtilities().sortByThreat(enemies, dragon);
         return sorted[0] || null;
