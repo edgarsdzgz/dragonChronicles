@@ -3,11 +3,7 @@
  * Provides user interface components for targeting strategy selection and configuration
  */
 
-import type {
-  TargetingStrategy,
-  TargetPersistenceMode,
-  TargetingConfig,
-} from './types.js';
+import type { TargetingStrategy, TargetPersistenceMode, TargetingConfig } from './types.js';
 import { createTargetingConfigManager } from './targeting-config.js';
 import { createTargetingUnlockSystem } from './targeting-unlock.js';
 

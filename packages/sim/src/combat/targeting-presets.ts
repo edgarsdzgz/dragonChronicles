@@ -3,10 +3,7 @@
  * Provides pre-configured targeting strategies for different playstyles
  */
 
-import type {
-  TargetingConfig,
-  PlayerTargetingPreferences,
-} from './types.js';
+import type { TargetingConfig, PlayerTargetingPreferences } from './types.js';
 
 /**
  * Preset definition interface

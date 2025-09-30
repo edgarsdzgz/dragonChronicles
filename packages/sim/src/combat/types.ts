@@ -358,7 +358,6 @@ export interface PushbackResult {
   recoveryTime: number;
 }
 
-
 export interface ThreatWeights {
   proximity: number;
   health: number;
