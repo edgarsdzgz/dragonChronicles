@@ -18,3 +18,8 @@ export * from './enemies/spawn-config.js';
 export * from './enemies/enemy-pool.js';
 export * from './enemies/pool-manager.js';
 export * from './enemies/spawn-manager.js';
+
+// Export combat system components
+export * from './combat/types.js';
+export * from './combat/elemental-system.js';
+export * from './combat/dragon-health.js';

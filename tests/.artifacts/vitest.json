@@ -8,7 +8,7 @@
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1758951125348,
+  "startTime": 1759063092964,
   "success": true,
   "testResults": [
     {
@@ -18,7 +18,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should write save data atomically",
           "status": "passed",
           "title": "should write save data atomically",
-          "duration": 44,
+          "duration": 54,
           "failureMessages": []
         },
         {
@@ -26,7 +26,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should update active profile pointer",
           "status": "passed",
           "title": "should update active profile pointer",
-          "duration": 9,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -34,7 +34,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
           "status": "passed",
           "title": "should prune old saves to keep only 3 backups",
-          "duration": 17,
+          "duration": 18,
           "failureMessages": []
         },
         {
@@ -42,7 +42,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
           "status": "passed",
           "title": "should handle concurrent writes to different profiles",
-          "duration": 11,
+          "duration": 10,
           "failureMessages": []
         },
         {
@@ -50,7 +50,7 @@
           "fullName": " Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
           "status": "passed",
           "title": "should maintain data integrity during transaction failures",
-          "duration": 8,
+          "duration": 9,
           "failureMessages": []
         },
         {
@@ -58,7 +58,7 @@
           "fullName": " Atomic Write Operations getActiveSave should return the most recent save for a profile",
           "status": "passed",
           "title": "should return the most recent save for a profile",
-          "duration": 8,
+          "duration": 13,
           "failureMessages": []
         },
         {
@@ -66,7 +66,7 @@
           "fullName": " Atomic Write Operations getActiveSave should return null for non-existent profile",
           "status": "passed",
           "title": "should return null for non-existent profile",
-          "duration": 5,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -74,7 +74,7 @@
           "fullName": " Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
           "status": "passed",
           "title": "should handle profile with multiple saves correctly",
-          "duration": 6,
+          "duration": 9,
           "failureMessages": []
         },
         {
@@ -82,7 +82,7 @@
           "fullName": " Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
           "status": "passed",
           "title": "should maintain referential integrity between saves and meta tables",
-          "duration": 5,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -106,12 +106,12 @@
           "fullName": " Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
           "status": "passed",
           "title": "should handle W3 time accounting updates correctly",
-          "duration": 5,
+          "duration": 3,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126266,
-      "endTime": 1758951126396,
+      "startTime": 1759063093940,
+      "endTime": 1759063094093,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/atomic.spec.ts"
@@ -123,7 +123,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should export all profiles with correct format",
           "status": "passed",
           "title": "should export all profiles with correct format",
-          "duration": 53,
+          "duration": 71,
           "failureMessages": []
         },
         {
@@ -131,7 +131,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
           "status": "passed",
           "title": "should include W3 time accounting fields in export",
-          "duration": 15,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -139,7 +139,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
           "status": "passed",
           "title": "should generate valid checksum for export data",
-          "duration": 11,
+          "duration": 8,
           "failureMessages": []
         },
         {
@@ -147,7 +147,7 @@
           "fullName": " Export/Import Functionality exportAllProfiles should handle empty database gracefully",
           "status": "passed",
           "title": "should handle empty database gracefully",
-          "duration": 3,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -155,7 +155,7 @@
           "fullName": " Export/Import Functionality importFromBlob should import valid export data correctly",
           "status": "passed",
           "title": "should import valid export data correctly",
-          "duration": 11,
+          "duration": 23,
           "failureMessages": []
         },
         {
@@ -163,7 +163,7 @@
           "fullName": " Export/Import Functionality importFromBlob should validate checksum during import",
           "status": "passed",
           "title": "should validate checksum during import",
-          "duration": 3,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -171,7 +171,7 @@
           "fullName": " Export/Import Functionality importFromBlob should reject import with wrong file version",
           "status": "passed",
           "title": "should reject import with wrong file version",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -179,7 +179,7 @@
           "fullName": " Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
           "status": "passed",
           "title": "should handle corrupted export data gracefully",
-          "duration": 5,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -187,7 +187,7 @@
           "fullName": " Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
           "status": "passed",
           "title": "should preserve W3 time accounting during import",
-          "duration": 8,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -195,7 +195,7 @@
           "fullName": " Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
           "status": "passed",
           "title": "should maintain data integrity through export-import cycle",
-          "duration": 13,
+          "duration": 18,
           "failureMessages": []
         },
         {
@@ -203,7 +203,7 @@
           "fullName": " Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
           "status": "passed",
           "title": "should preserve all profile data during round-trip",
-          "duration": 16,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -211,7 +211,7 @@
           "fullName": " Export/Import Functionality Codec functions should encode and validate export data correctly",
           "status": "passed",
           "title": "should encode and validate export data correctly",
-          "duration": 3,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -219,7 +219,7 @@
           "fullName": " Export/Import Functionality Codec functions should detect tampered export data",
           "status": "passed",
           "title": "should detect tampered export data",
-          "duration": 4,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -227,7 +227,7 @@
           "fullName": " Export/Import Functionality Codec functions should handle checksum generation consistently",
           "status": "passed",
           "title": "should handle checksum generation consistently",
-          "duration": 2,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -243,12 +243,12 @@
           "fullName": " Export/Import Functionality Multiple profile handling should maintain profile independence during import",
           "status": "passed",
           "title": "should maintain profile independence during import",
-          "duration": 10,
+          "duration": 7,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126267,
-      "endTime": 1758951126441,
+      "startTime": 1759063093933,
+      "endTime": 1759063094127,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/export-import.spec.ts"
@@ -260,7 +260,7 @@
           "fullName": " Migration System Database Version Management should return version 1 for new database",
           "status": "passed",
           "title": "should return version 1 for new database",
-          "duration": 24,
+          "duration": 29,
           "failureMessages": []
         },
         {
@@ -268,7 +268,7 @@
           "fullName": " Migration System Database Version Management should track database version in meta table",
           "status": "passed",
           "title": "should track database version in meta table",
-          "duration": 14,
+          "duration": 10,
           "failureMessages": []
         },
         {
@@ -276,7 +276,7 @@
           "fullName": " Migration System Database Version Management should handle missing version gracefully",
           "status": "passed",
           "title": "should handle missing version gracefully",
-          "duration": 5,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -292,7 +292,7 @@
           "fullName": " Migration System Migration Status should handle database with version set",
           "status": "passed",
           "title": "should handle database with version set",
-          "duration": 2,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -300,7 +300,7 @@
           "fullName": " Migration System Migration Execution should handle no migrations needed",
           "status": "passed",
           "title": "should handle no migrations needed",
-          "duration": 3,
+          "duration": 6,
           "failureMessages": []
         },
         {
@@ -308,7 +308,7 @@
           "fullName": " Migration System Migration Execution should complete successfully when no data exists",
           "status": "passed",
           "title": "should complete successfully when no data exists",
-          "duration": 3,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -316,7 +316,7 @@
           "fullName": " Migration System Migration Execution should handle migration with existing data",
           "status": "passed",
           "title": "should handle migration with existing data",
-          "duration": 11,
+          "duration": 20,
           "failureMessages": []
         },
         {
@@ -324,7 +324,7 @@
           "fullName": " Migration System Migration Validation should validate empty database successfully",
           "status": "passed",
           "title": "should validate empty database successfully",
-          "duration": 5,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -332,7 +332,7 @@
           "fullName": " Migration System Migration Validation should validate valid save data",
           "status": "passed",
           "title": "should validate valid save data",
-          "duration": 10,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -340,7 +340,7 @@
           "fullName": " Migration System Migration Validation should detect invalid save data structure",
           "status": "passed",
           "title": "should detect invalid save data structure",
-          "duration": 3,
+          "duration": 4,
           "failureMessages": []
         },
         {
@@ -348,7 +348,7 @@
           "fullName": " Migration System Migration Validation should detect missing required fields",
           "status": "passed",
           "title": "should detect missing required fields",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -356,7 +356,7 @@
           "fullName": " Migration System Migration Backup should create backup successfully for empty database",
           "status": "passed",
           "title": "should create backup successfully for empty database",
-          "duration": 5,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -364,7 +364,7 @@
           "fullName": " Migration System Migration Backup should create backup with save data",
           "status": "passed",
           "title": "should create backup with save data",
-          "duration": 5,
+          "duration": 12,
           "failureMessages": []
         },
         {
@@ -372,7 +372,7 @@
           "fullName": " Migration System Migration Backup should store backup in meta table",
           "status": "passed",
           "title": "should store backup in meta table",
-          "duration": 6,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -380,7 +380,7 @@
           "fullName": " Migration System Migration Backup should not backup other backups",
           "status": "passed",
           "title": "should not backup other backups",
-          "duration": 4,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -396,12 +396,12 @@
           "fullName": " Migration System Integration Tests should maintain data integrity through migration process",
           "status": "passed",
           "title": "should maintain data integrity through migration process",
-          "duration": 6,
+          "duration": 10,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126266,
-      "endTime": 1758951126389,
+      "startTime": 1759063093928,
+      "endTime": 1759063094066,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/migrate.spec.ts"
@@ -413,7 +413,7 @@
           "fullName": " Schema Validation ProfileV1 validation should validate a complete valid profile",
           "status": "passed",
           "title": "should validate a complete valid profile",
-          "duration": 13,
+          "duration": 5,
           "failureMessages": []
         },
         {
@@ -429,7 +429,7 @@
           "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
           "status": "passed",
           "title": "should reject profile with invalid W3 time accounting",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -469,7 +469,7 @@
           "fullName": " Schema Validation SaveV1 validation should reject save with wrong version",
           "status": "passed",
           "title": "should reject save with wrong version",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -485,7 +485,7 @@
           "fullName": " Schema Validation SaveV1 validation should reject save with too many profiles",
           "status": "passed",
           "title": "should reject save with too many profiles",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -517,7 +517,7 @@
           "fullName": " Schema Validation ExportFileV1 validation should reject export with empty checksum",
           "status": "passed",
           "title": "should reject export with empty checksum",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -525,7 +525,7 @@
           "fullName": " Schema Validation ExportFileV1 validation should reject export with invalid data",
           "status": "passed",
           "title": "should reject export with invalid data",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -533,7 +533,7 @@
           "fullName": " Schema Validation Database row validation should validate a complete valid save row",
           "status": "passed",
           "title": "should validate a complete valid save row",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -573,7 +573,7 @@
           "fullName": " Schema Validation Database row validation should validate a complete valid log row",
           "status": "passed",
           "title": "should validate a complete valid log row",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -581,7 +581,7 @@
           "fullName": " Schema Validation Database row validation should validate log row with optional id",
           "status": "passed",
           "title": "should validate log row with optional id",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -605,7 +605,7 @@
           "fullName": " Schema Validation Database row validation should reject log row with invalid source",
           "status": "passed",
           "title": "should reject log row with invalid source",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -613,12 +613,12 @@
           "fullName": " Schema Validation Database row validation should reject log row with empty message",
           "status": "passed",
           "title": "should reject log row with empty message",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126688,
-      "endTime": 1758951126718,
+      "startTime": 1759063094360,
+      "endTime": 1759063094379,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/schema.spec.ts"
@@ -646,7 +646,7 @@
           "fullName": " Flag Parsing getEnvFlags should return empty object when no env vars are set",
           "status": "passed",
           "title": "should return empty object when no env vars are set",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -654,7 +654,7 @@
           "fullName": " Flag Parsing getEnvFlags should parse HUD flag from environment",
           "status": "passed",
           "title": "should parse HUD flag from environment",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -710,7 +710,7 @@
           "fullName": " Flag Parsing getQueryFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -734,7 +734,7 @@
           "fullName": " Flag Parsing getQueryFlags should parse dev menu flag from query string",
           "status": "passed",
           "title": "should parse dev menu flag from query string",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -766,7 +766,7 @@
           "fullName": " Flag Parsing getQueryFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -774,7 +774,7 @@
           "fullName": " Flag Parsing getQueryFlags should parse multiple flags from query string",
           "status": "passed",
           "title": "should parse multiple flags from query string",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -798,7 +798,7 @@
           "fullName": " Flag Parsing mergeFlags should handle empty env and query flags",
           "status": "passed",
           "title": "should handle empty env and query flags",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -814,7 +814,7 @@
           "fullName": " Flag Parsing createFlags should create complete flag configuration from URL",
           "status": "passed",
           "title": "should create complete flag configuration from URL",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -830,7 +830,7 @@
           "fullName": " Flag Parsing createFlags should respect production mode restrictions",
           "status": "passed",
           "title": "should respect production mode restrictions",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -846,7 +846,7 @@
           "fullName": " Flag Parsing ForceMode type validation should reject invalid force mode values",
           "status": "passed",
           "title": "should reject invalid force mode values",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -870,12 +870,12 @@
           "fullName": " Flag Parsing Edge cases should handle undefined environment variables",
           "status": "passed",
           "title": "should handle undefined environment variables",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126174,
-      "endTime": 1758951126186,
+      "startTime": 1759063093834,
+      "endTime": 1759063093843,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/parse.spec.ts"
@@ -895,7 +895,7 @@
           "fullName": " Flag Store appFlags store should update when set is called",
           "status": "passed",
           "title": "should update when set is called",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -903,7 +903,7 @@
           "fullName": " Flag Store appFlags store should update when update is called",
           "status": "passed",
           "title": "should update when update is called",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -911,7 +911,7 @@
           "fullName": " Flag Store appFlags store should notify subscribers when values change",
           "status": "passed",
           "title": "should notify subscribers when values change",
-          "duration": 3,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -919,7 +919,7 @@
           "fullName": " Flag Store appFlags store should not notify unsubscribed listeners",
           "status": "passed",
           "title": "should not notify unsubscribed listeners",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -935,7 +935,7 @@
           "fullName": " Flag Store derived stores should derive devMenuEnabled correctly",
           "status": "passed",
           "title": "should derive devMenuEnabled correctly",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -943,7 +943,7 @@
           "fullName": " Flag Store derived stores should derive logConsoleEnabled correctly",
           "status": "passed",
           "title": "should derive logConsoleEnabled correctly",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -959,7 +959,7 @@
           "fullName": " Flag Store derived stores should derive forceMode correctly",
           "status": "passed",
           "title": "should derive forceMode correctly",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -975,7 +975,7 @@
           "fullName": " Flag Store isFlagEnabled utility should return a derived store for boolean flags",
           "status": "passed",
           "title": "should return a derived store for boolean flags",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -1023,7 +1023,7 @@
           "fullName": " Flag Store getCurrentFlags utility should return a snapshot of current state",
           "status": "passed",
           "title": "should return a snapshot of current state",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -1031,7 +1031,7 @@
           "fullName": " Flag Store store integration should maintain consistency across all derived stores",
           "status": "passed",
           "title": "should maintain consistency across all derived stores",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -1055,7 +1055,7 @@
           "fullName": " Flag Store edge cases should handle undefined values gracefully",
           "status": "passed",
           "title": "should handle undefined values gracefully",
-          "duration": 0,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1063,12 +1063,12 @@
           "fullName": " Flag Store edge cases should handle multiple subscribers correctly",
           "status": "passed",
           "title": "should handle multiple subscribers correctly",
-          "duration": 2,
+          "duration": 1,
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126179,
-      "endTime": 1758951126194,
+      "startTime": 1759063093833,
+      "endTime": 1759063093847,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/store.spec.ts"
@@ -1080,7 +1080,7 @@
           "fullName": " Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
           "status": "passed",
           "title": "should handle page reload functionality",
-          "duration": 1,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1088,7 +1088,7 @@
           "fullName": " Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
           "status": "passed",
           "title": "should handle navigation to home",
-          "duration": 0,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -1096,7 +1096,7 @@
           "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
           "status": "passed",
           "title": "should handle log export functionality",
-          "duration": 3,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1104,7 +1104,7 @@
           "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
           "status": "passed",
           "title": "should handle log export errors gracefully",
-          "duration": 8,
+          "duration": 9,
           "failureMessages": []
         },
         {
@@ -1112,7 +1112,7 @@
           "fullName": " Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
           "status": "passed",
           "title": "should prevent multiple simultaneous log exports",
-          "duration": 101,
+          "duration": 102,
           "failureMessages": []
         },
         {
@@ -1124,7 +1124,7 @@
           "fullName": " Error Boundary Integration Tests Error Information Processing should generate detailed error information",
           "status": "passed",
           "title": "should generate detailed error information",
-          "duration": 6,
+          "duration": 1,
           "failureMessages": []
         },
         {
@@ -1136,7 +1136,7 @@
           "fullName": " Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
           "status": "passed",
           "title": "should handle missing error information gracefully",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -1152,7 +1152,7 @@
           "fullName": " Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 5,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -1172,8 +1172,8 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126163,
-      "endTime": 1758951126290,
+      "startTime": 1759063093808,
+      "endTime": 1759063093929,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/error-boundary.int.spec.ts"
@@ -1185,7 +1185,7 @@
           "fullName": " Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
           "status": "passed",
           "title": "should export logs as NDJSON blob",
-          "duration": 8,
+          "duration": 7,
           "failureMessages": []
         },
         {
@@ -1217,7 +1217,7 @@
           "fullName": " Log Export Integration Tests Download Functionality should trigger download with correct filename",
           "status": "passed",
           "title": "should trigger download with correct filename",
-          "duration": 4,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1257,7 +1257,7 @@
           "fullName": " Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
           "status": "passed",
           "title": "should handle nested objects in data field",
-          "duration": 1,
+          "duration": 0,
           "failureMessages": []
         },
         {
@@ -1273,7 +1273,7 @@
           "fullName": " Log Export Integration Tests Memory Management should handle large exports efficiently",
           "status": "passed",
           "title": "should handle large exports efficiently",
-          "duration": 1,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1281,7 +1281,7 @@
           "fullName": " Log Export Integration Tests Error Handling should handle export errors gracefully",
           "status": "passed",
           "title": "should handle export errors gracefully",
-          "duration": 1,
+          "duration": 2,
           "failureMessages": []
         },
         {
@@ -1301,8 +1301,8 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1758951126162,
-      "endTime": 1758951126189,
+      "startTime": 1759063093793,
+      "endTime": 1759063093817,
       "status": "passed",
       "message": "",
       "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/export-logs.int.spec.ts"

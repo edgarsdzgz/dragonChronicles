@@ -36,13 +36,327 @@ export interface CombatLoop {
 
 ## Dragon Combat System
 
+### Dragon Health & Defeat Mechanics
+
+#### Health System Overview
+```typescript
+export interface DragonHealth {
+  currentHP: number;
+  maxHP: number;
+  isAlive: boolean;
+  isRecovering: boolean;
+  recoveryProgress: number; // 0.0 to 1.0
+  pushbackDistance: number;
+  pushbackPercentage: number;
+
+  // Health management
+  takeDamage(amount: number): void;
+  heal(amount: number): void;
+  startRecovery(currentDistance: number, landLevel: number, wardLevel: number): void;
+  updateRecovery(deltaTime: number): void;
+  respawn(): void;
+}
+```
+
+#### Defeat & Pushback System
+When the dragon's health reaches 0, the following sequence occurs:
+
+1. **Immediate Effects**:
+   - All projectiles and enemies are cleared from screen
+   - Dragon enters "idle" mode (stops moving/attacking)
+   - Dragon becomes invulnerable during recovery
+
+2. **Progressive Health Recovery**:
+   - Health bar progressively recovers from 0% to 100%
+   - Recovery time scales with pushback percentage (6-12 seconds)
+   - Dragon loses journey distance during recovery (pushback effect)
+
+3. **Pushback Distance Calculation**:
+   - Percentage-based system (3-15% of current distance)
+   - Land difficulty spikes: New lands start with 3% (gentle)
+   - Ward progression: Within each land, pushback increases to 15%
+   - Never pushes back below distance 0
+
+4. **Ward/Land Transitions**:
+   - Pushback can move dragon to different ward/land
+   - Example: L2W2 at 1000m, 6% pushback = 940m (L2W1)
+   - Seamless transition between areas
+
+5. **Journey Continuation**:
+   - Journey continues automatically after recovery
+   - No Arcana lost during defeat
+   - Journey only ends when player manually returns to Draconia
+
+#### Pushback Percentage Progression
+```
+Land 1: Horizon Steppe (Tutorial → Advanced)
+├── Ward 1: 3% (Sunwake Downs - tutorial)
+├── Ward 2: 5% (Waystone Mile - basic)
+├── Ward 3: 7% (Skylark Flats - air combat)
+├── Ward 4: 10% (Longgrass Reach - accuracy)
+└── Ward 5: 12% (Bluewind Shelf - crosswind)
+
+Land 2: Ember Reaches (Difficulty Spike!)
+├── Ward 1: 3% (New land tutorial - gentle)
+├── Ward 2: 6% (Fire basics)
+├── Ward 3: 9% (Heat resistance)
+├── Ward 4: 12% (Lava flows)
+└── Ward 5: 15% (Ember mastery)
+
+Land 3: Mistral Peaks (Difficulty Spike!)
+├── Ward 1: 3% (New land tutorial - gentle)
+├── Ward 2: 7% (Wind basics)
+├── Ward 3: 11% (Ice resistance)
+├── Ward 4: 14% (Storm peaks)
+└── Ward 5: 15% (Summit mastery)
+```
+
+### Dragon Elemental System
+
+#### Nested Triangle System Overview
+The dragon's breath weapon system uses a **nested triangle system** with three main categories, each containing three sub-elements that follow their own internal triangle relationships.
+
+#### Meta-Triangle (Main Categories)
+```
+Heat > Cold > Energy > Heat
+```
+
+**Category Relationships:**
+- **Heat beats Cold**: Fire melts ice, steam defrosts, lava vaporizes frost
+- **Cold beats Energy**: Ice insulates electricity, frost grounds lightning, cold slows energy
+- **Energy beats Heat**: Lightning disrupts fire, electricity conducts through heat, energy cuts through thermal systems
+
+#### Sub-Triangles (Internal Elements)
+
+##### **Heat Triangle: Fire > Lava > Steam > Fire**
+- **Fire**: Pure flame, burning damage, ignites enemies
+- **Lava**: Molten rock, armor penetration, area denial
+- **Steam**: Scorching vapor, area denial, concealment
+
+**Internal Logic:**
+- **Fire beats Lava**: Pure flame burns through molten rock
+- **Lava beats Steam**: Molten rock vaporizes steam
+- **Steam beats Fire**: Scorching vapor extinguishes flames
+
+##### **Cold Triangle: Ice > Frost > Mist > Ice**
+- **Ice**: Solid freezing, immobilization, armor shattering
+- **Frost**: Slowing effects, brittleness, surface coating
+- **Mist**: Concealment, confusion, area denial
+
+**Internal Logic:**
+- **Ice beats Frost**: Solid ice crushes frost
+- **Frost beats Mist**: Frost crystallizes mist
+- **Mist beats Ice**: Mist conceals and confuses ice attacks
+
+##### **Energy Triangle: Lightning > Plasma > Void > Lightning**
+- **Lightning**: Electrical damage, stunning, precision
+- **Plasma**: Superheated energy, explosive, area effect
+- **Void**: Dark energy, corruption, disruption
+
+**Internal Logic:**
+- **Lightning beats Plasma**: Electrical precision disrupts plasma
+- **Plasma beats Void**: Superheated energy burns through void
+- **Void beats Lightning**: Dark energy absorbs electrical attacks
+
+#### Cross-Triangle Rules
+- **Any Heat element beats any Cold element** (150% damage)
+- **Any Cold element beats any Energy element** (150% damage)
+- **Any Energy element beats any Heat element** (150% damage)
+- **Within same triangle**: Follow internal A > B > C > A rules (150% damage)
+- **Same element**: 100% damage (neutral)
+- **Opposite triangle**: 75% damage (weakness)
+
+#### Elemental Status Effects
+```typescript
+const ELEMENTAL_EFFECTS = {
+  // Heat effects
+  fire: { name: 'Burn', damage: '2% max HP per second', duration: '5 seconds' },
+  lava: { name: 'Melt', damage: 'Reduces armor by 25%', duration: '8 seconds' },
+  steam: { name: 'Scorch', damage: 'Reduces accuracy by 30%', duration: '6 seconds' },
+
+  // Cold effects
+  ice: { name: 'Freeze', damage: 'Immobilizes for 3 seconds', duration: '3 seconds' },
+  frost: { name: 'Chill', damage: 'Reduces speed by 40%', duration: '8 seconds' },
+  mist: { name: 'Blind', damage: 'Reduces accuracy by 50%', duration: '4 seconds' },
+
+  // Energy effects
+  lightning: { name: 'Stun', damage: 'Prevents actions for 2 seconds', duration: '2 seconds' },
+  plasma: { name: 'Overheat', damage: 'Increases damage taken by 25%', duration: '6 seconds' },
+  void: { name: 'Corrupt', damage: 'Prevents healing for 10 seconds', duration: '10 seconds' }
+};
+```
+
+#### Land-Based Elemental Themes
+```typescript
+const LAND_ELEMENTAL_THEMES = {
+  'Land 1: Horizon Steppe': {
+    primary: 'cold',      // Wind-based enemies (ice, frost, mist)
+    secondary: 'energy',  // Lightning-based enemies
+    resistance: 'heat'    // Resistant to heat (dry, windy land)
+  },
+  'Land 2: Ember Reaches': {
+    primary: 'heat',      // Fire-based enemies (fire, lava, steam)
+    secondary: 'cold',    // Ice-based enemies (volcanic ice)
+    resistance: 'energy'  // Resistant to energy (volcanic grounding)
+  },
+  'Land 3: Mistral Peaks': {
+    primary: 'energy',    // Lightning-based enemies
+    secondary: 'cold',    // Wind-based enemies (ice, frost, mist)
+    resistance: 'heat'    // Resistant to heat (mountainous, cold)
+  }
+};
+```
+
+#### Elemental System Introduction Strategy
+
+##### **Phase 1: Meta-Triangle Introduction (Weeks 1-2)**
+**Objective**: Teach players the core Heat > Cold > Energy > Heat relationship
+
+**Land 1: Horizon Steppe - Meta-Triangle Tutorial**
+```
+Ward 1: Heat Enemies (Fire-based)
+├── Enemy Types: Fire-breathing creatures, lava golems
+├── Player Strategy: Use Cold attacks (Ice, Frost, Mist)
+├── Tutorial: "Heat beats Cold, but Cold beats Energy"
+└── Visual Cues: Red enemies, blue attack indicators
+
+Ward 2: Cold Enemies (Ice-based)
+├── Enemy Types: Ice elementals, frost wolves
+├── Player Strategy: Use Energy attacks (Lightning, Plasma, Void)
+├── Tutorial: "Cold beats Energy, but Energy beats Heat"
+└── Visual Cues: Blue enemies, yellow attack indicators
+
+Ward 3: Energy Enemies (Lightning-based)
+├── Enemy Types: Storm elementals, electric beasts
+├── Player Strategy: Use Heat attacks (Fire, Lava, Steam)
+├── Tutorial: "Energy beats Heat, completing the triangle"
+└── Visual Cues: Yellow enemies, red attack indicators
+```
+
+**Player Experience:**
+- Learn basic triangle relationships
+- See clear 150% damage bonuses
+- Understand strategic thinking
+- Build confidence with simple system
+
+##### **Phase 2: Sub-Triangle Introduction (Weeks 3-4)**
+**Objective**: Introduce internal triangle relationships and status effects
+
+**Land 2: Ember Reaches - Sub-Triangle Mastery**
+```
+Ward 1: Heat Sub-Triangle (Fire > Lava > Steam > Fire)
+├── Fire Enemies: Pure flame damage, burn status
+├── Lava Enemies: Armor penetration, melt status
+├── Steam Enemies: Area denial, scorch status
+└── Tutorial: "Within Heat, Fire beats Lava, Lava beats Steam, Steam beats Fire"
+
+Ward 2: Cold Sub-Triangle (Ice > Frost > Mist > Ice)
+├── Ice Enemies: Freezing damage, freeze status
+├── Frost Enemies: Slowing effects, chill status
+├── Mist Enemies: Concealment, blind status
+└── Tutorial: "Within Cold, Ice beats Frost, Frost beats Mist, Mist beats Ice"
+
+Ward 3: Energy Sub-Triangle (Lightning > Plasma > Void > Lightning)
+├── Lightning Enemies: Electrical damage, stun status
+├── Plasma Enemies: Explosive damage, overheat status
+├── Void Enemies: Dark energy, corrupt status
+└── Tutorial: "Within Energy, Lightning beats Plasma, Plasma beats Void, Void beats Lightning"
+```
+
+**Player Experience:**
+- Master internal triangle relationships
+- Learn status effects and tactical advantages
+- Develop specialized strategies
+- Understand cross-triangle rules
+
+##### **Phase 3: Advanced Combinations (Week 5+)**
+**Objective**: Master complex elemental interactions and combinations
+
+**Land 3: Mistral Peaks - Advanced Tactics**
+```
+Ward 1: Mixed Elemental Encounters
+├── Heat + Cold combinations
+├── Energy + Heat combinations
+├── Cold + Energy combinations
+└── Tutorial: "Combine elements for maximum effectiveness"
+
+Ward 2: Dynamic Elemental Phases
+├── Enemies that change elemental affinity
+├── Bosses with multiple elemental phases
+├── Environmental elemental interactions
+└── Tutorial: "Adapt to changing elemental threats"
+
+Ward 3: Master Elemental Challenges
+├── All 9 elements in single encounters
+├── Complex status effect combinations
+├── Advanced tactical decision-making
+└── Tutorial: "Master the complete elemental system"
+```
+
+**Player Experience:**
+- Handle complex elemental combinations
+- Master status effect synergies
+- Develop advanced tactical strategies
+- Achieve elemental system mastery
+
+##### **Visual Design Progression**
+```typescript
+const VISUAL_DESIGN_PROGRESSION = {
+  phase1: {
+    heat: 'Bright Red',
+    cold: 'Bright Blue',
+    energy: 'Bright Yellow',
+    indicators: 'Simple color coding'
+  },
+  phase2: {
+    fire: 'Bright Red',
+    lava: 'Orange-Red',
+    steam: 'Light Red',
+    ice: 'Bright Blue',
+    frost: 'Light Blue',
+    mist: 'Pale Blue',
+    lightning: 'Bright Yellow',
+    plasma: 'Orange-Yellow',
+    void: 'Dark Purple',
+    indicators: 'Subtle variations within colors'
+  },
+  phase3: {
+    combinations: 'Complex visual effects',
+    status: 'Particle effects and animations',
+    interactions: 'Dynamic visual feedback',
+    indicators: 'Advanced visual communication'
+  }
+};
+```
+
+##### **Tutorial Integration Strategy**
+```typescript
+const TUTORIAL_PROGRESSION = {
+  phase1: {
+    tooltips: 'Heat beats Cold, Cold beats Energy, Energy beats Heat',
+    indicators: 'Clear damage bonus notifications',
+    feedback: 'Visual and audio confirmation of effectiveness'
+  },
+  phase2: {
+    tooltips: 'Internal triangle relationships and status effects',
+    indicators: 'Status effect duration and effects',
+    feedback: 'Tactical advantage explanations'
+  },
+  phase3: {
+    tooltips: 'Advanced combinations and synergies',
+    indicators: 'Complex interaction explanations',
+    feedback: 'Mastery achievement recognition'
+  }
+};
+```
+
 ### Breath Weapon Mechanics
 
 ```typescript
 
 export interface BreathWeapon {
   baseDamage: number;
-  damageType: 'fire' | 'ice' | 'lightning' | 'poison';
+  damageType: 'fire' | 'lava' | 'steam' | 'ice' | 'frost' | 'mist' | 'lightning' | 'plasma' | 'void';
   range: number;
   coneWidth: number;
   duration: number;
