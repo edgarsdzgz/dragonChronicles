@@ -12,6 +12,7 @@ import type {
   SoulPowerDrop,
   SoulPowerSource,
   SoulPowerDropConfig,
+  SoulPowerScalingResult,
   EnemyType,
   BossType,
   EconomicEvent,
