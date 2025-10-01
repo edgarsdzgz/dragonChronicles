@@ -77,16 +77,16 @@ export interface SoulForgingAnalyticsReport {
 }
 
 export interface SoulForgingAnalyticsEngine {
-  analyze(state: SoulForgingState): SoulForgingAnalyticsData;
+  analyze(_state: SoulForgingState): SoulForgingAnalyticsData;
   generateReport(
-    state: SoulForgingState,
-    period?: { start: number; end: number; duration?: number },
+    _state: SoulForgingState,
+    _period?: { start: number; end: number; duration?: number },
   ): SoulForgingAnalyticsReport;
-  getProgressionAnalytics(state: SoulForgingState): SoulForgingProgressionAnalytics;
-  getCostAnalytics(state: SoulForgingState): SoulForgingCostAnalytics;
-  getPerformanceAnalytics(state: SoulForgingState): SoulForgingPerformanceAnalytics;
-  getTrendAnalytics(state: SoulForgingState): SoulForgingTrendAnalytics;
-  getRecommendations(state: SoulForgingState): SoulForgingRecommendations;
+  getProgressionAnalytics(_state: SoulForgingState): SoulForgingProgressionAnalytics;
+  getCostAnalytics(_state: SoulForgingState): SoulForgingCostAnalytics;
+  getPerformanceAnalytics(_state: SoulForgingState): SoulForgingPerformanceAnalytics;
+  getTrendAnalytics(_state: SoulForgingState): SoulForgingTrendAnalytics;
+  getRecommendations(_state: SoulForgingState): SoulForgingRecommendations;
 }
 
 export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEngine {
@@ -133,7 +133,7 @@ export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEn
       ? {
           start: period.start,
           end: period.end,
-          duration: (period as any).duration || period.end - period.start,
+          duration: (period as { duration?: number }).duration || period.end - period.start,
         }
       : {
           start: state.lastUpdated,
@@ -334,12 +334,12 @@ export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEn
     return totalSpent > 0 ? totalLevels / totalSpent : 0;
   }
 
-  private calculateCostSavings(state: SoulForgingState): number {
+  private calculateCostSavings(_state: SoulForgingState): number {
     // This would calculate potential savings from optimization
     return 0; // Placeholder
   }
 
-  private analyzeSpendingTrend(state: SoulForgingState): 'increasing' | 'decreasing' | 'stable' {
+  private analyzeSpendingTrend(_state: SoulForgingState): 'increasing' | 'decreasing' | 'stable' {
     // This would analyze spending trends over time
     return 'stable'; // Placeholder
   }
@@ -364,12 +364,12 @@ export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEn
     return daysElapsed > 0 ? state.totalPurchases / daysElapsed : 0;
   }
 
-  private calculateSuccessRate(state: SoulForgingState): number {
+  private calculateSuccessRate(_state: SoulForgingState): number {
     // This would calculate success rate based on transaction history
     return 1.0; // Placeholder
   }
 
-  private calculateErrorRate(state: SoulForgingState): number {
+  private calculateErrorRate(_state: SoulForgingState): number {
     // This would calculate error rate based on transaction history
     return 0.0; // Placeholder
   }
@@ -389,28 +389,28 @@ export class DefaultSoulForgingAnalyticsEngine implements SoulForgingAnalyticsEn
   }
 
   private analyzeProgressionTrend(
-    state: SoulForgingState,
+    _state: SoulForgingState,
   ): 'accelerating' | 'decelerating' | 'stable' {
     // This would analyze progression trends over time
     return 'stable'; // Placeholder
   }
 
-  private analyzeCostTrend(state: SoulForgingState): 'increasing' | 'decreasing' | 'stable' {
+  private analyzeCostTrend(_state: SoulForgingState): 'increasing' | 'decreasing' | 'stable' {
     // This would analyze cost trends over time
     return 'stable'; // Placeholder
   }
 
-  private analyzeEfficiencyTrend(state: SoulForgingState): 'improving' | 'declining' | 'stable' {
+  private analyzeEfficiencyTrend(_state: SoulForgingState): 'improving' | 'declining' | 'stable' {
     // This would analyze efficiency trends over time
     return 'stable'; // Placeholder
   }
 
-  private analyzeSpendingPattern(state: SoulForgingState): 'consistent' | 'burst' | 'gradual' {
+  private analyzeSpendingPattern(_state: SoulForgingState): 'consistent' | 'burst' | 'gradual' {
     // This would analyze spending patterns
     return 'consistent'; // Placeholder
   }
 
-  private detectSeasonalPattern(state: SoulForgingState): boolean {
+  private detectSeasonalPattern(_state: SoulForgingState): boolean {
     // This would detect seasonal patterns in Soul Forging activity
     return false; // Placeholder
   }

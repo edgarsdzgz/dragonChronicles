@@ -35,21 +35,21 @@ export interface SoulForgingBulkPurchase {
 
 export interface SoulForgingCostOptimizer {
   calculateOptimalPurchase(
-    availableCurrency: number,
-    type: 'temporary' | 'permanent',
-    currentLevels: number,
+    _availableCurrency: number,
+    _type: 'temporary' | 'permanent',
+    _currentLevels: number,
   ): SoulForgingCostPrediction;
   calculateBulkPurchase(
-    amount: number,
-    type: 'temporary' | 'permanent',
-    currentLevels: number,
+    _amount: number,
+    _type: 'temporary' | 'permanent',
+    _currentLevels: number,
   ): SoulForgingBulkPurchase;
   calculateCostProgression(
-    fromLevel: number,
-    toLevel: number,
-    type: 'temporary' | 'permanent',
+    _fromLevel: number,
+    _toLevel: number,
+    _type: 'temporary' | 'permanent',
   ): SoulForgingCostCalculation;
-  getCostEfficiency(type: 'temporary' | 'permanent', currentLevels: number): number;
+  getCostEfficiency(_type: 'temporary' | 'permanent', _currentLevels: number): number;
 }
 
 export class DefaultSoulForgingCostOptimizer implements SoulForgingCostOptimizer {
@@ -179,7 +179,7 @@ export class DefaultSoulForgingCostOptimizer implements SoulForgingCostOptimizer
     return Math.floor(baseCost * multiplier);
   }
 
-  private calculatePermanentCost(level: number): number {
+  private calculatePermanentCost(_level: number): number {
     return this.config.permanentSoulForgingCost;
   }
 

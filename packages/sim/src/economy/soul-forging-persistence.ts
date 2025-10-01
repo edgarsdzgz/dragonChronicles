@@ -5,20 +5,22 @@
  * including save/load functionality, state validation, and recovery.
  */
 
+/* global localStorage */
+
 import type { SoulForgingState } from './soul-forging-manager.js';
 
 export interface SoulForgingPersistenceStorage {
-  save(key: string, state: SoulForgingState): Promise<boolean>;
-  load(key: string): Promise<SoulForgingState | null>;
-  delete(key: string): Promise<boolean>;
-  exists(key: string): Promise<boolean>;
+  save(_key: string, _state: SoulForgingState): Promise<boolean>;
+  load(_key: string): Promise<SoulForgingState | null>;
+  delete(_key: string): Promise<boolean>;
+  exists(_key: string): Promise<boolean>;
   list(): Promise<string[]>;
 }
 
 export interface SoulForgingStateValidator {
-  validate(state: SoulForgingState): SoulForgingStateValidation;
-  repair(state: SoulForgingState): SoulForgingState;
-  migrate(oldState: SoulForgingState, targetVersion: string): SoulForgingState;
+  validate(_state: SoulForgingState): SoulForgingStateValidation;
+  repair(_state: SoulForgingState): SoulForgingState;
+  migrate(_oldState: SoulForgingState, _targetVersion: string): SoulForgingState;
 }
 
 export interface SoulForgingStateValidation {
@@ -30,13 +32,13 @@ export interface SoulForgingStateValidation {
 }
 
 export interface SoulForgingPersistenceManager {
-  saveState(key: string, state: SoulForgingState): Promise<boolean>;
-  loadState(key: string): Promise<SoulForgingState | null>;
-  deleteState(key: string): Promise<boolean>;
+  saveState(_key: string, _state: SoulForgingState): Promise<boolean>;
+  loadState(_key: string): Promise<SoulForgingState | null>;
+  deleteState(_key: string): Promise<boolean>;
   listStates(): Promise<string[]>;
-  validateState(state: SoulForgingState): SoulForgingStateValidation;
-  repairState(state: SoulForgingState): SoulForgingState;
-  migrateState(state: SoulForgingState, targetVersion: string): SoulForgingState;
+  validateState(_state: SoulForgingState): SoulForgingStateValidation;
+  repairState(_state: SoulForgingState): SoulForgingState;
+  migrateState(_state: SoulForgingState, _targetVersion: string): SoulForgingState;
 }
 
 export class LocalStorageSoulForgingPersistence implements SoulForgingPersistenceStorage {

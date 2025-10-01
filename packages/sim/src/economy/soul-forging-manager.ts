@@ -106,20 +106,23 @@ export interface EnhancedSoulForgingSystem {
   readonly config: EnchantConfig;
 
   // Enhanced operations
-  purchaseTemporarySoulForging(amount: number, availableArcana: number): SoulForgingTransaction;
-  purchasePermanentSoulForging(amount: number, availableSoulPower: number): SoulForgingTransaction;
+  purchaseTemporarySoulForging(_amount: number, _availableArcana: number): SoulForgingTransaction;
+  purchasePermanentSoulForging(
+    _amount: number,
+    _availableSoulPower: number,
+  ): SoulForgingTransaction;
 
   // Advanced features
   calculateOptimalSoulForging(
-    availableCurrency: number,
-    type: 'temporary' | 'permanent',
+    _availableCurrency: number,
+    _type: 'temporary' | 'permanent',
   ): SoulForgingRecommendation;
   getSoulForgingMilestones(): SoulForgingMilestone[];
   validateSoulForgingProgression(): SoulForgingValidation;
 
   // State management
   saveState(): SoulForgingState;
-  loadState(state: SoulForgingState): boolean;
+  loadState(_state: SoulForgingState): boolean;
   resetTemporarySoulForging(): void;
 
   // Analytics
