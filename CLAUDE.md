@@ -999,13 +999,22 @@ interface SoulPowerGrowthModel {
 
 - **Switch to main branch** and pull latest changes
 
-- **Delete local and remote feature branches**
+- **Delete local feature branches**: `git branch -D feat/branch-name`
+
+- **Delete remote feature branches**: `git push origin --delete feat/branch-name`
 
 - **Clean up temporary files** and outdated documentation
 
 - **Update project documentation** (changelog, ADRs, status)
 
 **Planning documents are temporary** - delete when workpack is complete, only keep completed work documented in changelog and ADRs.
+
+**Epic/Story Cleanup**: After completing an epic or story:
+1. Switch to main branch: `git checkout main`
+2. Pull latest changes: `git pull origin main`
+3. Delete local branch: `git branch -D feat/epic-or-story-branch`
+4. Delete remote branch: `git push origin --delete feat/epic-or-story-branch`
+5. Verify cleanup: `git branch -a` (should not show deleted branches)
 
 ### Time Estimation Tracking Rule
 
