@@ -12,6 +12,9 @@ import type {
   EnchantCostCalculator,
 } from './enchant-types.js';
 
+// Re-export the interface for external use
+export type { EnchantCostCalculator };
+
 export class DefaultEnchantCostCalculator implements EnchantCostCalculator {
   private config: EnchantConfig;
 

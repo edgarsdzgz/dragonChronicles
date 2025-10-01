@@ -14,6 +14,9 @@ import type {
   BossType,
 } from './types.js';
 
+// Re-export the interface for external use
+export type { SoulPowerScaling };
+
 /**
  * Default Soul Power drop configuration
  */
