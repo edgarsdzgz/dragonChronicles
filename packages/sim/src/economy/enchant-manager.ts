@@ -78,7 +78,7 @@ export class DefaultEnchantManager implements EnchantManager {
   /**
    * Get the effective level cap for an enchant type
    */
-  getEnchantCap(type: EnchantType): number {
+  getEnchantCap(_type: EnchantType): number {
     return this._system.effective.cap;
   }
 
@@ -282,7 +282,7 @@ export class DefaultEnchantManager implements EnchantManager {
     const draconiaTransactions = transactions.filter((t) => t.location === 'draconia').length;
     const journeyTransactions = transactions.filter((t) => t.location === 'journey').length;
 
-    const soulForgingStats = this._soulForgingSystem.getSoulForgingStats();
+    const _soulForgingStats = this._soulForgingSystem.getSoulForgingStats();
 
     return {
       totalPurchases: transactions.length,

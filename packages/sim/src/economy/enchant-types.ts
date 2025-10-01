@@ -99,24 +99,24 @@ export interface EnchantManager {
   readonly location: LocationType;
 
   // Core enchant management
-  getEnchantLevel(type: EnchantType, category: EnchantCategory): number;
-  getEnchantCap(type: EnchantType): number;
-  getEnchantCost(type: EnchantType, level: number): number;
+  getEnchantLevel(_type: EnchantType, _category: EnchantCategory): number;
+  getEnchantCap(_type: EnchantType): number;
+  getEnchantCost(_type: EnchantType, _level: number): number;
 
   // Purchase operations
   purchaseEnchant(
-    type: EnchantType,
-    category: EnchantCategory,
-    amount: number,
-    currency: 'arcana' | 'soul_power',
+    _type: EnchantType,
+    _category: EnchantCategory,
+    _amount: number,
+    _currency: 'arcana' | 'soul_power',
   ): EnchantTransaction;
 
   // Soul Forging operations
-  purchaseSoulForging(type: 'temporary' | 'permanent', amount: number): EnchantTransaction;
+  purchaseSoulForging(_type: 'temporary' | 'permanent', _amount: number): EnchantTransaction;
 
   // Location management
-  setLocation(location: LocationType): void;
-  canSpendCurrency(currency: 'arcana' | 'soul_power'): boolean;
+  setLocation(_location: LocationType): void;
+  canSpendCurrency(_currency: 'arcana' | 'soul_power'): boolean;
 
   // State management
   resetTemporaryEnchants(): void;
@@ -125,26 +125,26 @@ export interface EnchantManager {
 }
 
 export interface EnchantCostCalculator {
-  calculateCost(type: EnchantType, level: number): number;
+  calculateCost(_type: EnchantType, _level: number): number;
   calculateSoulForgingCost(
-    type: 'temporary' | 'permanent',
-    currentLevel: number,
-    baseCost: number,
+    _type: 'temporary' | 'permanent',
+    _currentLevel: number,
+    _baseCost: number,
   ): number;
-  getTotalCost(type: EnchantType, fromLevel: number, toLevel: number): number;
+  getTotalCost(_type: EnchantType, _fromLevel: number, _toLevel: number): number;
 }
 
 export interface LocationValidator {
   canPurchaseEnchant(
-    type: EnchantType,
-    category: EnchantCategory,
-    currency: 'arcana' | 'soul_power',
+    _type: EnchantType,
+    _category: EnchantCategory,
+    _currency: 'arcana' | 'soul_power',
   ): boolean;
   canPurchaseSoulForging(
-    type: 'temporary' | 'permanent',
-    currency: 'arcana' | 'soul_power',
+    _type: 'temporary' | 'permanent',
+    _currency: 'arcana' | 'soul_power',
   ): boolean;
-  validateLocation(location: LocationType): boolean;
+  validateLocation(_location: LocationType): boolean;
 }
 
 export interface EnchantAnalytics {

@@ -14,7 +14,7 @@ import type {
   SoulPowerDropConfig,
   SoulPowerScalingResult,
   EnemyType,
-  BossType,
+  BossType as _BossType,
   EconomicEvent,
 } from './types.js';
 import { createSoulPowerScaling, type SoulPowerScaling } from './soul-power-scaling.js';

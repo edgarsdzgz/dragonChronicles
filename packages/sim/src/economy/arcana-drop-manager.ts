@@ -13,7 +13,7 @@ import type {
   ArcanaSource,
   ArcanaDropConfig,
   EnemyType,
-  BossType,
+  BossType as _BossType,
   EconomicEvent,
 } from './types.js';
 import { createArcanaScaling, type ArcanaScaling } from './arcana-scaling.js';

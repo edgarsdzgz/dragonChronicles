@@ -48,7 +48,7 @@ const ENEMY_BASE_CHANCES: Record<EnemyType, number> = {
 /**
  * Boss chance multipliers by boss type
  */
-const BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
+const _BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
   ward_boss: 2.0,
   mini_boss: 1.8,
   elite_boss: 2.5,
@@ -57,7 +57,7 @@ const BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
 /**
  * Boss amount multipliers by boss type
  */
-const BOSS_AMOUNT_MULTIPLIERS: Record<BossType, number> = {
+const _BOSS_AMOUNT_MULTIPLIERS: Record<BossType, number> = {
   ward_boss: 3.0,
   mini_boss: 2.5,
   elite_boss: 4.0,

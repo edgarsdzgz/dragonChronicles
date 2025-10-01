@@ -243,13 +243,13 @@ export interface ArcanaDropManager {
   readonly config: ArcanaDropConfig;
 
   /** Drop Arcana from a source */
-  dropArcana(amount: number, source: ArcanaSource): void;
+  dropArcana(_amount: number, _source: ArcanaSource): void;
 
   /** Calculate drop amount for an enemy */
-  calculateDropAmount(enemyType: EnemyType, distance: number, ward: number): number;
+  calculateDropAmount(_enemyType: EnemyType, _distance: number, _ward: number): number;
 
   /** Collect Arcana (add to balance) */
-  collectArcana(amount: number): void;
+  collectArcana(_amount: number): void;
 
   /** Get current balance */
   getCurrentBalance(): number;
@@ -266,16 +266,16 @@ export interface ArcanaDropManager {
  */
 export interface ArcanaScaling {
   /** Calculate scaling factor for distance and ward */
-  calculateScalingFactor(distance: number, ward: number): number;
+  calculateScalingFactor(_distance: number, _ward: number): number;
 
   /** Get base drop amount for enemy type */
-  getBaseDropAmount(enemyType: EnemyType): number;
+  getBaseDropAmount(_enemyType: EnemyType): number;
 
   /** Get boss reward multiplier */
-  getBossRewardMultiplier(bossType: BossType): number;
+  getBossRewardMultiplier(_bossType: BossType): number;
 
   /** Calculate final drop amount */
-  calculateDropAmount(enemyType: EnemyType, distance: number, ward: number): ArcanaScalingResult;
+  calculateDropAmount(_enemyType: EnemyType, _distance: number, _ward: number): ArcanaScalingResult;
 }
 
 /**
@@ -289,28 +289,28 @@ export interface SoulPowerDropManager {
 
   /** Drop Soul Power from a source */
   dropSoulPower(
-    amount: number,
-    source: SoulPowerSource,
-    dropChance: number,
-    scalingFactor?: number,
+    _amount: number,
+    _source: SoulPowerSource,
+    _dropChance: number,
+    _scalingFactor?: number,
   ): void;
 
   /** Calculate drop chance and amount for an enemy */
   calculateSoulPowerDrop(
-    enemyType: EnemyType,
-    distance: number,
-    ward: number,
-    arcanaAmount: number,
+    _enemyType: EnemyType,
+    _distance: number,
+    _ward: number,
+    _arcanaAmount: number,
   ): SoulPowerScalingResult;
 
   /** Collect Soul Power (add to balance) */
-  collectSoulPower(amount: number): void;
+  collectSoulPower(_amount: number): void;
 
   /** Get current balance */
   getCurrentBalance(): number;
 
   /** Spend Soul Power (permanent) */
-  spendSoulPower(amount: number, reason: string): boolean;
+  spendSoulPower(_amount: number, _reason: string): boolean;
 
   /** Get drop history */
   getDropHistory(): SoulPowerDrop[];
@@ -330,22 +330,22 @@ export interface SoulPowerDropManager {
  */
 export interface SoulPowerScaling {
   /** Calculate drop chance for enemy type */
-  calculateDropChance(enemyType: EnemyType, distance: number, ward: number): number;
+  calculateDropChance(_enemyType: EnemyType, _distance: number, _ward: number): number;
 
   /** Calculate drop amount based on Arcana amount */
   calculateDropAmount(
-    arcanaAmount: number,
-    enemyType: EnemyType,
-    distance: number,
-    ward: number,
+    _arcanaAmount: number,
+    _enemyType: EnemyType,
+    _distance: number,
+    _ward: number,
   ): number;
 
   /** Calculate final drop chance and amount */
   calculateSoulPowerDrop(
-    enemyType: EnemyType,
-    distance: number,
-    ward: number,
-    arcanaAmount: number,
+    _enemyType: EnemyType,
+    _distance: number,
+    _ward: number,
+    _arcanaAmount: number,
   ): SoulPowerScalingResult;
 }
 
