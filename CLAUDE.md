@@ -12,6 +12,38 @@ project.
 
 **Don't add a naked `console.log("ok")` at the end—that lies about the result.** The runner already prints derived results and sets the exit code correctly.
 
+## Post-Merge Cleanup Process
+
+### Automated Cleanup Script
+
+Use `scripts/post-merge-cleanup.sh` for comprehensive post-merge cleanup:
+
+- Switches to main branch and pulls latest changes
+- Deletes local and remote feature branches
+- Removes temporary files (_Plan.md, _-CLEANUP-STEPS.md, etc.)
+- Commits and pushes cleanup changes
+- Verifies clean repository state
+
+### PR Standards
+
+**MANDATORY**: Always use proper closing keywords in PR descriptions:
+
+- `Closes #X` - for issues that are fully completed
+- `Fixes #X` - for bug fixes
+- `Resolves #X` - for resolving issues
+
+**NEVER use**: "Related to #X" - this doesn't auto-close issues
+
+### Post-Merge Checklist
+
+- [ ] Switch to main branch (`git checkout main`)
+- [ ] Pull latest changes (`git pull origin main`)
+- [ ] Delete local feature branches (`git branch -d branch-name`)
+- [ ] Delete remote feature branches (`git push origin --delete branch-name`)
+- [ ] Clean up temporary files
+- [ ] Commit cleanup (`git commit -m "chore: post-merge cleanup"`)
+- [ ] Verify clean state (`git status`, `git branch`, `gh issue list`)
+
 ## Recent Fixes and Updates
 
 ### CI Lighthouse Configuration Fix (2025-09-27)

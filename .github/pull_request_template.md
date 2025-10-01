@@ -1,41 +1,61 @@
-## Summary
+## Overview
 
-Brief description of the changes made.
+Brief description of changes and what this PR accomplishes.
 
-## Changes Made
+## Features Implemented
 
-- List key changes
+- Feature 1: Description
+- Feature 2: Description
+- Feature 3: Description
 
-- Include any breaking changes
+## Files Added/Modified
 
-- Reference related issues
+- `path/to/file.ts` - Description of changes
+- `path/to/file.svelte` - Description of changes
+- `path/to/test.ts` - Description of changes
 
 ## Testing
 
-- [ ] Build passes (`pnpm run build`)
+- [ ] All tests passing (`pnpm run test:all`)
+- [ ] Performance targets met
+- [ ] Edge cases covered
+- [ ] Integration tests passing
+- [ ] No linting errors (`pnpm run lint`)
+- [ ] TypeScript strict compliance (`pnpm run type-check`)
 
-- [ ] Linting passes (`pnpm run lint`)
+## Documentation Updates
 
-- [ ] Tests pass (`pnpm run test:all`)
+- [ ] Code documentation updated
+- [ ] Architecture docs updated (if needed)
+- [ ] User-facing docs updated (if needed)
+- [ ] CLAUDE.md updated with new functions/files
 
-- [ ] Manual testing completed
+## Acceptance Criteria
 
-## Preview URL
+- [ ] All acceptance criteria from issue met
+- [ ] Performance targets achieved
+- [ ] Code reviewed and approved
+- [ ] Integration verified
 
-🔍 **Preview deployed**: [Preview URL will be posted here automatically]
+## Related Issues
 
-## Screenshots/Logs
+<!-- IMPORTANT: Use these exact keywords for auto-closing issues -->
 
-(If applicable, attach screenshots or logs)
+Closes #X
+Fixes #Y  
+Resolves #Z
+
+## Next Steps
+
+What comes next in the workflow or what this enables.
 
 ## Checklist
 
-- [ ] Code follows project conventions
-
-- [ ] Documentation updated if needed
-
-- [ ] Breaking changes documented
-
-- [ ] Tests added/updated for new functionality
-
-      EOF < /dev/null
+- [ ] All acceptance criteria met
+- [ ] All tests passing
+- [ ] No linting errors
+- [ ] TypeScript strict compliance
+- [ ] Documentation updated
+- [ ] No temporary files included
+- [ ] Proper closing keywords used
+- [ ] Ready for merge
