@@ -48,7 +48,7 @@ const ENEMY_BASE_CHANCES: Record<EnemyType, number> = {
 /**
  * Boss chance multipliers by boss type
  */
-const BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
+const _BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
   ward_boss: 2.0,
   mini_boss: 1.8,
   elite_boss: 2.5,
@@ -57,7 +57,7 @@ const BOSS_CHANCE_MULTIPLIERS: Record<BossType, number> = {
 /**
  * Boss amount multipliers by boss type
  */
-const BOSS_AMOUNT_MULTIPLIERS: Record<BossType, number> = {
+const _BOSS_AMOUNT_MULTIPLIERS: Record<BossType, number> = {
   ward_boss: 3.0,
   mini_boss: 2.5,
   elite_boss: 4.0,
@@ -96,7 +96,7 @@ export class DefaultSoulPowerScaling implements SoulPowerScaling {
     // Apply distance and ward scaling (slower than Arcana)
     const distanceFactor = Math.pow(this.config.distanceScalingFactor, distance);
     const wardFactor = Math.pow(this.config.wardScalingFactor, ward);
-    const totalFactor = distanceFactor * wardFactor;
+    const totalFactor = Math.max(distanceFactor * wardFactor, 1.01); // Minimum 1% scaling
 
     return Math.min(baseChance * chanceMultiplier * totalFactor, 0.5); // Cap at 50%
   }
@@ -130,9 +130,9 @@ export class DefaultSoulPowerScaling implements SoulPowerScaling {
     // Apply distance and ward scaling (slower than Arcana)
     const distanceFactor = Math.pow(this.config.distanceScalingFactor, distance);
     const wardFactor = Math.pow(this.config.wardScalingFactor, ward);
-    const totalFactor = distanceFactor * wardFactor;
+    const totalFactor = Math.max(distanceFactor * wardFactor, 1.01); // Minimum 1% scaling
 
-    const finalAmount = Math.floor(baseAmount * amountMultiplier * totalFactor);
+    const finalAmount = Math.round(baseAmount * amountMultiplier * totalFactor);
 
     // Apply min/max constraints
     return Math.max(this.config.minDropAmount, Math.min(finalAmount, this.config.maxDropAmount));
@@ -165,8 +165,8 @@ export class DefaultSoulPowerScaling implements SoulPowerScaling {
       distanceFactor,
       wardFactor,
       totalFactor,
-      finalChance: dropChance,
-      finalAmount: dropAmount,
+      finalChance: dropChance, // This is already scaled in calculateDropChance
+      finalAmount: dropAmount, // This is already scaled in calculateDropAmount
       triggered,
     };
   }

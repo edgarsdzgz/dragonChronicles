@@ -14,7 +14,7 @@ import type {
   SoulPowerDropConfig,
   SoulPowerScalingResult,
   EnemyType,
-  BossType,
+  BossType as _BossType,
   EconomicEvent,
 } from './types.js';
 import { createSoulPowerScaling, type SoulPowerScaling } from './soul-power-scaling.js';
@@ -67,18 +67,22 @@ export class DefaultSoulPowerDropManager implements SoulPowerDropManager {
       return;
     }
 
+    // Apply scaling to amount and chance
+    const scaledAmount = Math.floor(amount * scalingFactor);
+    const scaledChance = Math.min(dropChance * scalingFactor, 1.0); // Cap at 100%
+
     const drop: SoulPowerDrop = {
-      amount,
+      amount: scaledAmount,
       source,
       timestamp: Date.now(),
       scalingFactor,
       baseAmount: amount,
-      dropChance,
+      dropChance: scaledChance,
     };
 
     // Add to balance (permanent)
-    this._balance.current += amount;
-    this._balance.totalEarned += amount;
+    this._balance.current += scaledAmount;
+    this._balance.totalEarned += scaledAmount;
     this._balance.drops.push(drop);
 
     // Emit economic event

@@ -16,13 +16,16 @@ export interface SoulForgingSystem {
   readonly config: EnchantConfig;
 
   // Soul Forging operations
-  purchaseTemporarySoulForging(amount: number, availableArcana: number): SoulForgingTransaction;
-  purchasePermanentSoulForging(amount: number, availableSoulPower: number): SoulForgingTransaction;
+  purchaseTemporarySoulForging(_amount: number, _availableArcana: number): SoulForgingTransaction;
+  purchasePermanentSoulForging(
+    _amount: number,
+    _availableSoulPower: number,
+  ): SoulForgingTransaction;
 
   // Cap calculations
-  calculateEffectiveCap(baseCap: number): number;
-  calculateTemporaryCost(amount: number, currentLevels: number): number;
-  calculatePermanentCost(amount: number): number;
+  calculateEffectiveCap(_baseCap: number): number;
+  calculateTemporaryCost(_amount: number, _currentLevels: number): number;
+  calculatePermanentCost(_amount: number): number;
 
   // State management
   resetTemporarySoulForging(): void;

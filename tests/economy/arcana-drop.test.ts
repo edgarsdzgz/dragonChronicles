@@ -130,9 +130,12 @@ describe('Arcana Drop System', () => {
       expect(history[1].amount).toBe(75);
     });
 
-    it('should get journey statistics', () => {
+    it('should get journey statistics', async () => {
       dropManager.dropArcana(100, { type: 'enemy_kill' });
       dropManager.spendArcana(30, 'test');
+
+      // Add a small delay to ensure journeyDuration > 0
+      await new Promise((resolve) => setTimeout(resolve, 1));
 
       const stats = dropManager.getJourneyStats();
       expect(stats.totalEarned).toBe(100);
