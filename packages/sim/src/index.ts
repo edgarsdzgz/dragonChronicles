@@ -22,3 +22,16 @@ export * from './enemies/spawn-manager.js';
 // Export combat system components
 export * from './combat/elemental-system.js';
 export * from './combat/dragon-health.js';
+
+// Export economic system components
+export * from './economy/types.js';
+export * from './economy/arcana-drop-manager.js';
+export * from './economy/arcana-scaling.js';
+export * from './economy/soul-power-drop-manager.js';
+export * from './economy/soul-power-scaling.js';
+
+// Export enchant system components
+export * from './economy/enchant-types.js';
+export * from './economy/enchant-costs.js';
+export * from './economy/enchant-manager.js';
+export * from './economy/soul-forging.js';
