@@ -1,11 +1,11 @@
 {
-  "numTotalTestSuites": 58,
-  "numPassedTestSuites": 58,
-  "numFailedTestSuites": 0,
+  "numTotalTestSuites": 88,
+  "numPassedTestSuites": 82,
+  "numFailedTestSuites": 6,
   "numPendingTestSuites": 0,
-  "numTotalTests": 152,
-  "numPassedTests": 152,
-  "numFailedTests": 0,
+  "numTotalTests": 271,
+  "numPassedTests": 269,
+  "numFailedTests": 2,
   "numPendingTests": 0,
   "numTodoTests": 0,
   "snapshot": {
@@ -24,8 +24,8 @@
     "updated": 0,
     "didUpdate": false
   },
-  "startTime": 1759242665235,
-  "success": true,
+  "startTime": 1759266706292,
+  "success": false,
   "testResults": [
     {
       "assertionResults": [
@@ -34,7 +34,7 @@
           "fullName": "Atomic Write Operations putSaveAtomic should write save data atomically",
           "status": "passed",
           "title": "should write save data atomically",
-          "duration": 38.78244300000006,
+          "duration": 44.45760599999994,
           "failureMessages": [],
           "meta": {}
         },
@@ -43,7 +43,7 @@
           "fullName": "Atomic Write Operations putSaveAtomic should update active profile pointer",
           "status": "passed",
           "title": "should update active profile pointer",
-          "duration": 10.47297900000001,
+          "duration": 8.238826000000017,
           "failureMessages": [],
           "meta": {}
         },
@@ -52,7 +52,7 @@
           "fullName": "Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
           "status": "passed",
           "title": "should prune old saves to keep only 3 backups",
-          "duration": 14.46852899999999,
+          "duration": 21.666999999999916,
           "failureMessages": [],
           "meta": {}
         },
@@ -61,7 +61,7 @@
           "fullName": "Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
           "status": "passed",
           "title": "should handle concurrent writes to different profiles",
-          "duration": 8.992554000000041,
+          "duration": 7.779060999999956,
           "failureMessages": [],
           "meta": {}
         },
@@ -70,7 +70,7 @@
           "fullName": "Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
           "status": "passed",
           "title": "should maintain data integrity during transaction failures",
-          "duration": 5.190534000000071,
+          "duration": 6.695124000000078,
           "failureMessages": [],
           "meta": {}
         },
@@ -79,7 +79,7 @@
           "fullName": "Atomic Write Operations getActiveSave should return the most recent save for a profile",
           "status": "passed",
           "title": "should return the most recent save for a profile",
-          "duration": 9.456718000000023,
+          "duration": 10.273791999999958,
           "failureMessages": [],
           "meta": {}
         },
@@ -88,7 +88,7 @@
           "fullName": "Atomic Write Operations getActiveSave should return null for non-existent profile",
           "status": "passed",
           "title": "should return null for non-existent profile",
-          "duration": 2.408126999999922,
+          "duration": 4.66833100000008,
           "failureMessages": [],
           "meta": {}
         },
@@ -97,7 +97,7 @@
           "fullName": "Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
           "status": "passed",
           "title": "should handle profile with multiple saves correctly",
-          "duration": 5.829651000000013,
+          "duration": 8.170313000000078,
           "failureMessages": [],
           "meta": {}
         },
@@ -106,7 +106,7 @@
           "fullName": "Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
           "status": "passed",
           "title": "should maintain referential integrity between saves and meta tables",
-          "duration": 6.361562999999933,
+          "duration": 5.442242000000078,
           "failureMessages": [],
           "meta": {}
         },
@@ -115,7 +115,7 @@
           "fullName": "Atomic Write Operations Database consistency should handle database corruption gracefully",
           "status": "passed",
           "title": "should handle database corruption gracefully",
-          "duration": 8.125752999999918,
+          "duration": 8.527970000000096,
           "failureMessages": [],
           "meta": {}
         },
@@ -124,7 +124,7 @@
           "fullName": "Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
           "status": "passed",
           "title": "should preserve W3 time accounting fields during atomic writes",
-          "duration": 4.947485999999913,
+          "duration": 4.274635999999873,
           "failureMessages": [],
           "meta": {}
         },
@@ -133,13 +133,13 @@
           "fullName": "Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
           "status": "passed",
           "title": "should handle W3 time accounting updates correctly",
-          "duration": 4.464394000000084,
+          "duration": 6.356813999999986,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666188,
-      "endTime": 1759242666309.4644,
+      "startTime": 1759266707391,
+      "endTime": 1759266707529.357,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/atomic.spec.ts"
@@ -151,7 +151,7 @@
           "fullName": "Export/Import Functionality exportAllProfiles should export all profiles with correct format",
           "status": "passed",
           "title": "should export all profiles with correct format",
-          "duration": 44.18550400000004,
+          "duration": 43.68767600000001,
           "failureMessages": [],
           "meta": {}
         },
@@ -160,7 +160,7 @@
           "fullName": "Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
           "status": "passed",
           "title": "should include W3 time accounting fields in export",
-          "duration": 8.852032000000008,
+          "duration": 7.693295999999918,
           "failureMessages": [],
           "meta": {}
         },
@@ -169,7 +169,7 @@
           "fullName": "Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
           "status": "passed",
           "title": "should generate valid checksum for export data",
-          "duration": 6.486996999999974,
+          "duration": 10.115252000000055,
           "failureMessages": [],
           "meta": {}
         },
@@ -178,7 +178,7 @@
           "fullName": "Export/Import Functionality exportAllProfiles should handle empty database gracefully",
           "status": "passed",
           "title": "should handle empty database gracefully",
-          "duration": 5.975898999999913,
+          "duration": 5.477302000000009,
           "failureMessages": [],
           "meta": {}
         },
@@ -187,7 +187,7 @@
           "fullName": "Export/Import Functionality importFromBlob should import valid export data correctly",
           "status": "passed",
           "title": "should import valid export data correctly",
-          "duration": 12.241918999999939,
+          "duration": 17.44628200000011,
           "failureMessages": [],
           "meta": {}
         },
@@ -196,7 +196,7 @@
           "fullName": "Export/Import Functionality importFromBlob should validate checksum during import",
           "status": "passed",
           "title": "should validate checksum during import",
-          "duration": 3.140133999999989,
+          "duration": 3.5687500000001364,
           "failureMessages": [],
           "meta": {}
         },
@@ -205,7 +205,7 @@
           "fullName": "Export/Import Functionality importFromBlob should reject import with wrong file version",
           "status": "passed",
           "title": "should reject import with wrong file version",
-          "duration": 3.413632000000007,
+          "duration": 5.14373999999998,
           "failureMessages": [],
           "meta": {}
         },
@@ -214,7 +214,7 @@
           "fullName": "Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
           "status": "passed",
           "title": "should handle corrupted export data gracefully",
-          "duration": 2.3401020000000017,
+          "duration": 4.488489999999956,
           "failureMessages": [],
           "meta": {}
         },
@@ -223,7 +223,7 @@
           "fullName": "Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
           "status": "passed",
           "title": "should preserve W3 time accounting during import",
-          "duration": 6.617042000000083,
+          "duration": 8.730858000000126,
           "failureMessages": [],
           "meta": {}
         },
@@ -232,7 +232,7 @@
           "fullName": "Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
           "status": "passed",
           "title": "should maintain data integrity through export-import cycle",
-          "duration": 17.98468800000012,
+          "duration": 15.974446999999827,
           "failureMessages": [],
           "meta": {}
         },
@@ -241,7 +241,7 @@
           "fullName": "Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
           "status": "passed",
           "title": "should preserve all profile data during round-trip",
-          "duration": 7.003544000000147,
+          "duration": 8.325428999999986,
           "failureMessages": [],
           "meta": {}
         },
@@ -250,7 +250,7 @@
           "fullName": "Export/Import Functionality Codec functions should encode and validate export data correctly",
           "status": "passed",
           "title": "should encode and validate export data correctly",
-          "duration": 2.862863999999945,
+          "duration": 3.6283240000000205,
           "failureMessages": [],
           "meta": {}
         },
@@ -259,7 +259,7 @@
           "fullName": "Export/Import Functionality Codec functions should detect tampered export data",
           "status": "passed",
           "title": "should detect tampered export data",
-          "duration": 4.13125100000002,
+          "duration": 4.303409999999985,
           "failureMessages": [],
           "meta": {}
         },
@@ -268,7 +268,7 @@
           "fullName": "Export/Import Functionality Codec functions should handle checksum generation consistently",
           "status": "passed",
           "title": "should handle checksum generation consistently",
-          "duration": 3.8129149999999754,
+          "duration": 3.2763250000000426,
           "failureMessages": [],
           "meta": {}
         },
@@ -277,7 +277,7 @@
           "fullName": "Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
           "status": "passed",
           "title": "should handle multiple profile pointers correctly",
-          "duration": 15.989043000000038,
+          "duration": 19.874801999999818,
           "failureMessages": [],
           "meta": {}
         },
@@ -286,13 +286,13 @@
           "fullName": "Export/Import Functionality Multiple profile handling should maintain profile independence during import",
           "status": "passed",
           "title": "should maintain profile independence during import",
-          "duration": 8.358185000000049,
+          "duration": 8.510929000000033,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666191,
-      "endTime": 1759242666345.3582,
+      "startTime": 1759266707399,
+      "endTime": 1759266707571.511,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/export-import.spec.ts"
@@ -304,7 +304,7 @@
           "fullName": "Migration System Database Version Management should return version 1 for new database",
           "status": "passed",
           "title": "should return version 1 for new database",
-          "duration": 23.88536799999997,
+          "duration": 24.481043999999883,
           "failureMessages": [],
           "meta": {}
         },
@@ -313,7 +313,7 @@
           "fullName": "Migration System Database Version Management should track database version in meta table",
           "status": "passed",
           "title": "should track database version in meta table",
-          "duration": 5.5695630000000165,
+          "duration": 6.208750000000009,
           "failureMessages": [],
           "meta": {}
         },
@@ -322,7 +322,7 @@
           "fullName": "Migration System Database Version Management should handle missing version gracefully",
           "status": "passed",
           "title": "should handle missing version gracefully",
-          "duration": 4.752000000000066,
+          "duration": 6.464718999999832,
           "failureMessages": [],
           "meta": {}
         },
@@ -331,7 +331,7 @@
           "fullName": "Migration System Migration Status should return correct migration status for fresh database",
           "status": "passed",
           "title": "should return correct migration status for fresh database",
-          "duration": 3.7258219999999937,
+          "duration": 4.388686999999891,
           "failureMessages": [],
           "meta": {}
         },
@@ -340,7 +340,7 @@
           "fullName": "Migration System Migration Status should handle database with version set",
           "status": "passed",
           "title": "should handle database with version set",
-          "duration": 4.471448000000009,
+          "duration": 3.965658000000076,
           "failureMessages": [],
           "meta": {}
         },
@@ -349,7 +349,7 @@
           "fullName": "Migration System Migration Execution should handle no migrations needed",
           "status": "passed",
           "title": "should handle no migrations needed",
-          "duration": 3.735251000000062,
+          "duration": 3.7774349999999686,
           "failureMessages": [],
           "meta": {}
         },
@@ -358,7 +358,7 @@
           "fullName": "Migration System Migration Execution should complete successfully when no data exists",
           "status": "passed",
           "title": "should complete successfully when no data exists",
-          "duration": 6.972324999999955,
+          "duration": 2.9750289999999495,
           "failureMessages": [],
           "meta": {}
         },
@@ -367,7 +367,7 @@
           "fullName": "Migration System Migration Execution should handle migration with existing data",
           "status": "passed",
           "title": "should handle migration with existing data",
-          "duration": 9.521041999999966,
+          "duration": 12.069271000000072,
           "failureMessages": [],
           "meta": {}
         },
@@ -376,7 +376,7 @@
           "fullName": "Migration System Migration Validation should validate empty database successfully",
           "status": "passed",
           "title": "should validate empty database successfully",
-          "duration": 4.124546000000009,
+          "duration": 7.082045000000107,
           "failureMessages": [],
           "meta": {}
         },
@@ -385,7 +385,7 @@
           "fullName": "Migration System Migration Validation should validate valid save data",
           "status": "passed",
           "title": "should validate valid save data",
-          "duration": 4.136977999999999,
+          "duration": 6.863511999999901,
           "failureMessages": [],
           "meta": {}
         },
@@ -394,7 +394,7 @@
           "fullName": "Migration System Migration Validation should detect invalid save data structure",
           "status": "passed",
           "title": "should detect invalid save data structure",
-          "duration": 2.976285999999959,
+          "duration": 6.699804000000086,
           "failureMessages": [],
           "meta": {}
         },
@@ -403,7 +403,7 @@
           "fullName": "Migration System Migration Validation should detect missing required fields",
           "status": "passed",
           "title": "should detect missing required fields",
-          "duration": 2.5638040000000046,
+          "duration": 3.670857000000069,
           "failureMessages": [],
           "meta": {}
         },
@@ -412,7 +412,7 @@
           "fullName": "Migration System Migration Backup should create backup successfully for empty database",
           "status": "passed",
           "title": "should create backup successfully for empty database",
-          "duration": 2.717104999999947,
+          "duration": 3.7173720000000685,
           "failureMessages": [],
           "meta": {}
         },
@@ -421,7 +421,7 @@
           "fullName": "Migration System Migration Backup should create backup with save data",
           "status": "passed",
           "title": "should create backup with save data",
-          "duration": 4.276102000000037,
+          "duration": 4.830571999999847,
           "failureMessages": [],
           "meta": {}
         },
@@ -430,7 +430,7 @@
           "fullName": "Migration System Migration Backup should store backup in meta table",
           "status": "passed",
           "title": "should store backup in meta table",
-          "duration": 3.8351239999999507,
+          "duration": 6.003905000000032,
           "failureMessages": [],
           "meta": {}
         },
@@ -439,7 +439,7 @@
           "fullName": "Migration System Migration Backup should not backup other backups",
           "status": "passed",
           "title": "should not backup other backups",
-          "duration": 5.178241999999955,
+          "duration": 4.32722600000011,
           "failureMessages": [],
           "meta": {}
         },
@@ -448,7 +448,7 @@
           "fullName": "Migration System Integration Tests should handle complete migration workflow",
           "status": "passed",
           "title": "should handle complete migration workflow",
-          "duration": 4.64081299999998,
+          "duration": 4.839092999999821,
           "failureMessages": [],
           "meta": {}
         },
@@ -457,13 +457,13 @@
           "fullName": "Migration System Integration Tests should maintain data integrity through migration process",
           "status": "passed",
           "title": "should maintain data integrity through migration process",
-          "duration": 8.957074000000034,
+          "duration": 5.674044999999978,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666189,
-      "endTime": 1759242666296.957,
+      "startTime": 1759266707392,
+      "endTime": 1759266707511.674,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/migrate.spec.ts"
@@ -475,7 +475,7 @@
           "fullName": "Schema Validation ProfileV1 validation should validate a complete valid profile",
           "status": "passed",
           "title": "should validate a complete valid profile",
-          "duration": 5.404458000000091,
+          "duration": 7.0499880000000985,
           "failureMessages": [],
           "meta": {}
         },
@@ -484,7 +484,7 @@
           "fullName": "Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
           "status": "passed",
           "title": "should reject profile with missing W3 time accounting fields",
-          "duration": 1.633656999999971,
+          "duration": 2.011708999999996,
           "failureMessages": [],
           "meta": {}
         },
@@ -493,7 +493,7 @@
           "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
           "status": "passed",
           "title": "should reject profile with invalid W3 time accounting",
-          "duration": 0.45368900000005397,
+          "duration": 0.5517459999999801,
           "failureMessages": [],
           "meta": {}
         },
@@ -502,7 +502,7 @@
           "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid name length",
           "status": "passed",
           "title": "should reject profile with invalid name length",
-          "duration": 0.5752820000000156,
+          "duration": 0.6798350000000255,
           "failureMessages": [],
           "meta": {}
         },
@@ -511,7 +511,7 @@
           "fullName": "Schema Validation ProfileV1 validation should reject profile with negative progress values",
           "status": "passed",
           "title": "should reject profile with negative progress values",
-          "duration": 0.4602540000000772,
+          "duration": 0.5265339999999696,
           "failureMessages": [],
           "meta": {}
         },
@@ -520,7 +520,7 @@
           "fullName": "Schema Validation ProfileV1 validation should reject profile with non-integer values",
           "status": "passed",
           "title": "should reject profile with non-integer values",
-          "duration": 0.43762500000002547,
+          "duration": 0.4900759999999309,
           "failureMessages": [],
           "meta": {}
         },
@@ -529,7 +529,7 @@
           "fullName": "Schema Validation SaveV1 validation should validate a complete valid save",
           "status": "passed",
           "title": "should validate a complete valid save",
-          "duration": 0.8984379999999419,
+          "duration": 1.101327000000083,
           "failureMessages": [],
           "meta": {}
         },
@@ -538,7 +538,7 @@
           "fullName": "Schema Validation SaveV1 validation should reject save with wrong version",
           "status": "passed",
           "title": "should reject save with wrong version",
-          "duration": 0.5748630000000503,
+          "duration": 0.6146039999999857,
           "failureMessages": [],
           "meta": {}
         },
@@ -547,7 +547,7 @@
           "fullName": "Schema Validation SaveV1 validation should reject save with no profiles",
           "status": "passed",
           "title": "should reject save with no profiles",
-          "duration": 0.6159999999999854,
+          "duration": 0.7277460000000247,
           "failureMessages": [],
           "meta": {}
         },
@@ -556,7 +556,7 @@
           "fullName": "Schema Validation SaveV1 validation should reject save with too many profiles",
           "status": "passed",
           "title": "should reject save with too many profiles",
-          "duration": 1.0300189999999247,
+          "duration": 1.2546979999999621,
           "failureMessages": [],
           "meta": {}
         },
@@ -565,7 +565,7 @@
           "fullName": "Schema Validation SaveV1 validation should reject save with invalid profile",
           "status": "passed",
           "title": "should reject save with invalid profile",
-          "duration": 0.7125209999999242,
+          "duration": 0.7324259999999185,
           "failureMessages": [],
           "meta": {}
         },
@@ -574,7 +574,7 @@
           "fullName": "Schema Validation ExportFileV1 validation should validate a complete valid export file",
           "status": "passed",
           "title": "should validate a complete valid export file",
-          "duration": 0.8984379999999419,
+          "duration": 0.7754480000000967,
           "failureMessages": [],
           "meta": {}
         },
@@ -583,7 +583,7 @@
           "fullName": "Schema Validation ExportFileV1 validation should reject export with wrong file version",
           "status": "passed",
           "title": "should reject export with wrong file version",
-          "duration": 0.4783429999999953,
+          "duration": 0.4509649999999965,
           "failureMessages": [],
           "meta": {}
         },
@@ -592,7 +592,7 @@
           "fullName": "Schema Validation ExportFileV1 validation should reject export with empty checksum",
           "status": "passed",
           "title": "should reject export with empty checksum",
-          "duration": 0.4045209999999315,
+          "duration": 0.4035430000000133,
           "failureMessages": [],
           "meta": {}
         },
@@ -601,7 +601,7 @@
           "fullName": "Schema Validation ExportFileV1 validation should reject export with invalid data",
           "status": "passed",
           "title": "should reject export with invalid data",
-          "duration": 0.3874789999999848,
+          "duration": 0.4115749999999707,
           "failureMessages": [],
           "meta": {}
         },
@@ -610,7 +610,7 @@
           "fullName": "Schema Validation Database row validation should validate a complete valid save row",
           "status": "passed",
           "title": "should validate a complete valid save row",
-          "duration": 0.7801269999999931,
+          "duration": 0.8723880000000008,
           "failureMessages": [],
           "meta": {}
         },
@@ -619,7 +619,7 @@
           "fullName": "Schema Validation Database row validation should validate save row with optional id",
           "status": "passed",
           "title": "should validate save row with optional id",
-          "duration": 0.27733999999998105,
+          "duration": 0.3468320000000631,
           "failureMessages": [],
           "meta": {}
         },
@@ -628,7 +628,7 @@
           "fullName": "Schema Validation Database row validation should reject save row with invalid profile id",
           "status": "passed",
           "title": "should reject save row with invalid profile id",
-          "duration": 0.3492069999999785,
+          "duration": 0.5753519999999526,
           "failureMessages": [],
           "meta": {}
         },
@@ -637,7 +637,7 @@
           "fullName": "Schema Validation Database row validation should validate a complete valid meta row",
           "status": "passed",
           "title": "should validate a complete valid meta row",
-          "duration": 0.37323200000003,
+          "duration": 0.6301079999999502,
           "failureMessages": [],
           "meta": {}
         },
@@ -646,7 +646,7 @@
           "fullName": "Schema Validation Database row validation should reject meta row with empty key",
           "status": "passed",
           "title": "should reject meta row with empty key",
-          "duration": 0.3075810000000274,
+          "duration": 0.5038349999999809,
           "failureMessages": [],
           "meta": {}
         },
@@ -655,7 +655,7 @@
           "fullName": "Schema Validation Database row validation should validate a complete valid log row",
           "status": "passed",
           "title": "should validate a complete valid log row",
-          "duration": 0.5322600000000648,
+          "duration": 0.8501780000000281,
           "failureMessages": [],
           "meta": {}
         },
@@ -664,7 +664,7 @@
           "fullName": "Schema Validation Database row validation should validate log row with optional id",
           "status": "passed",
           "title": "should validate log row with optional id",
-          "duration": 0.1807489999999916,
+          "duration": 0.2781769999999142,
           "failureMessages": [],
           "meta": {}
         },
@@ -673,7 +673,7 @@
           "fullName": "Schema Validation Database row validation should validate log row with optional data",
           "status": "passed",
           "title": "should validate log row with optional data",
-          "duration": 0.577656999999931,
+          "duration": 0.7895559999999477,
           "failureMessages": [],
           "meta": {}
         },
@@ -682,7 +682,7 @@
           "fullName": "Schema Validation Database row validation should reject log row with invalid level",
           "status": "passed",
           "title": "should reject log row with invalid level",
-          "duration": 0.609365999999909,
+          "duration": 0.625917999999956,
           "failureMessages": [],
           "meta": {}
         },
@@ -691,7 +691,7 @@
           "fullName": "Schema Validation Database row validation should reject log row with invalid source",
           "status": "passed",
           "title": "should reject log row with invalid source",
-          "duration": 0.5781460000000607,
+          "duration": 0.5289780000000519,
           "failureMessages": [],
           "meta": {}
         },
@@ -700,16 +700,1127 @@
           "fullName": "Schema Validation Database row validation should reject log row with empty message",
           "status": "passed",
           "title": "should reject log row with empty message",
-          "duration": 0.47554999999999836,
+          "duration": 0.4608130000000301,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666117,
-      "endTime": 1759242666137.5781,
+      "startTime": 1759266707308,
+      "endTime": 1759266707333.529,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/schema.spec.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should initialize with zero balance",
+          "status": "passed",
+          "title": "should initialize with zero balance",
+          "duration": 4.656458000000043,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should drop Arcana correctly",
+          "status": "passed",
+          "title": "should drop Arcana correctly",
+          "duration": 3.523772000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should calculate drop amounts correctly",
+          "status": "passed",
+          "title": "should calculate drop amounts correctly",
+          "duration": 0.7110539999999901,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle distance scaling",
+          "status": "passed",
+          "title": "should handle distance scaling",
+          "duration": 0.3529079999999567,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle ward scaling",
+          "status": "passed",
+          "title": "should handle ward scaling",
+          "duration": 0.4712200000000166,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle combined distance and ward scaling",
+          "status": "passed",
+          "title": "should handle combined distance and ward scaling",
+          "duration": 0.2876060000000962,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should spend Arcana correctly",
+          "status": "passed",
+          "title": "should spend Arcana correctly",
+          "duration": 1.378667000000064,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should reset for new journey",
+          "status": "passed",
+          "title": "should reset for new journey",
+          "duration": 1.3521969999999328,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should track drop history",
+          "status": "passed",
+          "title": "should track drop history",
+          "duration": 1.2722289999999248,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should get journey statistics",
+          "status": "failed",
+          "title": "should get journey statistics",
+          "duration": 9.262698999999998,
+          "failureMessages": [
+            "AssertionError: expected 0 to be greater than 0\n    at C:\\Users\\ediaz\\Coding_Projects\\dragonIdler\\tests\\economy\\arcana-drop.test.ts:142:37\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
+          ],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should filter drops by source type",
+          "status": "passed",
+          "title": "should filter drops by source type",
+          "duration": 1.226762000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should calculate total drops by source type",
+          "status": "passed",
+          "title": "should calculate total drops by source type",
+          "duration": 0.6377209999999423,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate distance scaling factor",
+          "status": "passed",
+          "title": "should calculate distance scaling factor",
+          "duration": 0.29710499999998774,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate ward scaling factor",
+          "status": "passed",
+          "title": "should calculate ward scaling factor",
+          "duration": 0.32790399999998954,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate total scaling factor",
+          "status": "passed",
+          "title": "should calculate total scaling factor",
+          "duration": 0.19820899999990615,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate drop amounts for different enemy types",
+          "status": "passed",
+          "title": "should calculate drop amounts for different enemy types",
+          "duration": 0.2531739999999445,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should apply scaling correctly",
+          "status": "passed",
+          "title": "should apply scaling correctly",
+          "duration": 0.24220900000000256,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Performance Tests"],
+          "fullName": "Arcana Drop System Performance Tests should handle many drops efficiently",
+          "status": "passed",
+          "title": "should handle many drops efficiently",
+          "duration": 55.873373000000015,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Performance Tests"],
+          "fullName": "Arcana Drop System Performance Tests should handle scaling calculations efficiently",
+          "status": "passed",
+          "title": "should handle scaling calculations efficiently",
+          "duration": 4.308229000000097,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle zero amounts gracefully",
+          "status": "passed",
+          "title": "should handle zero amounts gracefully",
+          "duration": 0.5374289999999746,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle negative amounts gracefully",
+          "status": "passed",
+          "title": "should handle negative amounts gracefully",
+          "duration": 0.3339809999999943,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle spending more than available",
+          "status": "passed",
+          "title": "should handle spending more than available",
+          "duration": 0.7665080000000444,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle spending zero amount",
+          "status": "passed",
+          "title": "should handle spending zero amount",
+          "duration": 0.4670289999999113,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1759266707193,
+      "endTime": 1759266707283.467,
+      "status": "failed",
+      "message": "",
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/arcana-drop.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate correct costs for geometric progression",
+          "status": "passed",
+          "title": "should calculate correct costs for geometric progression",
+          "duration": 3.3771050000000287,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate total cost for level ranges",
+          "status": "passed",
+          "title": "should calculate total cost for level ranges",
+          "duration": 0.45892700000001696,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should handle Soul Forging cost calculations",
+          "status": "passed",
+          "title": "should handle Soul Forging cost calculations",
+          "duration": 0.46982200000002194,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should validate affordable purchases",
+          "status": "passed",
+          "title": "should validate affordable purchases",
+          "duration": 0.3159620000000132,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate max affordable level",
+          "status": "passed",
+          "title": "should calculate max affordable level",
+          "duration": 0.7039999999999509,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should initialize with zero levels",
+          "status": "passed",
+          "title": "should initialize with zero levels",
+          "duration": 0.4424450000000206,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should calculate effective cap correctly",
+          "status": "passed",
+          "title": "should calculate effective cap correctly",
+          "duration": 0.21099000000003798,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should handle temporary Soul Forging purchases",
+          "status": "passed",
+          "title": "should handle temporary Soul Forging purchases",
+          "duration": 0.8383049999999912,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should handle permanent Soul Forging purchases",
+          "status": "passed",
+          "title": "should handle permanent Soul Forging purchases",
+          "duration": 0.6193530000000464,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should reset temporary Soul Forging",
+          "status": "passed",
+          "title": "should reset temporary Soul Forging",
+          "duration": 0.310444000000075,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should track transaction history",
+          "status": "passed",
+          "title": "should track transaction history",
+          "duration": 0.30080599999996593,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should provide Soul Forging statistics",
+          "status": "passed",
+          "title": "should provide Soul Forging statistics",
+          "duration": 0.38091499999995904,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should initialize with zero levels",
+          "status": "passed",
+          "title": "should initialize with zero levels",
+          "duration": 0.27398700000003373,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should have correct initial cap",
+          "status": "passed",
+          "title": "should have correct initial cap",
+          "duration": 0.326507000000106,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should calculate enchant costs correctly",
+          "status": "passed",
+          "title": "should calculate enchant costs correctly",
+          "duration": 0.33167600000001585,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should enforce location restrictions for Arcana spending",
+          "status": "passed",
+          "title": "should enforce location restrictions for Arcana spending",
+          "duration": 0.24786700000004203,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should enforce location restrictions for Soul Power spending",
+          "status": "passed",
+          "title": "should enforce location restrictions for Soul Power spending",
+          "duration": 0.18116799999995692,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle successful enchant purchases",
+          "status": "passed",
+          "title": "should handle successful enchant purchases",
+          "duration": 0.4054989999999634,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle failed enchant purchases due to location",
+          "status": "passed",
+          "title": "should handle failed enchant purchases due to location",
+          "duration": 0.6060830000000124,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle failed enchant purchases due to insufficient currency",
+          "status": "passed",
+          "title": "should handle failed enchant purchases due to insufficient currency",
+          "duration": 0.48777099999995244,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should reset temporary enchants",
+          "status": "passed",
+          "title": "should reset temporary enchants",
+          "duration": 0.2776890000000094,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should track transaction history",
+          "status": "passed",
+          "title": "should track transaction history",
+          "duration": 0.2881649999999354,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should provide analytics",
+          "status": "passed",
+          "title": "should provide analytics",
+          "duration": 0.5194799999999304,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should integrate Soul Forging with enchant caps",
+          "status": "passed",
+          "title": "should integrate Soul Forging with enchant caps",
+          "duration": 0.3032510000000457,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should handle complex enchant scenarios",
+          "status": "passed",
+          "title": "should handle complex enchant scenarios",
+          "duration": 0.43860300000005736,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should handle location switching",
+          "status": "passed",
+          "title": "should handle location switching",
+          "duration": 0.4049400000000105,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Performance Tests"],
+          "fullName": "Enchant System Performance Tests should meet performance targets for cost calculations",
+          "status": "passed",
+          "title": "should meet performance targets for cost calculations",
+          "duration": 0.5696250000000873,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Performance Tests"],
+          "fullName": "Enchant System Performance Tests should meet performance targets for enchant operations",
+          "status": "passed",
+          "title": "should meet performance targets for enchant operations",
+          "duration": 0.6643299999999499,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle zero amount purchases",
+          "status": "passed",
+          "title": "should handle zero amount purchases",
+          "duration": 0.23424799999997958,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle negative amount purchases",
+          "status": "passed",
+          "title": "should handle negative amount purchases",
+          "duration": 0.21385400000008303,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle invalid enchant types gracefully",
+          "status": "passed",
+          "title": "should handle invalid enchant types gracefully",
+          "duration": 1.3914479999999685,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle Soul Forging with insufficient currency",
+          "status": "passed",
+          "title": "should handle Soul Forging with insufficient currency",
+          "duration": 0.33314299999995,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1759266707277,
+      "endTime": 1759266707295.3914,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/enchant-system.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should initialize with zero levels",
+          "status": "passed",
+          "title": "should initialize with zero levels",
+          "duration": 3.965238999999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should handle temporary Soul Forging purchases",
+          "status": "passed",
+          "title": "should handle temporary Soul Forging purchases",
+          "duration": 1.1704699999999093,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should handle permanent Soul Forging purchases",
+          "status": "passed",
+          "title": "should handle permanent Soul Forging purchases",
+          "duration": 0.512356000000068,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should track milestones and achievements",
+          "status": "passed",
+          "title": "should track milestones and achievements",
+          "duration": 0.41876800000000003,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should provide analytics",
+          "status": "passed",
+          "title": "should provide analytics",
+          "duration": 0.6226350000000593,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should calculate optimal Soul Forging",
+          "status": "passed",
+          "title": "should calculate optimal Soul Forging",
+          "duration": 0.6188640000000305,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should validate Soul Forging progression",
+          "status": "passed",
+          "title": "should validate Soul Forging progression",
+          "duration": 1.2712510000000066,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should save and load state",
+          "status": "passed",
+          "title": "should save and load state",
+          "duration": 0.5813590000000204,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should reset temporary Soul Forging",
+          "status": "passed",
+          "title": "should reset temporary Soul Forging",
+          "duration": 0.6882859999999482,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate optimal purchase",
+          "status": "passed",
+          "title": "should calculate optimal purchase",
+          "duration": 1.7553209999999808,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate bulk purchase",
+          "status": "passed",
+          "title": "should calculate bulk purchase",
+          "duration": 0.47827300000005835,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate cost progression",
+          "status": "passed",
+          "title": "should calculate cost progression",
+          "duration": 0.4386029999999437,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should get cost efficiency",
+          "status": "passed",
+          "title": "should get cost efficiency",
+          "duration": 0.2020509999999831,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should save and load state",
+          "status": "passed",
+          "title": "should save and load state",
+          "duration": 0.9083559999999125,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should validate state",
+          "status": "passed",
+          "title": "should validate state",
+          "duration": 0.31561200000010103,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should repair invalid state",
+          "status": "passed",
+          "title": "should repair invalid state",
+          "duration": 0.34312999999997373,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should list saved states",
+          "status": "passed",
+          "title": "should list saved states",
+          "duration": 0.5629910000000109,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should delete saved state",
+          "status": "passed",
+          "title": "should delete saved state",
+          "duration": 0.37372099999993225,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should analyze Soul Forging state",
+          "status": "passed",
+          "title": "should analyze Soul Forging state",
+          "duration": 1.4756770000001325,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should generate analytics report",
+          "status": "passed",
+          "title": "should generate analytics report",
+          "duration": 0.7811750000000757,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get progression analytics",
+          "status": "passed",
+          "title": "should get progression analytics",
+          "duration": 0.3297210000000632,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get cost analytics",
+          "status": "passed",
+          "title": "should get cost analytics",
+          "duration": 0.28104099999995924,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get performance analytics",
+          "status": "passed",
+          "title": "should get performance analytics",
+          "duration": 0.27252100000009705,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get trend analytics",
+          "status": "passed",
+          "title": "should get trend analytics",
+          "duration": 0.49154300000009243,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get recommendations",
+          "status": "passed",
+          "title": "should get recommendations",
+          "duration": 0.3094659999999294,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should integrate all Soul Forging components",
+          "status": "passed",
+          "title": "should integrate all Soul Forging components",
+          "duration": 0.4683559999998579,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should handle complex Soul Forging scenarios",
+          "status": "passed",
+          "title": "should handle complex Soul Forging scenarios",
+          "duration": 0.5006220000000212,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should handle state persistence across sessions",
+          "status": "passed",
+          "title": "should handle state persistence across sessions",
+          "duration": 0.43385399999988294,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Performance Tests"],
+          "fullName": "Enhanced Soul Forging System Performance Tests should meet performance targets for Soul Forging operations",
+          "status": "passed",
+          "title": "should meet performance targets for Soul Forging operations",
+          "duration": 2.280387000000019,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Performance Tests"],
+          "fullName": "Enhanced Soul Forging System Performance Tests should meet performance targets for cost calculations",
+          "status": "passed",
+          "title": "should meet performance targets for cost calculations",
+          "duration": 9.535219999999981,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle zero amount purchases",
+          "status": "passed",
+          "title": "should handle zero amount purchases",
+          "duration": 0.4584379999998873,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle negative amount purchases",
+          "status": "passed",
+          "title": "should handle negative amount purchases",
+          "duration": 0.2672820000000229,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle insufficient currency",
+          "status": "passed",
+          "title": "should handle insufficient currency",
+          "duration": 0.3165209999999661,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle invalid state loading",
+          "status": "passed",
+          "title": "should handle invalid state loading",
+          "duration": 1.3705650000001697,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle empty analytics",
+          "status": "passed",
+          "title": "should handle empty analytics",
+          "duration": 0.48022900000000845,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1759266707373,
+      "endTime": 1759266707410.4802,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/soul-forging.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should initialize with zero balance",
+          "status": "passed",
+          "title": "should initialize with zero balance",
+          "duration": 4.121753000000012,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should drop Soul Power correctly",
+          "status": "passed",
+          "title": "should drop Soul Power correctly",
+          "duration": 4.042344000000071,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should calculate drop chances and amounts correctly",
+          "status": "passed",
+          "title": "should calculate drop chances and amounts correctly",
+          "duration": 0.93300899999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle distance scaling (slower than Arcana)",
+          "status": "passed",
+          "title": "should handle distance scaling (slower than Arcana)",
+          "duration": 0.42763800000000174,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle ward scaling (slower than Arcana)",
+          "status": "passed",
+          "title": "should handle ward scaling (slower than Arcana)",
+          "duration": 0.5847109999999702,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle combined distance and ward scaling",
+          "status": "passed",
+          "title": "should handle combined distance and ward scaling",
+          "duration": 0.41590499999995245,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should spend Soul Power correctly",
+          "status": "passed",
+          "title": "should spend Soul Power correctly",
+          "duration": 1.458077000000003,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should track drop history",
+          "status": "passed",
+          "title": "should track drop history",
+          "duration": 0.9230219999999463,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get lifetime statistics",
+          "status": "failed",
+          "title": "should get lifetime statistics",
+          "duration": 9.260884000000033,
+          "failureMessages": [
+            "AssertionError: expected 0 to be greater than 0\n    at C:\\Users\\ediaz\\Coding_Projects\\dragonIdler\\tests\\economy\\soul-power-drop.test.ts:152:32\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///C:/Users/ediaz/Coding_Projects/dragonIdler/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
+          ],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should filter drops by source type",
+          "status": "passed",
+          "title": "should filter drops by source type",
+          "duration": 1.6905080000000225,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should calculate total drops by source type",
+          "status": "passed",
+          "title": "should calculate total drops by source type",
+          "duration": 0.725371999999993,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get drop rate statistics",
+          "status": "passed",
+          "title": "should get drop rate statistics",
+          "duration": 1.039447999999993,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get scaling statistics",
+          "status": "passed",
+          "title": "should get scaling statistics",
+          "duration": 0.7337519999999813,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate distance scaling factor (slower than Arcana)",
+          "status": "passed",
+          "title": "should calculate distance scaling factor (slower than Arcana)",
+          "duration": 0.3610800000000154,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate ward scaling factor (slower than Arcana)",
+          "status": "passed",
+          "title": "should calculate ward scaling factor (slower than Arcana)",
+          "duration": 0.26972700000010263,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate total scaling factor",
+          "status": "passed",
+          "title": "should calculate total scaling factor",
+          "duration": 0.281880000000001,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate drop amounts for different enemy types",
+          "status": "passed",
+          "title": "should calculate drop amounts for different enemy types",
+          "duration": 0.30995599999994283,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should apply scaling correctly",
+          "status": "passed",
+          "title": "should apply scaling correctly",
+          "duration": 0.2975940000000037,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should respect min/max drop amounts",
+          "status": "passed",
+          "title": "should respect min/max drop amounts",
+          "duration": 0.1797709999999597,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Performance Tests"],
+          "fullName": "Soul Power Drop System Performance Tests should handle many drops efficiently",
+          "status": "passed",
+          "title": "should handle many drops efficiently",
+          "duration": 69.39611000000002,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Performance Tests"],
+          "fullName": "Soul Power Drop System Performance Tests should handle scaling calculations efficiently",
+          "status": "passed",
+          "title": "should handle scaling calculations efficiently",
+          "duration": 1.8035119999999552,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle zero amounts gracefully",
+          "status": "passed",
+          "title": "should handle zero amounts gracefully",
+          "duration": 0.40591700000004494,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle negative amounts gracefully",
+          "status": "passed",
+          "title": "should handle negative amounts gracefully",
+          "duration": 0.2549909999999045,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle spending more than available",
+          "status": "passed",
+          "title": "should handle spending more than available",
+          "duration": 0.5029279999999972,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle spending zero amount",
+          "status": "passed",
+          "title": "should handle spending zero amount",
+          "duration": 0.42198100000007344,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle very low Arcana amounts",
+          "status": "passed",
+          "title": "should handle very low Arcana amounts",
+          "duration": 0.17558099999996557,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle very high Arcana amounts",
+          "status": "passed",
+          "title": "should handle very high Arcana amounts",
+          "duration": 0.1584699999999657,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Chance-based Mechanics"],
+          "fullName": "Soul Power Drop System Chance-based Mechanics should have reasonable drop chances",
+          "status": "passed",
+          "title": "should have reasonable drop chances",
+          "duration": 0.2767109999999775,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["Soul Power Drop System", "Chance-based Mechanics"],
+          "fullName": "Soul Power Drop System Chance-based Mechanics should cap drop chances at reasonable levels",
+          "status": "passed",
+          "title": "should cap drop chances at reasonable levels",
+          "duration": 0.1731359999999995,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1759266707203,
+      "endTime": 1759266707307.173,
+      "status": "failed",
+      "message": "",
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/soul-power-drop.test.ts"
     },
     {
       "assertionResults": [
@@ -718,7 +1829,7 @@
           "fullName": "Flag Parsing DEFAULT_FLAGS should have correct default values",
           "status": "passed",
           "title": "should have correct default values",
-          "duration": 2.196647999999982,
+          "duration": 3.330801000000065,
           "failureMessages": [],
           "meta": {}
         },
@@ -727,7 +1838,7 @@
           "fullName": "Flag Parsing getEnvFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0.5204569999999649,
+          "duration": 0.6188639999999168,
           "failureMessages": [],
           "meta": {}
         },
@@ -736,7 +1847,7 @@
           "fullName": "Flag Parsing getEnvFlags should return empty object when no env vars are set",
           "status": "passed",
           "title": "should return empty object when no env vars are set",
-          "duration": 0.26637400000004163,
+          "duration": 0.27112399999998615,
           "failureMessages": [],
           "meta": {}
         },
@@ -745,7 +1856,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse HUD flag from environment",
           "status": "passed",
           "title": "should parse HUD flag from environment",
-          "duration": 0.35905400000001464,
+          "duration": 0.3486479999999119,
           "failureMessages": [],
           "meta": {}
         },
@@ -754,7 +1865,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse dev menu flag from environment",
           "status": "passed",
           "title": "should parse dev menu flag from environment",
-          "duration": 0.4267300000000205,
+          "duration": 0.403124000000048,
           "failureMessages": [],
           "meta": {}
         },
@@ -763,7 +1874,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse console logging flag from environment",
           "status": "passed",
           "title": "should parse console logging flag from environment",
-          "duration": 0.36527000000000953,
+          "duration": 0.38559300000008534,
           "failureMessages": [],
           "meta": {}
         },
@@ -772,7 +1883,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse legacy background sim flag from environment",
           "status": "passed",
           "title": "should parse legacy background sim flag from environment",
-          "duration": 0.453200000000038,
+          "duration": 0.26972700000010263,
           "failureMessages": [],
           "meta": {}
         },
@@ -781,7 +1892,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse force mode from environment",
           "status": "passed",
           "title": "should parse force mode from environment",
-          "duration": 0.2517080000000078,
+          "duration": 0.23236199999996643,
           "failureMessages": [],
           "meta": {}
         },
@@ -790,7 +1901,7 @@
           "fullName": "Flag Parsing getEnvFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 0.5530730000000403,
+          "duration": 0.6046159999999645,
           "failureMessages": [],
           "meta": {}
         },
@@ -799,7 +1910,7 @@
           "fullName": "Flag Parsing getEnvFlags should parse multiple flags from environment",
           "status": "passed",
           "title": "should parse multiple flags from environment",
-          "duration": 0.44893999999999323,
+          "duration": 0.49252100000001064,
           "failureMessages": [],
           "meta": {}
         },
@@ -808,7 +1919,7 @@
           "fullName": "Flag Parsing getQueryFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0.3434790000000021,
+          "duration": 0.3406850000000077,
           "failureMessages": [],
           "meta": {}
         },
@@ -817,7 +1928,7 @@
           "fullName": "Flag Parsing getQueryFlags should return empty object when no query params are present",
           "status": "passed",
           "title": "should return empty object when no query params are present",
-          "duration": 0.2768509999999651,
+          "duration": 0.27531499999997777,
           "failureMessages": [],
           "meta": {}
         },
@@ -826,7 +1937,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse HUD flag from query string",
           "status": "passed",
           "title": "should parse HUD flag from query string",
-          "duration": 0.3103049999999712,
+          "duration": 0.3359369999999444,
           "failureMessages": [],
           "meta": {}
         },
@@ -835,7 +1946,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse dev menu flag from query string",
           "status": "passed",
           "title": "should parse dev menu flag from query string",
-          "duration": 0.21099100000003546,
+          "duration": 0.2204189999999926,
           "failureMessages": [],
           "meta": {}
         },
@@ -844,7 +1955,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse console logging flag from query string",
           "status": "passed",
           "title": "should parse console logging flag from query string",
-          "duration": 0.22991700000000037,
+          "duration": 0.2157399999999825,
           "failureMessages": [],
           "meta": {}
         },
@@ -853,7 +1964,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse legacy background sim flag from query string",
           "status": "passed",
           "title": "should parse legacy background sim flag from query string",
-          "duration": 0.3898539999999002,
+          "duration": 0.2677009999999882,
           "failureMessages": [],
           "meta": {}
         },
@@ -862,7 +1973,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse force mode from query string",
           "status": "passed",
           "title": "should parse force mode from query string",
-          "duration": 0.18452100000001792,
+          "duration": 0.19583399999999074,
           "failureMessages": [],
           "meta": {}
         },
@@ -871,7 +1982,7 @@
           "fullName": "Flag Parsing getQueryFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 0.17264799999998104,
+          "duration": 0.18214599999998882,
           "failureMessages": [],
           "meta": {}
         },
@@ -880,7 +1991,7 @@
           "fullName": "Flag Parsing getQueryFlags should parse multiple flags from query string",
           "status": "passed",
           "title": "should parse multiple flags from query string",
-          "duration": 0.2219559999999774,
+          "duration": 0.21860300000003008,
           "failureMessages": [],
           "meta": {}
         },
@@ -889,7 +2000,7 @@
           "fullName": "Flag Parsing getQueryFlags should ignore non-flag query parameters",
           "status": "passed",
           "title": "should ignore non-flag query parameters",
-          "duration": 0.3108640000000378,
+          "duration": 0.34676200000001245,
           "failureMessages": [],
           "meta": {}
         },
@@ -898,7 +2009,7 @@
           "fullName": "Flag Parsing mergeFlags should merge flags with correct precedence: query > env > defaults",
           "status": "passed",
           "title": "should merge flags with correct precedence: query > env > defaults",
-          "duration": 0.2776890000000094,
+          "duration": 0.26400000000001,
           "failureMessages": [],
           "meta": {}
         },
@@ -907,7 +2018,7 @@
           "fullName": "Flag Parsing mergeFlags should handle empty env and query flags",
           "status": "passed",
           "title": "should handle empty env and query flags",
-          "duration": 0.24220900000000256,
+          "duration": 0.21762499999999818,
           "failureMessages": [],
           "meta": {}
         },
@@ -916,7 +2027,7 @@
           "fullName": "Flag Parsing mergeFlags should handle partial flag overrides",
           "status": "passed",
           "title": "should handle partial flag overrides",
-          "duration": 0.2171369999999797,
+          "duration": 0.1797709999999597,
           "failureMessages": [],
           "meta": {}
         },
@@ -925,7 +2036,7 @@
           "fullName": "Flag Parsing createFlags should create complete flag configuration from URL",
           "status": "passed",
           "title": "should create complete flag configuration from URL",
-          "duration": 0.44663500000001477,
+          "duration": 0.2961970000000065,
           "failureMessages": [],
           "meta": {}
         },
@@ -934,7 +2045,7 @@
           "fullName": "Flag Parsing createFlags should return defaults when no overrides are present",
           "status": "passed",
           "title": "should return defaults when no overrides are present",
-          "duration": 0.6282919999999876,
+          "duration": 0.5738860000000159,
           "failureMessages": [],
           "meta": {}
         },
@@ -943,7 +2054,7 @@
           "fullName": "Flag Parsing createFlags should respect production mode restrictions",
           "status": "passed",
           "title": "should respect production mode restrictions",
-          "duration": 0.3605209999999488,
+          "duration": 0.27349900000001526,
           "failureMessages": [],
           "meta": {}
         },
@@ -952,7 +2063,7 @@
           "fullName": "Flag Parsing ForceMode type validation should accept valid force mode values",
           "status": "passed",
           "title": "should accept valid force mode values",
-          "duration": 0.6481969999999819,
+          "duration": 0.5275110000000041,
           "failureMessages": [],
           "meta": {}
         },
@@ -961,7 +2072,7 @@
           "fullName": "Flag Parsing ForceMode type validation should reject invalid force mode values",
           "status": "passed",
           "title": "should reject invalid force mode values",
-          "duration": 0.4433520000000044,
+          "duration": 0.41778999999996813,
           "failureMessages": [],
           "meta": {}
         },
@@ -970,7 +2081,7 @@
           "fullName": "Flag Parsing Edge cases should handle malformed URLs gracefully",
           "status": "passed",
           "title": "should handle malformed URLs gracefully",
-          "duration": 1.056489000000056,
+          "duration": 1.1686549999999443,
           "failureMessages": [],
           "meta": {}
         },
@@ -979,7 +2090,7 @@
           "fullName": "Flag Parsing Edge cases should handle empty query parameter values",
           "status": "passed",
           "title": "should handle empty query parameter values",
-          "duration": 0.17132100000003447,
+          "duration": 0.22237399999994523,
           "failureMessages": [],
           "meta": {}
         },
@@ -988,13 +2099,13 @@
           "fullName": "Flag Parsing Edge cases should handle undefined environment variables",
           "status": "passed",
           "title": "should handle undefined environment variables",
-          "duration": 0.1348639999999932,
+          "duration": 0.16321900000002643,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666034,
-      "endTime": 1759242666048.1714,
+      "startTime": 1759266707194,
+      "endTime": 1759266707209.2224,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/parse.spec.ts"
@@ -1006,7 +2117,7 @@
           "fullName": "Flag Store appFlags store should initialize with default values",
           "status": "passed",
           "title": "should initialize with default values",
-          "duration": 2.930958999999916,
+          "duration": 3.2659880000001067,
           "failureMessages": [],
           "meta": {}
         },
@@ -1015,7 +2126,7 @@
           "fullName": "Flag Store appFlags store should update when set is called",
           "status": "passed",
           "title": "should update when set is called",
-          "duration": 0.4035430000000133,
+          "duration": 0.3339809999999943,
           "failureMessages": [],
           "meta": {}
         },
@@ -1024,7 +2135,7 @@
           "fullName": "Flag Store appFlags store should update when update is called",
           "status": "passed",
           "title": "should update when update is called",
-          "duration": 0.3222480000000587,
+          "duration": 0.4011680000000979,
           "failureMessages": [],
           "meta": {}
         },
@@ -1033,7 +2144,7 @@
           "fullName": "Flag Store appFlags store should notify subscribers when values change",
           "status": "passed",
           "title": "should notify subscribers when values change",
-          "duration": 2.4876059999999143,
+          "duration": 3.5450740000001133,
           "failureMessages": [],
           "meta": {}
         },
@@ -1042,7 +2153,7 @@
           "fullName": "Flag Store appFlags store should not notify unsubscribed listeners",
           "status": "passed",
           "title": "should not notify unsubscribed listeners",
-          "duration": 0.5303750000000491,
+          "duration": 0.7858539999999721,
           "failureMessages": [],
           "meta": {}
         },
@@ -1051,7 +2162,7 @@
           "fullName": "Flag Store derived stores should derive hudEnabled correctly",
           "status": "passed",
           "title": "should derive hudEnabled correctly",
-          "duration": 0.5847109999999702,
+          "duration": 0.8307619999998224,
           "failureMessages": [],
           "meta": {}
         },
@@ -1060,7 +2171,7 @@
           "fullName": "Flag Store derived stores should derive devMenuEnabled correctly",
           "status": "passed",
           "title": "should derive devMenuEnabled correctly",
-          "duration": 0.2744760000000497,
+          "duration": 0.342431999999917,
           "failureMessages": [],
           "meta": {}
         },
@@ -1069,7 +2180,7 @@
           "fullName": "Flag Store derived stores should derive logConsoleEnabled correctly",
           "status": "passed",
           "title": "should derive logConsoleEnabled correctly",
-          "duration": 0.27482499999996435,
+          "duration": 0.37092699999993783,
           "failureMessages": [],
           "meta": {}
         },
@@ -1078,7 +2189,7 @@
           "fullName": "Flag Store derived stores should derive legacyBgSimEnabled correctly",
           "status": "passed",
           "title": "should derive legacyBgSimEnabled correctly",
-          "duration": 0.3486479999999119,
+          "duration": 0.4584389999999985,
           "failureMessages": [],
           "meta": {}
         },
@@ -1087,7 +2198,7 @@
           "fullName": "Flag Store derived stores should derive forceMode correctly",
           "status": "passed",
           "title": "should derive forceMode correctly",
-          "duration": 0.37239400000009937,
+          "duration": 0.43001299999991716,
           "failureMessages": [],
           "meta": {}
         },
@@ -1096,7 +2207,7 @@
           "fullName": "Flag Store derived stores should update derived stores when parent store changes",
           "status": "passed",
           "title": "should update derived stores when parent store changes",
-          "duration": 0.5238100000000259,
+          "duration": 0.6169780000000173,
           "failureMessages": [],
           "meta": {}
         },
@@ -1105,7 +2216,7 @@
           "fullName": "Flag Store isFlagEnabled utility should return a derived store for boolean flags",
           "status": "passed",
           "title": "should return a derived store for boolean flags",
-          "duration": 0.2579240000000027,
+          "duration": 0.28153000000020256,
           "failureMessages": [],
           "meta": {}
         },
@@ -1114,7 +2225,7 @@
           "fullName": "Flag Store isFlagEnabled utility should work with all boolean flags",
           "status": "passed",
           "title": "should work with all boolean flags",
-          "duration": 0.49112400000001344,
+          "duration": 0.5810089999999946,
           "failureMessages": [],
           "meta": {}
         },
@@ -1123,7 +2234,7 @@
           "fullName": "Flag Store isFlagEnabled utility should convert non-boolean values to boolean",
           "status": "passed",
           "title": "should convert non-boolean values to boolean",
-          "duration": 0.18493999999998323,
+          "duration": 0.19590500000003885,
           "failureMessages": [],
           "meta": {}
         },
@@ -1132,7 +2243,7 @@
           "fullName": "Flag Store isFlagEnabled utility should update when flag values change",
           "status": "passed",
           "title": "should update when flag values change",
-          "duration": 0.5294660000000704,
+          "duration": 0.43434300000012627,
           "failureMessages": [],
           "meta": {}
         },
@@ -1141,7 +2252,7 @@
           "fullName": "Flag Store getCurrentFlags utility should return current flag values",
           "status": "passed",
           "title": "should return current flag values",
-          "duration": 0.3557710000000043,
+          "duration": 0.31274899999993977,
           "failureMessages": [],
           "meta": {}
         },
@@ -1150,7 +2261,7 @@
           "fullName": "Flag Store getCurrentFlags utility should return updated values after store changes",
           "status": "passed",
           "title": "should return updated values after store changes",
-          "duration": 0.22090800000000854,
+          "duration": 0.17083099999990736,
           "failureMessages": [],
           "meta": {}
         },
@@ -1159,7 +2270,7 @@
           "fullName": "Flag Store getCurrentFlags utility should return a snapshot of current state",
           "status": "passed",
           "title": "should return a snapshot of current state",
-          "duration": 0.3118409999999585,
+          "duration": 0.2346669999999449,
           "failureMessages": [],
           "meta": {}
         },
@@ -1168,7 +2279,7 @@
           "fullName": "Flag Store store integration should maintain consistency across all derived stores",
           "status": "passed",
           "title": "should maintain consistency across all derived stores",
-          "duration": 0.4783429999999953,
+          "duration": 0.3198740000000271,
           "failureMessages": [],
           "meta": {}
         },
@@ -1177,7 +2288,7 @@
           "fullName": "Flag Store store integration should handle rapid updates correctly",
           "status": "passed",
           "title": "should handle rapid updates correctly",
-          "duration": 0.37190499999996973,
+          "duration": 0.24172100000009777,
           "failureMessages": [],
           "meta": {}
         },
@@ -1186,7 +2297,7 @@
           "fullName": "Flag Store store integration should handle partial updates correctly",
           "status": "passed",
           "title": "should handle partial updates correctly",
-          "duration": 0.27719999999999345,
+          "duration": 0.19632400000000416,
           "failureMessages": [],
           "meta": {}
         },
@@ -1195,7 +2306,7 @@
           "fullName": "Flag Store edge cases should handle undefined values gracefully",
           "status": "passed",
           "title": "should handle undefined values gracefully",
-          "duration": 1.4170100000000048,
+          "duration": 0.9987300000000232,
           "failureMessages": [],
           "meta": {}
         },
@@ -1204,13 +2315,13 @@
           "fullName": "Flag Store edge cases should handle multiple subscribers correctly",
           "status": "passed",
           "title": "should handle multiple subscribers correctly",
-          "duration": 2.163613000000055,
+          "duration": 1.5981779999999617,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666243,
-      "endTime": 1759242666260.1636,
+      "startTime": 1759266707435,
+      "endTime": 1759266707452.5981,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/store.spec.ts"
@@ -1222,7 +2333,7 @@
           "fullName": "Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
           "status": "passed",
           "title": "should handle page reload functionality",
-          "duration": 2.228356000000076,
+          "duration": 2.2335939999999255,
           "failureMessages": [],
           "meta": {}
         },
@@ -1231,7 +2342,7 @@
           "fullName": "Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
           "status": "passed",
           "title": "should handle navigation to home",
-          "duration": 0.42016499999999724,
+          "duration": 0.41967699999997876,
           "failureMessages": [],
           "meta": {}
         },
@@ -1240,7 +2351,7 @@
           "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
           "status": "passed",
           "title": "should handle log export functionality",
-          "duration": 3.2678030000000717,
+          "duration": 3.7131110000000263,
           "failureMessages": [],
           "meta": {}
         },
@@ -1249,7 +2360,7 @@
           "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
           "status": "passed",
           "title": "should handle log export errors gracefully",
-          "duration": 8.906858000000057,
+          "duration": 9.88575400000002,
           "failureMessages": [],
           "meta": {}
         },
@@ -1258,7 +2369,7 @@
           "fullName": "Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
           "status": "passed",
           "title": "should prevent multiple simultaneous log exports",
-          "duration": 109.78951200000006,
+          "duration": 102.45708599999989,
           "failureMessages": [],
           "meta": {}
         },
@@ -1267,7 +2378,7 @@
           "fullName": "Error Boundary Integration Tests Error Information Processing should generate detailed error information",
           "status": "passed",
           "title": "should generate detailed error information",
-          "duration": 1.11983500000008,
+          "duration": 1.0782090000000153,
           "failureMessages": [],
           "meta": {}
         },
@@ -1276,7 +2387,7 @@
           "fullName": "Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
           "status": "passed",
           "title": "should handle missing error information gracefully",
-          "duration": 0.33733299999994415,
+          "duration": 0.3988640000000032,
           "failureMessages": [],
           "meta": {}
         },
@@ -1285,7 +2396,7 @@
           "fullName": "Error Boundary Integration Tests Download Functionality should generate correct filename with current date",
           "status": "passed",
           "title": "should generate correct filename with current date",
-          "duration": 0.3307680000000346,
+          "duration": 0.36380399999995916,
           "failureMessages": [],
           "meta": {}
         },
@@ -1294,7 +2405,7 @@
           "fullName": "Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 1.7003559999999425,
+          "duration": 2.502342999999996,
           "failureMessages": [],
           "meta": {}
         },
@@ -1303,7 +2414,7 @@
           "fullName": "Error Boundary Integration Tests Integration Scenarios should handle complete error boundary workflow",
           "status": "passed",
           "title": "should handle complete error boundary workflow",
-          "duration": 0.692056999999977,
+          "duration": 1.2367490000000316,
           "failureMessages": [],
           "meta": {}
         },
@@ -1312,13 +2423,13 @@
           "fullName": "Error Boundary Integration Tests Integration Scenarios should handle rapid user interactions without issues",
           "status": "passed",
           "title": "should handle rapid user interactions without issues",
-          "duration": 0.3321650000000318,
+          "duration": 0.5993780000000015,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666006,
-      "endTime": 1759242666136.3323,
+      "startTime": 1759266707139,
+      "endTime": 1759266707264.5994,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/error-boundary.int.spec.ts"
@@ -1330,7 +2441,7 @@
           "fullName": "Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
           "status": "passed",
           "title": "should export logs as NDJSON blob",
-          "duration": 9.539481000000023,
+          "duration": 10.046179000000052,
           "failureMessages": [],
           "meta": {}
         },
@@ -1339,7 +2450,7 @@
           "fullName": "Log Export Integration Tests NDJSON Export should export empty logs when no logs are present",
           "status": "passed",
           "title": "should export empty logs when no logs are present",
-          "duration": 0.8332069999999021,
+          "duration": 0.8024070000000165,
           "failureMessages": [],
           "meta": {}
         },
@@ -1348,7 +2459,7 @@
           "fullName": "Log Export Integration Tests NDJSON Export should include proper NDJSON formatting",
           "status": "passed",
           "title": "should include proper NDJSON formatting",
-          "duration": 1.7878670000000056,
+          "duration": 1.777949000000035,
           "failureMessages": [],
           "meta": {}
         },
@@ -1357,7 +2468,7 @@
           "fullName": "Log Export Integration Tests NDJSON Export should handle multiple log entries correctly",
           "status": "passed",
           "title": "should handle multiple log entries correctly",
-          "duration": 0.8179809999999179,
+          "duration": 0.8600950000000012,
           "failureMessages": [],
           "meta": {}
         },
@@ -1366,7 +2477,7 @@
           "fullName": "Log Export Integration Tests Download Functionality should trigger download with correct filename",
           "status": "passed",
           "title": "should trigger download with correct filename",
-          "duration": 2.6943359999999075,
+          "duration": 2.720876999999973,
           "failureMessages": [],
           "meta": {}
         },
@@ -1375,7 +2486,7 @@
           "fullName": "Log Export Integration Tests Download Functionality should generate filename with current date",
           "status": "passed",
           "title": "should generate filename with current date",
-          "duration": 0.4451680000000806,
+          "duration": 0.463675999999964,
           "failureMessages": [],
           "meta": {}
         },
@@ -1384,7 +2495,7 @@
           "fullName": "Log Export Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 0.8202860000000101,
+          "duration": 0.8417279999999892,
           "failureMessages": [],
           "meta": {}
         },
@@ -1393,7 +2504,7 @@
           "fullName": "Log Export Integration Tests PII Redaction in Exports should redact sensitive information in exported logs",
           "status": "passed",
           "title": "should redact sensitive information in exported logs",
-          "duration": 0.6690100000000712,
+          "duration": 0.8024769999999535,
           "failureMessages": [],
           "meta": {}
         },
@@ -1402,7 +2513,7 @@
           "fullName": "Log Export Integration Tests PII Redaction in Exports should preserve allowed data fields in exports",
           "status": "passed",
           "title": "should preserve allowed data fields in exports",
-          "duration": 0.8691049999999905,
+          "duration": 1.0063430000000153,
           "failureMessages": [],
           "meta": {}
         },
@@ -1411,7 +2522,7 @@
           "fullName": "Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
           "status": "passed",
           "title": "should handle nested objects in data field",
-          "duration": 0.7598029999999198,
+          "duration": 0.7404569999999921,
           "failureMessages": [],
           "meta": {}
         },
@@ -1420,7 +2531,7 @@
           "fullName": "Log Export Integration Tests Memory Management should respect memory limits during export",
           "status": "passed",
           "title": "should respect memory limits during export",
-          "duration": 1.0181460000000015,
+          "duration": 0.6984130000000732,
           "failureMessages": [],
           "meta": {}
         },
@@ -1429,7 +2540,7 @@
           "fullName": "Log Export Integration Tests Memory Management should handle large exports efficiently",
           "status": "passed",
           "title": "should handle large exports efficiently",
-          "duration": 4.9209469999999556,
+          "duration": 3.0279689999999846,
           "failureMessages": [],
           "meta": {}
         },
@@ -1438,7 +2549,7 @@
           "fullName": "Log Export Integration Tests Error Handling should handle export errors gracefully",
           "status": "passed",
           "title": "should handle export errors gracefully",
-          "duration": 3.735320999999999,
+          "duration": 1.7245209999999815,
           "failureMessages": [],
           "meta": {}
         },
@@ -1447,7 +2558,7 @@
           "fullName": "Log Export Integration Tests Error Handling should handle corrupted log data",
           "status": "passed",
           "title": "should handle corrupted log data",
-          "duration": 1.2722289999999248,
+          "duration": 0.6855620000000044,
           "failureMessages": [],
           "meta": {}
         },
@@ -1456,13 +2567,13 @@
           "fullName": "Log Export Integration Tests Integration with Error Boundary should work correctly when called from error boundary",
           "status": "passed",
           "title": "should work correctly when called from error boundary",
-          "duration": 2.1181459999999106,
+          "duration": 1.2656640000000152,
           "failureMessages": [],
           "meta": {}
         }
       ],
-      "startTime": 1759242666016,
-      "endTime": 1759242666050.1182,
+      "startTime": 1759266707144,
+      "endTime": 1759266707172.2656,
       "status": "passed",
       "message": "",
       "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/export-logs.int.spec.ts"
