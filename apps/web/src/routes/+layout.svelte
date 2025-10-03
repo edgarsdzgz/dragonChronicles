@@ -33,8 +33,13 @@
   onDestroy(() => handle?.destroy());
 </script>
 
-<div style="position:fixed; inset:0; overflow:hidden;">
-  <canvas bind:this={canvas} style="width:100%; height:100%; display:block;"></canvas>
+<div style="position:fixed; inset:0; overflow:hidden;" role="application" aria-label="Draconia Chronicles Game Canvas">
+  <canvas 
+    bind:this={canvas} 
+    style="width:100%; height:100%; display:block;"
+    aria-label="Draconia Chronicles Game Canvas"
+    role="img"
+  ></canvas>
   {#if $hudEnabled}
     <slot name="hud" />
   {/if}

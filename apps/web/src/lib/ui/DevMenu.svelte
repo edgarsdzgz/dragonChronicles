@@ -179,6 +179,11 @@
     transform: scale(1.05);
   }
 
+  .dev-menu-toggle:focus {
+    outline: 2px solid #4a9eff;
+    outline-offset: 2px;
+  }
+
   .dev-menu-toggle:active {
     transform: scale(0.95);
   }
@@ -228,6 +233,11 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
+  .dev-menu-close:focus {
+    outline: 2px solid #4a9eff;
+    outline-offset: 2px;
+  }
+
   .dev-menu-nav {
     display: flex;
     flex-direction: column;
@@ -255,6 +265,11 @@
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
     transform: translateX(2px);
+  }
+
+  .dev-menu-link:focus {
+    outline: 2px solid #4a9eff;
+    outline-offset: 2px;
   }
 
   .dev-menu-footer {
