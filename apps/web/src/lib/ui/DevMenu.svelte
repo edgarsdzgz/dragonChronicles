@@ -168,9 +168,14 @@
     border-radius: 8px;
     color: #fff;
     cursor: pointer;
-    padding: 8px;
+    padding: 12px;
+    min-width: 48px;
+    min-height: 48px;
     transition: all 0.2s ease;
     backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dev-menu-toggle:hover {
@@ -223,9 +228,14 @@
     border: none;
     color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
-    padding: 4px;
+    padding: 8px;
+    min-width: 32px;
+    min-height: 32px;
     border-radius: 4px;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dev-menu-close:hover {
@@ -250,7 +260,8 @@
     gap: 8px;
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    padding: 8px 12px;
+    padding: 12px;
+    min-height: 48px;
     border-radius: 6px;
     transition: all 0.2s ease;
     font-size: 13px;
