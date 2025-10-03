@@ -8,2292 +8,2571 @@
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1759492393282,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1759522785918,
   "success": true,
   "testResults": [
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should write save data atomically",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should write save data atomically",
           "status": "passed",
           "title": "should write save data atomically",
-          "duration": 45,
-          "failureMessages": []
+          "duration": 44.18836699999997,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should update active profile pointer",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should update active profile pointer",
           "status": "passed",
           "title": "should update active profile pointer",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 7.590209999999843,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should prune old saves to keep only 3 backups",
           "status": "passed",
           "title": "should prune old saves to keep only 3 backups",
-          "duration": 27,
-          "failureMessages": []
+          "duration": 15.266116000000011,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should handle concurrent writes to different profiles",
           "status": "passed",
           "title": "should handle concurrent writes to different profiles",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 6.370991999999887,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "putSaveAtomic"],
-          "fullName": " Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
+          "ancestorTitles": ["Atomic Write Operations", "putSaveAtomic"],
+          "fullName": "Atomic Write Operations putSaveAtomic should maintain data integrity during transaction failures",
           "status": "passed",
           "title": "should maintain data integrity during transaction failures",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 4.454895999999962,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should return the most recent save for a profile",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should return the most recent save for a profile",
           "status": "passed",
           "title": "should return the most recent save for a profile",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 7.875442999999905,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should return null for non-existent profile",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should return null for non-existent profile",
           "status": "passed",
           "title": "should return null for non-existent profile",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.423480000000154,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "getActiveSave"],
-          "fullName": " Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
+          "ancestorTitles": ["Atomic Write Operations", "getActiveSave"],
+          "fullName": "Atomic Write Operations getActiveSave should handle profile with multiple saves correctly",
           "status": "passed",
           "title": "should handle profile with multiple saves correctly",
-          "duration": 18,
-          "failureMessages": []
+          "duration": 6.52094000000011,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
-          "fullName": " Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
+          "ancestorTitles": ["Atomic Write Operations", "Database consistency"],
+          "fullName": "Atomic Write Operations Database consistency should maintain referential integrity between saves and meta tables",
           "status": "passed",
           "title": "should maintain referential integrity between saves and meta tables",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 6.018082999999933,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "Database consistency"],
-          "fullName": " Atomic Write Operations Database consistency should handle database corruption gracefully",
+          "ancestorTitles": ["Atomic Write Operations", "Database consistency"],
+          "fullName": "Atomic Write Operations Database consistency should handle database corruption gracefully",
           "status": "passed",
           "title": "should handle database corruption gracefully",
-          "duration": 8,
-          "failureMessages": []
+          "duration": 7.056972999999971,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
-          "fullName": " Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
+          "ancestorTitles": ["Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": "Atomic Write Operations W3 time accounting integration should preserve W3 time accounting fields during atomic writes",
           "status": "passed",
           "title": "should preserve W3 time accounting fields during atomic writes",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 3.682800000000043,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Atomic Write Operations", "W3 time accounting integration"],
-          "fullName": " Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
+          "ancestorTitles": ["Atomic Write Operations", "W3 time accounting integration"],
+          "fullName": "Atomic Write Operations W3 time accounting integration should handle W3 time accounting updates correctly",
           "status": "passed",
           "title": "should handle W3 time accounting updates correctly",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.7555750000001353,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492395205,
-      "endTime": 1759492395357,
+      "startTime": 1759522787032,
+      "endTime": 1759522787149.7556,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/atomic.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/atomic.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should export all profiles with correct format",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should export all profiles with correct format",
           "status": "passed",
           "title": "should export all profiles with correct format",
-          "duration": 66,
-          "failureMessages": []
+          "duration": 50.130673000000115,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should include W3 time accounting fields in export",
           "status": "passed",
           "title": "should include W3 time accounting fields in export",
-          "duration": 15,
-          "failureMessages": []
+          "duration": 8.101658000000043,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should generate valid checksum for export data",
           "status": "passed",
           "title": "should generate valid checksum for export data",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 8.447022999999945,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "exportAllProfiles"],
-          "fullName": " Export/Import Functionality exportAllProfiles should handle empty database gracefully",
+          "ancestorTitles": ["Export/Import Functionality", "exportAllProfiles"],
+          "fullName": "Export/Import Functionality exportAllProfiles should handle empty database gracefully",
           "status": "passed",
           "title": "should handle empty database gracefully",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 9.013854999999921,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should import valid export data correctly",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should import valid export data correctly",
           "status": "passed",
           "title": "should import valid export data correctly",
-          "duration": 13,
-          "failureMessages": []
+          "duration": 15.195647000000008,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should validate checksum during import",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should validate checksum during import",
           "status": "passed",
           "title": "should validate checksum during import",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.9910930000000917,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should reject import with wrong file version",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should reject import with wrong file version",
           "status": "passed",
           "title": "should reject import with wrong file version",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 4.135093000000097,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should handle corrupted export data gracefully",
           "status": "passed",
           "title": "should handle corrupted export data gracefully",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.5715430000000197,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "importFromBlob"],
-          "fullName": " Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
+          "ancestorTitles": ["Export/Import Functionality", "importFromBlob"],
+          "fullName": "Export/Import Functionality importFromBlob should preserve W3 time accounting during import",
           "status": "passed",
           "title": "should preserve W3 time accounting during import",
-          "duration": 10,
-          "failureMessages": []
+          "duration": 9.240002000000004,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
-          "fullName": " Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
+          "ancestorTitles": ["Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": "Export/Import Functionality Round-trip data integrity should maintain data integrity through export-import cycle",
           "status": "passed",
           "title": "should maintain data integrity through export-import cycle",
-          "duration": 22,
-          "failureMessages": []
+          "duration": 12.491741000000047,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Round-trip data integrity"],
-          "fullName": " Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
+          "ancestorTitles": ["Export/Import Functionality", "Round-trip data integrity"],
+          "fullName": "Export/Import Functionality Round-trip data integrity should preserve all profile data during round-trip",
           "status": "passed",
           "title": "should preserve all profile data during round-trip",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 6.892426000000114,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should encode and validate export data correctly",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should encode and validate export data correctly",
           "status": "passed",
           "title": "should encode and validate export data correctly",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.3873839999998836,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should detect tampered export data",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should detect tampered export data",
           "status": "passed",
           "title": "should detect tampered export data",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 3.271156000000019,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Codec functions"],
-          "fullName": " Export/Import Functionality Codec functions should handle checksum generation consistently",
+          "ancestorTitles": ["Export/Import Functionality", "Codec functions"],
+          "fullName": "Export/Import Functionality Codec functions should handle checksum generation consistently",
           "status": "passed",
           "title": "should handle checksum generation consistently",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.483834999999999,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
-          "fullName": " Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
+          "ancestorTitles": ["Export/Import Functionality", "Multiple profile handling"],
+          "fullName": "Export/Import Functionality Multiple profile handling should handle multiple profile pointers correctly",
           "status": "passed",
           "title": "should handle multiple profile pointers correctly",
-          "duration": 12,
-          "failureMessages": []
+          "duration": 13.674083999999993,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Export/Import Functionality", "Multiple profile handling"],
-          "fullName": " Export/Import Functionality Multiple profile handling should maintain profile independence during import",
+          "ancestorTitles": ["Export/Import Functionality", "Multiple profile handling"],
+          "fullName": "Export/Import Functionality Multiple profile handling should maintain profile independence during import",
           "status": "passed",
           "title": "should maintain profile independence during import",
-          "duration": 23,
-          "failureMessages": []
+          "duration": 7.1729089999998905,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394503,
-      "endTime": 1759492394703,
+      "startTime": 1759522787032,
+      "endTime": 1759522787192.1729,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/export-import.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/export-import.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should return version 1 for new database",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should return version 1 for new database",
           "status": "passed",
           "title": "should return version 1 for new database",
-          "duration": 27,
-          "failureMessages": []
+          "duration": 25.688390000000027,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should track database version in meta table",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should track database version in meta table",
           "status": "passed",
           "title": "should track database version in meta table",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 5.612655000000132,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Database Version Management"],
-          "fullName": " Migration System Database Version Management should handle missing version gracefully",
+          "ancestorTitles": ["Migration System", "Database Version Management"],
+          "fullName": "Migration System Database Version Management should handle missing version gracefully",
           "status": "passed",
           "title": "should handle missing version gracefully",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.8786349999998038,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Status"],
-          "fullName": " Migration System Migration Status should return correct migration status for fresh database",
+          "ancestorTitles": ["Migration System", "Migration Status"],
+          "fullName": "Migration System Migration Status should return correct migration status for fresh database",
           "status": "passed",
           "title": "should return correct migration status for fresh database",
-          "duration": 11,
-          "failureMessages": []
+          "duration": 4.235873999999967,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Status"],
-          "fullName": " Migration System Migration Status should handle database with version set",
+          "ancestorTitles": ["Migration System", "Migration Status"],
+          "fullName": "Migration System Migration Status should handle database with version set",
           "status": "passed",
           "title": "should handle database with version set",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.605205999999953,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should handle no migrations needed",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should handle no migrations needed",
           "status": "passed",
           "title": "should handle no migrations needed",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.135873000000174,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should complete successfully when no data exists",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should complete successfully when no data exists",
           "status": "passed",
           "title": "should complete successfully when no data exists",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 4.554210000000012,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Execution"],
-          "fullName": " Migration System Migration Execution should handle migration with existing data",
+          "ancestorTitles": ["Migration System", "Migration Execution"],
+          "fullName": "Migration System Migration Execution should handle migration with existing data",
           "status": "passed",
           "title": "should handle migration with existing data",
-          "duration": 15,
-          "failureMessages": []
+          "duration": 8.47831199999996,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should validate empty database successfully",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should validate empty database successfully",
           "status": "passed",
           "title": "should validate empty database successfully",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 3.2962290000000394,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should validate valid save data",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should validate valid save data",
           "status": "passed",
           "title": "should validate valid save data",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 4.778471000000081,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should detect invalid save data structure",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should detect invalid save data structure",
           "status": "passed",
           "title": "should detect invalid save data structure",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 4.435968000000003,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Validation"],
-          "fullName": " Migration System Migration Validation should detect missing required fields",
+          "ancestorTitles": ["Migration System", "Migration Validation"],
+          "fullName": "Migration System Migration Validation should detect missing required fields",
           "status": "passed",
           "title": "should detect missing required fields",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 4.35551200000009,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should create backup successfully for empty database",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should create backup successfully for empty database",
           "status": "passed",
           "title": "should create backup successfully for empty database",
-          "duration": 13,
-          "failureMessages": []
+          "duration": 4.518731000000116,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should create backup with save data",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should create backup with save data",
           "status": "passed",
           "title": "should create backup with save data",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 5.825041999999939,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should store backup in meta table",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should store backup in meta table",
           "status": "passed",
           "title": "should store backup in meta table",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 4.111415999999963,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Migration Backup"],
-          "fullName": " Migration System Migration Backup should not backup other backups",
+          "ancestorTitles": ["Migration System", "Migration Backup"],
+          "fullName": "Migration System Migration Backup should not backup other backups",
           "status": "passed",
           "title": "should not backup other backups",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 5.807512000000088,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Integration Tests"],
-          "fullName": " Migration System Integration Tests should handle complete migration workflow",
+          "ancestorTitles": ["Migration System", "Integration Tests"],
+          "fullName": "Migration System Integration Tests should handle complete migration workflow",
           "status": "passed",
           "title": "should handle complete migration workflow",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 5.442731000000094,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Migration System", "Integration Tests"],
-          "fullName": " Migration System Integration Tests should maintain data integrity through migration process",
+          "ancestorTitles": ["Migration System", "Integration Tests"],
+          "fullName": "Migration System Integration Tests should maintain data integrity through migration process",
           "status": "passed",
           "title": "should maintain data integrity through migration process",
-          "duration": 7,
-          "failureMessages": []
+          "duration": 4.561333999999988,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492395223,
-      "endTime": 1759492395362,
+      "startTime": 1759522787032,
+      "endTime": 1759522787139.5613,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/migrate.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/migrate.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should validate a complete valid profile",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should validate a complete valid profile",
           "status": "passed",
           "title": "should validate a complete valid profile",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 6.982730999999944,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with missing W3 time accounting fields",
           "status": "passed",
           "title": "should reject profile with missing W3 time accounting fields",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.3978610000000344,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid W3 time accounting",
           "status": "passed",
           "title": "should reject profile with invalid W3 time accounting",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8823749999999109,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with invalid name length",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with invalid name length",
           "status": "passed",
           "title": "should reject profile with invalid name length",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.0153520000000071,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with negative progress values",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with negative progress values",
           "status": "passed",
           "title": "should reject profile with negative progress values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.850667000000044,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ProfileV1 validation"],
-          "fullName": " Schema Validation ProfileV1 validation should reject profile with non-integer values",
+          "ancestorTitles": ["Schema Validation", "ProfileV1 validation"],
+          "fullName": "Schema Validation ProfileV1 validation should reject profile with non-integer values",
           "status": "passed",
           "title": "should reject profile with non-integer values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6567179999999553,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should validate a complete valid save",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should validate a complete valid save",
           "status": "passed",
           "title": "should validate a complete valid save",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.4538160000000744,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with wrong version",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with wrong version",
           "status": "passed",
           "title": "should reject save with wrong version",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.7641330000000153,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with no profiles",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with no profiles",
           "status": "passed",
           "title": "should reject save with no profiles",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9543810000000121,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with too many profiles",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with too many profiles",
           "status": "passed",
           "title": "should reject save with too many profiles",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.9993459999999459,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "SaveV1 validation"],
-          "fullName": " Schema Validation SaveV1 validation should reject save with invalid profile",
+          "ancestorTitles": ["Schema Validation", "SaveV1 validation"],
+          "fullName": "Schema Validation SaveV1 validation should reject save with invalid profile",
           "status": "passed",
           "title": "should reject save with invalid profile",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.9221840000000157,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should validate a complete valid export file",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should validate a complete valid export file",
           "status": "passed",
           "title": "should validate a complete valid export file",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 1.0483879999999317,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with wrong file version",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with wrong file version",
           "status": "passed",
           "title": "should reject export with wrong file version",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 0.7073529999998982,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with empty checksum",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with empty checksum",
           "status": "passed",
           "title": "should reject export with empty checksum",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4996439999999893,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "ExportFileV1 validation"],
-          "fullName": " Schema Validation ExportFileV1 validation should reject export with invalid data",
+          "ancestorTitles": ["Schema Validation", "ExportFileV1 validation"],
+          "fullName": "Schema Validation ExportFileV1 validation should reject export with invalid data",
           "status": "passed",
           "title": "should reject export with invalid data",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4740830000000642,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid save row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid save row",
           "status": "passed",
           "title": "should validate a complete valid save row",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.9410419999999249,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate save row with optional id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate save row with optional id",
           "status": "passed",
           "title": "should validate save row with optional id",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.386572000000001,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject save row with invalid profile id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject save row with invalid profile id",
           "status": "passed",
           "title": "should reject save row with invalid profile id",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5374289999999746,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid meta row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid meta row",
           "status": "passed",
           "title": "should validate a complete valid meta row",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6159999999999854,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject meta row with empty key",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject meta row with empty key",
           "status": "passed",
           "title": "should reject meta row with empty key",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4944070000000238,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate a complete valid log row",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate a complete valid log row",
           "status": "passed",
           "title": "should validate a complete valid log row",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8312510000000657,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate log row with optional id",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate log row with optional id",
           "status": "passed",
           "title": "should validate log row with optional id",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2280319999999847,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should validate log row with optional data",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should validate log row with optional data",
           "status": "passed",
           "title": "should validate log row with optional data",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.6220759999999927,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with invalid level",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with invalid level",
           "status": "passed",
           "title": "should reject log row with invalid level",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.44090799999992214,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with invalid source",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with invalid source",
           "status": "passed",
           "title": "should reject log row with invalid source",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3704379999999219,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Schema Validation", "Database row validation"],
-          "fullName": " Schema Validation Database row validation should reject log row with empty message",
+          "ancestorTitles": ["Schema Validation", "Database row validation"],
+          "fullName": "Schema Validation Database row validation should reject log row with empty message",
           "status": "passed",
           "title": "should reject log row with empty message",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3766539999999168,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492395371,
-      "endTime": 1759492395399,
+      "startTime": 1759522786902,
+      "endTime": 1759522786931.3767,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/db/schema.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/db/schema.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should initialize with zero balance",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should initialize with zero balance",
           "status": "passed",
           "title": "should initialize with zero balance",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.720166000000063,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should drop Arcana correctly",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should drop Arcana correctly",
           "status": "passed",
           "title": "should drop Arcana correctly",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.0095300000000407,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should calculate drop amounts correctly",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should calculate drop amounts correctly",
           "status": "passed",
           "title": "should calculate drop amounts correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5643880000000081,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should handle distance scaling",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle distance scaling",
           "status": "passed",
           "title": "should handle distance scaling",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.333562000000029,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should handle ward scaling",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle ward scaling",
           "status": "passed",
           "title": "should handle ward scaling",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4182090000000471,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should handle combined distance and ward scaling",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should handle combined distance and ward scaling",
           "status": "passed",
           "title": "should handle combined distance and ward scaling",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.26253300000007584,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should spend Arcana correctly",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should spend Arcana correctly",
           "status": "passed",
           "title": "should spend Arcana correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.0967180000000099,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should reset for new journey",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should reset for new journey",
           "status": "passed",
           "title": "should reset for new journey",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.0441270000000031,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should track drop history",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should track drop history",
           "status": "passed",
           "title": "should track drop history",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 1.1416960000000245,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should get journey statistics",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should get journey statistics",
           "status": "passed",
           "title": "should get journey statistics",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 8.929696000000035,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should filter drops by source type",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should filter drops by source type",
           "status": "passed",
           "title": "should filter drops by source type",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.4227369999999837,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Drop Manager"],
-          "fullName": " Arcana Drop System Arcana Drop Manager should calculate total drops by source type",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Drop Manager"],
+          "fullName": "Arcana Drop System Arcana Drop Manager should calculate total drops by source type",
           "status": "passed",
           "title": "should calculate total drops by source type",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.6113199999999779,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Scaling System"],
-          "fullName": " Arcana Drop System Arcana Scaling System should calculate distance scaling factor",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate distance scaling factor",
           "status": "passed",
           "title": "should calculate distance scaling factor",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.31414600000005066,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Scaling System"],
-          "fullName": " Arcana Drop System Arcana Scaling System should calculate ward scaling factor",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate ward scaling factor",
           "status": "passed",
           "title": "should calculate ward scaling factor",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3022730000000138,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Scaling System"],
-          "fullName": " Arcana Drop System Arcana Scaling System should calculate total scaling factor",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate total scaling factor",
           "status": "passed",
           "title": "should calculate total scaling factor",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.25352299999997285,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Scaling System"],
-          "fullName": " Arcana Drop System Arcana Scaling System should calculate drop amounts for different enemy types",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should calculate drop amounts for different enemy types",
           "status": "passed",
           "title": "should calculate drop amounts for different enemy types",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3628949999999804,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Arcana Scaling System"],
-          "fullName": " Arcana Drop System Arcana Scaling System should apply scaling correctly",
+          "ancestorTitles": ["Arcana Drop System", "Arcana Scaling System"],
+          "fullName": "Arcana Drop System Arcana Scaling System should apply scaling correctly",
           "status": "passed",
           "title": "should apply scaling correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.23990500000002157,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Performance Tests"],
-          "fullName": " Arcana Drop System Performance Tests should handle many drops efficiently",
+          "ancestorTitles": ["Arcana Drop System", "Performance Tests"],
+          "fullName": "Arcana Drop System Performance Tests should handle many drops efficiently",
           "status": "passed",
           "title": "should handle many drops efficiently",
-          "duration": 49,
-          "failureMessages": []
+          "duration": 59.450642000000016,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Performance Tests"],
-          "fullName": " Arcana Drop System Performance Tests should handle scaling calculations efficiently",
+          "ancestorTitles": ["Arcana Drop System", "Performance Tests"],
+          "fullName": "Arcana Drop System Performance Tests should handle scaling calculations efficiently",
           "status": "passed",
           "title": "should handle scaling calculations efficiently",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.0305079999999407,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Edge Cases"],
-          "fullName": " Arcana Drop System Edge Cases should handle zero amounts gracefully",
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle zero amounts gracefully",
           "status": "passed",
           "title": "should handle zero amounts gracefully",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3599619999999959,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Edge Cases"],
-          "fullName": " Arcana Drop System Edge Cases should handle negative amounts gracefully",
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle negative amounts gracefully",
           "status": "passed",
           "title": "should handle negative amounts gracefully",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2989910000000009,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Edge Cases"],
-          "fullName": " Arcana Drop System Edge Cases should handle spending more than available",
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle spending more than available",
           "status": "passed",
           "title": "should handle spending more than available",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5984700000000203,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Arcana Drop System", "Edge Cases"],
-          "fullName": " Arcana Drop System Edge Cases should handle spending zero amount",
+          "ancestorTitles": ["Arcana Drop System", "Edge Cases"],
+          "fullName": "Arcana Drop System Edge Cases should handle spending zero amount",
           "status": "passed",
           "title": "should handle spending zero amount",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.41206399999998666,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492395124,
-      "endTime": 1759492395194,
+      "startTime": 1759522786844,
+      "endTime": 1759522786931.412,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/economy/arcana-drop.test.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/arcana-drop.test.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Cost Calculator"],
-          "fullName": " Enchant System Enchant Cost Calculator should calculate correct costs for geometric progression",
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate correct costs for geometric progression",
           "status": "passed",
           "title": "should calculate correct costs for geometric progression",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.6575300000000652,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Cost Calculator"],
-          "fullName": " Enchant System Enchant Cost Calculator should calculate total cost for level ranges",
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate total cost for level ranges",
           "status": "passed",
           "title": "should calculate total cost for level ranges",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.35535200000003897,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Cost Calculator"],
-          "fullName": " Enchant System Enchant Cost Calculator should handle Soul Forging cost calculations",
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should handle Soul Forging cost calculations",
           "status": "passed",
           "title": "should handle Soul Forging cost calculations",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3718349999999191,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Cost Calculator"],
-          "fullName": " Enchant System Enchant Cost Calculator should validate affordable purchases",
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should validate affordable purchases",
           "status": "passed",
           "title": "should validate affordable purchases",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.27957499999990887,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Cost Calculator"],
-          "fullName": " Enchant System Enchant Cost Calculator should calculate max affordable level",
+          "ancestorTitles": ["Enchant System", "Enchant Cost Calculator"],
+          "fullName": "Enchant System Enchant Cost Calculator should calculate max affordable level",
           "status": "passed",
           "title": "should calculate max affordable level",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.7853649999999561,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should initialize with zero levels",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should initialize with zero levels",
           "status": "passed",
           "title": "should initialize with zero levels",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5123559999999543,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should calculate effective cap correctly",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should calculate effective cap correctly",
           "status": "passed",
           "title": "should calculate effective cap correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22761300000001938,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should handle temporary Soul Forging purchases",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should handle temporary Soul Forging purchases",
           "status": "passed",
           "title": "should handle temporary Soul Forging purchases",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.9434850000000097,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should handle permanent Soul Forging purchases",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should handle permanent Soul Forging purchases",
           "status": "passed",
           "title": "should handle permanent Soul Forging purchases",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.6869580000000042,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should reset temporary Soul Forging",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should reset temporary Soul Forging",
           "status": "passed",
           "title": "should reset temporary Soul Forging",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.34110499999997046,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should track transaction history",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should track transaction history",
           "status": "passed",
           "title": "should track transaction history",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2791549999999461,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Soul Forging System"],
-          "fullName": " Enchant System Soul Forging System should provide Soul Forging statistics",
+          "ancestorTitles": ["Enchant System", "Soul Forging System"],
+          "fullName": "Enchant System Soul Forging System should provide Soul Forging statistics",
           "status": "passed",
           "title": "should provide Soul Forging statistics",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.375116999999932,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should initialize with zero levels",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should initialize with zero levels",
           "status": "passed",
           "title": "should initialize with zero levels",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.27524499999992713,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should have correct initial cap",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should have correct initial cap",
           "status": "passed",
           "title": "should have correct initial cap",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.19827900000007048,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should calculate enchant costs correctly",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should calculate enchant costs correctly",
           "status": "passed",
           "title": "should calculate enchant costs correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22328199999992648,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should enforce location restrictions for Arcana spending",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should enforce location restrictions for Arcana spending",
           "status": "passed",
           "title": "should enforce location restrictions for Arcana spending",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.22858999999994012,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should enforce location restrictions for Soul Power spending",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should enforce location restrictions for Soul Power spending",
           "status": "passed",
           "title": "should enforce location restrictions for Soul Power spending",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.1760700000000952,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should handle successful enchant purchases",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle successful enchant purchases",
           "status": "passed",
           "title": "should handle successful enchant purchases",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.38936499999999796,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should handle failed enchant purchases due to location",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle failed enchant purchases due to location",
           "status": "passed",
           "title": "should handle failed enchant purchases due to location",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5010409999999865,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should handle failed enchant purchases due to insufficient currency",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should handle failed enchant purchases due to insufficient currency",
           "status": "passed",
           "title": "should handle failed enchant purchases due to insufficient currency",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5577529999999342,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should reset temporary enchants",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should reset temporary enchants",
           "status": "passed",
           "title": "should reset temporary enchants",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3416630000000396,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should track transaction history",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should track transaction history",
           "status": "passed",
           "title": "should track transaction history",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3737909999999829,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Enchant Manager"],
-          "fullName": " Enchant System Enchant Manager should provide analytics",
+          "ancestorTitles": ["Enchant System", "Enchant Manager"],
+          "fullName": "Enchant System Enchant Manager should provide analytics",
           "status": "passed",
           "title": "should provide analytics",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.55160699999999,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Integration Tests"],
-          "fullName": " Enchant System Integration Tests should integrate Soul Forging with enchant caps",
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should integrate Soul Forging with enchant caps",
           "status": "passed",
           "title": "should integrate Soul Forging with enchant caps",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.40549800000007963,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Integration Tests"],
-          "fullName": " Enchant System Integration Tests should handle complex enchant scenarios",
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should handle complex enchant scenarios",
           "status": "passed",
           "title": "should handle complex enchant scenarios",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5885520000000497,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Integration Tests"],
-          "fullName": " Enchant System Integration Tests should handle location switching",
+          "ancestorTitles": ["Enchant System", "Integration Tests"],
+          "fullName": "Enchant System Integration Tests should handle location switching",
           "status": "passed",
           "title": "should handle location switching",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4727550000000065,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Performance Tests"],
-          "fullName": " Enchant System Performance Tests should meet performance targets for cost calculations",
+          "ancestorTitles": ["Enchant System", "Performance Tests"],
+          "fullName": "Enchant System Performance Tests should meet performance targets for cost calculations",
           "status": "passed",
           "title": "should meet performance targets for cost calculations",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 0.6826980000000731,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Performance Tests"],
-          "fullName": " Enchant System Performance Tests should meet performance targets for enchant operations",
+          "ancestorTitles": ["Enchant System", "Performance Tests"],
+          "fullName": "Enchant System Performance Tests should meet performance targets for enchant operations",
           "status": "passed",
           "title": "should meet performance targets for enchant operations",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.8894980000000032,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Edge Cases"],
-          "fullName": " Enchant System Edge Cases should handle zero amount purchases",
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle zero amount purchases",
           "status": "passed",
           "title": "should handle zero amount purchases",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.237041999999974,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Edge Cases"],
-          "fullName": " Enchant System Edge Cases should handle negative amount purchases",
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle negative amount purchases",
           "status": "passed",
           "title": "should handle negative amount purchases",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2503110000000106,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Edge Cases"],
-          "fullName": " Enchant System Edge Cases should handle invalid enchant types gracefully",
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle invalid enchant types gracefully",
           "status": "passed",
           "title": "should handle invalid enchant types gracefully",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 1.2599369999999226,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enchant System", "Edge Cases"],
-          "fullName": " Enchant System Edge Cases should handle Soul Forging with insufficient currency",
+          "ancestorTitles": ["Enchant System", "Edge Cases"],
+          "fullName": "Enchant System Edge Cases should handle Soul Forging with insufficient currency",
           "status": "passed",
           "title": "should handle Soul Forging with insufficient currency",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.31414600000005066,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394388,
-      "endTime": 1759492394419,
+      "startTime": 1759522786901,
+      "endTime": 1759522786920.3142,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/economy/enchant-system.test.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/enchant-system.test.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should initialize with zero levels",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should initialize with zero levels",
           "status": "passed",
           "title": "should initialize with zero levels",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 2.948488999999995,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should handle temporary Soul Forging purchases",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should handle temporary Soul Forging purchases",
           "status": "passed",
           "title": "should handle temporary Soul Forging purchases",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.16523200000006,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should handle permanent Soul Forging purchases",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should handle permanent Soul Forging purchases",
           "status": "passed",
           "title": "should handle permanent Soul Forging purchases",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.43762600000002294,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should track milestones and achievements",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should track milestones and achievements",
           "status": "passed",
           "title": "should track milestones and achievements",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3453660000000127,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should provide analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should provide analytics",
           "status": "passed",
           "title": "should provide analytics",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.532818999999904,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should calculate optimal Soul Forging",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should calculate optimal Soul Forging",
           "status": "passed",
           "title": "should calculate optimal Soul Forging",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.534565999999927,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should validate Soul Forging progression",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should validate Soul Forging progression",
           "status": "passed",
           "title": "should validate Soul Forging progression",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9551490000000058,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should save and load state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should save and load state",
           "status": "passed",
           "title": "should save and load state",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4551559999999881,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
-          "fullName": " Enhanced Soul Forging System Enhanced Soul Forging Manager should reset temporary Soul Forging",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Enhanced Soul Forging Manager"],
+          "fullName": "Enhanced Soul Forging System Enhanced Soul Forging Manager should reset temporary Soul Forging",
           "status": "passed",
           "title": "should reset temporary Soul Forging",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5933019999999942,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate optimal purchase",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate optimal purchase",
           "status": "passed",
           "title": "should calculate optimal purchase",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 1.5749910000000682,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate bulk purchase",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate bulk purchase",
           "status": "passed",
           "title": "should calculate bulk purchase",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.42058400000007623,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate cost progression",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should calculate cost progression",
           "status": "passed",
           "title": "should calculate cost progression",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3969079999999394,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Cost Optimizer should get cost efficiency",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Cost Optimizer"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Cost Optimizer should get cost efficiency",
           "status": "passed",
           "title": "should get cost efficiency",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.19772100000000137,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Persistence"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Persistence should save and load state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should save and load state",
           "status": "passed",
           "title": "should save and load state",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9973339999999098,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Persistence"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Persistence should validate state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should validate state",
           "status": "passed",
           "title": "should validate state",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.27475600000002487,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Persistence"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Persistence should repair invalid state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should repair invalid state",
           "status": "passed",
           "title": "should repair invalid state",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.3628959999999779,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Persistence"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Persistence should list saved states",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should list saved states",
           "status": "passed",
           "title": "should list saved states",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5540499999999611,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Persistence"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Persistence should delete saved state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Persistence"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Persistence should delete saved state",
           "status": "passed",
           "title": "should delete saved state",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3828000000000884,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should analyze Soul Forging state",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should analyze Soul Forging state",
           "status": "passed",
           "title": "should analyze Soul Forging state",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 1.2244570000000294,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should generate analytics report",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should generate analytics report",
           "status": "passed",
           "title": "should generate analytics report",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.762108000000012,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should get progression analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get progression analytics",
           "status": "passed",
           "title": "should get progression analytics",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.28620999999998276,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should get cost analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get cost analytics",
           "status": "passed",
           "title": "should get cost analytics",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2559679999999389,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should get performance analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get performance analytics",
           "status": "passed",
           "title": "should get performance analytics",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.38838799999996354,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should get trend analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get trend analytics",
           "status": "passed",
           "title": "should get trend analytics",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5204569999999649,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Soul Forging Analytics"],
-          "fullName": " Enhanced Soul Forging System Soul Forging Analytics should get recommendations",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Soul Forging Analytics"],
+          "fullName": "Enhanced Soul Forging System Soul Forging Analytics should get recommendations",
           "status": "passed",
           "title": "should get recommendations",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3756060000000616,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Integration Tests"],
-          "fullName": " Enhanced Soul Forging System Integration Tests should integrate all Soul Forging components",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should integrate all Soul Forging components",
           "status": "passed",
           "title": "should integrate all Soul Forging components",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.439021999999909,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Integration Tests"],
-          "fullName": " Enhanced Soul Forging System Integration Tests should handle complex Soul Forging scenarios",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should handle complex Soul Forging scenarios",
           "status": "passed",
           "title": "should handle complex Soul Forging scenarios",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4725459999999657,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Integration Tests"],
-          "fullName": " Enhanced Soul Forging System Integration Tests should handle state persistence across sessions",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Integration Tests"],
+          "fullName": "Enhanced Soul Forging System Integration Tests should handle state persistence across sessions",
           "status": "passed",
           "title": "should handle state persistence across sessions",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.33733299999994415,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Performance Tests"],
-          "fullName": " Enhanced Soul Forging System Performance Tests should meet performance targets for Soul Forging operations",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Performance Tests"],
+          "fullName": "Enhanced Soul Forging System Performance Tests should meet performance targets for Soul Forging operations",
           "status": "passed",
           "title": "should meet performance targets for Soul Forging operations",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 2.124292999999966,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Performance Tests"],
-          "fullName": " Enhanced Soul Forging System Performance Tests should meet performance targets for cost calculations",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Performance Tests"],
+          "fullName": "Enhanced Soul Forging System Performance Tests should meet performance targets for cost calculations",
           "status": "passed",
           "title": "should meet performance targets for cost calculations",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 9.30006400000002,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Edge Cases"],
-          "fullName": " Enhanced Soul Forging System Edge Cases should handle zero amount purchases",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle zero amount purchases",
           "status": "passed",
           "title": "should handle zero amount purchases",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3841969999999719,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Edge Cases"],
-          "fullName": " Enhanced Soul Forging System Edge Cases should handle negative amount purchases",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle negative amount purchases",
           "status": "passed",
           "title": "should handle negative amount purchases",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.25177800000005846,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Edge Cases"],
-          "fullName": " Enhanced Soul Forging System Edge Cases should handle insufficient currency",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle insufficient currency",
           "status": "passed",
           "title": "should handle insufficient currency",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.46130200000004606,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Edge Cases"],
-          "fullName": " Enhanced Soul Forging System Edge Cases should handle invalid state loading",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle invalid state loading",
           "status": "passed",
           "title": "should handle invalid state loading",
-          "duration": 6,
-          "failureMessages": []
+          "duration": 1.4699500000000398,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Enhanced Soul Forging System", "Edge Cases"],
-          "fullName": " Enhanced Soul Forging System Edge Cases should handle empty analytics",
+          "ancestorTitles": ["Enhanced Soul Forging System", "Edge Cases"],
+          "fullName": "Enhanced Soul Forging System Edge Cases should handle empty analytics",
           "status": "passed",
           "title": "should handle empty analytics",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5238100000000259,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394239,
-      "endTime": 1759492394291,
+      "startTime": 1759522786948,
+      "endTime": 1759522786981.524,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/economy/soul-forging.test.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/soul-forging.test.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should initialize with zero balance",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should initialize with zero balance",
           "status": "passed",
           "title": "should initialize with zero balance",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.5508009999999786,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should drop Soul Power correctly",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should drop Soul Power correctly",
           "status": "passed",
           "title": "should drop Soul Power correctly",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 3.345397999999932,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should calculate drop chances and amounts correctly",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should calculate drop chances and amounts correctly",
           "status": "passed",
           "title": "should calculate drop chances and amounts correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.2031559999999217,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should handle distance scaling (slower than Arcana)",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle distance scaling (slower than Arcana)",
           "status": "passed",
           "title": "should handle distance scaling (slower than Arcana)",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.5752820000000156,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should handle ward scaling (slower than Arcana)",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle ward scaling (slower than Arcana)",
           "status": "passed",
           "title": "should handle ward scaling (slower than Arcana)",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.626406999999972,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should handle combined distance and ward scaling",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should handle combined distance and ward scaling",
           "status": "passed",
           "title": "should handle combined distance and ward scaling",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3860130000000481,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should spend Soul Power correctly",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should spend Soul Power correctly",
           "status": "passed",
           "title": "should spend Soul Power correctly",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.4425019999999904,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should track drop history",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should track drop history",
           "status": "passed",
           "title": "should track drop history",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.1170419999999694,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should get lifetime statistics",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get lifetime statistics",
           "status": "passed",
           "title": "should get lifetime statistics",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 1.4642929999999978,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should filter drops by source type",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should filter drops by source type",
           "status": "passed",
           "title": "should filter drops by source type",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.8612699999999904,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should calculate total drops by source type",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should calculate total drops by source type",
           "status": "passed",
           "title": "should calculate total drops by source type",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.9031870000000026,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should get drop rate statistics",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get drop rate statistics",
           "status": "passed",
           "title": "should get drop rate statistics",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.2684580000000096,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Drop Manager"],
-          "fullName": " Soul Power Drop System Soul Power Drop Manager should get scaling statistics",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Drop Manager"],
+          "fullName": "Soul Power Drop System Soul Power Drop Manager should get scaling statistics",
           "status": "passed",
           "title": "should get scaling statistics",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.8605840000000171,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should calculate distance scaling factor (slower than Arcana)",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate distance scaling factor (slower than Arcana)",
           "status": "passed",
           "title": "should calculate distance scaling factor (slower than Arcana)",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.517105000000015,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should calculate ward scaling factor (slower than Arcana)",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate ward scaling factor (slower than Arcana)",
           "status": "passed",
           "title": "should calculate ward scaling factor (slower than Arcana)",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.40647599999999784,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should calculate total scaling factor",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate total scaling factor",
           "status": "passed",
           "title": "should calculate total scaling factor",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3808450000000221,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should calculate drop amounts for different enemy types",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should calculate drop amounts for different enemy types",
           "status": "passed",
           "title": "should calculate drop amounts for different enemy types",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3874799999999823,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should apply scaling correctly",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should apply scaling correctly",
           "status": "passed",
           "title": "should apply scaling correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.37330199999996694,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Soul Power Scaling System"],
-          "fullName": " Soul Power Drop System Soul Power Scaling System should respect min/max drop amounts",
+          "ancestorTitles": ["Soul Power Drop System", "Soul Power Scaling System"],
+          "fullName": "Soul Power Drop System Soul Power Scaling System should respect min/max drop amounts",
           "status": "passed",
           "title": "should respect min/max drop amounts",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.21853300000009312,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Performance Tests"],
-          "fullName": " Soul Power Drop System Performance Tests should handle many drops efficiently",
+          "ancestorTitles": ["Soul Power Drop System", "Performance Tests"],
+          "fullName": "Soul Power Drop System Performance Tests should handle many drops efficiently",
           "status": "passed",
           "title": "should handle many drops efficiently",
-          "duration": 53,
-          "failureMessages": []
+          "duration": 67.18423699999994,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Performance Tests"],
-          "fullName": " Soul Power Drop System Performance Tests should handle scaling calculations efficiently",
+          "ancestorTitles": ["Soul Power Drop System", "Performance Tests"],
+          "fullName": "Soul Power Drop System Performance Tests should handle scaling calculations efficiently",
           "status": "passed",
           "title": "should handle scaling calculations efficiently",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 1.8550539999999955,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle zero amounts gracefully",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle zero amounts gracefully",
           "status": "passed",
           "title": "should handle zero amounts gracefully",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.29472999999995864,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle negative amounts gracefully",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle negative amounts gracefully",
           "status": "passed",
           "title": "should handle negative amounts gracefully",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2380200000000059,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle spending more than available",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle spending more than available",
           "status": "passed",
           "title": "should handle spending more than available",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.48784200000000055,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle spending zero amount",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle spending zero amount",
           "status": "passed",
           "title": "should handle spending zero amount",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3231550000000425,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle very low Arcana amounts",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle very low Arcana amounts",
           "status": "passed",
           "title": "should handle very low Arcana amounts",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.16182200000002922,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Edge Cases"],
-          "fullName": " Soul Power Drop System Edge Cases should handle very high Arcana amounts",
+          "ancestorTitles": ["Soul Power Drop System", "Edge Cases"],
+          "fullName": "Soul Power Drop System Edge Cases should handle very high Arcana amounts",
           "status": "passed",
           "title": "should handle very high Arcana amounts",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.15232399999990776,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Chance-based Mechanics"],
-          "fullName": " Soul Power Drop System Chance-based Mechanics should have reasonable drop chances",
+          "ancestorTitles": ["Soul Power Drop System", "Chance-based Mechanics"],
+          "fullName": "Soul Power Drop System Chance-based Mechanics should have reasonable drop chances",
           "status": "passed",
           "title": "should have reasonable drop chances",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.24220900000000256,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Soul Power Drop System", "Chance-based Mechanics"],
-          "fullName": " Soul Power Drop System Chance-based Mechanics should cap drop chances at reasonable levels",
+          "ancestorTitles": ["Soul Power Drop System", "Chance-based Mechanics"],
+          "fullName": "Soul Power Drop System Chance-based Mechanics should cap drop chances at reasonable levels",
           "status": "passed",
           "title": "should cap drop chances at reasonable levels",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.1395430000000033,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394223,
-      "endTime": 1759492394305,
+      "startTime": 1759522786845,
+      "endTime": 1759522786938.2422,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/economy/soul-power-drop.test.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/economy/soul-power-drop.test.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Flag Parsing", "DEFAULT_FLAGS"],
-          "fullName": " Flag Parsing DEFAULT_FLAGS should have correct default values",
+          "ancestorTitles": ["Flag Parsing", "DEFAULT_FLAGS"],
+          "fullName": "Flag Parsing DEFAULT_FLAGS should have correct default values",
           "status": "passed",
           "title": "should have correct default values",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.9205520000000433,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should return empty object in production mode",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.594208999999978,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should return empty object when no env vars are set",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should return empty object when no env vars are set",
           "status": "passed",
           "title": "should return empty object when no env vars are set",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.24556199999994988,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse HUD flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse HUD flag from environment",
           "status": "passed",
           "title": "should parse HUD flag from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.306603999999993,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse dev menu flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse dev menu flag from environment",
           "status": "passed",
           "title": "should parse dev menu flag from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.35339700000008634,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse console logging flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse console logging flag from environment",
           "status": "passed",
           "title": "should parse console logging flag from environment",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.3511620000000448,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse legacy background sim flag from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse legacy background sim flag from environment",
           "status": "passed",
           "title": "should parse legacy background sim flag from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22188600000004044,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse force mode from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse force mode from environment",
           "status": "passed",
           "title": "should parse force mode from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.20484499999997752,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should ignore invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4626989999999296,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getEnvFlags"],
-          "fullName": " Flag Parsing getEnvFlags should parse multiple flags from environment",
+          "ancestorTitles": ["Flag Parsing", "getEnvFlags"],
+          "fullName": "Flag Parsing getEnvFlags should parse multiple flags from environment",
           "status": "passed",
           "title": "should parse multiple flags from environment",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.38231099999995877,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should return empty object in production mode",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should return empty object in production mode",
           "status": "passed",
           "title": "should return empty object in production mode",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3084890000000087,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should return empty object when no query params are present",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should return empty object when no query params are present",
           "status": "passed",
           "title": "should return empty object when no query params are present",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22565700000006927,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse HUD flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse HUD flag from query string",
           "status": "passed",
           "title": "should parse HUD flag from query string",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2966159999999718,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse dev menu flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse dev menu flag from query string",
           "status": "passed",
           "title": "should parse dev menu flag from query string",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.19353100000000723,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse console logging flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse console logging flag from query string",
           "status": "passed",
           "title": "should parse console logging flag from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.21385399999996935,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse legacy background sim flag from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse legacy background sim flag from query string",
           "status": "passed",
           "title": "should parse legacy background sim flag from query string",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.25687600000003386,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse force mode from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse force mode from query string",
           "status": "passed",
           "title": "should parse force mode from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.19869899999991958,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should ignore invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should ignore invalid force mode values",
           "status": "passed",
           "title": "should ignore invalid force mode values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.16279999999994743,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should parse multiple flags from query string",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should parse multiple flags from query string",
           "status": "passed",
           "title": "should parse multiple flags from query string",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.1731359999999995,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "getQueryFlags"],
-          "fullName": " Flag Parsing getQueryFlags should ignore non-flag query parameters",
+          "ancestorTitles": ["Flag Parsing", "getQueryFlags"],
+          "fullName": "Flag Parsing getQueryFlags should ignore non-flag query parameters",
           "status": "passed",
           "title": "should ignore non-flag query parameters",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.45089499999994587,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should merge flags with correct precedence: query > env > defaults",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should merge flags with correct precedence: query > env > defaults",
           "status": "passed",
           "title": "should merge flags with correct precedence: query > env > defaults",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.29989899999998215,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should handle empty env and query flags",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should handle empty env and query flags",
           "status": "passed",
           "title": "should handle empty env and query flags",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.18968900000004396,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "mergeFlags"],
-          "fullName": " Flag Parsing mergeFlags should handle partial flag overrides",
+          "ancestorTitles": ["Flag Parsing", "mergeFlags"],
+          "fullName": "Flag Parsing mergeFlags should handle partial flag overrides",
           "status": "passed",
           "title": "should handle partial flag overrides",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.17411399999991772,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should create complete flag configuration from URL",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should create complete flag configuration from URL",
           "status": "passed",
           "title": "should create complete flag configuration from URL",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.33642599999996037,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should return defaults when no overrides are present",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should return defaults when no overrides are present",
           "status": "passed",
           "title": "should return defaults when no overrides are present",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.4920319999999947,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "createFlags"],
-          "fullName": " Flag Parsing createFlags should respect production mode restrictions",
+          "ancestorTitles": ["Flag Parsing", "createFlags"],
+          "fullName": "Flag Parsing createFlags should respect production mode restrictions",
           "status": "passed",
           "title": "should respect production mode restrictions",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.22097800000005918,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "ForceMode type validation"],
-          "fullName": " Flag Parsing ForceMode type validation should accept valid force mode values",
+          "ancestorTitles": ["Flag Parsing", "ForceMode type validation"],
+          "fullName": "Flag Parsing ForceMode type validation should accept valid force mode values",
           "status": "passed",
           "title": "should accept valid force mode values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4078029999999444,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "ForceMode type validation"],
-          "fullName": " Flag Parsing ForceMode type validation should reject invalid force mode values",
+          "ancestorTitles": ["Flag Parsing", "ForceMode type validation"],
+          "fullName": "Flag Parsing ForceMode type validation should reject invalid force mode values",
           "status": "passed",
           "title": "should reject invalid force mode values",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.31652100000007977,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle malformed URLs gracefully",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle malformed URLs gracefully",
           "status": "passed",
           "title": "should handle malformed URLs gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.178083000000015,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle empty query parameter values",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle empty query parameter values",
           "status": "passed",
           "title": "should handle empty query parameter values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.20861600000000635,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Parsing", "Edge cases"],
-          "fullName": " Flag Parsing Edge cases should handle undefined environment variables",
+          "ancestorTitles": ["Flag Parsing", "Edge cases"],
+          "fullName": "Flag Parsing Edge cases should handle undefined environment variables",
           "status": "passed",
           "title": "should handle undefined environment variables",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.17544099999997798,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394374,
-      "endTime": 1759492394393,
+      "startTime": 1759522786824,
+      "endTime": 1759522786838.2085,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/parse.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/parse.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should initialize with default values",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should initialize with default values",
           "status": "passed",
           "title": "should initialize with default values",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 3.251250999999911,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should update when set is called",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should update when set is called",
           "status": "passed",
           "title": "should update when set is called",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.35437499999989086,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should update when update is called",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should update when update is called",
           "status": "passed",
           "title": "should update when update is called",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.40829200000007404,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should notify subscribers when values change",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should notify subscribers when values change",
           "status": "passed",
           "title": "should notify subscribers when values change",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.2498540000001412,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "appFlags store"],
-          "fullName": " Flag Store appFlags store should not notify unsubscribed listeners",
+          "ancestorTitles": ["Flag Store", "appFlags store"],
+          "fullName": "Flag Store appFlags store should not notify unsubscribed listeners",
           "status": "passed",
           "title": "should not notify unsubscribed listeners",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.6940130000000408,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive hudEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive hudEnabled correctly",
           "status": "passed",
           "title": "should derive hudEnabled correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.7167810000000827,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive devMenuEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive devMenuEnabled correctly",
           "status": "passed",
           "title": "should derive devMenuEnabled correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.30611399999997957,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive logConsoleEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive logConsoleEnabled correctly",
           "status": "passed",
           "title": "should derive logConsoleEnabled correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3373340000000553,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive legacyBgSimEnabled correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive legacyBgSimEnabled correctly",
           "status": "passed",
           "title": "should derive legacyBgSimEnabled correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.42763799999988805,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should derive forceMode correctly",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should derive forceMode correctly",
           "status": "passed",
           "title": "should derive forceMode correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.4310600000001159,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "derived stores"],
-          "fullName": " Flag Store derived stores should update derived stores when parent store changes",
+          "ancestorTitles": ["Flag Store", "derived stores"],
+          "fullName": "Flag Store derived stores should update derived stores when parent store changes",
           "status": "passed",
           "title": "should update derived stores when parent store changes",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.6041270000000623,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should return a derived store for boolean flags",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should return a derived store for boolean flags",
           "status": "passed",
           "title": "should return a derived store for boolean flags",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2663750000001528,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should work with all boolean flags",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should work with all boolean flags",
           "status": "passed",
           "title": "should work with all boolean flags",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.5743049999998675,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should convert non-boolean values to boolean",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should convert non-boolean values to boolean",
           "status": "passed",
           "title": "should convert non-boolean values to boolean",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.2020509999999831,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "isFlagEnabled utility"],
-          "fullName": " Flag Store isFlagEnabled utility should update when flag values change",
+          "ancestorTitles": ["Flag Store", "isFlagEnabled utility"],
+          "fullName": "Flag Store isFlagEnabled utility should update when flag values change",
           "status": "passed",
           "title": "should update when flag values change",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.458018999999922,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return current flag values",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return current flag values",
           "status": "passed",
           "title": "should return current flag values",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.30513599999994767,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return updated values after store changes",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return updated values after store changes",
           "status": "passed",
           "title": "should return updated values after store changes",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.17509199999994962,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "getCurrentFlags utility"],
-          "fullName": " Flag Store getCurrentFlags utility should return a snapshot of current state",
+          "ancestorTitles": ["Flag Store", "getCurrentFlags utility"],
+          "fullName": "Flag Store getCurrentFlags utility should return a snapshot of current state",
           "status": "passed",
           "title": "should return a snapshot of current state",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.2364829999999074,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should maintain consistency across all derived stores",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should maintain consistency across all derived stores",
           "status": "passed",
           "title": "should maintain consistency across all derived stores",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3241339999999582,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should handle rapid updates correctly",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should handle rapid updates correctly",
           "status": "passed",
           "title": "should handle rapid updates correctly",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.23180299999989984,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "store integration"],
-          "fullName": " Flag Store store integration should handle partial updates correctly",
+          "ancestorTitles": ["Flag Store", "store integration"],
+          "fullName": "Flag Store store integration should handle partial updates correctly",
           "status": "passed",
           "title": "should handle partial updates correctly",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.19820900000013353,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "edge cases"],
-          "fullName": " Flag Store edge cases should handle undefined values gracefully",
+          "ancestorTitles": ["Flag Store", "edge cases"],
+          "fullName": "Flag Store edge cases should handle undefined values gracefully",
           "status": "passed",
           "title": "should handle undefined values gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.9666030000000774,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Flag Store", "edge cases"],
-          "fullName": " Flag Store edge cases should handle multiple subscribers correctly",
+          "ancestorTitles": ["Flag Store", "edge cases"],
+          "fullName": "Flag Store edge cases should handle multiple subscribers correctly",
           "status": "passed",
           "title": "should handle multiple subscribers correctly",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.0376890000000003,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394354,
-      "endTime": 1759492394380,
+      "startTime": 1759522787049,
+      "endTime": 1759522787067.0376,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/flags/store.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/flags/store.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle page reload functionality",
           "status": "passed",
           "title": "should handle page reload functionality",
-          "duration": 3,
-          "failureMessages": []
+          "duration": 2.3258540000000494,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle navigation to home",
           "status": "passed",
           "title": "should handle navigation to home",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.468913999999927,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export functionality",
           "status": "passed",
           "title": "should handle log export functionality",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.8180130000000645,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should handle log export errors gracefully",
           "status": "passed",
           "title": "should handle log export errors gracefully",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 9.917042000000038,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Error Handling Functions"],
-          "fullName": " Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Handling Functions"],
+          "fullName": "Error Boundary Integration Tests Error Handling Functions should prevent multiple simultaneous log exports",
           "status": "passed",
           "title": "should prevent multiple simultaneous log exports",
-          "duration": 101,
-          "failureMessages": []
+          "duration": 102.23610799999994,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": [
-            "",
-            "Error Boundary Integration Tests",
-            "Error Information Processing"
-          ],
-          "fullName": " Error Boundary Integration Tests Error Information Processing should generate detailed error information",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Information Processing"],
+          "fullName": "Error Boundary Integration Tests Error Information Processing should generate detailed error information",
           "status": "passed",
           "title": "should generate detailed error information",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.1240950000000112,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": [
-            "",
-            "Error Boundary Integration Tests",
-            "Error Information Processing"
-          ],
-          "fullName": " Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Error Information Processing"],
+          "fullName": "Error Boundary Integration Tests Error Information Processing should handle missing error information gracefully",
           "status": "passed",
           "title": "should handle missing error information gracefully",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3732310000000325,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Download Functionality"],
-          "fullName": " Error Boundary Integration Tests Download Functionality should generate correct filename with current date",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Download Functionality"],
+          "fullName": "Error Boundary Integration Tests Download Functionality should generate correct filename with current date",
           "status": "passed",
           "title": "should generate correct filename with current date",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.33167600000001585,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Download Functionality"],
-          "fullName": " Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Download Functionality"],
+          "fullName": "Error Boundary Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.12519999999995,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Integration Scenarios"],
-          "fullName": " Error Boundary Integration Tests Integration Scenarios should handle complete error boundary workflow",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Integration Scenarios"],
+          "fullName": "Error Boundary Integration Tests Integration Scenarios should handle complete error boundary workflow",
           "status": "passed",
           "title": "should handle complete error boundary workflow",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.8549270000000888,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Error Boundary Integration Tests", "Integration Scenarios"],
-          "fullName": " Error Boundary Integration Tests Integration Scenarios should handle rapid user interactions without issues",
+          "ancestorTitles": ["Error Boundary Integration Tests", "Integration Scenarios"],
+          "fullName": "Error Boundary Integration Tests Integration Scenarios should handle rapid user interactions without issues",
           "status": "passed",
           "title": "should handle rapid user interactions without issues",
-          "duration": 0,
-          "failureMessages": []
+          "duration": 0.3728119999999535,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394754,
-      "endTime": 1759492394876,
+      "startTime": 1759522786762,
+      "endTime": 1759522786886.3728,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/error-boundary.int.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/error-boundary.int.spec.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should export logs as NDJSON blob",
           "status": "passed",
           "title": "should export logs as NDJSON blob",
-          "duration": 28,
-          "failureMessages": []
+          "duration": 10.028230000000008,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should export empty logs when no logs are present",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should export empty logs when no logs are present",
           "status": "passed",
           "title": "should export empty logs when no logs are present",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.9608070000000453,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should include proper NDJSON formatting",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should include proper NDJSON formatting",
           "status": "passed",
           "title": "should include proper NDJSON formatting",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 2.1314859999999953,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "NDJSON Export"],
-          "fullName": " Log Export Integration Tests NDJSON Export should handle multiple log entries correctly",
+          "ancestorTitles": ["Log Export Integration Tests", "NDJSON Export"],
+          "fullName": "Log Export Integration Tests NDJSON Export should handle multiple log entries correctly",
           "status": "passed",
           "title": "should handle multiple log entries correctly",
-          "duration": 5,
-          "failureMessages": []
+          "duration": 1.215867000000003,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should trigger download with correct filename",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should trigger download with correct filename",
           "status": "passed",
           "title": "should trigger download with correct filename",
-          "duration": 9,
-          "failureMessages": []
+          "duration": 3.873467000000005,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should generate filename with current date",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should generate filename with current date",
           "status": "passed",
           "title": "should generate filename with current date",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.598051000000055,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Download Functionality"],
-          "fullName": " Log Export Integration Tests Download Functionality should handle download errors gracefully",
+          "ancestorTitles": ["Log Export Integration Tests", "Download Functionality"],
+          "fullName": "Log Export Integration Tests Download Functionality should handle download errors gracefully",
           "status": "passed",
           "title": "should handle download errors gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.058373999999958,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should redact sensitive information in exported logs",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should redact sensitive information in exported logs",
           "status": "passed",
           "title": "should redact sensitive information in exported logs",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9519370000000436,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should preserve allowed data fields in exports",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should preserve allowed data fields in exports",
           "status": "passed",
           "title": "should preserve allowed data fields in exports",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 1.1430219999999736,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "PII Redaction in Exports"],
-          "fullName": " Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
+          "ancestorTitles": ["Log Export Integration Tests", "PII Redaction in Exports"],
+          "fullName": "Log Export Integration Tests PII Redaction in Exports should handle nested objects in data field",
           "status": "passed",
           "title": "should handle nested objects in data field",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 0.9646479999998974,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Memory Management"],
-          "fullName": " Log Export Integration Tests Memory Management should respect memory limits during export",
+          "ancestorTitles": ["Log Export Integration Tests", "Memory Management"],
+          "fullName": "Log Export Integration Tests Memory Management should respect memory limits during export",
           "status": "passed",
           "title": "should respect memory limits during export",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9344069999999647,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Memory Management"],
-          "fullName": " Log Export Integration Tests Memory Management should handle large exports efficiently",
+          "ancestorTitles": ["Log Export Integration Tests", "Memory Management"],
+          "fullName": "Log Export Integration Tests Memory Management should handle large exports efficiently",
           "status": "passed",
           "title": "should handle large exports efficiently",
-          "duration": 4,
-          "failureMessages": []
+          "duration": 3.2072509999999284,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Error Handling"],
-          "fullName": " Log Export Integration Tests Error Handling should handle export errors gracefully",
+          "ancestorTitles": ["Log Export Integration Tests", "Error Handling"],
+          "fullName": "Log Export Integration Tests Error Handling should handle export errors gracefully",
           "status": "passed",
           "title": "should handle export errors gracefully",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 2.1138859999999795,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Error Handling"],
-          "fullName": " Log Export Integration Tests Error Handling should handle corrupted log data",
+          "ancestorTitles": ["Log Export Integration Tests", "Error Handling"],
+          "fullName": "Log Export Integration Tests Error Handling should handle corrupted log data",
           "status": "passed",
           "title": "should handle corrupted log data",
-          "duration": 1,
-          "failureMessages": []
+          "duration": 0.9439050000000861,
+          "failureMessages": [],
+          "meta": {}
         },
         {
-          "ancestorTitles": ["", "Log Export Integration Tests", "Integration with Error Boundary"],
-          "fullName": " Log Export Integration Tests Integration with Error Boundary should work correctly when called from error boundary",
+          "ancestorTitles": ["Log Export Integration Tests", "Integration with Error Boundary"],
+          "fullName": "Log Export Integration Tests Integration with Error Boundary should work correctly when called from error boundary",
           "status": "passed",
           "title": "should work correctly when called from error boundary",
-          "duration": 2,
-          "failureMessages": []
+          "duration": 1.770894999999996,
+          "failureMessages": [],
+          "meta": {}
         }
       ],
-      "startTime": 1759492394062,
-      "endTime": 1759492394129,
+      "startTime": 1759522786775,
+      "endTime": 1759522786808.771,
       "status": "passed",
       "message": "",
-      "name": "/home/edgar_dev/game-dev/dragonChronicles/tests/integration/export-logs.int.spec.ts"
+      "name": "C:/Users/ediaz/Coding_Projects/dragonIdler/tests/integration/export-logs.int.spec.ts"
     }
   ]
 }
