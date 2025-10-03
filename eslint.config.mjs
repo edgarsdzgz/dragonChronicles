@@ -19,6 +19,7 @@ export default [
       '**/dist-tests/**',
       '**/.svelte-kit/**',
       '**/build/**',                  // ignore build artifacts
+      '**/web-dist/**',               // ignore web build artifacts
       '**/apps/web/build/**',         // ignore SvelteKit build
       '**/apps/web/.svelte-kit/**',   // ignore SvelteKit cache
       '.husky/_/**',

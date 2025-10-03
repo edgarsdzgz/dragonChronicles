@@ -1,1 +1,0 @@
-import{d as a,w as s}from"./CHw4BZ2g.js";const o=s({hud:!1,devMenu:!1,logConsole:!1,useLegacyBgSim:!1,forceMode:"auto"}),l=a(o,e=>e.hud);a(o,e=>e.devMenu);a(o,e=>e.logConsole);a(o,e=>e.useLegacyBgSim);a(o,e=>e.forceMode);export{o as a,l as h};
