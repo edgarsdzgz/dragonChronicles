@@ -38,7 +38,9 @@
         Active flags:
         {#each Object.entries($appFlags) as [key, value] (key)}
           {#if value === true && getFlagDisplayName}
-            <span style="color:#4ade80;" aria-label="Active flag: {getFlagDisplayName(key)}">{getFlagDisplayName(key)}</span>
+            <span style="color:#4ade80;" aria-label="Active flag: {getFlagDisplayName(key)}"
+              >{getFlagDisplayName(key)}</span
+            >
           {/if}
         {/each}
       </div>
