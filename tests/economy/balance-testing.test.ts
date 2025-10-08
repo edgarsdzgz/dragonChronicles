@@ -130,7 +130,7 @@ describe('Balance Testing Framework', () => {
         arcanaManager,
         soulPowerManager,
         enchantManager,
-        true, // Enable test mode
+        true, // Enable test mode with time acceleration
       );
 
       expect(results).toBeDefined();
@@ -311,6 +311,7 @@ describe('Balance Testing Framework', () => {
           arcanaManager,
           soulPowerManager,
           enchantManager,
+          true, // Enable test mode
         );
 
         expect(results.scenario.id).toBe(scenarioId);

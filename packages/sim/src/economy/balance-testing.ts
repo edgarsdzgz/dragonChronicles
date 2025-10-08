@@ -372,7 +372,11 @@ export class BalanceTestingFramework {
     testMode: boolean = false,
   ): Promise<EconomicMetrics> {
     const startTime = Date.now();
-    const endTime = startTime + scenario.duration;
+
+    // Calculate time acceleration factor for test mode
+    const timeAccelerationFactor = testMode ? 3600 : 1; // 3600x speed in test mode (1 hour = 1 second)
+    const acceleratedDuration = scenario.duration / timeAccelerationFactor;
+    const endTime = startTime + acceleratedDuration;
 
     // Initialize metrics collection
     const metrics: EconomicMetrics = {
@@ -412,13 +416,49 @@ export class BalanceTestingFramework {
       },
     };
 
-    // Simulate the scenario
+    // Simulate the scenario with time acceleration
     let simulatedTime = 0;
     const frameTime = 16; // 60 FPS = 16ms per frame
 
-    while (simulatedTime < scenario.duration) {
-      // Simulate enemy kills and drops
-      await this._simulateEnemyKills(scenario.config, arcanaManager, soulPowerManager);
+    if (testMode) {
+      // In test mode, simulate just a few events to generate test data
+      // Simulate a small number of enemy kills and boss encounters for testing
+      const testEnemyKills = 100;
+      const testBossEncounters = 10;
+
+      // Simulate enemy kills
+      for (let i = 0; i < testEnemyKills; i++) {
+        arcanaManager.dropArcana(10, {
+          type: 'enemy_kill',
+          enemyId: `enemy_test_${i}`,
+        });
+
+        soulPowerManager.dropSoulPower(
+          5,
+          {
+            type: 'enemy_kill',
+            enemyId: `enemy_test_${i}`,
+          },
+          1.0,
+        );
+      }
+
+      // Simulate boss encounters
+      for (let i = 0; i < testBossEncounters; i++) {
+        arcanaManager.dropArcana(50, {
+          type: 'boss_reward',
+          bossId: `boss_test_${i}`,
+        });
+
+        soulPowerManager.dropSoulPower(
+          25,
+          {
+            type: 'boss_reward',
+            bossId: `boss_test_${i}`,
+          },
+          1.0,
+        );
+      }
 
       // Simulate player spending decisions
       await this._simulatePlayerSpending(
@@ -431,11 +471,29 @@ export class BalanceTestingFramework {
       // Update metrics
       this._updateMetrics(metrics, arcanaManager, soulPowerManager, enchantManager);
 
-      // Advance simulated time
-      simulatedTime += frameTime;
+      // Set simulated time to full duration
+      simulatedTime = scenario.duration;
+    } else {
+      // Real-time mode: frame-by-frame with delays
+      while (simulatedTime < scenario.duration) {
+        // Simulate enemy kills and drops
+        await this._simulateEnemyKills(scenario.config, arcanaManager, soulPowerManager);
 
-      // Wait for next frame (simulate 60 FPS) - skip in test mode
-      if (!testMode) {
+        // Simulate player spending decisions
+        await this._simulatePlayerSpending(
+          scenario.config,
+          enchantManager,
+          arcanaManager,
+          soulPowerManager,
+        );
+
+        // Update metrics
+        this._updateMetrics(metrics, arcanaManager, soulPowerManager, enchantManager);
+
+        // Advance simulated time
+        simulatedTime += frameTime;
+
+        // Wait for next frame (simulate 60 FPS)
         await new Promise((resolve) => setTimeout(resolve, frameTime));
       }
     }

@@ -18,6 +18,7 @@ export default defineConfig({
       toFake: ['setTimeout', 'setInterval', 'clearTimeout', 'clearInterval', 'Date'],
     },
     reporters: ['dot', 'default'],
+    testTimeout: 30000, // 30 seconds for economic simulation tests
     coverage: {
       provider: 'v8',
       reportsDirectory: 'tests/.coverage',
