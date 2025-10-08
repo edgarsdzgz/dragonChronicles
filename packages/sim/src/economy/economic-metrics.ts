@@ -9,7 +9,7 @@ import type {
   ArcanaDropManager,
   SoulPowerDropManager,
   EnchantManager,
-  EconomicEvent,
+  EconomicEvent as _EconomicEvent,
   ArcanaBalance,
   SoulPowerBalance,
 } from './types.js';
@@ -52,7 +52,7 @@ export interface DetailedEconomicEvent {
 }
 
 /**
- * Metrics collection configuration
+ * Metrics collection _configuration
  */
 export interface MetricsConfig {
   /** Whether to collect detailed performance metrics */
@@ -96,19 +96,19 @@ export interface EconomicMetricsSnapshot {
 export class EconomicMetricsCollector {
   private _events: DetailedEconomicEvent[] = [];
   private _snapshots: EconomicMetricsSnapshot[] = [];
-  private _config: MetricsConfig;
+  private __config: MetricsConfig;
   private _startTime: number;
   private _isCollecting: boolean = false;
 
   constructor(
-    config: MetricsConfig = {
+    _config: MetricsConfig = {
       collectPerformance: true,
       maxEvents: 10000,
       enableRealTimeAnalysis: false,
       performanceSamplingRate: 0.1,
     },
   ) {
-    this._config = config;
+    this.__config = _config;
     this._startTime = Date.now();
   }
 
@@ -153,7 +153,7 @@ export class EconomicMetricsCollector {
     };
 
     // Add performance metrics if enabled and provided
-    if (this._config.collectPerformance && processingTime !== undefined) {
+    if (this.__config.collectPerformance && processingTime !== undefined) {
       event.performance = {
         processingTime,
         memoryUsage: this._getMemoryUsage(),
@@ -164,12 +164,12 @@ export class EconomicMetricsCollector {
     this._events.push(event);
 
     // Trim events if we exceed the maximum
-    if (this._events.length > this._config.maxEvents) {
-      this._events = this._events.slice(-this._config.maxEvents);
+    if (this._events.length > this.__config.maxEvents) {
+      this._events = this._events.slice(-this.__config.maxEvents);
     }
 
     // Real-time analysis if enabled
-    if (this._config.enableRealTimeAnalysis) {
+    if (this.__config.enableRealTimeAnalysis) {
       this._performRealTimeAnalysis(event);
     }
   }
@@ -194,7 +194,7 @@ export class EconomicMetricsCollector {
       soulForgingSystem: {
         temporaryLevels: enchantManager.system.soulForging.temporary,
         permanentLevels: enchantManager.system.soulForging.permanent,
-        totalCapExtension: 0, // Will be calculated from config
+        totalCapExtension: 0, // Will be calculated from _config
         config: enchantManager.config,
         purchaseTemporarySoulForging: () => ({
           id: 'mock',
@@ -260,9 +260,9 @@ export class EconomicMetricsCollector {
   /**
    * Get events within a time range
    */
-  getEventsInRange(startTime: number, endTime: number): DetailedEconomicEvent[] {
+  getEventsInRange(startTime: number, _endTime: number): DetailedEconomicEvent[] {
     return this._events.filter(
-      (event) => event.timestamp >= startTime && event.timestamp <= endTime,
+      (event) => event.timestamp >= startTime && event.timestamp <= _endTime,
     );
   }
 
@@ -365,7 +365,7 @@ export class EconomicMetricsCollector {
       events: this._events,
       snapshots: this._snapshots,
       summary: this.getMetricsSummary(),
-      config: this._config,
+      config: this.__config,
     };
   }
 
@@ -374,7 +374,7 @@ export class EconomicMetricsCollector {
    */
   private _getMemoryUsage(): number {
     if (typeof performance !== 'undefined' && 'memory' in performance) {
-      const perfMemory = (performance as any).memory;
+      const perfMemory = (performance as unknown as { memory: { usedJSHeapSize: number } }).memory;
       return perfMemory.usedJSHeapSize / (1024 * 1024); // Convert to MB
     }
     return 0;
@@ -411,6 +411,6 @@ export class EconomicMetricsCollector {
 /**
  * Create a new economic metrics collector
  */
-export function createEconomicMetricsCollector(config?: MetricsConfig): EconomicMetricsCollector {
-  return new EconomicMetricsCollector(config);
+export function createEconomicMetricsCollector(_config?: MetricsConfig): EconomicMetricsCollector {
+  return new EconomicMetricsCollector(_config);
 }

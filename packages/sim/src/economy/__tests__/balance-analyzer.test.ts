@@ -5,7 +5,7 @@
  * performance analysis, and recommendation generation.
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   createBalanceAnalyzer,
   type BalanceAnalyzer,
@@ -20,9 +20,9 @@ import type { ArcanaDropConfig, SoulPowerDropConfig, EnchantConfig } from '../ty
 
 describe('Balance Analyzer', () => {
   let analyzer: BalanceAnalyzer;
-  let arcanaManager: DefaultArcanaDropManager;
-  let soulPowerManager: DefaultSoulPowerDropManager;
-  let enchantManager: DefaultEnchantManager;
+  let _arcanaManager: DefaultArcanaDropManager;
+  let _soulPowerManager: DefaultSoulPowerDropManager;
+  let _enchantManager: DefaultEnchantManager;
 
   const mockMetrics: EconomicMetrics = {
     arcana: {
@@ -300,7 +300,7 @@ describe('Balance Analyzer', () => {
   beforeEach(() => {
     analyzer = createBalanceAnalyzer();
 
-    // Create mock configurations
+    // Create mock _configurations
     const arcanaConfig: ArcanaDropConfig = {
       baseDropAmount: 10,
       distanceScalingFactor: 1.5,
@@ -337,18 +337,18 @@ describe('Balance Analyzer', () => {
       permanentSoulForgingCost: 1000,
     };
 
-    arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
-    soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
-    enchantManager = new DefaultEnchantManager(enchantConfig);
+    _arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
+    _soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
+    _enchantManager = new DefaultEnchantManager(enchantConfig);
   });
 
   describe('Initialization', () => {
-    it('should create analyzer with default configuration', () => {
+    it('should create analyzer with default _configuration', () => {
       const defaultAnalyzer = createBalanceAnalyzer();
       expect(defaultAnalyzer).toBeDefined();
     });
 
-    it('should create analyzer with custom configuration', () => {
+    it('should create analyzer with custom _configuration', () => {
       const customConfig: BalanceAnalysisConfig = {
         targetReturnsPerHour: 3.0,
         balanceTolerance: 0.3,

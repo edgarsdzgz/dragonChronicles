@@ -5,15 +5,15 @@
  * metrics collection, and balance analysis.
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   createBalanceTestingFramework,
   type BalanceTestingFramework,
   type EconomicScenario,
 } from '../balance-testing.js';
 import { createEconomicMetricsCollector } from '../economic-metrics.js';
-import { createScenarioRunner } from '../scenario-runner.js';
-import { createBalanceAnalyzer } from '../balance-analyzer.js';
+import { createScenarioRunner as _createScenarioRunner } from '../scenario-runner.js';
+import { createBalanceAnalyzer as _createBalanceAnalyzer } from '../balance-analyzer.js';
 import { DefaultArcanaDropManager } from '../arcana-drop-manager.js';
 import { DefaultSoulPowerDropManager } from '../soul-power-drop-manager.js';
 import { DefaultEnchantManager } from '../enchant-manager.js';
@@ -21,16 +21,16 @@ import type { ArcanaDropConfig, SoulPowerDropConfig, EnchantConfig } from '../ty
 
 describe('Balance Testing Framework', () => {
   let framework: BalanceTestingFramework;
-  let arcanaManager: DefaultArcanaDropManager;
-  let soulPowerManager: DefaultSoulPowerDropManager;
-  let enchantManager: DefaultEnchantManager;
-  let metricsCollector: ReturnType<typeof createEconomicMetricsCollector>;
+  let _arcanaManager: DefaultArcanaDropManager;
+  let _soulPowerManager: DefaultSoulPowerDropManager;
+  let _enchantManager: DefaultEnchantManager;
+  let _metricsCollector: ReturnType<typeof createEconomicMetricsCollector>;
 
   beforeEach(() => {
     framework = createBalanceTestingFramework();
-    metricsCollector = createEconomicMetricsCollector();
+    _metricsCollector = createEconomicMetricsCollector();
 
-    // Create mock configurations
+    // Create mock _configurations
     const arcanaConfig: ArcanaDropConfig = {
       baseDropAmount: 10,
       distanceScalingFactor: 1.5,
@@ -67,9 +67,9 @@ describe('Balance Testing Framework', () => {
       permanentSoulForgingCost: 1000,
     };
 
-    arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
-    soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
-    enchantManager = new DefaultEnchantManager(enchantConfig);
+    _arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
+    _soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
+    _enchantManager = new DefaultEnchantManager(enchantConfig);
   });
 
   describe('Scenario Management', () => {
@@ -90,7 +90,7 @@ describe('Balance Testing Framework', () => {
         name: 'Custom Test',
         description: 'A custom test scenario',
         duration: 60000, // 1 minute
-        config: {
+        _config: {
           enemySpawnRate: 1,
           bossFrequency: 0.5,
           distanceProgression: 0.5,
@@ -123,9 +123,9 @@ describe('Balance Testing Framework', () => {
     it('should execute a test successfully', async () => {
       const results = await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(results).toBeDefined();
@@ -138,7 +138,7 @@ describe('Balance Testing Framework', () => {
 
     it('should throw error for non-existent scenario', async () => {
       await expect(
-        framework.runTest('non_existent', arcanaManager, soulPowerManager, enchantManager),
+        framework.runTest('non_existent', _arcanaManager, _soulPowerManager, _enchantManager),
       ).rejects.toThrow('Scenario non_existent not found');
     });
 
@@ -146,14 +146,14 @@ describe('Balance Testing Framework', () => {
       // Start first test
       const firstTest = framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       // Try to start second test immediately
       await expect(
-        framework.runTest('fast_progression', arcanaManager, soulPowerManager, enchantManager),
+        framework.runTest('fast_progression', _arcanaManager, _soulPowerManager, _enchantManager),
       ).rejects.toThrow('A test is already running');
 
       // Wait for first test to complete
@@ -165,9 +165,9 @@ describe('Balance Testing Framework', () => {
 
       await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       const results = framework.getResults();
@@ -178,9 +178,9 @@ describe('Balance Testing Framework', () => {
     it('should clear test results', async () => {
       await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(framework.getResults()).toHaveLength(1);
@@ -193,9 +193,9 @@ describe('Balance Testing Framework', () => {
     it('should analyze balance correctly', async () => {
       const results = await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(results.analysis).toBeDefined();
@@ -210,9 +210,9 @@ describe('Balance Testing Framework', () => {
     it('should provide progression curve analysis', async () => {
       const results = await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(results.analysis.progressionCurve).toBeDefined();
@@ -227,9 +227,9 @@ describe('Balance Testing Framework', () => {
     it('should collect performance metrics', async () => {
       const results = await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(results.performance).toBeDefined();
@@ -246,9 +246,9 @@ describe('Balance Testing Framework', () => {
     it('should collect economic metrics', async () => {
       const results = await framework.runTest(
         'standard_progression',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       const metrics = results.metrics;
@@ -296,9 +296,9 @@ describe('Balance Testing Framework', () => {
       for (const scenarioId of scenarios) {
         const results = await framework.runTest(
           scenarioId,
-          arcanaManager,
-          soulPowerManager,
-          enchantManager,
+          _arcanaManager,
+          _soulPowerManager,
+          _enchantManager,
         );
 
         expect(results.scenario.id).toBe(scenarioId);
@@ -310,9 +310,9 @@ describe('Balance Testing Framework', () => {
     it('should handle stress test scenario', async () => {
       const results = await framework.runTest(
         'stress_test',
-        arcanaManager,
-        soulPowerManager,
-        enchantManager,
+        _arcanaManager,
+        _soulPowerManager,
+        _enchantManager,
       );
 
       expect(results.scenario.id).toBe('stress_test');

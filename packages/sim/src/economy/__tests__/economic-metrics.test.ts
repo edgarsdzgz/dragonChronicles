@@ -9,7 +9,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   createEconomicMetricsCollector,
   type EconomicMetricsCollector,
-  type DetailedEconomicEvent,
+  type DetailedEconomicEvent as _DetailedEconomicEvent,
   type EconomicEventType,
 } from '../economic-metrics.js';
 import { DefaultArcanaDropManager } from '../arcana-drop-manager.js';
@@ -19,9 +19,9 @@ import type { ArcanaDropConfig, SoulPowerDropConfig, EnchantConfig } from '../ty
 
 describe('Economic Metrics Collector', () => {
   let collector: EconomicMetricsCollector;
-  let arcanaManager: DefaultArcanaDropManager;
-  let soulPowerManager: DefaultSoulPowerDropManager;
-  let enchantManager: DefaultEnchantManager;
+  let _arcanaManager: DefaultArcanaDropManager;
+  let _soulPowerManager: DefaultSoulPowerDropManager;
+  let _enchantManager: DefaultEnchantManager;
 
   beforeEach(() => {
     collector = createEconomicMetricsCollector({
@@ -31,7 +31,7 @@ describe('Economic Metrics Collector', () => {
       performanceSamplingRate: 0.1,
     });
 
-    // Create mock configurations
+    // Create mock _configurations
     const arcanaConfig: ArcanaDropConfig = {
       baseDropAmount: 10,
       distanceScalingFactor: 1.5,
@@ -68,9 +68,9 @@ describe('Economic Metrics Collector', () => {
       permanentSoulForgingCost: 1000,
     };
 
-    arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
-    soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
-    enchantManager = new DefaultEnchantManager(enchantConfig);
+    _arcanaManager = new DefaultArcanaDropManager(arcanaConfig);
+    _soulPowerManager = new DefaultSoulPowerDropManager(soulPowerConfig);
+    _enchantManager = new DefaultEnchantManager(enchantConfig);
   });
 
   describe('Collection Control', () => {
@@ -232,7 +232,7 @@ describe('Economic Metrics Collector', () => {
     });
 
     it('should take snapshots', () => {
-      collector.takeSnapshot(arcanaManager, soulPowerManager, enchantManager);
+      collector.takeSnapshot(_arcanaManager, _soulPowerManager, _enchantManager);
 
       const snapshots = collector.getSnapshots();
       expect(snapshots).toHaveLength(1);
@@ -247,7 +247,7 @@ describe('Economic Metrics Collector', () => {
     });
 
     it('should get latest snapshot', () => {
-      collector.takeSnapshot(arcanaManager, soulPowerManager, enchantManager);
+      collector.takeSnapshot(_arcanaManager, _soulPowerManager, _enchantManager);
 
       const latestSnapshot = collector.getLatestSnapshot();
       expect(latestSnapshot).toBeDefined();
@@ -299,7 +299,7 @@ describe('Economic Metrics Collector', () => {
       collector.startCollection();
 
       collector.recordEvent('arcana_drop', { amount: 10 }, 5);
-      collector.takeSnapshot(arcanaManager, soulPowerManager, enchantManager);
+      collector.takeSnapshot(_arcanaManager, _soulPowerManager, _enchantManager);
     });
 
     it('should export complete data', () => {
@@ -321,7 +321,7 @@ describe('Economic Metrics Collector', () => {
       collector.startCollection();
 
       collector.recordEvent('arcana_drop', { amount: 10 });
-      collector.takeSnapshot(arcanaManager, soulPowerManager, enchantManager);
+      collector.takeSnapshot(_arcanaManager, _soulPowerManager, _enchantManager);
     });
 
     it('should clear all data', () => {

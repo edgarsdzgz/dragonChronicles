@@ -30,7 +30,7 @@ describe('Scenario Runner', () => {
     name: 'Test Scenario',
     description: 'A test scenario for unit testing',
     duration: 1000, // 1 second for fast testing
-    config: {
+    _config: {
       enemySpawnRate: 1,
       bossFrequency: 0.1,
       distanceProgression: 0.5,
@@ -297,7 +297,7 @@ describe('Scenario Runner', () => {
       expect(state.isRunning).toBe(false);
       expect(state.currentTime).toBe(0);
       expect(state.startTime).toBe(0);
-      expect(state.endTime).toBe(0);
+      expect(state._endTime).toBe(0);
       expect(state.frameNumber).toBe(0);
       expect(state.targetFrameRate).toBe(60);
       expect(state.actualFrameRate).toBe(0);

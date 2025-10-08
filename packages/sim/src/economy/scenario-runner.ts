@@ -20,7 +20,7 @@ export interface ScenarioExecutionState {
   /** Scenario start time */
   startTime: number;
   /** Scenario end time */
-  endTime: number;
+  _endTime: number;
   /** Current frame number */
   frameNumber: number;
   /** Target frame rate (FPS) */
@@ -131,7 +131,7 @@ export class ScenarioRunner {
     // Calculate time acceleration factor for test mode
     const timeAccelerationFactor = this._options.testMode ? 3600 : 1; // 3600x speed in test mode (1 hour = 1 second)
     const acceleratedDuration = scenario.duration / timeAccelerationFactor;
-    this._state.endTime = this._state.startTime + acceleratedDuration;
+    this._state._endTime = this._state.startTime + acceleratedDuration;
     this._state.isRunning = true;
 
     const startTime = Date.now();
@@ -146,7 +146,7 @@ export class ScenarioRunner {
 
       // Calculate target frame time
       const targetFrameTime = 1000 / this._options.targetFrameRate;
-      const acceleratedFrameTime = targetFrameTime * timeAccelerationFactor;
+      const _acceleratedFrameTime = targetFrameTime * timeAccelerationFactor;
 
       if (this._options.testMode) {
         // In test mode, simulate just a few events to generate test data
@@ -190,7 +190,7 @@ export class ScenarioRunner {
 
           // Simulate player actions
           await this._simulatePlayerActions(
-            scenario.config,
+            scenario._config,
             enchantManager,
             arcanaManager,
             soulPowerManager,
@@ -211,7 +211,7 @@ export class ScenarioRunner {
         frameCount = this._state.frameNumber;
       } else {
         // Real-time mode: frame-by-frame simulation
-        while (this._state.isRunning && this._state.currentTime < this._state.endTime) {
+        while (this._state.isRunning && this._state.currentTime < this._state._endTime) {
           const frameStartTime = Date.now();
 
           // Check for timeout
@@ -321,10 +321,10 @@ export class ScenarioRunner {
    * Get execution progress (0-1)
    */
   get progress(): number {
-    if (this._state.endTime === 0) {
+    if (this._state._endTime === 0) {
       return 0;
     }
-    return Math.min(1, this._state.currentTime / (this._state.endTime - this._state.startTime));
+    return Math.min(1, this._state.currentTime / (this._state._endTime - this._state.startTime));
   }
 
   /**
@@ -335,7 +335,7 @@ export class ScenarioRunner {
       isRunning: false,
       currentTime: 0,
       startTime: 0,
-      endTime: 0,
+      _endTime: 0,
       frameNumber: 0,
       targetFrameRate: this._options.targetFrameRate,
       actualFrameRate: 0,
@@ -362,21 +362,21 @@ export class ScenarioRunner {
 
     try {
       // Simulate enemy spawns and kills
-      await this._simulateEnemySpawns(scenario.config, arcanaManager, soulPowerManager);
-      frameEventCount += this._calculateEnemySpawnCount(scenario.config);
+      await this._simulateEnemySpawns(scenario._config, arcanaManager, soulPowerManager);
+      frameEventCount += this._calculateEnemySpawnCount(scenario._config);
 
       // Simulate boss encounters
-      await this._simulateBossEncounters(scenario.config, arcanaManager, soulPowerManager);
-      frameEventCount += this._calculateBossEncounterCount(scenario.config);
+      await this._simulateBossEncounters(scenario._config, arcanaManager, soulPowerManager);
+      frameEventCount += this._calculateBossEncounterCount(scenario._config);
 
       // Simulate player actions
       await this._simulatePlayerActions(
-        scenario.config,
+        scenario._config,
         enchantManager,
         arcanaManager,
         soulPowerManager,
       );
-      frameEventCount += this._calculatePlayerActionCount(scenario.config);
+      frameEventCount += this._calculatePlayerActionCount(scenario._config);
 
       // Take metrics snapshot periodically
       if (
@@ -414,11 +414,11 @@ export class ScenarioRunner {
    * Simulate enemy spawns and kills
    */
   private async _simulateEnemySpawns(
-    config: ScenarioConfig,
+    _config: ScenarioConfig,
     arcanaManager: ArcanaDropManager,
     soulPowerManager: SoulPowerDropManager,
   ): Promise<void> {
-    const spawnsPerFrame = config.enemySpawnRate / this._options.targetFrameRate;
+    const spawnsPerFrame = _config.enemySpawnRate / this._options.targetFrameRate;
 
     for (let i = 0; i < Math.floor(spawnsPerFrame); i++) {
       // Simulate Arcana drop
@@ -457,11 +457,11 @@ export class ScenarioRunner {
    * Simulate boss encounters
    */
   private async _simulateBossEncounters(
-    config: ScenarioConfig,
+    _config: ScenarioConfig,
     arcanaManager: ArcanaDropManager,
     soulPowerManager: SoulPowerDropManager,
   ): Promise<void> {
-    const encountersPerFrame = config.bossFrequency / (this._options.targetFrameRate * 60); // Convert to per-frame
+    const encountersPerFrame = _config.bossFrequency / (this._options.targetFrameRate * 60); // Convert to per-frame
 
     if (Math.random() < encountersPerFrame) {
       // Simulate boss Arcana reward
@@ -500,7 +500,7 @@ export class ScenarioRunner {
    * Simulate player actions
    */
   private async _simulatePlayerActions(
-    config: ScenarioConfig,
+    _config: ScenarioConfig,
     enchantManager: EnchantManager,
     arcanaManager: ArcanaDropManager,
     soulPowerManager: SoulPowerDropManager,
@@ -509,7 +509,7 @@ export class ScenarioRunner {
     const soulPowerBalance = soulPowerManager.balance.current;
 
     // Simulate enchant purchases based on player behavior
-    if (this._shouldPurchaseEnchant(config, arcanaBalance)) {
+    if (this._shouldPurchaseEnchant(_config, arcanaBalance)) {
       try {
         const enchantType = Math.random() < 0.5 ? 'firepower' : 'scales';
         enchantManager.purchaseEnchant(enchantType, 'temporary', 1, 'arcana');
@@ -528,7 +528,7 @@ export class ScenarioRunner {
     }
 
     // Simulate soul forging purchases
-    if (this._shouldPurchaseSoulForging(config, soulPowerBalance)) {
+    if (this._shouldPurchaseSoulForging(_config, soulPowerBalance)) {
       try {
         const soulForgingType = Math.random() < 0.5 ? 'temporary' : 'permanent';
         enchantManager.purchaseSoulForging(soulForgingType, 1);
@@ -549,18 +549,18 @@ export class ScenarioRunner {
   /**
    * Determine if player should purchase an enchant
    */
-  private _shouldPurchaseEnchant(config: ScenarioConfig, arcanaBalance: number): boolean {
+  private _shouldPurchaseEnchant(_config: ScenarioConfig, arcanaBalance: number): boolean {
     const baseThreshold = 100;
-    const threshold = baseThreshold * this._getSpendingMultiplier(config.spendingPattern);
+    const threshold = baseThreshold * this._getSpendingMultiplier(_config.spendingPattern);
     return arcanaBalance >= threshold && Math.random() < 0.1; // 10% chance per frame
   }
 
   /**
    * Determine if player should purchase soul forging
    */
-  private _shouldPurchaseSoulForging(config: ScenarioConfig, soulPowerBalance: number): boolean {
+  private _shouldPurchaseSoulForging(_config: ScenarioConfig, soulPowerBalance: number): boolean {
     const baseThreshold = 50;
-    const threshold = baseThreshold * this._getSpendingMultiplier(config.spendingPattern);
+    const threshold = baseThreshold * this._getSpendingMultiplier(_config.spendingPattern);
     return soulPowerBalance >= threshold && Math.random() < 0.05; // 5% chance per frame
   }
 
@@ -598,7 +598,7 @@ export class ScenarioRunner {
   /**
    * Calculate player action count for metrics
    */
-  private _calculatePlayerActionCount(config: ScenarioConfig): number {
+  private _calculatePlayerActionCount(_config: ScenarioConfig): number {
     let count = 0;
     if (Math.random() < 0.1) count++; // Enchant purchase chance
     if (Math.random() < 0.05) count++; // Soul forging purchase chance
@@ -643,7 +643,7 @@ export class ScenarioRunner {
    */
   private _getMemoryUsage(): number {
     if (typeof performance !== 'undefined' && 'memory' in performance) {
-      const perfMemory = (performance as any).memory;
+      const perfMemory = (performance as unknown as { memory: { usedJSHeapSize: number } }).memory;
       return perfMemory.usedJSHeapSize / (1024 * 1024); // Convert to MB
     }
     return 0;

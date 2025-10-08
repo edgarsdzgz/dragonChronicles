@@ -9,15 +9,15 @@ import type {
   ArcanaDropManager,
   SoulPowerDropManager,
   EnchantManager,
-  ArcanaBalance,
-  SoulPowerBalance,
-  EconomicEvent,
+  ArcanaBalance as _ArcanaBalance,
+  SoulPowerBalance as _SoulPowerBalance,
+  EconomicEvent as _EconomicEvent,
 } from './types.js';
-import type { EnchantSystem } from './enchant-types.js';
-import type { SoulForgingSystem } from './soul-forging.js';
+import type { EnchantSystem as _EnchantSystem } from './enchant-types.js';
+import type { SoulForgingSystem as _SoulForgingSystem } from './soul-forging.js';
 
 /**
- * Economic scenario configuration
+ * Economic scenario _configuration
  */
 export interface EconomicScenario {
   /** Unique identifier for the scenario */
@@ -29,11 +29,11 @@ export interface EconomicScenario {
   /** Duration of the scenario in milliseconds */
   duration: number;
   /** Configuration for the scenario */
-  config: ScenarioConfig;
+  _config: ScenarioConfig;
 }
 
 /**
- * Scenario configuration parameters
+ * Scenario _configuration parameters
  */
 export interface ScenarioConfig {
   /** Enemy spawn rate (enemies per second) */
@@ -302,7 +302,7 @@ export class BalanceTestingFramework {
       name: 'Standard Progression',
       description: 'Normal player progression path with balanced gameplay',
       duration: 3600000, // 1 hour
-      config: {
+      _config: {
         enemySpawnRate: 2,
         bossFrequency: 1,
         distanceProgression: 1,
@@ -318,7 +318,7 @@ export class BalanceTestingFramework {
       name: 'Fast Progression',
       description: 'Optimal player progression path with aggressive gameplay',
       duration: 3600000, // 1 hour
-      config: {
+      _config: {
         enemySpawnRate: 3,
         bossFrequency: 2,
         distanceProgression: 1.5,
@@ -334,7 +334,7 @@ export class BalanceTestingFramework {
       name: 'Slow Progression',
       description: 'Suboptimal player progression path with conservative gameplay',
       duration: 3600000, // 1 hour
-      config: {
+      _config: {
         enemySpawnRate: 1,
         bossFrequency: 0.5,
         distanceProgression: 0.5,
@@ -350,7 +350,7 @@ export class BalanceTestingFramework {
       name: 'Stress Test',
       description: 'High-load scenario to test system limits',
       duration: 300000, // 5 minutes
-      config: {
+      _config: {
         enemySpawnRate: 10,
         bossFrequency: 5,
         distanceProgression: 3,
@@ -376,7 +376,7 @@ export class BalanceTestingFramework {
     // Calculate time acceleration factor for test mode
     const timeAccelerationFactor = testMode ? 3600 : 1; // 3600x speed in test mode (1 hour = 1 second)
     const acceleratedDuration = scenario.duration / timeAccelerationFactor;
-    const endTime = startTime + acceleratedDuration;
+    const __endTime = startTime + acceleratedDuration;
 
     // Initialize metrics collection
     const metrics: EconomicMetrics = {
@@ -462,7 +462,7 @@ export class BalanceTestingFramework {
 
       // Simulate player spending decisions
       await this._simulatePlayerSpending(
-        scenario.config,
+        scenario._config,
         enchantManager,
         arcanaManager,
         soulPowerManager,
@@ -477,11 +477,11 @@ export class BalanceTestingFramework {
       // Real-time mode: frame-by-frame with delays
       while (simulatedTime < scenario.duration) {
         // Simulate enemy kills and drops
-        await this._simulateEnemyKills(scenario.config, arcanaManager, soulPowerManager);
+        await this._simulateEnemyKills(scenario._config, arcanaManager, soulPowerManager);
 
         // Simulate player spending decisions
         await this._simulatePlayerSpending(
-          scenario.config,
+          scenario._config,
           enchantManager,
           arcanaManager,
           soulPowerManager,
@@ -508,11 +508,11 @@ export class BalanceTestingFramework {
    * Simulate enemy kills and drops
    */
   private async _simulateEnemyKills(
-    config: ScenarioConfig,
+    _config: ScenarioConfig,
     arcanaManager: ArcanaDropManager,
     soulPowerManager: SoulPowerDropManager,
   ): Promise<void> {
-    const killsPerFrame = config.enemySpawnRate / 60; // Convert to per-frame rate
+    const killsPerFrame = _config.enemySpawnRate / 60; // Convert to per-frame rate
 
     for (let i = 0; i < Math.floor(killsPerFrame); i++) {
       // Simulate Arcana drop
@@ -537,7 +537,7 @@ export class BalanceTestingFramework {
    * Simulate player spending decisions
    */
   private async _simulatePlayerSpending(
-    config: ScenarioConfig,
+    _config: ScenarioConfig,
     enchantManager: EnchantManager,
     arcanaManager: ArcanaDropManager,
     soulPowerManager: SoulPowerDropManager,
@@ -548,7 +548,7 @@ export class BalanceTestingFramework {
     const soulPowerBalance = soulPowerManager.balance.current;
 
     // Simulate enchant purchases based on spending pattern
-    if (config.spendingPattern === 'aggressive' && arcanaBalance > 100) {
+    if (_config.spendingPattern === 'aggressive' && arcanaBalance > 100) {
       try {
         enchantManager.purchaseEnchant('firepower', 'temporary', 1, 'arcana');
       } catch {
@@ -557,7 +557,7 @@ export class BalanceTestingFramework {
     }
 
     // Simulate soul forging purchases
-    if (config.spendingPattern === 'aggressive' && soulPowerBalance > 50) {
+    if (_config.spendingPattern === 'aggressive' && soulPowerBalance > 50) {
       try {
         enchantManager.purchaseSoulForging('temporary', 1);
       } catch {
@@ -634,7 +634,7 @@ export class BalanceTestingFramework {
    * Analyze balance based on collected metrics
    */
   private _analyzeBalance(scenario: EconomicScenario, metrics: EconomicMetrics): BalanceAnalysis {
-    const hours = scenario.duration / (1000 * 60 * 60);
+    const __hours = scenario.duration / (1000 * 60 * 60);
     const actualReturnsPerHour = metrics.arcana.averagePerHour;
     const targetReturnsPerHour = 2.5; // Target: 2-3 returns/hour
 
