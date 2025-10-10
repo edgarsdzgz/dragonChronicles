@@ -20,7 +20,7 @@ export interface ScenarioExecutionState {
   /** Scenario start time */
   startTime: number;
   /** Scenario end time */
-  _endTime: number;
+  endTime: number;
   /** Current frame number */
   frameNumber: number;
   /** Target frame rate (FPS) */
@@ -131,7 +131,7 @@ export class ScenarioRunner {
     // Calculate time acceleration factor for test mode
     const timeAccelerationFactor = this._options.testMode ? 3600 : 1; // 3600x speed in test mode (1 hour = 1 second)
     const acceleratedDuration = scenario.duration / timeAccelerationFactor;
-    this._state._endTime = this._state.startTime + acceleratedDuration;
+    this._state.endTime = this._state.startTime + acceleratedDuration;
     this._state.isRunning = true;
 
     const startTime = Date.now();
@@ -211,7 +211,7 @@ export class ScenarioRunner {
         frameCount = this._state.frameNumber;
       } else {
         // Real-time mode: frame-by-frame simulation
-        while (this._state.isRunning && this._state.currentTime < this._state._endTime) {
+        while (this._state.isRunning && this._state.currentTime < this._state.endTime) {
           const frameStartTime = Date.now();
 
           // Check for timeout
@@ -321,10 +321,10 @@ export class ScenarioRunner {
    * Get execution progress (0-1)
    */
   get progress(): number {
-    if (this._state._endTime === 0) {
+    if (this._state.endTime === 0) {
       return 0;
     }
-    return Math.min(1, this._state.currentTime / (this._state._endTime - this._state.startTime));
+    return Math.min(1, this._state.currentTime / (this._state.endTime - this._state.startTime));
   }
 
   /**
@@ -335,7 +335,7 @@ export class ScenarioRunner {
       isRunning: false,
       currentTime: 0,
       startTime: 0,
-      _endTime: 0,
+      endTime: 0,
       frameNumber: 0,
       targetFrameRate: this._options.targetFrameRate,
       actualFrameRate: 0,

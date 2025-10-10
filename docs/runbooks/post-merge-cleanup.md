@@ -2,7 +2,8 @@
 
 ## Overview
 
-Comprehensive process for cleaning up after PR merges to maintain repository hygiene and prevent accumulation of temporary files and branches.
+Comprehensive process for cleaning up after PR merges to maintain repository
+hygiene and prevent accumulation of temporary files and branches.
 
 ## Pre-Merge Checklist
 
