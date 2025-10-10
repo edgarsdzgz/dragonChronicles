@@ -27,11 +27,13 @@ test.describe('Dragon Chronicles - App Functionality', () => {
     const body = await page.locator('body');
     await expect(body).toBeAttached();
 
-    // Check that the app has loaded (look for common app indicators)
-    const appElement = await page.locator('#app, [data-testid="app"], main, .app').first();
-    if ((await appElement.count()) > 0) {
-      await expect(appElement).toBeVisible();
-    }
+    // Check that the app has loaded (main element should be attached)
+    const mainElement = await page.locator('main[role="main"]');
+    await expect(mainElement).toBeAttached();
+
+    // Canvas should exist (even if initially hidden during loading)
+    const canvas = await page.locator('canvas[aria-label="Draconia Chronicles Game Canvas"]');
+    await expect(canvas).toBeAttached();
   });
 
   test('should handle navigation gracefully', async ({ page }) => {
