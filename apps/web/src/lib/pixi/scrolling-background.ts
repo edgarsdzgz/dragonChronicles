@@ -117,6 +117,7 @@ export async function createScrollingBackground(
     maxHealth: number;
   }> = [];
   const projectiles: Array<Projectile> = [];
+  const projectileTargets: Map<Projectile, any> = new Map(); // Track which projectile targets which enemy
   let isGameplayActive = false;
   let autoSpawnInterval: number | null = null;
   let projectileUpdateLoop: number | null = null;
@@ -525,34 +526,72 @@ export async function createScrollingBackground(
     try {
       const projectileType = getDragonProjectileType();
       const collisionCallback = (projectileSprite: Sprite) => {
-        const projectileBounds = projectileSprite.getBounds();
-
-        for (let i = enemies.length - 1; i >= 0; i--) {
-          const enemy = enemies[i];
-          const enemyBounds = enemy.sprite.getBounds();
-
-          const isColliding =
-            projectileBounds.x < enemyBounds.x + enemyBounds.width &&
-            projectileBounds.x + projectileBounds.width > enemyBounds.x &&
-            projectileBounds.y < enemyBounds.y + enemyBounds.height &&
-            projectileBounds.y + projectileBounds.height > enemyBounds.y;
-
-          if (isColliding) {
-            enemy.health -= DRAGON_BASE_DAMAGE;
-            console.log(
-              `Enemy ${enemy.type} hit for ${DRAGON_BASE_DAMAGE} damage! Health: ${enemy.health}/${enemy.maxHealth}`,
-            );
-
-            if (enemy.health <= 0) {
-              console.log(`${enemy.type} defeated!`);
-              enemy.animator.destroy();
-              app.stage.removeChild(enemy.sprite);
-              enemies.splice(i, 1);
-            }
-            return true;
-          }
+        // Only check collision with the specific target enemy (closestEnemy)
+        if (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated) {
+          return false; // Target is already defeated, don't hit
         }
-        return false;
+
+        // Use custom collision detection with individual enemy hitboxes
+        const isColliding = checkSpriteCollision(
+          projectileSprite,
+          closestEnemy.sprite,
+          closestEnemy.type,
+        );
+
+        // Log collision attempts for debugging
+        if (isColliding) {
+          console.log(`🎯 Dragon projectile HIT ${closestEnemy.type}!`);
+        }
+
+        if (isColliding) {
+          const oldHealth = closestEnemy.health;
+          closestEnemy.health -= DRAGON_BASE_DAMAGE;
+
+          // Start health bar animation
+          closestEnemy.previousHealth = oldHealth;
+          closestEnemy.healthAnimationStartTime = performance.now();
+          closestEnemy.isAnimatingHealth = true;
+
+          console.log(
+            `💥 DRAGON HIT! ${closestEnemy.type} took ${DRAGON_BASE_DAMAGE} damage! Health: ${oldHealth} -> ${closestEnemy.health}/${closestEnemy.maxHealth}`,
+          );
+
+          if (closestEnemy.health <= 0) {
+            // Mark enemy as defeated and record death time, but don't remove immediately
+            if (!closestEnemy.sprite.userData) {
+              closestEnemy.sprite.userData = {};
+            }
+            if (!closestEnemy.sprite.userData.isDefeated) {
+              closestEnemy.sprite.userData.isDefeated = true;
+              closestEnemy.sprite.userData.deathTime = performance.now();
+
+              // Award arcana based on enemy type using the proper arcana drop manager
+              const arcanaReward = closestEnemy.type === 'mantair-corsair' ? 0.03 : 0.01; // Corsairs give more arcana (0.01-0.05 range)
+              arcanaManager.dropArcana(arcanaReward, {
+                type: 'enemy_kill',
+                enemyType: closestEnemy.type,
+                timestamp: Date.now(),
+              });
+              console.log(
+                `💀 ${closestEnemy.type} DEFEATED! Awarded ${arcanaReward} arcana! Total: ${arcanaManager.getCurrentBalance()}`,
+              );
+            }
+          }
+
+          // Mark the projectile as "hit" and schedule its destruction with delay
+          if (!projectileSprite.userData) {
+            projectileSprite.userData = {};
+          }
+          if (!projectileSprite.userData.hasHit) {
+            projectileSprite.userData.hasHit = true;
+            projectileSprite.userData.hitTime = performance.now();
+            console.log(`⚡ Projectile piercing through ${closestEnemy.type} for 0.07 seconds...`);
+          }
+          return false; // Don't destroy projectile immediately - let it pierce through
+        }
+        // If no collision with any enemy, projectile MISSES and continues traveling
+        console.log(`💨 Projectile MISSED - continuing forward`);
+        return false; // Continue traveling
       };
 
       const projectile = await createProjectile(
@@ -567,7 +606,26 @@ export async function createScrollingBackground(
       );
 
       projectile.setFPS(8);
+
+      // Enable homing behavior - projectile will follow the target enemy
+      projectile.enableHoming(() => {
+        // Find the enemy in the current enemies array to check its current state
+        const currentEnemy = enemies.find(
+          (enemy) => enemy.sprite === closestEnemy.sprite && !enemy.sprite.userData?.isDefeated,
+        );
+
+        if (!currentEnemy) {
+          return null; // Enemy is defeated or no longer exists, disable homing
+        }
+
+        return {
+          x: currentEnemy.sprite.x,
+          y: currentEnemy.sprite.y,
+        };
+      });
+
       projectiles.push(projectile);
+      projectileTargets.set(projectile, closestEnemy); // Track which enemy this projectile targets
     } catch (error) {
       console.error('Failed to fire projectile from dragon:', error);
     }
@@ -593,6 +651,12 @@ export async function createScrollingBackground(
         }
       }
 
+      // Clean up projectile targets map for destroyed projectiles
+      const destroyedProjectiles = projectiles.filter((p) => !activeProjectiles.includes(p));
+      destroyedProjectiles.forEach((projectile) => {
+        projectileTargets.delete(projectile);
+      });
+
       projectiles.length = 0;
       projectiles.push(...activeProjectiles);
 
@@ -615,6 +679,66 @@ export async function createScrollingBackground(
       lastTime = currentTime;
 
       // Update enemy movement and combat
+      const activeEnemies = [];
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
+        if (!dragonSprite) continue;
+
+        // Handle defeated enemies
+        if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
+          const timeSinceDeath = performance.now() - enemy.sprite.userData.deathTime;
+          if (timeSinceDeath >= 330) {
+            // 0.33 seconds = 330ms
+            console.log(`👻 ${enemy.type} disappearing after death delay.`);
+
+            // Destroy all projectiles targeting this enemy at the same time
+            const projectilesToDestroy: Projectile[] = [];
+            projectileTargets.forEach((targetEnemy, projectile) => {
+              if (targetEnemy === enemy) {
+                projectilesToDestroy.push(projectile);
+                projectileTargets.delete(projectile);
+              }
+            });
+
+            // Destroy the projectiles
+            projectilesToDestroy.forEach((projectile) => {
+              projectile.destroy();
+            });
+
+            enemy.animator.destroy();
+            app.stage.removeChild(enemy.sprite);
+            // Don't add to activeEnemies, effectively removing it
+          } else {
+            // Add blinking effect for defeated enemies
+            const blinkSpeed = 100; // milliseconds per blink
+            const timeSinceDeath = performance.now() - enemy.sprite.userData.deathTime;
+            const blinkPhase = Math.floor(timeSinceDeath / blinkSpeed) % 2;
+
+            // Blink between visible (alpha 1) and semi-transparent (alpha 0.3)
+            enemy.sprite.alpha = blinkPhase === 0 ? 1.0 : 0.3;
+
+            // Make projectiles targeting this defeated enemy blink in sync
+            projectileTargets.forEach((targetEnemy, projectile) => {
+              if (targetEnemy === enemy) {
+                const projectileSprite = projectile.getSprite();
+                projectileSprite.alpha = blinkPhase === 0 ? 1.0 : 0.3;
+              }
+            });
+
+            activeEnemies.push(enemy);
+          }
+        } else {
+          // Ensure living enemies have normal alpha
+          enemy.sprite.alpha = 1.0;
+          activeEnemies.push(enemy);
+        }
+      }
+
+      // Update the enemies array with only active enemies
+      enemies.length = 0;
+      enemies.push(...activeEnemies);
+
+      // Update remaining active enemies
       enemies.forEach((enemy, index) => {
         if (!dragonSprite) return;
 
@@ -737,6 +861,7 @@ export async function createScrollingBackground(
     // Clean up all projectiles
     projectiles.forEach((projectile) => projectile.destroy());
     projectiles.length = 0;
+    projectileTargets.clear();
   }
 
   return {
