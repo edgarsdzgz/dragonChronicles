@@ -58,6 +58,28 @@ export async function createScrollingBackground(
     texture = await Texture.from('/backgrounds/scrolling-background.png');
   }
 
+  // Wait for texture to be ready
+  if (texture && texture.baseTexture) {
+    if (!texture.baseTexture.valid) {
+      console.log('Waiting for texture to be ready...');
+      await new Promise<void>((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Texture loading timeout'));
+        }, 5000);
+
+        texture.baseTexture.once('loaded', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        texture.baseTexture.once('error', (error) => {
+          clearTimeout(timeout);
+          reject(error);
+        });
+      });
+    }
+  }
+
   if (!texture || !texture.width || !texture.height) {
     console.error('Failed to load background texture:', texture);
     throw new Error('Background texture failed to load');
