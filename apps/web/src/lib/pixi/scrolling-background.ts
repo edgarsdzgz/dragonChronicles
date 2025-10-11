@@ -242,6 +242,9 @@ export async function createScrollingBackground(
   const redrawDebugOverlays = async () => {
     debugGraphics.clear();
 
+    // Import Text class first
+    const { Text } = await import('pixi.js');
+
     const screenWidth = app.screen.width;
     const screenHeight = app.screen.height;
     const positioning = new BackgroundPositioning(screenWidth, screenHeight);
@@ -315,9 +318,7 @@ export async function createScrollingBackground(
     groundStartMarker.position.set(screenWidth - 200, groundTop + 5);
     debugGraphics.addChild(groundStartMarker);
 
-    // Add labels using Text objects (Graphics doesn't have text method in PixiJS v8)
-    const { Text } = await import('pixi.js');
-
+    // Add labels using Text objects
     const spaceLabel = new Text({
       text: 'SPACE (Orange)',
       style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
