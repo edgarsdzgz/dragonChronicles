@@ -17,6 +17,13 @@ import {
 import { BackgroundPositioning } from './background-analyzer';
 import { createDefaultArcanaDropManager, type ArcanaDropManager } from '@draconia/sim';
 
+// Extend window interface for background width tracking
+declare global {
+  interface Window {
+    backgroundWidth?: number;
+  }
+}
+
 export interface ScrollingBackgroundConfig {
   /** Scroll speed in pixels per second (default: 100) */
   scrollSpeed?: number;
@@ -62,6 +69,9 @@ export async function createScrollingBackground(
   let currentSpeed = scrollSpeed;
   let isActive = config.enabled ?? true;
 
+  // Store the current scale factor for game elements (must be declared early)
+  let currentScale = 1;
+
   // Create container for background sprites
   const container = new Container();
   container.label = 'scrolling-background';
@@ -69,10 +79,21 @@ export async function createScrollingBackground(
   // Add container to stage at the bottom (z-index 0)
   app.stage.addChildAt(container, 0);
 
+  // Health bars graphics
+  let healthBarsGraphics: Graphics | null = null;
+
   // Create dragon protagonist
   console.log('DEBUG: Creating dragon protagonist...');
   let dragonSprite: Sprite | null = null;
   let dragonAnimator: DragonAnimator | null = null;
+  let dragonHealth = 100;
+  let dragonMaxHealth = 100;
+  let dragonPreviousHealth = 100; // For smooth HP bar animation
+  let dragonHealthAnimationStartTime = 0; // When dragon health animation started
+  let arcanaManager: ArcanaDropManager;
+
+  // Initialize arcana drop manager
+  arcanaManager = createDefaultArcanaDropManager();
 
   try {
     const { sprite, animator } = await createAnimatedDragonSprite(app.renderer, app.stage);
@@ -80,12 +101,17 @@ export async function createScrollingBackground(
     dragonAnimator = animator;
 
     // Position dragon using background positioning utilities in the sky blue band
-    const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
-    dragonSprite.x = 100; // Left side of screen
+    // Use scaled background dimensions for accurate positioning
+    const bgWidth = 2048; // Original background width
+    const bgHeight = 1024; // Original background height
+    const scaledBgWidth = bgWidth * currentScale;
+    const scaledBgHeight = bgHeight * currentScale;
+    const positioning = new BackgroundPositioning(scaledBgWidth, scaledBgHeight);
+    dragonSprite.x = 100 * currentScale; // Left side of screen, scaled
     dragonSprite.y = positioning.getSkyBlueBandY(); // Center of sky blue band
 
-    // Scale dragon to appropriate size
-    dragonSprite.scale.set(1.5); // Make dragon visible but not too large
+    // Scale dragon to appropriate size (will be updated by scaleGameElements)
+    dragonSprite.scale.set(1.5); // Base scale, will be multiplied by currentScale
 
     // Add dragon to stage (above background)
     app.stage.addChild(dragonSprite);
@@ -116,32 +142,16 @@ export async function createScrollingBackground(
     fireRate: number;
     health: number;
     maxHealth: number;
-    previousHealth: number;
-    healthAnimationStartTime: number;
-    isAnimatingHealth: boolean;
   }> = [];
   const projectiles: Array<Projectile> = [];
   const projectileTargets: Map<Projectile, any> = new Map(); // Track which projectile targets which enemy
   let isGameplayActive = false;
-
-  // Arcana and health systems
-  let arcanaManager: ArcanaDropManager;
-  let dragonHealth = 100;
-  let dragonMaxHealth = 100;
-  let dragonPreviousHealth = 100;
-  let dragonHealthAnimationStartTime = 0;
-
-  // Health bars graphics
-  let healthBarsGraphics: Graphics | null = null;
   let autoSpawnInterval: number | null = null;
   let projectileUpdateLoop: number | null = null;
   let combatUpdateLoop: number | null = null;
 
-  // Initialize arcana manager
-  arcanaManager = createDefaultArcanaDropManager();
-
   // Combat constants
-  const DRAGON_ATTACK_RANGE = 1100; // Increased by 175%
+  const DRAGON_ATTACK_RANGE = 1100; // Increased by 175% (400 * 2.75 = 1100)
   const ENEMY_ATTACK_RANGE = 300;
   const ENEMY_MOVE_SPEED = 50;
   const DRAGON_BASE_DAMAGE = 5;
@@ -155,6 +165,265 @@ export async function createScrollingBackground(
     enemyTypes: ['mantair-corsair', 'swarm'] as EnemyType[],
     maxEnemies: 8,
   };
+
+  // Offscreen spawning area to prevent tearing and enable smooth enemy entry
+  const OFFSCREEN_SPAWN_BUFFER = 300; // Extra space to the right for spawning (was 200, now 300)
+
+  // Custom collision detection using individual hitboxes per enemy type
+  function checkSpriteCollision(
+    projectileSprite: Sprite,
+    enemySprite: Sprite,
+    enemyType?: EnemyType,
+  ): boolean {
+    // Get projectile center position for more accurate collision
+    const projectileBounds = projectileSprite.getBounds();
+    const projectileCenterX = projectileBounds.x + projectileBounds.width / 2;
+    const projectileCenterY = projectileBounds.y + projectileBounds.height / 2;
+
+    // Calculate custom hitbox based on enemy type
+    let enemyHitbox = enemySprite.getBounds();
+
+    if (enemyType) {
+      const spriteWidth = enemySprite.width;
+      const spriteHeight = enemySprite.height;
+
+      // Create 50% size square hitbox centered on sprite
+      const hitboxSize = Math.min(spriteWidth, spriteHeight) * 0.5; // 50% of smaller dimension
+      const offsetX = (spriteWidth - hitboxSize) / 2;
+      const offsetY = (spriteHeight - hitboxSize) / 2;
+
+      enemyHitbox = {
+        x: enemySprite.x - offsetX,
+        y: enemySprite.y - offsetY,
+        width: hitboxSize,
+        height: hitboxSize,
+      };
+
+      console.log(
+        `🎯 ${enemyType} hitbox: ${hitboxSize.toFixed(1)}x${hitboxSize.toFixed(1)} (50% of ${Math.min(spriteWidth, spriteHeight).toFixed(1)})`,
+      );
+    }
+
+    // Option 1: Center-point collision (most accurate)
+    // Projectile hits when its center point enters the enemy hitbox
+    const projectileCenterInHitbox =
+      projectileCenterX >= enemyHitbox.x &&
+      projectileCenterX <= enemyHitbox.x + enemyHitbox.width &&
+      projectileCenterY >= enemyHitbox.y &&
+      projectileCenterY <= enemyHitbox.y + enemyHitbox.height;
+
+    // Option 2: Traditional AABB collision (more forgiving)
+    // Projectile hits when any part touches the hitbox
+    const projectileIntersectsHitbox =
+      projectileBounds.x < enemyHitbox.x + enemyHitbox.width &&
+      projectileBounds.x + projectileBounds.width > enemyHitbox.x &&
+      projectileBounds.y < enemyHitbox.y + enemyHitbox.height &&
+      projectileBounds.y + projectileBounds.height > enemyHitbox.y;
+
+    // Choose collision method based on your preference:
+    // - Use only projectileCenterInHitbox for precise center-point collision
+    // - Use only projectileIntersectsHitbox for traditional collision
+    // - Use both for hybrid approach (current setting)
+    const isColliding = projectileCenterInHitbox; // Change this line to choose method
+
+    if (isColliding) {
+      console.log(
+        `🎯 Collision: Center in hitbox: ${projectileCenterInHitbox}, Intersects: ${projectileIntersectsHitbox}`,
+      );
+    }
+
+    return isColliding;
+  }
+
+  // Draw health bars for dragon and enemies
+  function drawHealthBars() {
+    if (!app || (!dragonSprite && enemies.length === 0)) {
+      // Hide health bars if no dragon or enemies
+      if (healthBarsGraphics) {
+        healthBarsGraphics.visible = false;
+      }
+      return;
+    }
+
+    // Create graphics object if it doesn't exist
+    if (!healthBarsGraphics) {
+      healthBarsGraphics = new Graphics();
+      app.stage.addChild(healthBarsGraphics);
+    }
+
+    // Clear previous drawing
+    healthBarsGraphics.clear();
+
+    // Draw health bar for dragon
+    if (dragonSprite) {
+      const barWidth = 60 * currentScale; // Scale health bar width
+      const barHeight = 8 * currentScale; // Scale health bar height
+      const barX = dragonSprite.x - barWidth / 2;
+      const barY = dragonSprite.y - 60 * currentScale; // Position above dragon, scaled
+
+      // Calculate health percentage with smooth animation
+      const currentHealthPercent = Math.max(0, dragonHealth / dragonMaxHealth);
+      const previousHealthPercent = Math.max(0, dragonPreviousHealth / dragonMaxHealth);
+
+      // Animate health bar if there's a difference
+      let displayHealthPercent = currentHealthPercent;
+      if (dragonPreviousHealth !== dragonHealth && dragonHealthAnimationStartTime > 0) {
+        const animationDuration = 500; // 0.5 seconds
+        const timeSinceDamage = performance.now() - dragonHealthAnimationStartTime;
+        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
+
+        // Smooth interpolation from previous to current health
+        displayHealthPercent =
+          previousHealthPercent +
+          (currentHealthPercent - previousHealthPercent) * animationProgress;
+
+        // Update previous health to current after animation completes
+        if (animationProgress >= 1) {
+          dragonPreviousHealth = dragonHealth;
+          dragonHealthAnimationStartTime = 0; // Reset animation
+        }
+      }
+
+      // Background bar (black)
+      healthBarsGraphics
+        .rect(barX, barY, barWidth, barHeight)
+        .fill({ color: 0x000000, alpha: 0.8 });
+
+      // Health bar (green to yellow to red based on health)
+      if (displayHealthPercent > 0) {
+        let healthColor = 0x00ff00; // Green
+        if (displayHealthPercent < 0.6) {
+          healthColor = 0xffff00; // Yellow
+        }
+        if (displayHealthPercent < 0.3) {
+          healthColor = 0xff4500; // Orange-red
+        }
+
+        const currentBarWidth = barWidth * displayHealthPercent;
+        healthBarsGraphics
+          .rect(barX, barY, currentBarWidth, barHeight)
+          .fill({ color: healthColor, alpha: 0.9 });
+      }
+
+      // Border around health bar
+      healthBarsGraphics
+        .rect(barX, barY, barWidth, barHeight)
+        .stroke({ width: 1, color: 0x000000, alpha: 0.8 });
+    }
+
+    // Draw health bars for enemies
+    enemies.forEach((enemy) => {
+      if (!healthBarsGraphics) return;
+
+      // Skip health bars for defeated enemies (they're flashing and about to disappear)
+      if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
+        return;
+      }
+
+      const barWidth = 40 * currentScale; // Scale health bar width
+      const barHeight = 6 * currentScale; // Scale health bar height
+      const barX = enemy.sprite.x - barWidth / 2;
+      const barY = enemy.sprite.y - 40 * currentScale; // Position above enemy, scaled
+
+      // Calculate health percentage with smooth animation
+      const currentHealthPercent = Math.max(0, enemy.health / enemy.maxHealth);
+      const previousHealthPercent = Math.max(0, enemy.previousHealth / enemy.maxHealth);
+
+      // Animate health bar if there's a difference
+      let displayHealthPercent = currentHealthPercent;
+      if (enemy.isAnimatingHealth && enemy.healthAnimationStartTime > 0) {
+        const animationDuration = 500; // 0.5 seconds
+        const timeSinceDamage = performance.now() - enemy.healthAnimationStartTime;
+        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
+
+        // Smooth interpolation from previous to current health
+        displayHealthPercent =
+          previousHealthPercent +
+          (currentHealthPercent - previousHealthPercent) * animationProgress;
+
+        // Update previous health to current after animation completes
+        if (animationProgress >= 1) {
+          enemy.previousHealth = enemy.health;
+          enemy.isAnimatingHealth = false;
+          enemy.healthAnimationStartTime = 0; // Reset animation
+        }
+      }
+
+      // Background bar (black)
+      healthBarsGraphics
+        .rect(barX, barY, barWidth, barHeight)
+        .fill({ color: 0x000000, alpha: 0.8 });
+
+      // Health bar (red to orange based on health)
+      if (displayHealthPercent > 0) {
+        let healthColor = 0xff0000; // Red
+        if (displayHealthPercent < 0.5) {
+          healthColor = 0xff4500; // Orange-red
+        }
+
+        const currentBarWidth = barWidth * displayHealthPercent;
+        healthBarsGraphics
+          .rect(barX, barY, currentBarWidth, barHeight)
+          .fill({ color: healthColor, alpha: 0.9 });
+      }
+
+      // Border around health bar
+      healthBarsGraphics
+        .rect(barX, barY, barWidth, barHeight)
+        .stroke({ width: 1, color: 0x000000, alpha: 0.8 });
+    });
+
+    healthBarsGraphics.visible = true;
+  }
+
+  // Function to draw arcana counter with multiple font options
+  async function drawArcanaCounter() {
+    if (!app) return;
+
+    // Import Text from PixiJS
+    const { Text } = await import('pixi.js');
+
+    // Remove existing arcana counters if they exist
+    const existingCounters = app.stage.children.filter((child) =>
+      child.name?.startsWith('arcana-counter'),
+    );
+    existingCounters.forEach((counter) => app.stage.removeChild(counter));
+
+    // Selected font option - Cinzel (option 1)
+    const fontOptions = [
+      { name: 'Cinzel', style: 'Cinzel, serif', color: 0xffd700 }, // Selected elegant serif font
+    ];
+
+    // Position for arcana counters horizontally across the "space" area
+    const startX = 20 * currentScale;
+    const startY = 20 * currentScale; // Top of the space area
+    const horizontalSpacing = 180 * currentScale; // Space between each font option
+
+    fontOptions.forEach((font, index) => {
+      const arcanaText = new Text({
+        text: `Arcana: ${arcanaManager.getCurrentBalance().toFixed(2)}`,
+        style: {
+          fontFamily: font.style,
+          fontSize: 18 * currentScale, // Increased from 16 to 18 (2 points larger)
+          fill: font.color,
+          stroke: { color: 0x000000, width: 1 },
+          dropShadow: {
+            color: 0x000000,
+            blur: 2,
+            angle: Math.PI / 4,
+            distance: 2,
+          },
+        },
+      });
+
+      arcanaText.name = `arcana-counter-${index}`;
+      arcanaText.x = startX + index * horizontalSpacing;
+      arcanaText.y = startY;
+      arcanaText.anchor.set(0, 0); // Top-left anchor
+
+      app.stage.addChild(arcanaText);
+    });
+  }
 
   // Load the background texture using Assets API for better reliability
   console.log('Loading background texture from: /backgrounds/steppe_background_2-1.png');
@@ -219,31 +488,97 @@ export async function createScrollingBackground(
     sourceValid: texture.source?.valid,
   });
 
-  // Create two sprites for seamless tiling
+  // Create two sprites for seamless tiling with anti-tearing optimizations
   // The image is 2160x1080, perfect for tiling horizontally
   const sprite1 = new Sprite(texture);
   const sprite2 = new Sprite(texture);
 
-  // Position sprites side by side
-  sprite1.position.set(0, 0);
-  sprite2.position.set(texture.width, 0);
+  // Enable pixel-perfect rendering to prevent tearing
+  sprite1.roundPixels = true;
+  sprite2.roundPixels = true;
 
-  // Scale sprites to fill the screen height
+  // Position sprites side by side for seamless tiling
+  sprite1.position.set(0, 0);
+  sprite2.position.set(0, 0); // Will be positioned after scaling
+
+  // Scale sprites to cover the entire screen while maintaining aspect ratio
   const scaleToFit = () => {
+    const screenWidth = app.screen.width;
     const screenHeight = app.screen.height;
+    const bgWidth = texture.width;
     const bgHeight = texture.height;
 
-    // Scale to fill screen height
-    const scale = screenHeight / bgHeight;
+    // Calculate scale factors for both dimensions
+    const scaleX = screenWidth / bgWidth;
+    const scaleY = screenHeight / bgHeight;
+
+    // Use the smaller scale to fit within the screen (like CLICKPOCALYPSE 2)
+    // This allows empty space instead of cutting off content
+    const scale = Math.min(scaleX, scaleY);
+
+    console.log(
+      `🖥️ Responsive scaling: Screen(${screenWidth}x${screenHeight}), BG(${bgWidth}x${bgHeight}), Scale: ${scale.toFixed(2)}`,
+    );
+
+    // Store the scale factor for game elements
+    currentScale = scale;
+
     sprite1.scale.set(scale);
     sprite2.scale.set(scale);
 
-    // Reposition sprite2 to be adjacent to sprite1
-    sprite2.position.x = sprite1.width;
+    // Create seamless loop with proper sprite positioning and anti-tearing
+    const spriteWidth = Math.floor(sprite1.width); // Ensure integer width
+    sprite2.position.x = spriteWidth; // Position second sprite right after first with pixel-perfect alignment
 
-    // Center vertically if needed
+    // Center the background within the screen (it will now be smaller than or equal to screen)
+    const scaledBgWidth = sprite1.width;
+    const scaledBgHeight = sprite1.height;
+
+    // Center horizontally (background is now smaller than screen width)
+    container.position.x = (screenWidth - scaledBgWidth) / 2;
+
+    // Align to top - put all extra space at the bottom
     container.position.y = 0;
+
+    // Store the total background width for offscreen spawning calculations
+    window.backgroundWidth = sprite1.width;
+
+    // Scale all game elements to match the background
+    scaleGameElements();
   };
+
+  // Scale all game elements to match the background scaling
+  function scaleGameElements() {
+    // Calculate actual scaled background dimensions
+    const bgWidth = 2048; // Original background width
+    const bgHeight = 1024; // Original background height
+    const scaledBgWidth = bgWidth * currentScale;
+    const scaledBgHeight = bgHeight * currentScale;
+
+    // Scale dragon
+    if (dragonSprite) {
+      dragonSprite.scale.set(1.5 * currentScale); // Base scale * background scale
+      // Reposition dragon to match scaled coordinate system using actual background dimensions
+      const positioning = new BackgroundPositioning(scaledBgWidth, scaledBgHeight);
+      dragonSprite.x = 100 * currentScale; // Scale the fixed position
+      dragonSprite.y = positioning.getSkyBlueBandY();
+    }
+
+    // Scale all enemies
+    enemies.forEach((enemy) => {
+      enemy.sprite.scale.set(currentScale); // Scale enemy sprites
+    });
+
+    // Scale all projectiles
+    projectiles.forEach((projectile) => {
+      const projectileSprite = projectile.getSprite();
+      projectileSprite.scale.set(currentScale); // Scale projectile sprites
+    });
+
+    // Redraw health bars to match new scale
+    drawHealthBars();
+    drawArcanaCounter();
+  }
 
   scaleToFit();
 
@@ -251,179 +586,79 @@ export async function createScrollingBackground(
   container.addChild(sprite1);
   container.addChild(sprite2);
 
-  // Create visual debugging overlays
-  const debugGraphics = new Graphics();
-  debugGraphics.label = 'debug-overlays';
-  app.stage.addChild(debugGraphics);
-
-  // Function to redraw debug overlays
-  const redrawDebugOverlays = async () => {
-    debugGraphics.clear();
-
-    // Import Text class first
-    const { Text } = await import('pixi.js');
-
-    const screenWidth = app.screen.width;
-    const screenHeight = app.screen.height;
-    const positioning = new BackgroundPositioning(screenWidth, screenHeight);
-
-    // Draw horizontal ruler lines every 25 pixels with labels
-    debugGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
-    for (let y = 0; y < screenHeight; y += 25) {
-      debugGraphics.moveTo(0, y).lineTo(screenWidth, y);
-
-      // Add pixel labels every 100 pixels
-      if (y % 100 === 0) {
-        const pixelLabel = new Text({
-          text: `${y}px`,
-          style: { fontSize: 10, fill: 0x000000, fontWeight: 'bold' },
-        });
-        pixelLabel.position.set(5, y + 2);
-        debugGraphics.addChild(pixelLabel);
-      }
-    }
-
-    // Draw vertical ruler lines every 100 pixels
-    debugGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.6 });
-    for (let x = 0; x < screenWidth; x += 100) {
-      debugGraphics.moveTo(x, 0).lineTo(x, screenHeight);
-    }
-
-    // Draw colored overlay boxes for each area with precise measurements
-    // Space area (dark blue) - Orange overlay
-    const spaceTop = 0;
-    const spaceBottom = positioning.getActionAreaTopY();
-    debugGraphics.rect(0, spaceTop, screenWidth, spaceBottom - spaceTop);
-    debugGraphics.fill({ color: 0xffa500, alpha: 0.1 }); // Orange, very low opacity
-    debugGraphics.stroke({ width: 2, color: 0xffa500, alpha: 0.3 });
-
-    // Sky blue band (combat area) - White overlay
-    const skyTop = positioning.getActionAreaTopY();
-    const skyBottom = positioning.getActionAreaBottomY();
-    debugGraphics.rect(0, skyTop, screenWidth, skyBottom - skyTop);
-    debugGraphics.fill({ color: 0xffffff, alpha: 0.1 }); // White, very low opacity
-    debugGraphics.stroke({ width: 2, color: 0xffffff, alpha: 0.3 });
-
-    // Ground area (magenta) - Purple overlay
-    const groundTop = positioning.getGroundY();
-    const groundBottom = screenHeight;
-    debugGraphics.rect(0, groundTop, screenWidth, groundBottom - groundTop);
-    debugGraphics.fill({ color: 0x800080, alpha: 0.1 }); // Purple, very low opacity
-    debugGraphics.stroke({ width: 2, color: 0x800080, alpha: 0.3 });
-
-    // Add boundary markers with exact pixel measurements
-    // Space-Sky boundary marker
-    const spaceSkyMarker = new Text({
-      text: `SPACE END: ${spaceBottom}px (${((spaceBottom / screenHeight) * 100).toFixed(1)}%)`,
-      style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
-    });
-    spaceSkyMarker.position.set(screenWidth - 200, spaceBottom + 5);
-    debugGraphics.addChild(spaceSkyMarker);
-
-    // Sky-Ground boundary marker
-    const skyGroundMarker = new Text({
-      text: `SKY END: ${skyBottom}px (${((skyBottom / screenHeight) * 100).toFixed(1)}%)`,
-      style: { fontSize: 12, fill: 0xffffff, fontWeight: 'bold' },
-    });
-    skyGroundMarker.position.set(screenWidth - 200, skyBottom + 5);
-    debugGraphics.addChild(skyGroundMarker);
-
-    // Ground start marker
-    const groundStartMarker = new Text({
-      text: `GROUND START: ${groundTop}px (${((groundTop / screenHeight) * 100).toFixed(1)}%)`,
-      style: { fontSize: 12, fill: 0x800080, fontWeight: 'bold' },
-    });
-    groundStartMarker.position.set(screenWidth - 200, groundTop + 5);
-    debugGraphics.addChild(groundStartMarker);
-
-    // Add labels using Text objects
-    const spaceLabel = new Text({
-      text: 'SPACE (Orange)',
-      style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
-    });
-    spaceLabel.position.set(10, spaceTop + 10);
-    debugGraphics.addChild(spaceLabel);
-
-    const skyLabel = new Text({
-      text: 'SKY BLUE BAND (White)',
-      style: { fontSize: 12, fill: 0xffffff, fontWeight: 'bold' },
-    });
-    skyLabel.position.set(10, skyTop + 10);
-    debugGraphics.addChild(skyLabel);
-
-    const groundLabel = new Text({
-      text: 'GROUND (Purple)',
-      style: { fontSize: 12, fill: 0x800080, fontWeight: 'bold' },
-    });
-    groundLabel.position.set(10, groundTop + 10);
-    debugGraphics.addChild(groundLabel);
-
-    // Show dragon position indicator
-    if (dragonSprite) {
-      debugGraphics.stroke({ width: 3, color: 0xff0000, alpha: 0.8 });
-      debugGraphics.circle(dragonSprite.x, dragonSprite.y, 20);
-      const dragonLabel = new Text({
-        text: 'DRAGON',
-        style: { fontSize: 10, fill: 0xff0000, fontWeight: 'bold' },
-      });
-      dragonLabel.position.set(dragonSprite.x + 25, dragonSprite.y - 10);
-      debugGraphics.addChild(dragonLabel);
-    }
-
-    console.log('Debug overlays drawn:', {
-      screenWidth,
-      screenHeight,
-      spaceArea: { top: spaceTop, bottom: spaceBottom, height: spaceBottom - spaceTop },
-      skyArea: { top: skyTop, bottom: skyBottom, height: skyBottom - skyTop },
-      groundArea: { top: groundTop, bottom: groundBottom, height: groundBottom - groundTop },
-      dragonPosition: dragonSprite ? { x: dragonSprite.x, y: dragonSprite.y } : null,
-    });
-  };
-
-  // Initial draw
-  await redrawDebugOverlays();
-
   // Track position for infinite scrolling
   let offset = 0;
 
-  // Scrolling animation
+  // Scrolling animation with advanced anti-tearing logic
   const onTick = (ticker: { deltaTime: number; deltaMS: number }) => {
     if (!isActive) return;
 
     // Calculate scroll amount based on time elapsed
-    // deltaMS is in milliseconds, so convert speed from px/sec to px/ms
     const scrollAmount = (currentSpeed / 1000) * ticker.deltaMS;
 
     // Move left (negative direction for right-to-left scrolling)
     offset -= scrollAmount;
 
-    // When sprite1 moves completely off screen to the left, reset it to the right
-    const spriteWidth = sprite1.width;
-    if (offset <= -spriteWidth) {
-      offset += spriteWidth;
+    // Get the actual scaled sprite width (this is critical for seamless looping)
+    const spriteWidth = Math.floor(sprite1.width); // Force integer width
+
+    // Ultra-aggressive anti-tearing loop with larger buffer zone
+    // Use a 5-pixel buffer to completely eliminate edge-case tearing
+    const resetThreshold = -spriteWidth + 5;
+
+    if (offset <= resetThreshold) {
+      // Reset offset to create seamless loop
+      // Use modulo to handle any accumulated floating-point errors
+      offset = offset % spriteWidth;
+
+      // Ensure offset is always within bounds and is an integer
+      if (offset < -spriteWidth) {
+        offset = offset + spriteWidth;
+      }
+
+      // Round to nearest integer to prevent sub-pixel positioning
+      offset = Math.round(offset);
+
+      // Final safety check - if somehow still out of bounds, reset to 0
+      if (offset < -spriteWidth || offset > 0) {
+        console.warn('Background loop reset failed, forcing offset to 0');
+        offset = 0;
+      }
     }
 
-    // Update sprite positions
-    sprite1.position.x = offset;
-    sprite2.position.x = offset + spriteWidth;
+    // Position sprites with pixel-perfect positioning
+    // Use consistent integer positioning to prevent tearing
+    const sprite1X = Math.round(offset);
+    const sprite2X = Math.round(offset + spriteWidth);
+
+    sprite1.position.x = sprite1X;
+    sprite2.position.x = sprite2X;
+
+    // Debug: Log sprite positions occasionally to check for tearing
+    if (Math.floor(Math.abs(offset)) % 100 === 0) {
+      console.log(
+        `🌅 Background offset: ${offset.toFixed(1)}, sprite1: ${sprite1X}, sprite2: ${sprite2X}, width: ${spriteWidth}`,
+      );
+    }
+
+    // Update background width for offscreen spawning
+    window.backgroundWidth = spriteWidth;
   };
 
-  // Add ticker
+  // Add ticker with frame rate limiting and additional anti-tearing measures
+  app.ticker.maxFPS = 60; // Limit to 60 FPS to match common monitor refresh rates
+
+  // Note: roundPixels is read-only in PixiJS v8, handled at sprite level instead
+  // app.renderer.roundPixels = true; // This would cause a TypeError
+
   app.ticker.add(onTick);
 
   // Handle resize
-  const onResize = async () => {
+  const onResize = () => {
     scaleToFit();
 
-    // Reposition dragon on resize
-    if (dragonSprite) {
-      const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
-      dragonSprite.x = 100; // Keep at left side
-      dragonSprite.y = positioning.getSkyBlueBandY(); // Reposition in sky blue band
-    }
-
-    // Redraw debug overlays on resize
-    await redrawDebugOverlays();
+    // Scale all game elements to match the new background scale
+    scaleGameElements();
   };
 
   app.renderer.on('resize', onResize);
@@ -435,9 +670,15 @@ export async function createScrollingBackground(
     try {
       const { sprite, animator } = await createAnimatedEnemySprite(type, app.renderer, app.stage);
 
-      // Position enemy on right side of screen, but only in the sky action area
-      const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
-      const spawnX = app.screen.width - 100;
+      // Position enemy offscreen to the right for smooth entry
+      // Use scaled background dimensions for accurate positioning
+      const bgWidth = 2048; // Original background width
+      const bgHeight = 1024; // Original background height
+      const scaledBgWidth = bgWidth * currentScale;
+      const scaledBgHeight = bgHeight * currentScale;
+      const positioning = new BackgroundPositioning(scaledBgWidth, scaledBgHeight);
+      // Spawn offscreen to the right, accounting for scaled background width and buffer
+      const spawnX = scaledBgWidth + OFFSCREEN_SPAWN_BUFFER;
 
       // Spawn only in the sky blue band (action area)
       const actionAreaTop = positioning.getActionAreaTopY();
@@ -445,7 +686,7 @@ export async function createScrollingBackground(
       const spawnY = actionAreaTop + Math.random() * (actionAreaBottom - actionAreaTop);
 
       sprite.position.set(spawnX, spawnY);
-      sprite.scale.set(0.75);
+      sprite.scale.set(currentScale); // Scale to match background
       sprite.visible = true;
 
       app.stage.addChild(sprite);
@@ -490,28 +731,30 @@ export async function createScrollingBackground(
       const projectileType = getProjectileTypeForEnemy(enemy.type);
       const collisionCallback = (projectileSprite: Sprite) => {
         if (!dragonSprite) return false;
-        const projectileBounds = projectileSprite.getBounds();
-        const dragonBounds = dragonSprite.getBounds();
 
-        const isColliding =
-          projectileBounds.x < dragonBounds.x + dragonBounds.width &&
-          projectileBounds.x + projectileBounds.width > dragonBounds.x &&
-          projectileBounds.y < dragonBounds.y + dragonBounds.height &&
-          projectileBounds.y + projectileBounds.height > dragonBounds.y;
+        // Use custom collision detection with hit areas
+        const isColliding = checkSpriteCollision(projectileSprite, dragonSprite);
 
         if (isColliding) {
-          console.log('Dragon hit by enemy projectile!');
           const oldHealth = dragonHealth;
           dragonHealth -= 10; // Enemy projectile damage
 
-          // Start health bar animation
+          // Start dragon health bar animation
           dragonPreviousHealth = oldHealth;
           dragonHealthAnimationStartTime = performance.now();
 
           console.log(
             `💥 DRAGON HIT by ${enemy.type}! Took 10 damage! Health: ${oldHealth} -> ${dragonHealth}/${dragonMaxHealth}`,
           );
-          return true;
+
+          // Mark projectile as hit and set pierce timer
+          if (!projectileSprite.userData) {
+            projectileSprite.userData = {};
+          }
+          projectileSprite.userData.hasHit = true;
+          projectileSprite.userData.hitTime = performance.now();
+
+          return false; // Allow piercing effect
         }
         return false;
       };
@@ -528,6 +771,11 @@ export async function createScrollingBackground(
       );
 
       projectile.setFPS(8);
+
+      // Scale the new projectile to match current game scale
+      const projectileSprite = projectile.getSprite();
+      projectileSprite.scale.set(currentScale);
+
       projectiles.push(projectile);
     } catch (error) {
       console.error(`Failed to fire projectile from enemy:`, error);
@@ -542,6 +790,11 @@ export async function createScrollingBackground(
     let closestDistance = Infinity;
 
     enemies.forEach((enemy) => {
+      // Skip defeated enemies when selecting target
+      if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
+        return;
+      }
+
       const dx = enemy.x - dragonSprite!.x;
       const dy = enemy.y - dragonSprite!.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -552,6 +805,11 @@ export async function createScrollingBackground(
     });
 
     if (closestDistance > DRAGON_ATTACK_RANGE) return;
+
+    // Double-check that the closest enemy is not defeated
+    if (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated) {
+      return;
+    }
 
     try {
       const projectileType = getDragonProjectileType();
@@ -628,14 +886,12 @@ export async function createScrollingBackground(
         projectileType,
         dragonSprite.x,
         dragonSprite.y,
-        closestEnemy.x,
-        closestEnemy.y,
+        closestEnemy.sprite.x, // Use sprite center position for accurate aiming
+        closestEnemy.sprite.y, // Use sprite center position for accurate aiming
         app.renderer,
         app.stage,
         collisionCallback,
       );
-
-      projectile.setFPS(8);
 
       // Enable homing behavior - projectile will follow the target enemy
       projectile.enableHoming(() => {
@@ -654,30 +910,107 @@ export async function createScrollingBackground(
         };
       });
 
+      projectile.setFPS(8);
+
+      // Scale the new projectile to match current game scale
+      const projectileSprite = projectile.getSprite();
+      projectileSprite.scale.set(currentScale);
+
       projectiles.push(projectile);
       projectileTargets.set(projectile, closestEnemy); // Track which enemy this projectile targets
+      console.log(
+        `🚀 Dragon homing projectile created and added to array. Total projectiles: ${projectiles.length}`,
+      );
     } catch (error) {
       console.error('Failed to fire projectile from dragon:', error);
     }
   }
 
   function startProjectileUpdateLoop() {
-    if (projectileUpdateLoop) return;
+    if (projectileUpdateLoop) {
+      console.log('⚠️ Projectile update loop already running');
+      return;
+    }
 
+    console.log('🚀 Starting projectile update loop...');
     let lastTime = performance.now();
+    let frameCount = 0;
 
     function updateProjectiles() {
       if (!app) return;
+
+      frameCount++;
+      if (frameCount % 60 === 0) {
+        // Log every 60 frames (roughly once per second)
+        console.log(`🔄 Projectile update loop running... frame ${frameCount}`);
+      }
 
       const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
 
       const activeProjectiles = [];
+      if (projectiles.length > 0) {
+        console.log(`🔄 Updating ${projectiles.length} projectiles...`);
+      }
+
       for (const projectile of projectiles) {
-        const stillActive = projectile.update(deltaTime);
-        if (stillActive) {
-          activeProjectiles.push(projectile);
+        try {
+          const projectileSprite = projectile.getSprite();
+
+          // Check if projectile sprite is valid before proceeding
+          if (!projectileSprite) {
+            console.log(`⚠️ Projectile sprite is null, destroying projectile`);
+            projectile.destroy();
+            continue;
+          }
+
+          // Check if projectile has hit and should be destroyed after pierce timer
+          if (projectileSprite.userData && projectileSprite.userData.hasHit) {
+            const hitTime = projectileSprite.userData.hitTime;
+            const timeSinceHit = performance.now() - hitTime;
+
+            if (timeSinceHit >= 70) {
+              // 0.07 seconds = 70ms
+              console.log(`⚡ Projectile pierce timer expired, destroying projectile`);
+              projectile.destroy();
+              continue; // Skip adding to active projectiles
+            }
+          }
+
+          const stillActive = projectile.update(deltaTime);
+
+          // Always keep projectiles active unless they've been explicitly marked for destruction
+          // This ensures projectiles continue traveling even when they "miss" according to internal logic
+
+          // Re-get sprite after update in case it was modified
+          const currentProjectileSprite = projectile.getSprite();
+          if (!currentProjectileSprite) {
+            console.log(`⚠️ Projectile sprite became null after update, destroying projectile`);
+            projectile.destroy();
+            continue;
+          }
+
+          // Check if projectile is offscreen (missed) and should be despawned
+          const screenWidth = app.screen.width;
+          const offscreenBuffer = 100; // Extra buffer beyond screen edge
+
+          if (currentProjectileSprite.x > screenWidth + offscreenBuffer) {
+            console.log(`💨 Projectile went offscreen, despawning`);
+            projectile.destroy();
+          } else if (
+            stillActive ||
+            (currentProjectileSprite.userData && !currentProjectileSprite.userData.hasHit)
+          ) {
+            // Keep projectile active if:
+            // 1. It's still active according to internal logic, OR
+            // 2. It hasn't hit anything yet (allows missed projectiles to continue)
+            activeProjectiles.push(projectile);
+          }
+        } catch (error) {
+          console.error('Error updating projectile:', error);
+          // Remove the problematic projectile
+          projectile.destroy();
         }
       }
 
@@ -708,13 +1041,10 @@ export async function createScrollingBackground(
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
 
-      // Update enemy movement and combat
+      // Remove defeated enemies after their death delay
       const activeEnemies = [];
       for (let i = enemies.length - 1; i >= 0; i--) {
         const enemy = enemies[i];
-        if (!dragonSprite) continue;
-
-        // Handle defeated enemies
         if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
           const timeSinceDeath = performance.now() - enemy.sprite.userData.deathTime;
           if (timeSinceDeath >= 330) {
@@ -763,14 +1093,17 @@ export async function createScrollingBackground(
           activeEnemies.push(enemy);
         }
       }
-
-      // Update the enemies array with only active enemies
       enemies.length = 0;
       enemies.push(...activeEnemies);
 
-      // Update remaining active enemies
+      // Update enemy movement and combat
       enemies.forEach((enemy, index) => {
         if (!dragonSprite) return;
+
+        // Skip movement and combat for defeated enemies
+        if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
+          return;
+        }
 
         const dx = dragonSprite.x - enemy.x;
         const dy = dragonSprite.y - enemy.y;
@@ -811,7 +1144,7 @@ export async function createScrollingBackground(
         }
       }
 
-      // Update UI elements
+      // Update health bars and arcana counter
       drawHealthBars();
       drawArcanaCounter();
 
@@ -898,159 +1231,6 @@ export async function createScrollingBackground(
     projectileTargets.clear();
   }
 
-  // Function to draw health bars with smooth animations
-  function drawHealthBars() {
-    if (!app || (!dragonSprite && enemies.length === 0)) {
-      // Hide health bars if no dragon or enemies
-      if (healthBarsGraphics) {
-        healthBarsGraphics.visible = false;
-      }
-      return;
-    }
-
-    // Create graphics object if it doesn't exist
-    if (!healthBarsGraphics) {
-      healthBarsGraphics = new Graphics();
-      app.stage.addChild(healthBarsGraphics);
-    }
-
-    healthBarsGraphics.clear();
-
-    // Get current scale for responsive sizing
-    const currentScale = app.screen.height / 512; // Based on 512px background height
-
-    // Draw dragon health bar
-    if (dragonSprite) {
-      const barWidth = 60 * currentScale;
-      const barHeight = 8 * currentScale;
-      const barX = dragonSprite.x - barWidth / 2;
-      const barY = dragonSprite.y - 40 * currentScale; // Position above dragon, scaled
-
-      // Calculate health percentage with smooth animation
-      const currentHealthPercent = Math.max(0, dragonHealth / dragonMaxHealth);
-      const previousHealthPercent = Math.max(0, dragonPreviousHealth / dragonMaxHealth);
-
-      // Animate health bar if there's a difference
-      let displayHealthPercent = currentHealthPercent;
-      if (dragonHealthAnimationStartTime > 0) {
-        const animationDuration = 500; // 0.5 seconds
-        const timeSinceDamage = performance.now() - dragonHealthAnimationStartTime;
-        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
-
-        // Smooth interpolation from previous to current health
-        displayHealthPercent =
-          previousHealthPercent +
-          (currentHealthPercent - previousHealthPercent) * animationProgress;
-
-        // Update previous health to current after animation completes
-        if (animationProgress >= 1) {
-          dragonPreviousHealth = dragonHealth;
-          dragonHealthAnimationStartTime = 0; // Reset animation
-        }
-      }
-
-      // Health bar (green to yellow to red based on health)
-      if (displayHealthPercent > 0) {
-        let healthColor = 0x00ff00; // Green
-        if (displayHealthPercent < 0.6) {
-          healthColor = 0xffff00; // Yellow
-        }
-        if (displayHealthPercent < 0.3) {
-          healthColor = 0xff4500; // Orange-red
-        }
-
-        const currentBarWidth = barWidth * displayHealthPercent;
-        healthBarsGraphics.rect(barX, barY, currentBarWidth, barHeight);
-        healthBarsGraphics.fill({ color: healthColor, alpha: 0.8 });
-      }
-
-      // Health bar background (black border)
-      healthBarsGraphics.rect(barX, barY, barWidth, barHeight);
-      healthBarsGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
-    }
-
-    // Draw enemy health bars
-    enemies.forEach((enemy) => {
-      const barWidth = 60 * currentScale;
-      const barHeight = 8 * currentScale;
-      const barX = enemy.sprite.x - barWidth / 2;
-      const barY = enemy.sprite.y - 40 * currentScale; // Position above enemy, scaled
-
-      // Calculate health percentage with smooth animation
-      const currentHealthPercent = Math.max(0, enemy.health / enemy.maxHealth);
-      const previousHealthPercent = Math.max(0, enemy.previousHealth / enemy.maxHealth);
-
-      // Animate health bar if there's a difference
-      let displayHealthPercent = currentHealthPercent;
-      if (enemy.isAnimatingHealth && enemy.healthAnimationStartTime > 0) {
-        const animationDuration = 500; // 0.5 seconds
-        const timeSinceDamage = performance.now() - enemy.healthAnimationStartTime;
-        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
-
-        // Smooth interpolation from previous to current health
-        displayHealthPercent =
-          previousHealthPercent +
-          (currentHealthPercent - previousHealthPercent) * animationProgress;
-
-        // Update previous health to current after animation completes
-        if (animationProgress >= 1) {
-          enemy.previousHealth = enemy.health;
-          enemy.isAnimatingHealth = false;
-          enemy.healthAnimationStartTime = 0; // Reset animation
-        }
-      }
-
-      // Health bar (red to orange based on health)
-      if (displayHealthPercent > 0) {
-        let healthColor = 0xff0000; // Red
-        if (displayHealthPercent < 0.5) {
-          healthColor = 0xff4500; // Orange-red
-        }
-
-        const currentBarWidth = barWidth * displayHealthPercent;
-        healthBarsGraphics.rect(barX, barY, currentBarWidth, barHeight);
-        healthBarsGraphics.fill({ color: healthColor, alpha: 0.8 });
-      }
-
-      // Health bar background (black border)
-      healthBarsGraphics.rect(barX, barY, barWidth, barHeight);
-      healthBarsGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
-    });
-
-    healthBarsGraphics.visible = true;
-  }
-
-  // Function to draw arcana counter
-  function drawArcanaCounter() {
-    if (!app) return;
-
-    // Get current scale for responsive sizing
-    const currentScale = app.screen.height / 512; // Based on 512px background height
-
-    // Create or update arcana text
-    let arcanaText = app.stage.children.find((child) => child.label === 'arcana-counter') as any;
-    if (!arcanaText) {
-      const { Text } = require('pixi.js');
-      arcanaText = new Text({
-        text: '0.00',
-        style: {
-          fontFamily: 'Cinzel',
-          fontSize: 18 * currentScale,
-          fill: 0xffff00, // Yellow color
-          fontWeight: 'bold',
-        },
-      });
-      arcanaText.label = 'arcana-counter';
-      app.stage.addChild(arcanaText);
-    }
-
-    // Update position and text
-    arcanaText.x = 20 * currentScale;
-    arcanaText.y = 20 * currentScale;
-    arcanaText.text = arcanaManager.getCurrentBalance().toFixed(2);
-    arcanaText.style.fontSize = 18 * currentScale;
-  }
-
   return {
     start: () => {
       isActive = true;
@@ -1095,14 +1275,13 @@ export async function createScrollingBackground(
         dragonSprite.destroy();
       }
 
-      container.destroy({ children: true });
-
       // Clean up health bars graphics
       if (healthBarsGraphics) {
-        app.stage.removeChild(healthBarsGraphics);
         healthBarsGraphics.destroy();
         healthBarsGraphics = null;
       }
+
+      container.destroy({ children: true });
 
       // Clean up debug graphics
       if (debugGraphics) {
