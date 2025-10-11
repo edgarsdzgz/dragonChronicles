@@ -15,6 +15,7 @@ import {
   type Projectile,
 } from './projectile-sprites';
 import { BackgroundPositioning } from './background-analyzer';
+import { createDefaultArcanaDropManager, type ArcanaDropManager } from '@draconia/sim';
 
 export interface ScrollingBackgroundConfig {
   /** Scroll speed in pixels per second (default: 100) */
@@ -115,22 +116,38 @@ export async function createScrollingBackground(
     fireRate: number;
     health: number;
     maxHealth: number;
+    previousHealth: number;
+    healthAnimationStartTime: number;
+    isAnimatingHealth: boolean;
   }> = [];
   const projectiles: Array<Projectile> = [];
   const projectileTargets: Map<Projectile, any> = new Map(); // Track which projectile targets which enemy
   let isGameplayActive = false;
+
+  // Arcana and health systems
+  let arcanaManager: ArcanaDropManager;
+  let dragonHealth = 100;
+  let dragonMaxHealth = 100;
+  let dragonPreviousHealth = 100;
+  let dragonHealthAnimationStartTime = 0;
+
+  // Health bars graphics
+  let healthBarsGraphics: Graphics | null = null;
   let autoSpawnInterval: number | null = null;
   let projectileUpdateLoop: number | null = null;
   let combatUpdateLoop: number | null = null;
 
+  // Initialize arcana manager
+  arcanaManager = createDefaultArcanaDropManager();
+
   // Combat constants
-  const DRAGON_ATTACK_RANGE = 400;
+  const DRAGON_ATTACK_RANGE = 1100; // Increased by 175%
   const ENEMY_ATTACK_RANGE = 300;
   const ENEMY_MOVE_SPEED = 50;
   const DRAGON_BASE_DAMAGE = 5;
   const ENEMY_HEALTH_CONFIG: Record<EnemyType, number> = {
-    'mantair-corsair': 12,
-    swarm: 3,
+    'mantair-corsair': 13, // 2.6 hits to kill (5 × 2.6 = 13)
+    swarm: 7, // 1.4 hits to kill (5 × 1.4 = 7)
   };
   const AUTO_SPAWN_CONFIG = {
     baseInterval: 3000,
@@ -140,13 +157,13 @@ export async function createScrollingBackground(
   };
 
   // Load the background texture using Assets API for better reliability
-  console.log('Loading background texture from: /backgrounds/steppe_background.png');
+  console.log('Loading background texture from: /backgrounds/steppe_background_2-1.png');
 
   let texture: Texture;
   try {
     // Try using Assets API first
     console.log('DEBUG: Attempting Assets.load...');
-    texture = await Assets.load('/backgrounds/steppe_background.png');
+    texture = await Assets.load('/backgrounds/steppe_background_2-1.png');
     console.log('DEBUG: Assets.load successful, texture:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -158,7 +175,7 @@ export async function createScrollingBackground(
     console.warn('Assets.load failed, trying Texture.from:', error);
     // Fallback to Texture.from
     console.log('DEBUG: Attempting Texture.from...');
-    texture = await Texture.from('/backgrounds/steppe_background.png');
+    texture = await Texture.from('/backgrounds/steppe_background_2-1.png');
     console.log('DEBUG: Texture.from result:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -447,6 +464,9 @@ export async function createScrollingBackground(
         fireRate: 2000 + Math.random() * 500,
         health: maxHealth,
         maxHealth,
+        previousHealth: maxHealth, // For smooth HP bar animation
+        healthAnimationStartTime: 0, // When the animation started
+        isAnimatingHealth: false, // Whether health bar is currently animating
       };
 
       enemies.push(enemyData);
@@ -481,6 +501,16 @@ export async function createScrollingBackground(
 
         if (isColliding) {
           console.log('Dragon hit by enemy projectile!');
+          const oldHealth = dragonHealth;
+          dragonHealth -= 10; // Enemy projectile damage
+
+          // Start health bar animation
+          dragonPreviousHealth = oldHealth;
+          dragonHealthAnimationStartTime = performance.now();
+
+          console.log(
+            `💥 DRAGON HIT by ${enemy.type}! Took 10 damage! Health: ${oldHealth} -> ${dragonHealth}/${dragonMaxHealth}`,
+          );
           return true;
         }
         return false;
@@ -781,6 +811,10 @@ export async function createScrollingBackground(
         }
       }
 
+      // Update UI elements
+      drawHealthBars();
+      drawArcanaCounter();
+
       requestAnimationFrame(updateCombat);
     }
 
@@ -864,6 +898,159 @@ export async function createScrollingBackground(
     projectileTargets.clear();
   }
 
+  // Function to draw health bars with smooth animations
+  function drawHealthBars() {
+    if (!app || (!dragonSprite && enemies.length === 0)) {
+      // Hide health bars if no dragon or enemies
+      if (healthBarsGraphics) {
+        healthBarsGraphics.visible = false;
+      }
+      return;
+    }
+
+    // Create graphics object if it doesn't exist
+    if (!healthBarsGraphics) {
+      healthBarsGraphics = new Graphics();
+      app.stage.addChild(healthBarsGraphics);
+    }
+
+    healthBarsGraphics.clear();
+
+    // Get current scale for responsive sizing
+    const currentScale = app.screen.height / 512; // Based on 512px background height
+
+    // Draw dragon health bar
+    if (dragonSprite) {
+      const barWidth = 60 * currentScale;
+      const barHeight = 8 * currentScale;
+      const barX = dragonSprite.x - barWidth / 2;
+      const barY = dragonSprite.y - 40 * currentScale; // Position above dragon, scaled
+
+      // Calculate health percentage with smooth animation
+      const currentHealthPercent = Math.max(0, dragonHealth / dragonMaxHealth);
+      const previousHealthPercent = Math.max(0, dragonPreviousHealth / dragonMaxHealth);
+
+      // Animate health bar if there's a difference
+      let displayHealthPercent = currentHealthPercent;
+      if (dragonHealthAnimationStartTime > 0) {
+        const animationDuration = 500; // 0.5 seconds
+        const timeSinceDamage = performance.now() - dragonHealthAnimationStartTime;
+        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
+
+        // Smooth interpolation from previous to current health
+        displayHealthPercent =
+          previousHealthPercent +
+          (currentHealthPercent - previousHealthPercent) * animationProgress;
+
+        // Update previous health to current after animation completes
+        if (animationProgress >= 1) {
+          dragonPreviousHealth = dragonHealth;
+          dragonHealthAnimationStartTime = 0; // Reset animation
+        }
+      }
+
+      // Health bar (green to yellow to red based on health)
+      if (displayHealthPercent > 0) {
+        let healthColor = 0x00ff00; // Green
+        if (displayHealthPercent < 0.6) {
+          healthColor = 0xffff00; // Yellow
+        }
+        if (displayHealthPercent < 0.3) {
+          healthColor = 0xff4500; // Orange-red
+        }
+
+        const currentBarWidth = barWidth * displayHealthPercent;
+        healthBarsGraphics.rect(barX, barY, currentBarWidth, barHeight);
+        healthBarsGraphics.fill({ color: healthColor, alpha: 0.8 });
+      }
+
+      // Health bar background (black border)
+      healthBarsGraphics.rect(barX, barY, barWidth, barHeight);
+      healthBarsGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
+    }
+
+    // Draw enemy health bars
+    enemies.forEach((enemy) => {
+      const barWidth = 60 * currentScale;
+      const barHeight = 8 * currentScale;
+      const barX = enemy.sprite.x - barWidth / 2;
+      const barY = enemy.sprite.y - 40 * currentScale; // Position above enemy, scaled
+
+      // Calculate health percentage with smooth animation
+      const currentHealthPercent = Math.max(0, enemy.health / enemy.maxHealth);
+      const previousHealthPercent = Math.max(0, enemy.previousHealth / enemy.maxHealth);
+
+      // Animate health bar if there's a difference
+      let displayHealthPercent = currentHealthPercent;
+      if (enemy.isAnimatingHealth && enemy.healthAnimationStartTime > 0) {
+        const animationDuration = 500; // 0.5 seconds
+        const timeSinceDamage = performance.now() - enemy.healthAnimationStartTime;
+        const animationProgress = Math.min(timeSinceDamage / animationDuration, 1);
+
+        // Smooth interpolation from previous to current health
+        displayHealthPercent =
+          previousHealthPercent +
+          (currentHealthPercent - previousHealthPercent) * animationProgress;
+
+        // Update previous health to current after animation completes
+        if (animationProgress >= 1) {
+          enemy.previousHealth = enemy.health;
+          enemy.isAnimatingHealth = false;
+          enemy.healthAnimationStartTime = 0; // Reset animation
+        }
+      }
+
+      // Health bar (red to orange based on health)
+      if (displayHealthPercent > 0) {
+        let healthColor = 0xff0000; // Red
+        if (displayHealthPercent < 0.5) {
+          healthColor = 0xff4500; // Orange-red
+        }
+
+        const currentBarWidth = barWidth * displayHealthPercent;
+        healthBarsGraphics.rect(barX, barY, currentBarWidth, barHeight);
+        healthBarsGraphics.fill({ color: healthColor, alpha: 0.8 });
+      }
+
+      // Health bar background (black border)
+      healthBarsGraphics.rect(barX, barY, barWidth, barHeight);
+      healthBarsGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
+    });
+
+    healthBarsGraphics.visible = true;
+  }
+
+  // Function to draw arcana counter
+  function drawArcanaCounter() {
+    if (!app) return;
+
+    // Get current scale for responsive sizing
+    const currentScale = app.screen.height / 512; // Based on 512px background height
+
+    // Create or update arcana text
+    let arcanaText = app.stage.children.find((child) => child.label === 'arcana-counter') as any;
+    if (!arcanaText) {
+      const { Text } = require('pixi.js');
+      arcanaText = new Text({
+        text: '0.00',
+        style: {
+          fontFamily: 'Cinzel',
+          fontSize: 18 * currentScale,
+          fill: 0xffff00, // Yellow color
+          fontWeight: 'bold',
+        },
+      });
+      arcanaText.label = 'arcana-counter';
+      app.stage.addChild(arcanaText);
+    }
+
+    // Update position and text
+    arcanaText.x = 20 * currentScale;
+    arcanaText.y = 20 * currentScale;
+    arcanaText.text = arcanaManager.getCurrentBalance().toFixed(2);
+    arcanaText.style.fontSize = 18 * currentScale;
+  }
+
   return {
     start: () => {
       isActive = true;
@@ -909,6 +1096,13 @@ export async function createScrollingBackground(
       }
 
       container.destroy({ children: true });
+
+      // Clean up health bars graphics
+      if (healthBarsGraphics) {
+        app.stage.removeChild(healthBarsGraphics);
+        healthBarsGraphics.destroy();
+        healthBarsGraphics = null;
+      }
 
       // Clean up debug graphics
       if (debugGraphics) {
