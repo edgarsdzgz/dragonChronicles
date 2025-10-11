@@ -6,6 +6,8 @@
  */
 
 import { Container, Sprite, Texture, Assets, type Application } from 'pixi.js';
+import { createAnimatedDragonSprite, type DragonAnimator } from './dragon-sprites';
+import { BackgroundPositioning } from './background-analyzer';
 
 export interface ScrollingBackgroundConfig {
   /** Scroll speed in pixels per second (default: 100) */
@@ -23,6 +25,10 @@ export interface ScrollingBackgroundHandle {
   isScrolling: () => boolean;
   /** Set scroll speed */
   setSpeed: (_speed: number) => void;
+  /** Get dragon protagonist sprite */
+  getDragon: () => Sprite | null;
+  /** Get dragon animator */
+  getDragonAnimator: () => DragonAnimator | null;
   /** Destroy the background */
   destroy: () => void;
 }
@@ -44,6 +50,41 @@ export async function createScrollingBackground(
 
   // Add container to stage at the bottom (z-index 0)
   app.stage.addChildAt(container, 0);
+
+  // Create dragon protagonist
+  console.log('DEBUG: Creating dragon protagonist...');
+  let dragonSprite: Sprite | null = null;
+  let dragonAnimator: DragonAnimator | null = null;
+
+  try {
+    const { sprite, animator } = await createAnimatedDragonSprite(app.renderer, app.stage);
+    dragonSprite = sprite;
+    dragonAnimator = animator;
+
+    // Position dragon using background positioning utilities
+    const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
+    dragonSprite.x = 100; // Left side of screen
+    dragonSprite.y = positioning.getSkyBlueBandY(); // Center of sky blue band
+
+    // Scale dragon to appropriate size
+    dragonSprite.scale.set(1.5); // Make dragon visible but not too large
+
+    // Add dragon to stage (above background)
+    app.stage.addChild(dragonSprite);
+
+    // Start dragon animation
+    await dragonAnimator.start();
+    dragonAnimator.setFPS(8); // 8 FPS for smooth flying animation
+
+    console.log('DEBUG: Dragon protagonist created and positioned successfully:', {
+      x: dragonSprite.x,
+      y: dragonSprite.y,
+      scale: dragonSprite.scale.x,
+      animating: dragonAnimator.isAnimating(),
+    });
+  } catch (error) {
+    console.error('DEBUG: Failed to create dragon protagonist:', error);
+  }
 
   // Load the background texture using Assets API for better reliability
   console.log('Loading background texture from: /backgrounds/scrolling-background.png');
@@ -171,6 +212,13 @@ export async function createScrollingBackground(
   // Handle resize
   const onResize = () => {
     scaleToFit();
+
+    // Reposition dragon on resize
+    if (dragonSprite) {
+      const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
+      dragonSprite.x = 100; // Keep at left side
+      dragonSprite.y = positioning.getSkyBlueBandY(); // Reposition in sky blue band
+    }
   };
 
   app.renderer.on('resize', onResize);
@@ -188,9 +236,25 @@ export async function createScrollingBackground(
     setSpeed: (speed: number) => {
       currentSpeed = speed;
     },
+    getDragon: () => {
+      return dragonSprite;
+    },
+    getDragonAnimator: () => {
+      return dragonAnimator;
+    },
     destroy: () => {
       app.ticker.remove(onTick);
       app.renderer.off('resize', onResize);
+
+      // Destroy dragon
+      if (dragonAnimator) {
+        dragonAnimator.destroy();
+      }
+      if (dragonSprite) {
+        app.stage.removeChild(dragonSprite);
+        dragonSprite.destroy();
+      }
+
       container.destroy({ children: true });
     },
   };
