@@ -15,6 +15,9 @@ export class DragonAnimator {
     this.sprite = sprite;
     this.renderer = renderer || null;
     this.stage = stage || null;
+
+    console.log('DragonAnimator constructor: frameSequence initialized as:', this.frameSequence);
+    console.log('DragonAnimator constructor: frameSequence length:', this.frameSequence?.length);
   }
 
   async start(): Promise<void> {
@@ -58,15 +61,28 @@ export class DragonAnimator {
 
   private async updateFrame(): Promise<void> {
     try {
-      // Validate frameSequence
-      if (!this.frameSequence || this.frameSequence.length === 0) {
-        console.error('DragonAnimator: frameSequence is null or empty');
-        return;
+      // Validate frameSequence with more defensive checks
+      if (!this.frameSequence) {
+        console.error('DragonAnimator: frameSequence is null, reinitializing...');
+        this.frameSequence = ['idle', 'fly_1', 'fly_2', 'fly_3'];
+        this.currentFrameIndex = 0;
       }
 
-      // Validate currentFrameIndex
-      if (this.currentFrameIndex < 0 || this.currentFrameIndex >= this.frameSequence.length) {
-        console.error('DragonAnimator: Invalid currentFrameIndex:', this.currentFrameIndex);
+      if (this.frameSequence.length === 0) {
+        console.error('DragonAnimator: frameSequence is empty, reinitializing...');
+        this.frameSequence = ['idle', 'fly_1', 'fly_2', 'fly_3'];
+        this.currentFrameIndex = 0;
+      }
+
+      // Validate currentFrameIndex with safe access
+      const sequenceLength = this.frameSequence.length;
+      if (this.currentFrameIndex < 0 || this.currentFrameIndex >= sequenceLength) {
+        console.error(
+          'DragonAnimator: Invalid currentFrameIndex:',
+          this.currentFrameIndex,
+          'length:',
+          sequenceLength,
+        );
         this.currentFrameIndex = 0; // Reset to safe value
       }
 
@@ -116,6 +132,10 @@ export class DragonAnimator {
   }
 
   getCurrentFrame(): DragonFrame {
+    if (!this.frameSequence || this.frameSequence.length === 0) {
+      console.error('getCurrentFrame: frameSequence is null or empty');
+      return 'idle'; // Return safe default
+    }
     return this.frameSequence[this.currentFrameIndex];
   }
 
