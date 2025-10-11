@@ -139,13 +139,13 @@ export async function createScrollingBackground(
   };
 
   // Load the background texture using Assets API for better reliability
-  console.log('Loading background texture from: /backgrounds/scrolling-background.png');
+  console.log('Loading background texture from: /sprites/horizon_steppe_background.svg');
 
   let texture: Texture;
   try {
     // Try using Assets API first
     console.log('DEBUG: Attempting Assets.load...');
-    texture = await Assets.load('/backgrounds/scrolling-background.png');
+    texture = await Assets.load('/sprites/horizon_steppe_background.svg');
     console.log('DEBUG: Assets.load successful, texture:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -157,7 +157,7 @@ export async function createScrollingBackground(
     console.warn('Assets.load failed, trying Texture.from:', error);
     // Fallback to Texture.from
     console.log('DEBUG: Attempting Texture.from...');
-    texture = await Texture.from('/backgrounds/scrolling-background.png');
+    texture = await Texture.from('/sprites/horizon_steppe_background.svg');
     console.log('DEBUG: Texture.from result:', {
       texture: !!texture,
       source: !!texture?.source,
