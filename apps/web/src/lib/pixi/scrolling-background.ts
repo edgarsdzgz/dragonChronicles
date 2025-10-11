@@ -5,8 +5,15 @@
  * when the dragon is moving forward, creating a flying effect.
  */
 
-import { Container, Sprite, Texture, Assets, type Application } from 'pixi.js';
+import { Container, Sprite, Texture, Assets, Graphics, type Application } from 'pixi.js';
 import { createAnimatedDragonSprite, type DragonAnimator } from './dragon-sprites';
+import { createAnimatedEnemySprite, type EnemyType, type EnemyAnimator } from './enemy-sprites';
+import {
+  createProjectile,
+  getProjectileTypeForEnemy,
+  getDragonProjectileType,
+  type Projectile,
+} from './projectile-sprites';
 import { BackgroundPositioning } from './background-analyzer';
 
 export interface ScrollingBackgroundConfig {
@@ -29,6 +36,16 @@ export interface ScrollingBackgroundHandle {
   getDragon: () => Sprite | null;
   /** Get dragon animator */
   getDragonAnimator: () => DragonAnimator | null;
+  /** Start automatic gameplay (enemy spawning, combat) */
+  startAutomaticGameplay: () => void;
+  /** Stop automatic gameplay */
+  stopAutomaticGameplay: () => void;
+  /** Check if gameplay is active */
+  isGameplayActive: () => boolean;
+  /** Spawn a specific enemy type */
+  spawnEnemy: (_type: EnemyType) => void;
+  /** Get current gameplay statistics */
+  getGameplayStats: () => { dragons: number; enemies: number; projectiles: number };
   /** Destroy the background */
   destroy: () => void;
 }
@@ -85,6 +102,41 @@ export async function createScrollingBackground(
   } catch (error) {
     console.error('DEBUG: Failed to create dragon protagonist:', error);
   }
+
+  // Combat system variables
+  const enemies: Array<{
+    sprite: Sprite;
+    animator: EnemyAnimator;
+    x: number;
+    y: number;
+    type: EnemyType;
+    isMoving: boolean;
+    lastFireTime: number;
+    fireRate: number;
+    health: number;
+    maxHealth: number;
+  }> = [];
+  const projectiles: Array<Projectile> = [];
+  let isGameplayActive = false;
+  let autoSpawnInterval: number | null = null;
+  let projectileUpdateLoop: number | null = null;
+  let combatUpdateLoop: number | null = null;
+
+  // Combat constants
+  const DRAGON_ATTACK_RANGE = 400;
+  const ENEMY_ATTACK_RANGE = 300;
+  const ENEMY_MOVE_SPEED = 50;
+  const DRAGON_BASE_DAMAGE = 5;
+  const ENEMY_HEALTH_CONFIG: Record<EnemyType, number> = {
+    'mantair-corsair': 12,
+    swarm: 3,
+  };
+  const AUTO_SPAWN_CONFIG = {
+    baseInterval: 3000,
+    intervalVariation: 1000,
+    enemyTypes: ['mantair-corsair', 'swarm'] as EnemyType[],
+    maxEnemies: 8,
+  };
 
   // Load the background texture using Assets API for better reliability
   console.log('Loading background texture from: /backgrounds/scrolling-background.png');
@@ -223,6 +275,330 @@ export async function createScrollingBackground(
 
   app.renderer.on('resize', onResize);
 
+  // Combat system functions
+  async function spawnEnemy(type: EnemyType) {
+    if (!app || enemies.length >= AUTO_SPAWN_CONFIG.maxEnemies) return;
+
+    try {
+      const { sprite, animator } = await createAnimatedEnemySprite(type, app.renderer, app.stage);
+
+      // Position enemy on right side of screen
+      const spawnX = app.screen.width - 100;
+      const spawnY = 100 + Math.random() * (app.screen.height - 200);
+
+      sprite.position.set(spawnX, spawnY);
+      sprite.scale.set(0.75);
+      sprite.visible = true;
+
+      app.stage.addChild(sprite);
+      await animator.start();
+      animator.setFPS(8);
+
+      const maxHealth = ENEMY_HEALTH_CONFIG[type] || 10;
+      const enemyData = {
+        sprite,
+        animator,
+        x: spawnX,
+        y: spawnY,
+        type,
+        isMoving: true,
+        lastFireTime: 0,
+        fireRate: 2000 + Math.random() * 500,
+        health: maxHealth,
+        maxHealth,
+      };
+
+      enemies.push(enemyData);
+      console.log(`Spawned ${type} enemy (${enemies.length}/${AUTO_SPAWN_CONFIG.maxEnemies})`);
+    } catch (error) {
+      console.error(`Failed to spawn ${type} enemy:`, error);
+    }
+  }
+
+  async function fireProjectileFromEnemy(enemyIndex: number) {
+    if (!app || enemyIndex >= enemies.length || !dragonSprite) return;
+
+    const enemy = enemies[enemyIndex];
+    const dx = dragonSprite.x - enemy.x;
+    const dy = dragonSprite.y - enemy.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > ENEMY_ATTACK_RANGE) return;
+
+    try {
+      const projectileType = getProjectileTypeForEnemy(enemy.type);
+      const collisionCallback = (projectileSprite: Sprite) => {
+        if (!dragonSprite) return false;
+        const projectileBounds = projectileSprite.getBounds();
+        const dragonBounds = dragonSprite.getBounds();
+
+        const isColliding =
+          projectileBounds.x < dragonBounds.x + dragonBounds.width &&
+          projectileBounds.x + projectileBounds.width > dragonBounds.x &&
+          projectileBounds.y < dragonBounds.y + dragonBounds.height &&
+          projectileBounds.y + projectileBounds.height > dragonBounds.y;
+
+        if (isColliding) {
+          console.log('Dragon hit by enemy projectile!');
+          return true;
+        }
+        return false;
+      };
+
+      const projectile = await createProjectile(
+        projectileType,
+        enemy.x,
+        enemy.y,
+        dragonSprite.x,
+        dragonSprite.y,
+        app.renderer,
+        app.stage,
+        collisionCallback,
+      );
+
+      projectile.setFPS(8);
+      projectiles.push(projectile);
+    } catch (error) {
+      console.error(`Failed to fire projectile from enemy:`, error);
+    }
+  }
+
+  async function fireProjectileFromDragon() {
+    if (!app || !dragonSprite || enemies.length === 0) return;
+
+    // Find closest enemy in range
+    let closestEnemy = enemies[0];
+    let closestDistance = Infinity;
+
+    enemies.forEach((enemy) => {
+      const dx = enemy.x - dragonSprite!.x;
+      const dy = enemy.y - dragonSprite!.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < closestDistance && distance <= DRAGON_ATTACK_RANGE) {
+        closestDistance = distance;
+        closestEnemy = enemy;
+      }
+    });
+
+    if (closestDistance > DRAGON_ATTACK_RANGE) return;
+
+    try {
+      const projectileType = getDragonProjectileType();
+      const collisionCallback = (projectileSprite: Sprite) => {
+        const projectileBounds = projectileSprite.getBounds();
+
+        for (let i = enemies.length - 1; i >= 0; i--) {
+          const enemy = enemies[i];
+          const enemyBounds = enemy.sprite.getBounds();
+
+          const isColliding =
+            projectileBounds.x < enemyBounds.x + enemyBounds.width &&
+            projectileBounds.x + projectileBounds.width > enemyBounds.x &&
+            projectileBounds.y < enemyBounds.y + enemyBounds.height &&
+            projectileBounds.y + projectileBounds.height > enemyBounds.y;
+
+          if (isColliding) {
+            enemy.health -= DRAGON_BASE_DAMAGE;
+            console.log(
+              `Enemy ${enemy.type} hit for ${DRAGON_BASE_DAMAGE} damage! Health: ${enemy.health}/${enemy.maxHealth}`,
+            );
+
+            if (enemy.health <= 0) {
+              console.log(`${enemy.type} defeated!`);
+              enemy.animator.destroy();
+              app.stage.removeChild(enemy.sprite);
+              enemies.splice(i, 1);
+            }
+            return true;
+          }
+        }
+        return false;
+      };
+
+      const projectile = await createProjectile(
+        projectileType,
+        dragonSprite.x,
+        dragonSprite.y,
+        closestEnemy.x,
+        closestEnemy.y,
+        app.renderer,
+        app.stage,
+        collisionCallback,
+      );
+
+      projectile.setFPS(8);
+      projectiles.push(projectile);
+    } catch (error) {
+      console.error('Failed to fire projectile from dragon:', error);
+    }
+  }
+
+  function startProjectileUpdateLoop() {
+    if (projectileUpdateLoop) return;
+
+    let lastTime = performance.now();
+
+    function updateProjectiles() {
+      if (!app) return;
+
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
+
+      const activeProjectiles = [];
+      for (const projectile of projectiles) {
+        const stillActive = projectile.update(deltaTime);
+        if (stillActive) {
+          activeProjectiles.push(projectile);
+        }
+      }
+
+      projectiles.length = 0;
+      projectiles.push(...activeProjectiles);
+
+      requestAnimationFrame(updateProjectiles);
+    }
+
+    projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
+  }
+
+  function startCombatUpdateLoop() {
+    if (combatUpdateLoop) return;
+
+    let lastTime = performance.now();
+
+    function updateCombat() {
+      if (!app) return;
+
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
+
+      // Update enemy movement and combat
+      enemies.forEach((enemy, index) => {
+        if (!dragonSprite) return;
+
+        const dx = dragonSprite.x - enemy.x;
+        const dy = dragonSprite.y - enemy.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Move enemy toward dragon if not in attack range
+        if (enemy.isMoving && distance > ENEMY_ATTACK_RANGE) {
+          const moveDistance = ENEMY_MOVE_SPEED * (deltaTime / 1000);
+          if (distance > 0) {
+            const moveX = (dx / distance) * moveDistance;
+            const moveY = (dy / distance) * moveDistance;
+
+            enemy.x += moveX;
+            enemy.y += moveY;
+            enemy.sprite.position.set(enemy.x, enemy.y);
+          }
+        } else if (distance <= ENEMY_ATTACK_RANGE) {
+          enemy.isMoving = false;
+
+          // Auto-fire if enough time has passed
+          if (currentTime - enemy.lastFireTime >= enemy.fireRate) {
+            fireProjectileFromEnemy(index);
+            enemy.lastFireTime = currentTime;
+          }
+        } else if (distance > ENEMY_ATTACK_RANGE * 1.2) {
+          enemy.isMoving = true;
+        }
+      });
+
+      // Dragon auto-combat
+      if (dragonSprite && dragonAnimator) {
+        const dragonLastFireTime = (dragonAnimator as any).lastFireTime || 0;
+        const dragonFireRate = 1500;
+
+        if (currentTime - dragonLastFireTime >= dragonFireRate) {
+          fireProjectileFromDragon();
+          (dragonAnimator as any).lastFireTime = currentTime;
+        }
+      }
+
+      requestAnimationFrame(updateCombat);
+    }
+
+    combatUpdateLoop = requestAnimationFrame(updateCombat);
+  }
+
+  function startAutoSpawning() {
+    if (autoSpawnInterval) return;
+
+    const scheduleNextSpawn = () => {
+      if (!isGameplayActive) return;
+
+      const baseTime = AUTO_SPAWN_CONFIG.baseInterval;
+      const variation = (Math.random() - 0.5) * AUTO_SPAWN_CONFIG.intervalVariation;
+      const nextSpawnTime = baseTime + variation;
+
+      autoSpawnInterval = window.setTimeout(() => {
+        if (!isGameplayActive) return;
+
+        if (enemies.length < AUTO_SPAWN_CONFIG.maxEnemies) {
+          const randomEnemyType =
+            AUTO_SPAWN_CONFIG.enemyTypes[
+              Math.floor(Math.random() * AUTO_SPAWN_CONFIG.enemyTypes.length)
+            ];
+          spawnEnemy(randomEnemyType);
+        }
+
+        scheduleNextSpawn();
+      }, nextSpawnTime);
+    };
+
+    scheduleNextSpawn();
+  }
+
+  function stopAutoSpawning() {
+    if (autoSpawnInterval) {
+      clearTimeout(autoSpawnInterval);
+      autoSpawnInterval = null;
+    }
+  }
+
+  function startAutomaticGameplay() {
+    if (isGameplayActive) return;
+
+    isGameplayActive = true;
+    console.log('Starting automatic gameplay...');
+
+    startProjectileUpdateLoop();
+    startCombatUpdateLoop();
+    startAutoSpawning();
+  }
+
+  function stopAutomaticGameplay() {
+    if (!isGameplayActive) return;
+
+    isGameplayActive = false;
+    console.log('Stopping automatic gameplay...');
+
+    stopAutoSpawning();
+
+    if (projectileUpdateLoop) {
+      cancelAnimationFrame(projectileUpdateLoop);
+      projectileUpdateLoop = null;
+    }
+
+    if (combatUpdateLoop) {
+      cancelAnimationFrame(combatUpdateLoop);
+      combatUpdateLoop = null;
+    }
+
+    // Clean up all enemies
+    enemies.forEach((enemy) => {
+      enemy.animator.destroy();
+      app.stage.removeChild(enemy.sprite);
+    });
+    enemies.length = 0;
+
+    // Clean up all projectiles
+    projectiles.forEach((projectile) => projectile.destroy());
+    projectiles.length = 0;
+  }
+
   return {
     start: () => {
       isActive = true;
@@ -242,7 +618,19 @@ export async function createScrollingBackground(
     getDragonAnimator: () => {
       return dragonAnimator;
     },
+    startAutomaticGameplay,
+    stopAutomaticGameplay,
+    isGameplayActive: () => isGameplayActive,
+    spawnEnemy,
+    getGameplayStats: () => ({
+      dragons: dragonSprite ? 1 : 0,
+      enemies: enemies.length,
+      projectiles: projectiles.length,
+    }),
     destroy: () => {
+      // Stop gameplay first
+      stopAutomaticGameplay();
+
       app.ticker.remove(onTick);
       app.renderer.off('resize', onResize);
 

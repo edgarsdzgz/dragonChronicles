@@ -58,6 +58,9 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     enabled: true,
   });
 
+  // Start automatic gameplay for preview
+  scrollingBackground.startAutomaticGameplay();
+
   const handle: PixiHandle = {
     app,
     scrollingBackground,
