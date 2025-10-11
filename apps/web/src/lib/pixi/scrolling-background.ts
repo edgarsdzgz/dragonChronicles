@@ -246,13 +246,29 @@ export async function createScrollingBackground(
     const screenHeight = app.screen.height;
     const positioning = new BackgroundPositioning(screenWidth, screenHeight);
 
-    // Draw horizontal ruler lines every 25 pixels
+    // Draw horizontal ruler lines every 25 pixels with labels
     debugGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
     for (let y = 0; y < screenHeight; y += 25) {
       debugGraphics.moveTo(0, y).lineTo(screenWidth, y);
+
+      // Add pixel labels every 100 pixels
+      if (y % 100 === 0) {
+        const pixelLabel = new Text({
+          text: `${y}px`,
+          style: { fontSize: 10, fill: 0x000000, fontWeight: 'bold' },
+        });
+        pixelLabel.position.set(5, y + 2);
+        debugGraphics.addChild(pixelLabel);
+      }
     }
 
-    // Draw colored overlay boxes for each area
+    // Draw vertical ruler lines every 100 pixels
+    debugGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.6 });
+    for (let x = 0; x < screenWidth; x += 100) {
+      debugGraphics.moveTo(x, 0).lineTo(x, screenHeight);
+    }
+
+    // Draw colored overlay boxes for each area with precise measurements
     // Space area (dark blue) - Orange overlay
     const spaceTop = 0;
     const spaceBottom = positioning.getActionAreaTopY();
@@ -273,6 +289,31 @@ export async function createScrollingBackground(
     debugGraphics.rect(0, groundTop, screenWidth, groundBottom - groundTop);
     debugGraphics.fill({ color: 0x800080, alpha: 0.1 }); // Purple, very low opacity
     debugGraphics.stroke({ width: 2, color: 0x800080, alpha: 0.3 });
+
+    // Add boundary markers with exact pixel measurements
+    // Space-Sky boundary marker
+    const spaceSkyMarker = new Text({
+      text: `SPACE END: ${spaceBottom}px (${((spaceBottom / screenHeight) * 100).toFixed(1)}%)`,
+      style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
+    });
+    spaceSkyMarker.position.set(screenWidth - 200, spaceBottom + 5);
+    debugGraphics.addChild(spaceSkyMarker);
+
+    // Sky-Ground boundary marker
+    const skyGroundMarker = new Text({
+      text: `SKY END: ${skyBottom}px (${((skyBottom / screenHeight) * 100).toFixed(1)}%)`,
+      style: { fontSize: 12, fill: 0xffffff, fontWeight: 'bold' },
+    });
+    skyGroundMarker.position.set(screenWidth - 200, skyBottom + 5);
+    debugGraphics.addChild(skyGroundMarker);
+
+    // Ground start marker
+    const groundStartMarker = new Text({
+      text: `GROUND START: ${groundTop}px (${((groundTop / screenHeight) * 100).toFixed(1)}%)`,
+      style: { fontSize: 12, fill: 0x800080, fontWeight: 'bold' },
+    });
+    groundStartMarker.position.set(screenWidth - 200, groundTop + 5);
+    debugGraphics.addChild(groundStartMarker);
 
     // Add labels using Text objects (Graphics doesn't have text method in PixiJS v8)
     const { Text } = await import('pixi.js');
@@ -352,7 +393,7 @@ export async function createScrollingBackground(
   app.ticker.add(onTick);
 
   // Handle resize
-  const onResize = () => {
+  const onResize = async () => {
     scaleToFit();
 
     // Reposition dragon on resize

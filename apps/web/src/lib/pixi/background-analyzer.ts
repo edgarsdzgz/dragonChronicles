@@ -47,22 +47,22 @@ export interface BackgroundMeasurements {
 export const BACKGROUND_MEASUREMENTS = {
   imageWidth: 2160,
   imageHeight: 1080,
-  // Space area (dark blue) - 0% to 20.4% - where enemies should NOT spawn
+  // Space area (dark blue) - 0% to 18.52% - where enemies should NOT spawn
   skyBlueBand: {
-    top: 0.204, // 20.4% from top (220px) - sky blue band starts after space
-    bottom: 0.63, // 63.0% from top (680px) - sky blue band ends at horizon
-    height: 0.426, // 42.6% of image height (460px) - the actual sky blue band
+    top: 0.1852, // 18.52% from top (200px) - sky blue band starts after space
+    bottom: 0.625, // 62.50% from top (675px) - sky blue band ends at horizon
+    height: 0.4398, // 43.98% of image height (475px) - the actual sky blue band
   },
-  // Ground area (magenta) - 63.0% to 100% - where enemies should NOT spawn
+  // Ground area (magenta) - 62.50% to 100% - where enemies should NOT spawn
   ground: {
-    horizonLine: 0.63, // 63.0% from top (680px) - where horizon/ground starts
-    height: 0.37, // 37.0% of image height (400px)
+    horizonLine: 0.625, // 62.50% from top (675px) - where horizon/ground starts
+    height: 0.375, // 37.50% of image height (405px)
   },
   // Action area - tight combat band (same as skyBlueBand)
   actionArea: {
-    top: 0.204, // 20.4% from top (220px) - action area is the sky blue band only
-    bottom: 0.63, // 63.0% from top (680px) - action area ends at horizon
-    height: 0.426, // 42.6% of image height (460px) - tight combat band
+    top: 0.1852, // 18.52% from top (200px) - action area is the sky blue band only
+    bottom: 0.625, // 62.50% from top (675px) - action area ends at horizon
+    height: 0.4398, // 43.98% of image height (475px) - tight combat band
   },
 } as const;
 
