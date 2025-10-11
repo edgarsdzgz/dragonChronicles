@@ -239,7 +239,7 @@ export async function createScrollingBackground(
   app.stage.addChild(debugGraphics);
 
   // Function to redraw debug overlays
-  const redrawDebugOverlays = () => {
+  const redrawDebugOverlays = async () => {
     debugGraphics.clear();
 
     const screenWidth = app.screen.width;
@@ -274,38 +274,40 @@ export async function createScrollingBackground(
     debugGraphics.fill({ color: 0x800080, alpha: 0.1 }); // Purple, very low opacity
     debugGraphics.stroke({ width: 2, color: 0x800080, alpha: 0.3 });
 
-    // Add labels
-    debugGraphics.text({
+    // Add labels using Text objects (Graphics doesn't have text method in PixiJS v8)
+    const { Text } = await import('pixi.js');
+
+    const spaceLabel = new Text({
       text: 'SPACE (Orange)',
       style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
-      x: 10,
-      y: spaceTop + 10,
     });
+    spaceLabel.position.set(10, spaceTop + 10);
+    debugGraphics.addChild(spaceLabel);
 
-    debugGraphics.text({
+    const skyLabel = new Text({
       text: 'SKY BLUE BAND (White)',
       style: { fontSize: 12, fill: 0xffffff, fontWeight: 'bold' },
-      x: 10,
-      y: skyTop + 10,
     });
+    skyLabel.position.set(10, skyTop + 10);
+    debugGraphics.addChild(skyLabel);
 
-    debugGraphics.text({
+    const groundLabel = new Text({
       text: 'GROUND (Purple)',
       style: { fontSize: 12, fill: 0x800080, fontWeight: 'bold' },
-      x: 10,
-      y: groundTop + 10,
     });
+    groundLabel.position.set(10, groundTop + 10);
+    debugGraphics.addChild(groundLabel);
 
     // Show dragon position indicator
     if (dragonSprite) {
       debugGraphics.stroke({ width: 3, color: 0xff0000, alpha: 0.8 });
       debugGraphics.circle(dragonSprite.x, dragonSprite.y, 20);
-      debugGraphics.text({
+      const dragonLabel = new Text({
         text: 'DRAGON',
         style: { fontSize: 10, fill: 0xff0000, fontWeight: 'bold' },
-        x: dragonSprite.x + 25,
-        y: dragonSprite.y - 10,
       });
+      dragonLabel.position.set(dragonSprite.x + 25, dragonSprite.y - 10);
+      debugGraphics.addChild(dragonLabel);
     }
 
     console.log('Debug overlays drawn:', {
@@ -319,7 +321,7 @@ export async function createScrollingBackground(
   };
 
   // Initial draw
-  redrawDebugOverlays();
+  await redrawDebugOverlays();
 
   // Track position for infinite scrolling
   let offset = 0;
@@ -361,7 +363,7 @@ export async function createScrollingBackground(
     }
 
     // Redraw debug overlays on resize
-    redrawDebugOverlays();
+    await redrawDebugOverlays();
   };
 
   app.renderer.on('resize', onResize);
