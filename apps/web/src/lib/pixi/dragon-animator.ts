@@ -58,16 +58,34 @@ export class DragonAnimator {
 
   private async updateFrame(): Promise<void> {
     try {
+      // Validate frameSequence
+      if (!this.frameSequence || this.frameSequence.length === 0) {
+        console.error('DragonAnimator: frameSequence is null or empty');
+        return;
+      }
+
+      // Validate currentFrameIndex
+      if (this.currentFrameIndex < 0 || this.currentFrameIndex >= this.frameSequence.length) {
+        console.error('DragonAnimator: Invalid currentFrameIndex:', this.currentFrameIndex);
+        this.currentFrameIndex = 0; // Reset to safe value
+      }
+
       const frameType = this.frameSequence[this.currentFrameIndex];
+      console.log(
+        `DragonAnimator: Updating to frame ${frameType} (index ${this.currentFrameIndex})`,
+      );
+
       const frame = await getDragonFrame(frameType);
 
-      if (frame) {
+      if (frame && frame.texture) {
         // Always update texture, even if it seems the same
         this.sprite.texture = frame.texture;
         console.log(`Dragon frame updated to: ${frameType}`, {
           textureValid: frame.texture?.source?.valid,
           textureWidth: frame.texture?.width,
           textureHeight: frame.texture?.height,
+          hasTexture: !!frame.texture,
+          hasSource: !!frame.texture?.source,
         });
 
         // Force a render using the provided renderer and stage
@@ -80,10 +98,20 @@ export class DragonAnimator {
           }
         }
       } else {
-        console.warn(`Failed to load frame: ${frameType}`);
+        console.warn(`Failed to load frame: ${frameType}`, {
+          frameExists: !!frame,
+          textureExists: frame?.texture ? true : false,
+        });
       }
     } catch (error) {
       console.error('Error updating dragon frame:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        currentFrameIndex: this.currentFrameIndex,
+        frameSequenceLength: this.frameSequence?.length,
+        frameSequence: this.frameSequence,
+      });
     }
   }
 

@@ -45,6 +45,7 @@ export class TextureAtlas {
         height: this.baseTexture.height,
         valid: this.baseTexture.valid,
         source: this.baseTexture.source,
+        hasSource: !!this.baseTexture.source,
       });
 
       this.generateFrames(this.config);
@@ -53,6 +54,9 @@ export class TextureAtlas {
       console.log(
         `TextureAtlas initialized: ${this.config.imagePath} (${this.frames.size} frames)`,
       );
+
+      // Log all generated frames for debugging
+      console.log('Generated frames:', Array.from(this.frames.keys()));
     } catch (error) {
       console.error('Failed to initialize TextureAtlas:', error);
       console.error('Error details:', {
@@ -92,8 +96,25 @@ export class TextureAtlas {
   }
 
   async getFrame(row: number, col: number): Promise<SpriteFrame | undefined> {
-    await this.initialize();
-    return this.frames.get(`${row}_${col}`);
+    try {
+      await this.initialize();
+      const frameKey = `${row}_${col}`;
+      const frame = this.frames.get(frameKey);
+
+      if (!frame) {
+        console.error(`Frame not found: ${frameKey}`, {
+          availableFrames: Array.from(this.frames.keys()),
+          requestedRow: row,
+          requestedCol: col,
+          totalFrames: this.frames.size,
+        });
+      }
+
+      return frame;
+    } catch (error) {
+      console.error(`Error getting frame (${row}, ${col}):`, error);
+      return undefined;
+    }
   }
 
   async getFrameByIndex(index: number): Promise<SpriteFrame | undefined> {
