@@ -15,9 +15,6 @@ export class DragonAnimator {
     this.sprite = sprite;
     this.renderer = renderer || null;
     this.stage = stage || null;
-
-    console.log('DragonAnimator constructor: frameSequence initialized as:', this.frameSequence);
-    console.log('DragonAnimator constructor: frameSequence length:', this.frameSequence?.length);
   }
 
   async start(): Promise<void> {
@@ -61,81 +58,33 @@ export class DragonAnimator {
 
   private async updateFrame(): Promise<void> {
     try {
-      // Validate frameSequence with more defensive checks
-      if (!this.frameSequence) {
-        console.error('DragonAnimator: frameSequence is null, reinitializing...');
-        this.frameSequence = ['idle', 'fly_1', 'fly_2', 'fly_3'];
-        this.currentFrameIndex = 0;
-      }
-
-      if (this.frameSequence.length === 0) {
-        console.error('DragonAnimator: frameSequence is empty, reinitializing...');
-        this.frameSequence = ['idle', 'fly_1', 'fly_2', 'fly_3'];
-        this.currentFrameIndex = 0;
-      }
-
-      // Validate currentFrameIndex with safe access
-      const sequenceLength = this.frameSequence.length;
-      if (this.currentFrameIndex < 0 || this.currentFrameIndex >= sequenceLength) {
-        console.error(
-          'DragonAnimator: Invalid currentFrameIndex:',
-          this.currentFrameIndex,
-          'length:',
-          sequenceLength,
-        );
+      // Simple validation - frameSequence should always be initialized
+      if (this.currentFrameIndex < 0 || this.currentFrameIndex >= this.frameSequence.length) {
         this.currentFrameIndex = 0; // Reset to safe value
       }
 
       const frameType = this.frameSequence[this.currentFrameIndex];
-      console.log(
-        `DragonAnimator: Updating to frame ${frameType} (index ${this.currentFrameIndex})`,
-      );
 
       const frame = await getDragonFrame(frameType);
 
       if (frame && frame.texture) {
-        // Always update texture, even if it seems the same
         this.sprite.texture = frame.texture;
-        console.log(`Dragon frame updated to: ${frameType}`, {
-          textureValid: frame.texture?.source?.valid,
-          textureWidth: frame.texture?.width,
-          textureHeight: frame.texture?.height,
-          hasTexture: !!frame.texture,
-          hasSource: !!frame.texture?.source,
-        });
 
-        // Force a render using the provided renderer and stage
+        // Force a render if we have renderer and stage
         if (this.renderer && this.stage) {
           this.renderer.render(this.stage);
-        } else if (this.sprite.stage && 'renderer' in this.sprite.stage) {
-          const stage = this.sprite.stage as { renderer?: Renderer };
-          if (stage.renderer) {
-            stage.renderer.render(stage);
-          }
         }
       } else {
-        console.warn(`Failed to load frame: ${frameType}`, {
-          frameExists: !!frame,
-          textureExists: frame?.texture ? true : false,
-        });
+        console.warn(`Failed to load frame: ${frameType}`);
       }
     } catch (error) {
       console.error('Error updating dragon frame:', error);
-      console.error('Error details:', {
-        message: error.message,
-        stack: error.stack,
-        currentFrameIndex: this.currentFrameIndex,
-        frameSequenceLength: this.frameSequence?.length,
-        frameSequence: this.frameSequence,
-      });
+      // Reset to safe state on error
+      this.currentFrameIndex = 0;
     }
   }
 
   getCurrentFrame(): DragonFrame {
-    if (!this.frameSequence || this.frameSequence.length === 0) {
-      console.error('getCurrentFrame: frameSequence is null or empty');
-      return 'idle'; // Return safe default
-    }
     return this.frameSequence[this.currentFrameIndex];
   }
 
