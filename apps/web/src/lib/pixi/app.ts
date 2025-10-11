@@ -44,7 +44,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
       bg.start(); // continue simulation (lightweight)
     } else {
       bg.stop(); // foreground sim handled by ticker/W3 later
-      if (app.ticker.stopped) app.ticker.start(); // resume rendering/GPU
+      // In PixiJS v8, ticker starts automatically when needed
     }
   };
 

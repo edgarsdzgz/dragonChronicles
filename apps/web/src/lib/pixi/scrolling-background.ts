@@ -85,36 +85,10 @@ export async function createScrollingBackground(
     textureProperties: texture ? Object.keys(texture) : 'no texture',
   });
 
-  // Wait for texture to be ready (PixiJS v8 compatible)
-  if (texture && texture.source) {
-    console.log('DEBUG: Checking if texture needs to wait for ready state...');
-    if (!texture.source.valid) {
-      console.log('DEBUG: Texture not valid, waiting for ready state...');
-      await new Promise<void>((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          console.error('DEBUG: Texture loading timeout after 5 seconds');
-          reject(new Error('Texture loading timeout'));
-        }, 5000);
-
-        console.log('DEBUG: Setting up event listeners...');
-        texture.source.once('loaded', () => {
-          console.log('DEBUG: Texture loaded event fired!');
-          clearTimeout(timeout);
-          resolve();
-        });
-
-        texture.source.once('error', (error) => {
-          console.error('DEBUG: Texture error event fired:', error);
-          clearTimeout(timeout);
-          reject(error);
-        });
-      });
-    } else {
-      console.log('DEBUG: Texture is already valid, no need to wait');
-    }
-  } else {
-    console.warn('DEBUG: No texture or source available');
-  }
+  // In PixiJS v8, Assets.load() returns a ready texture - no need to wait for source.valid
+  console.log(
+    'DEBUG: Skipping texture ready state wait - Assets.load() should return ready texture',
+  );
 
   if (!texture || !texture.width || !texture.height) {
     console.error('DEBUG: Texture validation failed:', {
