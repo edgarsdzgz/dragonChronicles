@@ -789,3 +789,100 @@ export class ARIASupport {
 
 - [ ] Screen reader support provides complete game narration
 ````
+
+## UI Layout Measurements
+
+Based on precise pixel analysis of the steppe_background.png (2160x1080), the game interface is divided into three distinct UI areas:
+
+```typescript
+export interface UILayoutMeasurements {
+  // Space Area (Top) - Currency Display
+  space: {
+    top: 0; // 0px (0%)
+    bottom: 100; // 100px (9.26%)
+    height: 100; // 100px (9.26%)
+    purpose: 'currency_display';
+    elements: ['arcana_counter', 'soul_power_counter', 'status_indicators'];
+  };
+
+  // Sky Blue Band (Middle) - Action/Journey Area
+  actionArea: {
+    top: 100; // 100px (9.26%)
+    bottom: 525; // 525px (48.61%)
+    height: 425; // 425px (39.35%)
+    purpose: 'gameplay_action';
+    elements: ['dragon_protagonist', 'enemies', 'projectiles', 'combat_effects'];
+  };
+
+  // Ground Area (Bottom) - Player UI
+  playerUI: {
+    top: 525; // 525px (48.61%)
+    bottom: 1080; // 1080px (100%)
+    height: 555; // 555px (51.39%)
+    purpose: 'upgrades_menus_player_ui';
+    elements: ['upgrade_buttons', 'menu_navigation', 'player_stats', 'settings'];
+  };
+}
+
+// Precise percentage values for responsive scaling
+export const UI_LAYOUT_PERCENTAGES = {
+  space: {
+    top: 0.0, // 0% from top
+    bottom: 0.0926, // 9.26% from top
+    height: 0.0926, // 9.26% of screen height
+  },
+  actionArea: {
+    top: 0.0926, // 9.26% from top
+    bottom: 0.4861, // 48.61% from top
+    height: 0.3935, // 39.35% of screen height
+  },
+  playerUI: {
+    top: 0.4861, // 48.61% from top
+    bottom: 1.0, // 100% from top
+    height: 0.5139, // 51.39% of screen height
+  },
+} as const;
+
+// Background image measurements (steppe_background.png)
+export const BACKGROUND_MEASUREMENTS = {
+  imageWidth: 2160,
+  imageHeight: 1080,
+  skyBlueBand: {
+    top: 0.0926, // 100px - sky blue band starts after space
+    bottom: 0.4861, // 525px - sky blue band ends at horizon
+    height: 0.3935, // 425px - the actual sky blue band
+  },
+  ground: {
+    horizonLine: 0.4861, // 525px - where horizon/ground starts
+    height: 0.5139, // 555px
+  },
+  actionArea: {
+    top: 0.0926, // 100px - action area is the sky blue band only
+    bottom: 0.4861, // 525px - action area ends at horizon
+    height: 0.3935, // 425px - tight combat band
+  },
+} as const;
+```
+
+### UI Area Purposes
+
+**Space Area (0px - 100px / 0% - 9.26%)**
+
+- **Purpose**: Currency and status display
+- **Elements**: Arcana counter, Soul Power counter, health indicators
+- **Visual**: Dark blue space with stars
+- **Interaction**: Minimal, primarily informational
+
+**Action Area (100px - 525px / 9.26% - 48.61%)**
+
+- **Purpose**: Core gameplay and journey
+- **Elements**: Dragon protagonist, enemies, projectiles, combat effects
+- **Visual**: Light blue sky band
+- **Interaction**: Primary game interaction zone
+
+**Player UI Area (525px - 1080px / 48.61% - 100%)**
+
+- **Purpose**: Upgrades, menus, and player interface
+- **Elements**: Upgrade buttons, menu navigation, player stats, settings
+- **Visual**: Ground/horizon area
+- **Interaction**: Secondary UI interactions
