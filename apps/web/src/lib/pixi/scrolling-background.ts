@@ -51,44 +51,87 @@ export async function createScrollingBackground(
   let texture: Texture;
   try {
     // Try using Assets API first
+    console.log('DEBUG: Attempting Assets.load...');
     texture = await Assets.load('/backgrounds/scrolling-background.png');
+    console.log('DEBUG: Assets.load successful, texture:', {
+      texture: !!texture,
+      source: !!texture?.source,
+      valid: texture?.source?.valid,
+      width: texture?.width,
+      height: texture?.height,
+    });
   } catch (error) {
     console.warn('Assets.load failed, trying Texture.from:', error);
     // Fallback to Texture.from
+    console.log('DEBUG: Attempting Texture.from...');
     texture = await Texture.from('/backgrounds/scrolling-background.png');
+    console.log('DEBUG: Texture.from result:', {
+      texture: !!texture,
+      source: !!texture?.source,
+      valid: texture?.source?.valid,
+      width: texture?.width,
+      height: texture?.height,
+    });
   }
+
+  // Debug texture source properties
+  console.log('DEBUG: Texture source analysis:', {
+    hasTexture: !!texture,
+    hasSource: !!texture?.source,
+    sourceValid: texture?.source?.valid,
+    sourceProperties: texture?.source ? Object.keys(texture.source) : 'no source',
+    textureWidth: texture?.width,
+    textureHeight: texture?.height,
+    textureProperties: texture ? Object.keys(texture) : 'no texture',
+  });
 
   // Wait for texture to be ready (PixiJS v8 compatible)
   if (texture && texture.source) {
+    console.log('DEBUG: Checking if texture needs to wait for ready state...');
     if (!texture.source.valid) {
-      console.log('Waiting for texture to be ready...');
+      console.log('DEBUG: Texture not valid, waiting for ready state...');
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
+          console.error('DEBUG: Texture loading timeout after 5 seconds');
           reject(new Error('Texture loading timeout'));
         }, 5000);
 
+        console.log('DEBUG: Setting up event listeners...');
         texture.source.once('loaded', () => {
+          console.log('DEBUG: Texture loaded event fired!');
           clearTimeout(timeout);
           resolve();
         });
 
         texture.source.once('error', (error) => {
+          console.error('DEBUG: Texture error event fired:', error);
           clearTimeout(timeout);
           reject(error);
         });
       });
+    } else {
+      console.log('DEBUG: Texture is already valid, no need to wait');
     }
+  } else {
+    console.warn('DEBUG: No texture or source available');
   }
 
   if (!texture || !texture.width || !texture.height) {
-    console.error('Failed to load background texture:', texture);
+    console.error('DEBUG: Texture validation failed:', {
+      hasTexture: !!texture,
+      hasWidth: !!texture?.width,
+      hasHeight: !!texture?.height,
+      texture: texture,
+    });
     throw new Error('Background texture failed to load');
   }
 
-  console.log('Background texture loaded successfully:', {
+  console.log('DEBUG: Background texture loaded successfully:', {
     width: texture.width,
     height: texture.height,
     source: texture.source?.resource?.url,
+    textureValid: !!texture,
+    sourceValid: texture.source?.valid,
   });
 
   // Create two sprites for seamless tiling
