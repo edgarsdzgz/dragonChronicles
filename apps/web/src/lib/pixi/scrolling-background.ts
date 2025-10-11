@@ -5,7 +5,7 @@
  * when the dragon is moving forward, creating a flying effect.
  */
 
-import { Container, Sprite, Texture, type Application } from 'pixi.js';
+import { Container, Sprite, Texture, Assets, type Application } from 'pixi.js';
 
 export interface ScrollingBackgroundConfig {
   /** Scroll speed in pixels per second (default: 100) */
@@ -45,8 +45,29 @@ export async function createScrollingBackground(
   // Add container to stage at the bottom (z-index 0)
   app.stage.addChildAt(container, 0);
 
-  // Load the background texture
-  const texture = await Texture.from('/backgrounds/scrolling-background.png');
+  // Load the background texture using Assets API for better reliability
+  console.log('Loading background texture from: /backgrounds/scrolling-background.png');
+
+  let texture: Texture;
+  try {
+    // Try using Assets API first
+    texture = await Assets.load('/backgrounds/scrolling-background.png');
+  } catch (error) {
+    console.warn('Assets.load failed, trying Texture.from:', error);
+    // Fallback to Texture.from
+    texture = await Texture.from('/backgrounds/scrolling-background.png');
+  }
+
+  if (!texture || !texture.width || !texture.height) {
+    console.error('Failed to load background texture:', texture);
+    throw new Error('Background texture failed to load');
+  }
+
+  console.log('Background texture loaded successfully:', {
+    width: texture.width,
+    height: texture.height,
+    baseTexture: texture.baseTexture?.resource?.url,
+  });
 
   // Create two sprites for seamless tiling
   // The image is 2160x1080, perfect for tiling horizontally
