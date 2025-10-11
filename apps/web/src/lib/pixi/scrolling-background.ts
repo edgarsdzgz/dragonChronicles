@@ -78,7 +78,7 @@ export async function createScrollingBackground(
     dragonSprite = sprite;
     dragonAnimator = animator;
 
-    // Position dragon using background positioning utilities
+    // Position dragon using background positioning utilities in the sky blue band
     const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
     dragonSprite.x = 100; // Left side of screen
     dragonSprite.y = positioning.getSkyBlueBandY(); // Center of sky blue band
@@ -139,13 +139,13 @@ export async function createScrollingBackground(
   };
 
   // Load the background texture using Assets API for better reliability
-  console.log('Loading background texture from: /sprites/horizon_steppe_background.svg');
+  console.log('Loading background texture from: /backgrounds/steppe_background.png');
 
   let texture: Texture;
   try {
     // Try using Assets API first
     console.log('DEBUG: Attempting Assets.load...');
-    texture = await Assets.load('/sprites/horizon_steppe_background.svg');
+    texture = await Assets.load('/backgrounds/steppe_background.png');
     console.log('DEBUG: Assets.load successful, texture:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -157,7 +157,7 @@ export async function createScrollingBackground(
     console.warn('Assets.load failed, trying Texture.from:', error);
     // Fallback to Texture.from
     console.log('DEBUG: Attempting Texture.from...');
-    texture = await Texture.from('/sprites/horizon_steppe_background.svg');
+    texture = await Texture.from('/backgrounds/steppe_background.png');
     console.log('DEBUG: Texture.from result:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -282,9 +282,14 @@ export async function createScrollingBackground(
     try {
       const { sprite, animator } = await createAnimatedEnemySprite(type, app.renderer, app.stage);
 
-      // Position enemy on right side of screen
+      // Position enemy on right side of screen, but only in the sky action area
+      const positioning = new BackgroundPositioning(app.screen.width, app.screen.height);
       const spawnX = app.screen.width - 100;
-      const spawnY = 100 + Math.random() * (app.screen.height - 200);
+
+      // Spawn only in the sky blue band (action area)
+      const actionAreaTop = positioning.getActionAreaTopY();
+      const actionAreaBottom = positioning.getActionAreaBottomY();
+      const spawnY = actionAreaTop + Math.random() * (actionAreaBottom - actionAreaTop);
 
       sprite.position.set(spawnX, spawnY);
       sprite.scale.set(0.75);
