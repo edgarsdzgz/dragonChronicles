@@ -233,6 +233,94 @@ export async function createScrollingBackground(
   container.addChild(sprite1);
   container.addChild(sprite2);
 
+  // Create visual debugging overlays
+  const debugGraphics = new Graphics();
+  debugGraphics.label = 'debug-overlays';
+  app.stage.addChild(debugGraphics);
+
+  // Function to redraw debug overlays
+  const redrawDebugOverlays = () => {
+    debugGraphics.clear();
+
+    const screenWidth = app.screen.width;
+    const screenHeight = app.screen.height;
+    const positioning = new BackgroundPositioning(screenWidth, screenHeight);
+
+    // Draw horizontal ruler lines every 25 pixels
+    debugGraphics.stroke({ width: 1, color: 0x000000, alpha: 0.8 });
+    for (let y = 0; y < screenHeight; y += 25) {
+      debugGraphics.moveTo(0, y).lineTo(screenWidth, y);
+    }
+
+    // Draw colored overlay boxes for each area
+    // Space area (dark blue) - Orange overlay
+    const spaceTop = 0;
+    const spaceBottom = positioning.getActionAreaTopY();
+    debugGraphics.rect(0, spaceTop, screenWidth, spaceBottom - spaceTop);
+    debugGraphics.fill({ color: 0xffa500, alpha: 0.1 }); // Orange, very low opacity
+    debugGraphics.stroke({ width: 2, color: 0xffa500, alpha: 0.3 });
+
+    // Sky blue band (combat area) - White overlay
+    const skyTop = positioning.getActionAreaTopY();
+    const skyBottom = positioning.getActionAreaBottomY();
+    debugGraphics.rect(0, skyTop, screenWidth, skyBottom - skyTop);
+    debugGraphics.fill({ color: 0xffffff, alpha: 0.1 }); // White, very low opacity
+    debugGraphics.stroke({ width: 2, color: 0xffffff, alpha: 0.3 });
+
+    // Ground area (magenta) - Purple overlay
+    const groundTop = positioning.getGroundY();
+    const groundBottom = screenHeight;
+    debugGraphics.rect(0, groundTop, screenWidth, groundBottom - groundTop);
+    debugGraphics.fill({ color: 0x800080, alpha: 0.1 }); // Purple, very low opacity
+    debugGraphics.stroke({ width: 2, color: 0x800080, alpha: 0.3 });
+
+    // Add labels
+    debugGraphics.text({
+      text: 'SPACE (Orange)',
+      style: { fontSize: 12, fill: 0xffa500, fontWeight: 'bold' },
+      x: 10,
+      y: spaceTop + 10,
+    });
+
+    debugGraphics.text({
+      text: 'SKY BLUE BAND (White)',
+      style: { fontSize: 12, fill: 0xffffff, fontWeight: 'bold' },
+      x: 10,
+      y: skyTop + 10,
+    });
+
+    debugGraphics.text({
+      text: 'GROUND (Purple)',
+      style: { fontSize: 12, fill: 0x800080, fontWeight: 'bold' },
+      x: 10,
+      y: groundTop + 10,
+    });
+
+    // Show dragon position indicator
+    if (dragonSprite) {
+      debugGraphics.stroke({ width: 3, color: 0xff0000, alpha: 0.8 });
+      debugGraphics.circle(dragonSprite.x, dragonSprite.y, 20);
+      debugGraphics.text({
+        text: 'DRAGON',
+        style: { fontSize: 10, fill: 0xff0000, fontWeight: 'bold' },
+        x: dragonSprite.x + 25,
+        y: dragonSprite.y - 10,
+      });
+    }
+
+    console.log('Debug overlays drawn:', {
+      screenWidth,
+      screenHeight,
+      spaceArea: { top: spaceTop, bottom: spaceBottom, height: spaceBottom - spaceTop },
+      skyArea: { top: skyTop, bottom: skyBottom, height: skyBottom - skyTop },
+      groundArea: { top: groundTop, bottom: groundBottom, height: groundBottom - groundTop },
+      dragonPosition: dragonSprite ? { x: dragonSprite.x, y: dragonSprite.y } : null,
+    });
+  };
+
+  // Initial draw
+  redrawDebugOverlays();
+
   // Track position for infinite scrolling
   let offset = 0;
 
@@ -271,6 +359,9 @@ export async function createScrollingBackground(
       dragonSprite.x = 100; // Keep at left side
       dragonSprite.y = positioning.getSkyBlueBandY(); // Reposition in sky blue band
     }
+
+    // Redraw debug overlays on resize
+    redrawDebugOverlays();
   };
 
   app.renderer.on('resize', onResize);
@@ -649,6 +740,12 @@ export async function createScrollingBackground(
       }
 
       container.destroy({ children: true });
+
+      // Clean up debug graphics
+      if (debugGraphics) {
+        app.stage.removeChild(debugGraphics);
+        debugGraphics.destroy();
+      }
     },
   };
 }
