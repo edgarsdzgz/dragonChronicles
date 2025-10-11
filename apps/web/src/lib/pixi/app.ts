@@ -1,10 +1,12 @@
 import { Application } from 'pixi.js';
 import { clampDPR } from './dpr';
+import { createScrollingBackground, type ScrollingBackgroundHandle } from './scrolling-background';
 // Lazy load background simulation to reduce initial bundle size
 let createBackgroundSim: typeof import('../sim/background').createBackgroundSim | null = null;
 
 export type PixiHandle = {
   app: Application;
+  scrollingBackground: ScrollingBackgroundHandle;
   resize: () => void;
   destroy: () => void;
 };
@@ -49,12 +51,20 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   // also apply once on mount to honor current state
   applyVisibilityPolicy();
 
+  // Create scrolling background
+  const scrollingBackground = await createScrollingBackground(app, {
+    scrollSpeed: 100, // 100 pixels per second
+    enabled: true,
+  });
+
   const handle: PixiHandle = {
     app,
+    scrollingBackground,
     resize: () => app.renderer.resize(canvas.clientWidth, canvas.clientHeight),
     destroy: () => {
       document.removeEventListener('visibilitychange', applyVisibilityPolicy);
       bg.stop();
+      scrollingBackground.destroy();
       app.destroy(true, { children: true });
     },
   };
