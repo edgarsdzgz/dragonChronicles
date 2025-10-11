@@ -19,14 +19,15 @@ export type BgSimHandle = {
 
 export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> {
   const dpr = clampDPR();
-  const app = new Application({
+  const app = new Application();
+  await app.init({
     view: canvas,
     antialias: false,
     resolution: dpr,
     autoDensity: true,
     backgroundAlpha: 0,
+    resizeTo: canvas.parentElement ?? window,
   });
-  await app.init({ resizeTo: canvas.parentElement ?? window });
 
   // Lazy load background simulation
   if (!createBackgroundSim) {

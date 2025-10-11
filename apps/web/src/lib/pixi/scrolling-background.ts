@@ -58,21 +58,21 @@ export async function createScrollingBackground(
     texture = await Texture.from('/backgrounds/scrolling-background.png');
   }
 
-  // Wait for texture to be ready
-  if (texture && texture.baseTexture) {
-    if (!texture.baseTexture.valid) {
+  // Wait for texture to be ready (PixiJS v8 compatible)
+  if (texture && texture.source) {
+    if (!texture.source.valid) {
       console.log('Waiting for texture to be ready...');
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject(new Error('Texture loading timeout'));
         }, 5000);
 
-        texture.baseTexture.once('loaded', () => {
+        texture.source.once('loaded', () => {
           clearTimeout(timeout);
           resolve();
         });
 
-        texture.baseTexture.once('error', (error) => {
+        texture.source.once('error', (error) => {
           clearTimeout(timeout);
           reject(error);
         });
@@ -88,7 +88,7 @@ export async function createScrollingBackground(
   console.log('Background texture loaded successfully:', {
     width: texture.width,
     height: texture.height,
-    baseTexture: texture.baseTexture?.resource?.url,
+    source: texture.source?.resource?.url,
   });
 
   // Create two sprites for seamless tiling
