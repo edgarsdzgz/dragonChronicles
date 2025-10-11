@@ -42,24 +42,24 @@ export interface BackgroundMeasurements {
 }
 
 /**
- * Background image measurements (analyzed from 2160x1080 scrolling-background.png)
+ * Background image measurements (analyzed from 2160x1080 steppe_background.png)
  */
 export const BACKGROUND_MEASUREMENTS = {
   imageWidth: 2160,
   imageHeight: 1080,
   skyBlueBand: {
-    top: 0.25, // 25.0% from top (270px)
-    bottom: 0.45, // 45.0% from top (486px)
-    height: 0.2, // 20.0% of image height (216px)
+    top: 0.0, // 0.0% from top (0px) - sky starts at very top
+    bottom: 0.65, // 65.0% from top (702px) - sky ends at horizon
+    height: 0.65, // 65.0% of image height (702px)
   },
   ground: {
-    horizonLine: 0.65, // 65.0% from top (702px) - where green grass starts
+    horizonLine: 0.65, // 65.0% from top (702px) - where horizon/ground starts
     height: 0.35, // 35.0% of image height (378px)
   },
   actionArea: {
-    top: 0.25, // 25.0% from top (270px)
-    bottom: 0.75, // 75.0% from top (810px)
-    height: 0.5, // 50.0% of image height (540px)
+    top: 0.0, // 0.0% from top (0px) - action area is the entire sky
+    bottom: 0.65, // 65.0% from top (702px) - action area ends at horizon
+    height: 0.65, // 65.0% of image height (702px)
   },
 } as const;
 
