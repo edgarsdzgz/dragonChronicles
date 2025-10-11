@@ -1,3 +1,66 @@
+# Scrolling Background Combat System - Complete Implementation Handoff
+
+## Overview
+
+This document contains the complete implementation details for the scrolling background combat system that was fully functional before the current issues. This system combines infinite scrolling backgrounds with real-time combat mechanics, health systems, and economic integration.
+
+## Current Status
+
+**CRITICAL ISSUE**: The game is currently displaying a basic fallback system instead of our implemented scrolling background combat system. All features listed below were working and need to be restored.
+
+## Complete Feature List
+
+### 1. Scrolling Background System
+
+- **Infinite horizontal scrolling** from right to left
+- **Seamless looping** with anti-tearing technology
+- **Responsive scaling** that maintains aspect ratio
+- **Power-of-2 image dimensions** (1024x512) for GPU optimization
+- **Background image**: `steppe_background_2-1.png`
+
+### 2. Combat System
+
+- **Dragon protagonist** with animated sprite sheet (`dragon_fly_128_sheet.png`)
+- **Enemy spawning** (Swarm and Mantair-Corsair types)
+- **Homing projectiles** that track targets dynamically
+- **Collision detection** with custom hitboxes (50% sprite size)
+- **Damage system** with piercing effects (0.07 second delay)
+- **Automatic combat** with AI-driven enemy behavior
+
+### 3. Health System
+
+- **Smooth HP bar animations** with draining effects
+- **Color-coded health bars** (green/yellow/red for dragon, red/orange for enemies)
+- **Real-time health updates** when damage is taken
+- **Black background** for all health bars
+
+### 4. Economic System
+
+- **Arcana counter** with Cinzel font, yellow color
+- **Arcana rewards** on enemy defeat (Swarm: 0.01, Corsair: 0.03)
+- **Integration with ArcanaDropManager** from `@draconia/sim`
+- **Two decimal place display** for arcana balance
+
+### 5. Visual Effects
+
+- **Enemy blinking** when defeated (0.33 second delay)
+- **Projectile synchronization** with defeated enemies
+- **Smooth sprite animations** at 8 FPS
+- **Pixel-perfect rendering** with `roundPixels = true`
+
+### 6. Background Band System
+
+- **Space band (0-180px)**: Dark blue area for currency UI
+- **Action area (180-380px)**: Light blue sky for combat
+- **Ground band (380-512px)**: Brown/underground for player UI
+- **Dragon positioning**: Left side of action area at 50% mark
+- **Enemy spawning**: Only in action area, offscreen to the right
+
+## Complete Code Implementation
+
+### Core File: `apps/web/src/lib/pixi/scrolling-background.ts`
+
+```typescript
 /**
  * Infinite Scrolling Background System
  *
@@ -16,13 +79,6 @@ import {
 } from './projectile-sprites';
 import { BackgroundPositioning } from './background-analyzer';
 import { createDefaultArcanaDropManager, type ArcanaDropManager } from '@draconia/sim';
-
-// Dragon state enum for defeat/recovery system
-enum DragonState {
-  ALIVE = 'alive',
-  DEFEATED = 'defeated',
-  RECOVERING = 'recovering',
-}
 
 // Extend window interface for background width tracking
 declare global {
@@ -72,7 +128,6 @@ export async function createScrollingBackground(
   app: Application,
   config: ScrollingBackgroundConfig = {},
 ): Promise<ScrollingBackgroundHandle> {
-  console.log('🎯 SCROLLING-BACKGROUND: Function called with config:', config);
   const scrollSpeed = config.scrollSpeed ?? 100; // pixels per second
   let currentSpeed = scrollSpeed;
   let isActive = config.enabled ?? true;
@@ -99,12 +154,6 @@ export async function createScrollingBackground(
   let dragonPreviousHealth = 100; // For smooth HP bar animation
   let dragonHealthAnimationStartTime = 0; // When dragon health animation started
   let arcanaManager: ArcanaDropManager;
-
-  // Dragon defeat/recovery system
-  let dragonState: DragonState = DragonState.ALIVE;
-  let recoveryStartTime = 0;
-  const RECOVERY_DURATION_MS = 2500; // 2.5 seconds for smooth animation
-  let dragonWasDefeated = false; // Track if defeat animation has been triggered
 
   // Initialize arcana drop manager
   arcanaManager = createDefaultArcanaDropManager();
@@ -156,9 +205,12 @@ export async function createScrollingBackground(
     fireRate: number;
     health: number;
     maxHealth: number;
+    previousHealth: number; // For smooth HP bar animation
+    healthAnimationStartTime: number; // When the animation started
+    isAnimatingHealth: boolean; // Whether health bar is currently animating
   }> = [];
   const projectiles: Array<Projectile> = [];
-  const projectileTargets: Map<Projectile, Enemy> = new Map(); // Track which projectile targets which enemy
+  const projectileTargets: Map<Projectile, any> = new Map(); // Track which projectile targets which enemy
   let isGameplayActive = false;
   let autoSpawnInterval: number | null = null;
   let projectileUpdateLoop: number | null = null;
@@ -171,7 +223,7 @@ export async function createScrollingBackground(
   const DRAGON_BASE_DAMAGE = 5;
   const ENEMY_HEALTH_CONFIG: Record<EnemyType, number> = {
     'mantair-corsair': 13, // 2.6 hits to kill (5 × 2.6 = 13)
-    swarm: 8, // 1.6 hits to kill (5 × 1.6 = 8)
+    swarm: 7, // 1.4 hits to kill (5 × 1.4 = 7)
   };
   const AUTO_SPAWN_CONFIG = {
     baseInterval: 3000,
@@ -213,14 +265,9 @@ export async function createScrollingBackground(
         height: hitboxSize,
       };
 
-      // Only log hitbox info occasionally to reduce noise
-      if (!checkProjectileCollision.hitboxLogCounter) checkProjectileCollision.hitboxLogCounter = 0;
-      checkProjectileCollision.hitboxLogCounter++;
-      if (checkProjectileCollision.hitboxLogCounter % 200 === 0) {
-        console.log(
-          `🎯 ${enemyType} hitbox: ${hitboxSize.toFixed(1)}x${hitboxSize.toFixed(1)} (50% of ${Math.min(spriteWidth, spriteHeight).toFixed(1)})`,
-        );
-      }
+      console.log(
+        `🎯 ${enemyType} hitbox: ${hitboxSize.toFixed(1)}x${hitboxSize.toFixed(1)} (50% of ${Math.min(spriteWidth, spriteHeight).toFixed(1)})`,
+      );
     }
 
     // Option 1: Center-point collision (most accurate)
@@ -256,16 +303,10 @@ export async function createScrollingBackground(
 
   // Draw health bars for dragon and enemies
   function drawHealthBars() {
-    // Throttle calls to improve performance - only update every 50ms
-    const now = performance.now();
-    if (drawHealthBars.lastUpdate && now - drawHealthBars.lastUpdate < 50) {
-      return;
-    }
-    drawHealthBars.lastUpdate = now;
     if (!app || (!dragonSprite && enemies.length === 0)) {
-      // Hide and remove health bars if no dragon or enemies
-      if (healthBarsGraphics && healthBarsGraphics.parent) {
-        healthBarsGraphics.parent.removeChild(healthBarsGraphics);
+      // Hide health bars if no dragon or enemies
+      if (healthBarsGraphics) {
+        healthBarsGraphics.visible = false;
       }
       return;
     }
@@ -273,37 +314,14 @@ export async function createScrollingBackground(
     // Create graphics object if it doesn't exist
     if (!healthBarsGraphics) {
       healthBarsGraphics = new Graphics();
-      // Don't add to stage until we have content to draw
+      app.stage.addChild(healthBarsGraphics);
     }
 
     // Clear previous drawing
     healthBarsGraphics.clear();
-    // Reduced logging frequency - only log every 200 calls
-    if (!drawHealthBars.logCounter) drawHealthBars.logCounter = 0;
-    drawHealthBars.logCounter++;
-    if (drawHealthBars.logCounter % 200 === 0) {
-      console.log('🔍 Health bars graphics cleared (reduced logging)');
-    }
 
-    // Check if we need to draw any health bars
-    let needsHealthBars = false;
-
-    // Draw health bar for dragon (only when not at full health)
-    // Only log dragon health when it changes significantly or is damaged
-    if (dragonHealth < dragonMaxHealth || drawHealthBars.dragonLogCounter % 500 === 0) {
-      console.log('🔍 Dragon health check:', {
-        dragonHealth,
-        dragonMaxHealth,
-        isFullHealth: dragonHealth >= dragonMaxHealth,
-        hasDragonSprite: !!dragonSprite,
-      });
-    }
-    if (!drawHealthBars.dragonLogCounter) drawHealthBars.dragonLogCounter = 0;
-    drawHealthBars.dragonLogCounter++;
-    if (dragonSprite && dragonHealth < dragonMaxHealth) {
-      needsHealthBars = true;
-      console.log('🔍 Drawing dragon health bar');
-
+    // Draw health bar for dragon
+    if (dragonSprite) {
       const barWidth = 60 * currentScale; // Scale health bar width
       const barHeight = 8 * currentScale; // Scale health bar height
       const barX = dragonSprite.x - barWidth / 2;
@@ -363,20 +381,9 @@ export async function createScrollingBackground(
     enemies.forEach((enemy) => {
       if (!healthBarsGraphics) return;
 
-      // Allow health bars for defeated enemies so they animate to zero
-      // Health bars will be removed when the enemy is actually deleted from the array
-
-      // Check if this enemy needs a health bar
-      if (enemy.health < enemy.maxHealth) {
-        needsHealthBars = true;
-        console.log(
-          '🔍 Drawing enemy health bar for:',
-          enemy.type,
-          'health:',
-          enemy.health,
-          '/',
-          enemy.maxHealth,
-        );
+      // Skip health bars for defeated enemies (they're flashing and about to disappear)
+      if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
+        return;
       }
 
       const barWidth = 40 * currentScale; // Scale health bar width
@@ -432,291 +439,56 @@ export async function createScrollingBackground(
         .stroke({ width: 1, color: 0x000000, alpha: 0.8 });
     });
 
-    // Only add to stage and make visible if we actually drew something
-    if (needsHealthBars) {
-      if (healthBarsGraphics.parent !== app.stage) {
-        app.stage.addChild(healthBarsGraphics);
-      }
-      healthBarsGraphics.visible = true;
-    } else {
-      // Remove from stage if no health bars are needed
-      if (healthBarsGraphics.parent) {
-        healthBarsGraphics.parent.removeChild(healthBarsGraphics);
-      }
-    }
-
-    // Debug: Log what's on the stage (throttled)
-    if (!drawHealthBars.debugCounter) drawHealthBars.debugCounter = 0;
-    drawHealthBars.debugCounter++;
-    if (drawHealthBars.debugCounter % 60 === 0 && app && app.stage) {
-      // Only log every 60 calls and ensure app.stage exists
-      console.log(
-        '🔍 Stage children after health bars:',
-        app.stage.children.map((child, index) => ({
-          index,
-          name: child.name,
-          type: child.constructor.name,
-          x: child.x,
-          y: child.y,
-          width: child.width,
-          height: child.height,
-          visible: child.visible,
-          alpha: child.alpha,
-        })),
-      );
-    }
+    healthBarsGraphics.visible = true;
   }
 
-  // Function to draw arcana counter with icon and matching colors
+  // Function to draw arcana counter with multiple font options
   async function drawArcanaCounter() {
-    // Throttle calls to improve performance - only update every 100ms
-    const now = performance.now();
-    if (drawArcanaCounter.lastUpdate && now - drawArcanaCounter.lastUpdate < 100) {
-      return;
-    }
-    drawArcanaCounter.lastUpdate = now;
+    if (!app) return;
 
-    // Reduced logging frequency - only log every 100 calls
-    if (!drawArcanaCounter.logCounter) drawArcanaCounter.logCounter = 0;
-    drawArcanaCounter.logCounter++;
-    if (drawArcanaCounter.logCounter % 100 === 0) {
-      console.log('🎨 drawArcanaCounter called (reduced logging)');
-    }
+    // Import Text from PixiJS
+    const { Text } = await import('pixi.js');
 
-    // Prevent multiple simultaneous calls to avoid blinking
-    if (drawArcanaCounter.isDrawing) {
-      console.log('🎨 drawArcanaCounter already drawing, skipping...');
-      return;
-    }
-    drawArcanaCounter.isDrawing = true;
-    if (!app) {
-      console.warn('🎨 No app available for Arcana counter');
-      drawArcanaCounter.isDrawing = false;
-      return;
-    }
-
-    // Import required PixiJS classes
-    const { Text, Sprite, Texture, Assets } = await import('pixi.js');
-
-    // Remove existing arcana counters and UI panel if they exist
-    const existingCounters = app.stage.children.filter(
-      (child) =>
-        child.name?.startsWith('arcana-counter') ||
-        child.name?.startsWith('arcana-icon') ||
-        child.name?.startsWith('currency-ui-panel'),
+    // Remove existing arcana counters if they exist
+    const existingCounters = app.stage.children.filter((child) =>
+      child.name?.startsWith('arcana-counter'),
     );
     existingCounters.forEach((counter) => app.stage.removeChild(counter));
 
-    // Position for arcana counter
+    // Selected font option - Cinzel (option 1)
+    const fontOptions = [
+      { name: 'Cinzel', style: 'Cinzel, serif', color: 0xffd700 }, // Selected elegant serif font
+    ];
+
+    // Position for arcana counters horizontally across the "space" area
     const startX = 20 * currentScale;
     const startY = 20 * currentScale; // Top of the space area
-    const iconSize = 24 * currentScale; // Size of the icon
-    const textSpacing = 8 * currentScale; // Space between icon and text
+    const horizontalSpacing = 180 * currentScale; // Space between each font option
 
-    // Create currency UI panel background
-    const { Graphics } = await import('pixi.js');
-    const currencyPanel = new Graphics();
-
-    // Panel dimensions - expand to accommodate multiple currencies
-    const panelWidth = 200 * currentScale; // Wide enough for multiple currencies
-    const panelHeight = 40 * currentScale; // Tall enough for icon + text
-    const panelPadding = 8 * currentScale; // Internal padding
-    const panelCornerRadius = 6 * currentScale; // Rounded corners
-
-    // Draw the panel background with low opacity
-    currencyPanel
-      .roundRect(0, 0, panelWidth, panelHeight, panelCornerRadius)
-      .fill({ color: 0x000000, alpha: 0.3 }); // Low opacity black background
-
-    // Position the panel
-    currencyPanel.x = startX - panelPadding;
-    currencyPanel.y = startY - panelPadding;
-    currencyPanel.name = 'currency-ui-panel';
-
-    // Add the panel to stage first (so it appears behind the currency elements)
-    app.stage.addChild(currencyPanel);
-
-    // Create multiple Arcana counters with different gold colors for comparison
-    // Keep only positions 1, 3, 4, 8, 9, 10 (0-indexed: 0, 2, 3, 7, 8, 9)
-    const allGoldColors = [
-      0xc69842, // 1: Current base gold (leftmost)
-      0xd4a850, // 2: Brighter gold 1
-      0xe2b85e, // 3: Brighter gold 2
-      0xf0c86c, // 4: Brighter gold 3
-      0xf8d87a, // 5: Brighter gold 4
-      0xffe888, // 6: Brighter gold 5
-      0xfff296, // 7: Brightest gold (almost yellow)
-      0xffd700, // 8: Pure gold (more yellow)
-      0xffc107, // 9: Amber gold (intense yellow-gold)
-      0xffb300, // 10: Dark amber (deeper yellow-gold)
-      0xffa500, // 11: Orange gold (warm yellow-gold)
-    ];
-
-    // Keep only the requested positions: 3 and 4
-    const goldColorOptions = [
-      allGoldColors[2], // 3: Brighter gold 2
-      allGoldColors[3], // 4: Brighter gold 3
-    ];
-
-    const counterSpacing = 140 * currentScale; // Increased spacing for icon + text
-    let currentX = startX;
-    let maxPanelWidth = 0;
-
-    // Create all Arcana counters with icons
-    for (let index = 0; index < goldColorOptions.length; index++) {
-      const color = goldColorOptions[index];
-
-      // Create Arcana icon for this counter
-      try {
-        let iconTexture;
-        try {
-          iconTexture = await Assets.load('/icons/arcana_icon.png');
-        } catch (assetsError) {
-          console.warn('🎨 Assets.load failed, trying Texture.from:', assetsError);
-          iconTexture = Texture.from('/icons/arcana_icon.png');
-        }
-
-        const arcanaIcon = new Sprite(iconTexture);
-        arcanaIcon.name = `arcana-icon-${index}`;
-        arcanaIcon.x = currentX;
-        arcanaIcon.y = startY;
-        arcanaIcon.width = iconSize;
-        arcanaIcon.height = iconSize;
-        arcanaIcon.anchor.set(0, 0);
-        app.stage.addChild(arcanaIcon);
-      } catch (error) {
-        console.error('🚨 Failed to load arcana icon:', error);
-      }
-
-      // Create Arcana text with current gold color - crisp without stroke/shadows
+    fontOptions.forEach((font, index) => {
       const arcanaText = new Text({
         text: `Arcana: ${arcanaManager.getCurrentBalance().toFixed(2)}`,
         style: {
-          fontFamily: 'Cinzel, serif',
-          fontSize: 18 * currentScale,
-          fill: color,
-          // Remove stroke and dropShadow for crisp text rendering
-          // stroke: { color: 0x000000, width: 1 },
-          // dropShadow: {
-          //   color: 0x000000,
-          //   blur: 2,
-          //   angle: Math.PI / 4,
-          //   distance: 2,
-          // },
+          fontFamily: font.style,
+          fontSize: 18 * currentScale, // Increased from 16 to 18 (2 points larger)
+          fill: font.color,
+          stroke: { color: 0x000000, width: 1 },
+          dropShadow: {
+            color: 0x000000,
+            blur: 2,
+            angle: Math.PI / 4,
+            distance: 2,
+          },
         },
       });
 
-      arcanaText.name = `arcana-counter-text-${index}`;
-      arcanaText.x = currentX + iconSize + textSpacing;
+      arcanaText.name = `arcana-counter-${index}`;
+      arcanaText.x = startX + index * horizontalSpacing;
       arcanaText.y = startY;
-      arcanaText.anchor.set(0, 0);
+      arcanaText.anchor.set(0, 0); // Top-left anchor
 
       app.stage.addChild(arcanaText);
-
-      // Calculate total width for this counter (icon + spacing + text)
-      const counterWidth = iconSize + textSpacing + arcanaText.width;
-      maxPanelWidth = Math.max(maxPanelWidth, currentX + counterWidth - startX);
-
-      // Move to next position
-      currentX += counterSpacing;
-    }
-
-    // Update the currency panel to cover all counters
-    const newPanelPadding = 8 * currentScale;
-    const newPanelCornerRadius = 6 * currentScale;
-    const totalPanelWidth = maxPanelWidth + 2 * newPanelPadding;
-    const newPanelHeight = iconSize + 2 * newPanelPadding; // Height based on icon size
-
-    // Remove old panel and create new extended one
-    const existingPanel = app.stage.children.find((child) => child.name === 'currency-ui-panel');
-    if (existingPanel) {
-      app.stage.removeChild(existingPanel);
-    }
-
-    // Create new extended currency panel using a different approach
-    const { Graphics: GraphicsClass, Container } = await import('pixi.js');
-    const newCurrencyPanel = new Container();
-
-    // Create the background graphics as a child
-    const backgroundGraphics = new GraphicsClass();
-    backgroundGraphics
-      .roundRect(0, 0, totalPanelWidth, newPanelHeight, newPanelCornerRadius)
-      .fill({ color: 0xff0000, alpha: 0.9 }); // Bright red temporarily to test if Graphics renders at all
-
-    // Add the graphics to the container
-    newCurrencyPanel.addChild(backgroundGraphics);
-
-    newCurrencyPanel.x = startX - newPanelPadding;
-    newCurrencyPanel.y = startY - newPanelPadding;
-    newCurrencyPanel.name = 'currency-ui-panel';
-    newCurrencyPanel.visible = true; // Ensure it's visible
-    newCurrencyPanel.alpha = 0.8; // Set alpha explicitly to match fill, for debugging
-
-    // Only log currency panel creation occasionally to reduce noise
-    if (!drawArcanaCounter.panelLogCounter) drawArcanaCounter.panelLogCounter = 0;
-    drawArcanaCounter.panelLogCounter++;
-    if (drawArcanaCounter.panelLogCounter % 50 === 0) {
-      console.log('🎨 Creating currency panel:', {
-        width: totalPanelWidth,
-        height: newPanelHeight,
-        x: newCurrencyPanel.x,
-        y: newCurrencyPanel.y,
-        visible: newCurrencyPanel.visible,
-        alpha: newCurrencyPanel.alpha,
-        panelPadding: newPanelPadding,
-        panelCornerRadius: newPanelCornerRadius,
-      });
-    }
-
-    app.stage.addChildAt(newCurrencyPanel, 0); // Add at bottom layer
-
-    // Only log panel addition occasionally to reduce noise
-    if (drawArcanaCounter.panelLogCounter % 50 === 0) {
-      console.log('🎨 Currency panel added to stage at index 0');
-      console.log('🎨 Total stage children after panel:', app.stage.children.length);
-      console.log('🎨 Panel final properties:', {
-        name: newCurrencyPanel.name,
-        x: newCurrencyPanel.x,
-        y: newCurrencyPanel.y,
-        width: newCurrencyPanel.width,
-        height: newCurrencyPanel.height,
-        visible: newCurrencyPanel.visible,
-        alpha: newCurrencyPanel.alpha,
-        parent: newCurrencyPanel.parent
-          ? newCurrencyPanel.parent.name || newCurrencyPanel.parent.constructor.name
-          : 'no parent',
-      });
-    }
-
-    // Debug: Log what's on the stage after arcana counter (throttled)
-    if (!drawArcanaCounter.debugCounter) drawArcanaCounter.debugCounter = 0;
-    drawArcanaCounter.debugCounter++;
-    if (drawArcanaCounter.debugCounter % 10 === 0 && app && app.stage) {
-      // Only log every 10 calls and ensure app.stage exists
-      console.log(
-        '🔍 Stage children after arcana counter:',
-        app.stage.children.map((child, index) => ({
-          index,
-          name: child.name,
-          type: child.constructor.name,
-          x: child.x,
-          y: child.y,
-          width: child.width,
-          height: child.height,
-          visible: child.visible,
-          alpha: child.alpha,
-          // Add more details for Graphics objects
-          ...(child.constructor.name === 'Graphics' && {
-            tint: child.tint,
-            blendMode: child.blendMode,
-            isMask: child.isMask,
-          }),
-        })),
-      );
-    }
-
-    // Clear the drawing flag
-    drawArcanaCounter.isDrawing = false;
+    });
   }
 
   // Load the background texture using Assets API for better reliability
@@ -826,7 +598,7 @@ export async function createScrollingBackground(
 
     // Center the background within the screen (it will now be smaller than or equal to screen)
     const scaledBgWidth = sprite1.width;
-    // const scaledBgHeight = sprite1.height; // Unused in this context
+    const scaledBgHeight = sprite1.height;
 
     // Center horizontally (background is now smaller than screen width)
     container.position.x = (screenWidth - scaledBgWidth) / 2;
@@ -901,13 +673,8 @@ export async function createScrollingBackground(
     const resetThreshold = -spriteWidth + 5;
 
     if (offset <= resetThreshold) {
-      console.log(
-        `🔄 RESET TRIGGERED: offset: ${offset.toFixed(1)}, threshold: ${resetThreshold}, spriteWidth: ${spriteWidth}`,
-      );
-
       // Reset offset to create seamless loop
       // Use modulo to handle any accumulated floating-point errors
-      const oldOffset = offset;
       offset = offset % spriteWidth;
 
       // Ensure offset is always within bounds and is an integer
@@ -918,11 +685,9 @@ export async function createScrollingBackground(
       // Round to nearest integer to prevent sub-pixel positioning
       offset = Math.round(offset);
 
-      console.log(`🔄 RESET COMPLETE: old: ${oldOffset.toFixed(1)} -> new: ${offset.toFixed(1)}`);
-
       // Final safety check - if somehow still out of bounds, reset to 0
       if (offset < -spriteWidth || offset > 0) {
-        console.warn(`🚨 RESET FAILED: offset: ${offset} out of bounds, forcing to 0`);
+        console.warn('Background loop reset failed, forcing offset to 0');
         offset = 0;
       }
     }
@@ -935,28 +700,10 @@ export async function createScrollingBackground(
     sprite1.position.x = sprite1X;
     sprite2.position.x = sprite2X;
 
-    // Enhanced debug: Log sprite positions more frequently to catch tearing
-    const frameCount = Math.floor(Math.abs(offset));
-
-    // Log every 50 pixels for more detailed tracking
-    if (frameCount % 50 === 0) {
+    // Debug: Log sprite positions occasionally to check for tearing
+    if (Math.floor(Math.abs(offset)) % 100 === 0) {
       console.log(
         `🌅 Background offset: ${offset.toFixed(1)}, sprite1: ${sprite1X}, sprite2: ${sprite2X}, width: ${spriteWidth}`,
-      );
-    }
-
-    // Log every frame during reset cycles (potential tearing zones)
-    if (offset > resetThreshold && offset <= resetThreshold + 20) {
-      console.log(
-        `⚠️ RESET ZONE: offset: ${offset.toFixed(1)}, threshold: ${resetThreshold}, sprite1: ${sprite1X}, sprite2: ${sprite2X}`,
-      );
-    }
-
-    // Log potential gaps between sprites
-    const gap = sprite2X - sprite1X;
-    if (gap !== spriteWidth) {
-      console.warn(
-        `🚨 SPRITE GAP DETECTED: Expected gap: ${spriteWidth}, Actual gap: ${gap}, sprite1: ${sprite1X}, sprite2: ${sprite2X}`,
       );
     }
 
@@ -1013,12 +760,6 @@ export async function createScrollingBackground(
       animator.setFPS(8);
 
       const maxHealth = ENEMY_HEALTH_CONFIG[type] || 10;
-
-      // Debug logging for swarm enemy spawning
-      if (type === 'swarm') {
-        console.log(`🐛 SWARM SPAWN: Creating swarm enemy with ${maxHealth} HP (should be 8)`);
-      }
-
       const enemyData = {
         sprite,
         animator,
@@ -1057,18 +798,12 @@ export async function createScrollingBackground(
       const collisionCallback = (projectileSprite: Sprite) => {
         if (!dragonSprite) return false;
 
-        // Dragon is invulnerable during defeat and recovery
-        if (dragonState !== DragonState.ALIVE) {
-          console.log('🛡️ Dragon is invulnerable during recovery');
-          return false;
-        }
-
         // Use custom collision detection with hit areas
         const isColliding = checkSpriteCollision(projectileSprite, dragonSprite);
 
         if (isColliding) {
           const oldHealth = dragonHealth;
-          dragonHealth = Math.max(0, dragonHealth - 10); // Clamp to minimum 0
+          dragonHealth -= 10; // Enemy projectile damage
 
           // Start dragon health bar animation
           dragonPreviousHealth = oldHealth;
@@ -1077,11 +812,6 @@ export async function createScrollingBackground(
           console.log(
             `💥 DRAGON HIT by ${enemy.type}! Took 10 damage! Health: ${oldHealth} -> ${dragonHealth}/${dragonMaxHealth}`,
           );
-
-          // Check if dragon was just defeated
-          if (dragonHealth <= 0 && dragonState === DragonState.ALIVE) {
-            handleDragonDefeat();
-          }
 
           // Mark projectile as hit and set pierce timer
           if (!projectileSprite.userData) {
@@ -1142,12 +872,8 @@ export async function createScrollingBackground(
 
     if (closestDistance > DRAGON_ATTACK_RANGE) return;
 
-    // Double-check that the closest enemy exists and is not defeated
-    if (
-      !closestEnemy ||
-      !closestEnemy.sprite ||
-      (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated)
-    ) {
+    // Double-check that the closest enemy is not defeated
+    if (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated) {
       return;
     }
 
@@ -1155,12 +881,8 @@ export async function createScrollingBackground(
       const projectileType = getDragonProjectileType();
       const collisionCallback = (projectileSprite: Sprite) => {
         // Only check collision with the specific target enemy (closestEnemy)
-        if (
-          !closestEnemy ||
-          !closestEnemy.sprite ||
-          (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated)
-        ) {
-          return false; // Target is gone or defeated, don't hit
+        if (closestEnemy.sprite.userData && closestEnemy.sprite.userData.isDefeated) {
+          return false; // Target is already defeated, don't hit
         }
 
         // Use custom collision detection with individual enemy hitboxes
@@ -1187,21 +909,6 @@ export async function createScrollingBackground(
           console.log(
             `💥 DRAGON HIT! ${closestEnemy.type} took ${DRAGON_BASE_DAMAGE} damage! Health: ${oldHealth} -> ${closestEnemy.health}/${closestEnemy.maxHealth}`,
           );
-
-          // Extra debug for swarm enemies to track one-hit death issue
-          if (closestEnemy.type === 'swarm') {
-            console.log(
-              `🐛 SWARM DEBUG: Initial health: ${closestEnemy.maxHealth}, Current: ${closestEnemy.health}, Damage dealt: ${DRAGON_BASE_DAMAGE}`,
-            );
-          }
-
-          // Debug variable damage issue
-          const actualDamageDealt = oldHealth - closestEnemy.health;
-          if (actualDamageDealt !== DRAGON_BASE_DAMAGE) {
-            console.error(
-              `🚨 DAMAGE MISMATCH! Expected: ${DRAGON_BASE_DAMAGE}, Actual: ${actualDamageDealt}, Enemy: ${closestEnemy.type}`,
-            );
-          }
 
           if (closestEnemy.health <= 0) {
             // Mark enemy as defeated and record death time, but don't remove immediately
@@ -1237,12 +944,7 @@ export async function createScrollingBackground(
           return false; // Don't destroy projectile immediately - let it pierce through
         }
         // If no collision with any enemy, projectile MISSES and continues traveling
-        // Only log missed projectiles occasionally to reduce noise
-        if (!checkProjectileCollision.missLogCounter) checkProjectileCollision.missLogCounter = 0;
-        checkProjectileCollision.missLogCounter++;
-        if (checkProjectileCollision.missLogCounter % 150 === 0) {
-          console.log(`💨 Projectile MISSED - continuing forward`);
-        }
+        console.log(`💨 Projectile MISSED - continuing forward`);
         return false; // Continue traveling
       };
 
@@ -1257,7 +959,7 @@ export async function createScrollingBackground(
         collisionCallback,
       );
 
-      // Enable homing behavior - projectile will continuously track the target enemy
+      // Enable homing behavior - projectile will follow the target enemy
       projectile.enableHoming(() => {
         // Find the enemy in the current enemies array to check its current state
         const currentEnemy = enemies.find(
@@ -1315,12 +1017,7 @@ export async function createScrollingBackground(
 
       const activeProjectiles = [];
       if (projectiles.length > 0) {
-        // Only log projectile updates occasionally to reduce noise
-        if (!updateProjectiles.logCounter) updateProjectiles.logCounter = 0;
-        updateProjectiles.logCounter++;
-        if (updateProjectiles.logCounter % 100 === 0) {
-          console.log(`🔄 Updating ${projectiles.length} projectiles...`);
-        }
+        console.log(`🔄 Updating ${projectiles.length} projectiles...`);
       }
 
       for (const projectile of projectiles) {
@@ -1364,25 +1061,12 @@ export async function createScrollingBackground(
           const screenWidth = app.screen.width;
           const offscreenBuffer = 100; // Extra buffer beyond screen edge
 
-          // Double-check sprite is still valid before accessing properties
-          if (!currentProjectileSprite || currentProjectileSprite.x === undefined) {
-            console.log(
-              `⚠️ Projectile sprite invalid when checking offscreen, destroying projectile`,
-            );
-            projectile.destroy();
-            continue;
-          }
-
-          if (
-            currentProjectileSprite &&
-            currentProjectileSprite.x > screenWidth + offscreenBuffer
-          ) {
+          if (currentProjectileSprite.x > screenWidth + offscreenBuffer) {
             console.log(`💨 Projectile went offscreen, despawning`);
             projectile.destroy();
           } else if (
-            currentProjectileSprite &&
-            (stillActive ||
-              (currentProjectileSprite.userData && !currentProjectileSprite.userData.hasHit))
+            stillActive ||
+            (currentProjectileSprite.userData && !currentProjectileSprite.userData.hasHit)
           ) {
             // Keep projectile active if:
             // 1. It's still active according to internal logic, OR
@@ -1422,18 +1106,6 @@ export async function createScrollingBackground(
       const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
-
-      // Handle dragon recovery state
-      if (dragonState === DragonState.RECOVERING) {
-        updateDragonRecovery(currentTime);
-
-        // Still update health bars and arcana counter during recovery
-        drawHealthBars();
-        drawArcanaCounter();
-
-        requestAnimationFrame(updateCombat);
-        return; // Skip enemy/projectile updates during recovery
-      }
 
       // Remove defeated enemies after their death delay
       const activeEnemies = [];
@@ -1529,15 +1201,12 @@ export async function createScrollingBackground(
 
       // Dragon auto-combat
       if (dragonSprite && dragonAnimator) {
-        const dragonAnimatorWithFireTime = dragonAnimator as typeof dragonAnimator & {
-          lastFireTime?: number;
-        };
-        const dragonLastFireTime = dragonAnimatorWithFireTime.lastFireTime || 0;
+        const dragonLastFireTime = (dragonAnimator as any).lastFireTime || 0;
         const dragonFireRate = 1500;
 
         if (currentTime - dragonLastFireTime >= dragonFireRate) {
           fireProjectileFromDragon();
-          dragonAnimatorWithFireTime.lastFireTime = currentTime;
+          (dragonAnimator as any).lastFireTime = currentTime;
         }
       }
 
@@ -1584,95 +1253,6 @@ export async function createScrollingBackground(
       clearTimeout(autoSpawnInterval);
       autoSpawnInterval = null;
     }
-  }
-
-  function handleDragonDefeat() {
-    console.log('💀 DRAGON DEFEATED! Starting recovery sequence...');
-
-    // Set dragon state to defeated
-    dragonState = DragonState.DEFEATED;
-    dragonWasDefeated = true;
-
-    // Stop scrolling background
-    isActive = false;
-
-    // Clear all projectiles
-    projectiles.forEach((projectile) => projectile.destroy());
-    projectiles.length = 0;
-    projectileTargets.clear();
-    console.log('✨ All projectiles cleared');
-
-    // Clear all enemies
-    enemies.forEach((enemy) => {
-      enemy.animator.destroy();
-      app.stage.removeChild(enemy.sprite);
-    });
-    enemies.length = 0;
-    console.log('✨ All enemies cleared');
-
-    // Set dragon to idle animation if animator exists
-    if (dragonAnimator) {
-      dragonAnimator.stop();
-    }
-
-    // Start recovery sequence
-    startDragonRecovery();
-  }
-
-  function startDragonRecovery() {
-    console.log('🔄 Starting dragon recovery sequence...');
-
-    // Set recovery state
-    dragonState = DragonState.RECOVERING;
-    recoveryStartTime = performance.now();
-    dragonHealth = 0; // Ensure health starts at 0
-  }
-
-  function updateDragonRecovery(currentTime: number) {
-    const recoveryProgress = (currentTime - recoveryStartTime) / RECOVERY_DURATION_MS;
-
-    if (recoveryProgress >= 1.0) {
-      // Recovery complete
-      completeDragonRecovery();
-    } else {
-      // Smoothly animate health from 0 to 100
-      dragonHealth = Math.floor(dragonMaxHealth * recoveryProgress);
-
-      // Log recovery progress every 20% to avoid spam
-      const progressPercent = Math.floor(recoveryProgress * 100);
-      if (progressPercent % 20 === 0 && !(updateDragonRecovery as any).lastLoggedProgress) {
-        console.log(
-          `💚 Dragon recovering: ${progressPercent}% (${dragonHealth}/${dragonMaxHealth} HP)`,
-        );
-        (updateDragonRecovery as any).lastLoggedProgress = progressPercent;
-      }
-      if (progressPercent % 20 !== 0) {
-        (updateDragonRecovery as any).lastLoggedProgress = undefined;
-      }
-    }
-  }
-
-  function completeDragonRecovery() {
-    console.log('✅ Dragon recovery complete! Resuming journey...');
-
-    // Restore dragon to full health
-    dragonHealth = dragonMaxHealth;
-    dragonPreviousHealth = dragonMaxHealth;
-
-    // Reset dragon state
-    dragonState = DragonState.ALIVE;
-    dragonWasDefeated = false;
-
-    // Resume scrolling background
-    isActive = true;
-
-    // Restart dragon animation
-    if (dragonAnimator) {
-      dragonAnimator.start();
-      dragonAnimator.setFPS(8);
-    }
-
-    console.log('🚀 Journey resumed!');
   }
 
   function startAutomaticGameplay() {
@@ -1769,8 +1349,256 @@ export async function createScrollingBackground(
 
       container.destroy({ children: true });
 
-      // Clean up debug graphics (if they exist)
-      // Note: debugGraphics cleanup removed as it's not currently used
+      // Clean up debug graphics
+      if (debugGraphics) {
+        app.stage.removeChild(debugGraphics);
+        debugGraphics.destroy();
+      }
     },
   };
 }
+```
+
+## Entry Point Configuration
+
+### File: `apps/web/src/lib/pixi/app.ts`
+
+```typescript
+import { Application } from 'pixi.js';
+import { clampDPR } from './dpr';
+import { createScrollingBackground, type ScrollingBackgroundHandle } from './scrolling-background';
+// Lazy load background simulation to reduce initial bundle size
+let createBackgroundSim: typeof import('../sim/background').createBackgroundSim | null = null;
+
+export type PixiHandle = {
+  app: Application;
+  scrollingBackground: ScrollingBackgroundHandle;
+  resize: () => void;
+  destroy: () => void;
+};
+
+export type BgSimHandle = {
+  start: () => void;
+  stop: () => void;
+  isRunning: () => boolean;
+};
+
+export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> {
+  const dpr = clampDPR();
+  const app = new Application();
+  await app.init({
+    view: canvas,
+    antialias: false,
+    resolution: dpr,
+    autoDensity: true,
+    backgroundAlpha: 0,
+    resizeTo: canvas.parentElement ?? window,
+  });
+
+  // Lazy load background simulation
+  if (!createBackgroundSim) {
+    const bgSimModule = await import('../sim/background');
+    createBackgroundSim = bgSimModule.createBackgroundSim;
+  }
+
+  // New: render-only pause; keep background sim running while hidden
+  const bg: BgSimHandle = createBackgroundSim(2); // 2 Hz is thrifty and predictable
+
+  const applyVisibilityPolicy = () => {
+    if (document.hidden) {
+      if (!app.ticker.stopped) app.ticker.stop(); // pause rendering/GPU
+      bg.start(); // continue simulation (lightweight)
+    } else {
+      bg.stop(); // foreground sim handled by ticker/W3 later
+      // In PixiJS v8, ticker starts automatically when needed
+    }
+  };
+
+  document.addEventListener('visibilitychange', applyVisibilityPolicy);
+  // also apply once on mount to honor current state
+  applyVisibilityPolicy();
+
+  // Create scrolling background
+  console.log('🚀 MOUNTING: About to create scrolling background...');
+  const scrollingBackground = await createScrollingBackground(app, {
+    scrollSpeed: 100, // 100 pixels per second
+    enabled: true,
+  });
+  console.log('✅ MOUNTING: Scrolling background created successfully!', scrollingBackground);
+
+  // Start automatic gameplay for preview
+  console.log('🎮 MOUNTING: Starting automatic gameplay...');
+  scrollingBackground.startAutomaticGameplay();
+  console.log('✅ MOUNTING: Automatic gameplay started!');
+
+  const handle: PixiHandle = {
+    app,
+    scrollingBackground,
+    resize: () => app.renderer.resize(canvas.clientWidth, canvas.clientHeight),
+    destroy: () => {
+      document.removeEventListener('visibilitychange', applyVisibilityPolicy);
+      bg.stop();
+      scrollingBackground.destroy();
+      app.destroy(true, { children: true });
+    },
+  };
+  return handle;
+}
+```
+
+### File: `apps/web/src/routes/+layout.svelte`
+
+```svelte
+<script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
+  import { mountPixi } from '$lib/pixi/app';
+  import { hudEnabled } from '$lib/flags/store';
+
+  let canvas: HTMLCanvasElement;
+  let handle: Awaited<ReturnType<typeof mountPixi>> | null = null;
+
+  // Lazy load PWA components only when needed
+  let UpdateToast: any = null;
+  let InstallPrompt: any = null;
+  let DevMenu: any = null;
+
+  onMount(async () => {
+    handle = await mountPixi(canvas);
+
+    // Lazy load PWA components
+    const [
+      { default: UpdateToastComponent },
+      { default: InstallPromptComponent },
+      { default: DevMenuComponent },
+    ] = await Promise.all([
+      import('$lib/pwa/UpdateToast.svelte'),
+      import('$lib/pwa/InstallPrompt.svelte'),
+      import('$lib/ui/DevMenu.svelte'),
+    ]);
+
+    UpdateToast = UpdateToastComponent;
+    InstallPrompt = InstallPromptComponent;
+    DevMenu = DevMenuComponent;
+  });
+
+  onDestroy(() => handle?.destroy());
+</script>
+
+<div
+  style="position:fixed; inset:0; overflow:hidden;"
+  role="application"
+  aria-label="Draconia Chronicles Game Canvas"
+>
+  <canvas
+    bind:this={canvas}
+    style="width:100%; height:100%; display:block;"
+    aria-label="Draconia Chronicles Game Canvas"
+    role="img"
+  ></canvas>
+  {#if $hudEnabled}
+    <slot name="hud" />
+  {/if}
+</div>
+
+<!-- PWA Update Toast -->
+{#if UpdateToast}
+  <svelte:component this={UpdateToast} />
+{/if}
+
+<!-- PWA Install Prompt -->
+{#if InstallPrompt}
+  <svelte:component this={InstallPrompt} />
+{/if}
+
+<!-- Developer Menu -->
+{#if DevMenu}
+  <svelte:component this={DevMenu} />
+{/if}
+
+<slot />
+```
+
+## Required Assets
+
+### Background Image
+
+- **File**: `apps/web/static/backgrounds/steppe_background_2-1.png`
+- **Dimensions**: 1024x512 pixels
+- **Purpose**: Infinite scrolling background with three distinct bands
+
+### Dragon Sprite Sheet
+
+- **File**: `apps/web/static/sprites/dragon_fly_128_sheet.png`
+- **Purpose**: Animated dragon protagonist with sprite sheet animation
+
+### Enemy Sprites
+
+- **Files**: Various enemy PNG files in `apps/web/static/sprites/`
+- **Types**: Swarm and Mantair-Corsair enemies
+- **Purpose**: Combat enemies with animations
+
+### Projectile Sprites
+
+- **Files**: Various projectile PNG files in `apps/web/static/sprites/`
+- **Purpose**: Dragon and enemy projectiles with homing behavior
+
+## Combat Balance Configuration
+
+```typescript
+// Combat constants
+const DRAGON_ATTACK_RANGE = 1100; // Increased by 175% (400 * 2.75 = 1100)
+const ENEMY_ATTACK_RANGE = 300;
+const ENEMY_MOVE_SPEED = 50;
+const DRAGON_BASE_DAMAGE = 5;
+const ENEMY_HEALTH_CONFIG: Record<EnemyType, number> = {
+  'mantair-corsair': 13, // 2.6 hits to kill (5 × 2.6 = 13)
+  swarm: 7, // 1.4 hits to kill (5 × 1.4 = 7)
+};
+
+// Arcana rewards
+const arcanaReward = closestEnemy.type === 'mantair-corsair' ? 0.03 : 0.01; // Corsairs give more arcana (0.01-0.05 range)
+```
+
+## Background Band System
+
+```typescript
+const BACKGROUND_BANDS = {
+  SPACE: { start: 0, end: 180, purpose: 'Currency UI' },
+  ACTION_AREA: { start: 180, end: 380, purpose: 'Combat/Gameplay' },
+  GROUND: { start: 380, end: 512, purpose: 'Player UI/Menus' },
+};
+```
+
+## Key Features That Must Work
+
+1. **✅ Infinite Scrolling Background**: Right-to-left movement with seamless looping
+2. **✅ Dragon Animation**: Sprite sheet animation at 8 FPS
+3. **✅ Enemy Spawning**: Automatic spawning in action area only
+4. **✅ Homing Projectiles**: Dragon projectiles track enemies dynamically
+5. **✅ Collision Detection**: Custom hitboxes (50% sprite size)
+6. **✅ Health Bars**: Smooth draining animations with color coding
+7. **✅ Arcana Counter**: Yellow Cinzel font, top-left position
+8. **✅ Economic Integration**: Arcana rewards on enemy defeat
+9. **✅ Visual Effects**: Enemy blinking, projectile synchronization
+10. **✅ Responsive Scaling**: Maintains aspect ratio across screen sizes
+
+## Debugging Steps
+
+1. **Check Console Logs**: Look for "🚀 MOUNTING", "🎯 SCROLLING-BACKGROUND", "✅ MOUNTING" messages
+2. **Verify Asset Loading**: Check that PNG files are accessible at correct paths
+3. **Test Function Calls**: Ensure `createScrollingBackground` and `startAutomaticGameplay` are being called
+4. **Check Error Messages**: Look for any JavaScript errors preventing execution
+
+## Current Issue
+
+The game is currently displaying a basic fallback system instead of this complete scrolling background combat system. All the code above was working and needs to be restored to full functionality.
+
+## Next Steps
+
+1. Verify the scrolling-background.ts file contains all the code above
+2. Ensure all asset files are present and accessible
+3. Check that the entry points are correctly calling the scrolling background system
+4. Debug any JavaScript errors preventing the system from loading
+5. Test all features are working: scrolling, combat, health bars, arcana counter
+
+This document represents the complete, working implementation that was functional before the current issues began.
