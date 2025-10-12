@@ -441,18 +441,24 @@ export async function createScrollingBackground(
       reverseButton.on('pointerdown', () => {
         console.log('🎮 Movement: REVERSE');
         currentMovementMode = MovementMode.REVERSE;
+        console.log('🎮 Current movement mode set to:', currentMovementMode);
+        console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
       
       pauseButton.on('pointerdown', () => {
         console.log('🎮 Movement: PAUSED');
         currentMovementMode = currentMovementMode === MovementMode.PAUSED ? MovementMode.FORWARD : MovementMode.PAUSED;
+        console.log('🎮 Current movement mode set to:', currentMovementMode);
+        console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
       
       forwardButton.on('pointerdown', () => {
         console.log('🎮 Movement: FORWARD');
         currentMovementMode = MovementMode.FORWARD;
+        console.log('🎮 Current movement mode set to:', currentMovementMode);
+        console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
       
@@ -1788,7 +1794,10 @@ export async function createScrollingBackground(
 
   // Scrolling animation with advanced anti-tearing logic
   const onTick = (ticker: { deltaTime: number; deltaMS: number }) => {
-    if (!isActive) return;
+    if (!isActive) {
+      console.log('🚫 Movement blocked: isActive = false');
+      return;
+    }
 
     // Calculate scroll amount based on time elapsed and movement mode
     let scrollAmount = 0;
@@ -1796,12 +1805,15 @@ export async function createScrollingBackground(
     if (currentMovementMode === MovementMode.PAUSED) {
       // No movement when paused
       scrollAmount = 0;
+      console.log('⏸️ Movement paused by button');
     } else if (currentMovementMode === MovementMode.REVERSE) {
       // Negative scroll amount for reverse movement (background moves left to right)
       scrollAmount = -((currentSpeed / 1000) * ticker.deltaMS);
+      console.log('⬅️ Movement: REVERSE, scrollAmount:', scrollAmount.toFixed(2));
     } else {
       // Normal forward movement (background moves right to left)
       scrollAmount = (currentSpeed / 1000) * ticker.deltaMS;
+      console.log('➡️ Movement: FORWARD, scrollAmount:', scrollAmount.toFixed(2));
     }
 
     // Background is now static - no movement
