@@ -11,7 +11,7 @@
 
   async function loadDragonTexture() {
     try {
-      dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.svg');
+      dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.png');
       // Create a new pool with the loaded texture
       pool = createSpritePool(dragonTexture, 50);
     } catch (error) {

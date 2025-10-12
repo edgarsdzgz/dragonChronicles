@@ -25,7 +25,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     antialias: false,
     resolution: dpr,
     autoDensity: true,
-    backgroundAlpha: 0,
+    background: 0x7e2453, // Underground color #7e2453
     resizeTo: canvas.parentElement ?? window,
   });
 
@@ -36,7 +36,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   }
 
   // New: render-only pause; keep background sim running while hidden
-  const bg: BgSimHandle = createBackgroundSim(2); // 2 Hz is thrifty and predictable
+  const bg: BgSimHandle = createBackgroundSim(); // Use default realTicker
 
   const applyVisibilityPolicy = () => {
     if (document.hidden) {
@@ -53,13 +53,17 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   applyVisibilityPolicy();
 
   // Create scrolling background
+  console.log('🚀 MOUNTING: About to create scrolling background...');
   const scrollingBackground = await createScrollingBackground(app, {
     scrollSpeed: 100, // 100 pixels per second
     enabled: true,
   });
+  console.log('✅ MOUNTING: Scrolling background created successfully!', scrollingBackground);
 
   // Start automatic gameplay for preview
+  console.log('🎮 MOUNTING: Starting automatic gameplay...');
   scrollingBackground.startAutomaticGameplay();
+  console.log('✅ MOUNTING: Automatic gameplay started!');
 
   const handle: PixiHandle = {
     app,

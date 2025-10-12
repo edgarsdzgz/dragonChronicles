@@ -21,7 +21,7 @@ export const projectileConfigs: Record<
 > = {
   'mantair-corsair-attack': {
     name: 'Mantair Corsair Projectile',
-    imagePath: '/sprites/wsn_mantairCorsair_attack.svg',
+    imagePath: '/sprites/wsn_mantairCorsair_attack.png',
     frameWidth: 32, // 64x64 sprite sheet with 2x2 layout = 32x32 per frame
     frameHeight: 32,
     rows: 2,
@@ -31,7 +31,7 @@ export const projectileConfigs: Record<
   },
   'swarm-attack': {
     name: 'Swarm Projectile',
-    imagePath: '/sprites/wsn_swarm_attack.svg',
+    imagePath: '/sprites/wsn_swarmAttack_sprite.png', // Use proper swarm attack sprite
     frameWidth: 32, // 64x64 sprite sheet with 2x2 layout = 32x32 per frame
     frameHeight: 32,
     rows: 2,
@@ -41,7 +41,7 @@ export const projectileConfigs: Record<
   },
   'dragon-attack': {
     name: 'Dragon Attack Projectile',
-    imagePath: '/sprites/protagonist_dragon_attack.svg',
+    imagePath: '/sprites/protagonist_dragon_attack.png',
     frameWidth: 32, // Assuming 64x64 sprite sheet with 2x2 layout = 32x32 per frame
     frameHeight: 32,
     rows: 2,
@@ -132,6 +132,7 @@ export class Projectile {
   private renderer: Renderer | null = null;
   private stage: Container | null = null;
   private collisionCallback?: (_projectileSprite: Sprite) => boolean; // Returns true if collision occurred
+  private homingTargetCallback?: () => { x: number; y: number } | null; // Returns current target position or null if target is gone
 
   constructor(
     sprite: Sprite,
@@ -153,6 +154,11 @@ export class Projectile {
     this.lastFrameUpdate = performance.now();
   }
 
+  // Enable homing behavior - projectile will continuously track the target
+  enableHoming(targetCallback: () => { x: number; y: number } | null): void {
+    this.homingTargetCallback = targetCallback;
+  }
+
   update(deltaTime: number): boolean {
     if (!this.isActive) return false;
 
@@ -163,6 +169,32 @@ export class Projectile {
     if (this.collisionCallback && this.collisionCallback(this.sprite)) {
       this.destroy();
       return false; // Projectile hit target
+    }
+
+    // Update target position if homing is enabled
+    if (this.homingTargetCallback) {
+      const currentTarget = this.homingTargetCallback();
+      if (!currentTarget) {
+        // Target is gone (enemy defeated), destroy projectile
+        this.destroy();
+        return false;
+      }
+      // Update target coordinates for homing
+      if (currentTarget && typeof currentTarget.x === 'number' && typeof currentTarget.y === 'number') {
+        this.targetX = currentTarget.x;
+        this.targetY = currentTarget.y;
+      } else {
+        console.warn('⚠️ Invalid homing target coordinates, destroying projectile');
+        this.destroy();
+        return false;
+      }
+    }
+
+    // Safety check: ensure sprite exists before accessing properties
+    if (!this.sprite) {
+      console.warn('⚠️ Projectile sprite is null during update, destroying projectile');
+      this.destroy();
+      return false;
     }
 
     // Calculate movement direction
@@ -183,8 +215,15 @@ export class Projectile {
       const moveX = (dx / distance) * moveDistance;
       const moveY = (dy / distance) * moveDistance;
 
-      this.sprite.x += moveX;
-      this.sprite.y += moveY;
+      // Safety check before updating sprite position
+      if (this.sprite && typeof this.sprite.x === 'number' && typeof this.sprite.y === 'number') {
+        this.sprite.x += moveX;
+        this.sprite.y += moveY;
+      } else {
+        console.warn('⚠️ Invalid sprite position during movement update, destroying projectile');
+        this.destroy();
+        return false;
+      }
     }
 
     // Force render if renderer available

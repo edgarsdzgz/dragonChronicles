@@ -66,7 +66,8 @@
       "Bash(npm run prepare:*)",
       "Bash(corepack enable)",
       "Bash(git pull:*)",
-      "Bash(gh issue:*)"
+      "Bash(gh issue:*)",
+      "Bash(sed:*)"
     ],
     "deny": []
   }

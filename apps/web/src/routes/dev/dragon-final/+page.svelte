@@ -14,7 +14,7 @@
       console.log('Starting texture load with Assets system...');
 
       // Add the texture to the Assets system
-      Assets.add({ alias: 'dragon-sheet', src: '/sprites/dragon_fly_128_sheet.svg' });
+      Assets.add({ alias: 'dragon-sheet', src: '/sprites/dragon_fly_128_sheet.png' });
 
       // Load the texture
       dragonTexture = await Assets.load('dragon-sheet');
@@ -34,7 +34,7 @@
       // Fallback: try direct Texture.from
       try {
         console.log('Trying fallback Texture.from...');
-        dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.svg');
+        dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.png');
 
         // Wait a bit for the texture to load
         await new Promise((resolve) => setTimeout(resolve, 2000));

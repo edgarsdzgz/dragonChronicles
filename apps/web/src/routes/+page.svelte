@@ -48,12 +48,4 @@
   </div>
 {/if}
 
-{#if !$hudEnabled}
-  <div
-    style="position:absolute; top:8px; left:8px; padding:6px; background:#222; color:#fff; font:12px; border-radius:4px;"
-    role="note"
-    aria-label="HUD Instructions"
-  >
-    Add <code>?hud=1</code> to URL for FPS HUD
-  </div>
-{/if}
+<!-- Removed empty HUD Instructions div that was causing the "little black box" -->

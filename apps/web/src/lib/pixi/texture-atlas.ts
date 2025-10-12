@@ -138,7 +138,7 @@ export class TextureAtlas {
 
 // Dragon-specific atlas instance
 export const dragonAtlas = new TextureAtlas({
-  imagePath: '/sprites/dragon_fly_128_sheet.svg',
+  imagePath: '/sprites/dragon_fly_128_sheet.png',
   frameWidth: 128,
   frameHeight: 128,
   rows: 2,

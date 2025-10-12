@@ -69,7 +69,7 @@ export const enemyConfigs: Record<
 > = {
   'mantair-corsair': {
     name: 'Mantair Corsair',
-    imagePath: '/sprites/wsn_mantairCorsair_sprite.svg',
+    imagePath: '/sprites/wsn_mantairCorsair_sprite.png', // Use proper mantair-corsair sprite
     frameWidth: 128, // Assuming similar to dragon
     frameHeight: 128,
     rows: 2,
@@ -77,7 +77,7 @@ export const enemyConfigs: Record<
   },
   swarm: {
     name: 'Swarm',
-    imagePath: '/sprites/wsn_swarm_sprite.svg',
+    imagePath: '/sprites/wsn_swarm_sprite.png',
     frameWidth: 128, // Assuming similar to dragon
     frameHeight: 128,
     rows: 2,
@@ -270,9 +270,14 @@ export class EnemyAnimator {
           this.onFrameChange(this.currentExtendedFrame, currentSpeed);
         }
 
-        console.log(
-          `${this.enemyType} holding extended frame: ${this.currentExtendedFrame} (${this.frameExtensionCounter} remaining)`,
-        );
+        // Only log extended frame info occasionally to reduce noise
+        if (!this.extendedFrameLogCounter) this.extendedFrameLogCounter = 0;
+        this.extendedFrameLogCounter++;
+        if (this.extendedFrameLogCounter % 200 === 0) {
+          console.log(
+            `${this.enemyType} holding extended frame: ${this.currentExtendedFrame} (${this.frameExtensionCounter} remaining)`,
+          );
+        }
         return;
       }
 
@@ -312,7 +317,12 @@ export class EnemyAnimator {
       if (frame) {
         // Always update texture
         this.sprite.texture = frame.texture;
-        console.log(`${this.enemyType} frame updated to: ${frameType}`);
+        // Only log frame updates occasionally to reduce noise
+        if (!this.frameLogCounter) this.frameLogCounter = 0;
+        this.frameLogCounter++;
+        if (this.frameLogCounter % 100 === 0) {
+          console.log(`${this.enemyType} frame updated to: ${frameType}`);
+        }
 
         // Update movement speed for this frame
         this.updateMovementSpeed(frameType);
@@ -341,9 +351,14 @@ export class EnemyAnimator {
       this.targetSpeedMultiplier = newSpeedMultiplier;
       this.speedTransitionStart = performance.now();
 
-      console.log(
-        `${this.enemyType} speed transition: ${this.currentSpeedMultiplier.toFixed(2)}x → ${this.targetSpeedMultiplier}x`,
-      );
+      // Only log speed transitions occasionally to reduce noise
+      if (!this.speedTransitionLogCounter) this.speedTransitionLogCounter = 0;
+      this.speedTransitionLogCounter++;
+      if (this.speedTransitionLogCounter % 300 === 0) {
+        console.log(
+          `${this.enemyType} speed transition: ${this.currentSpeedMultiplier.toFixed(2)}x → ${this.targetSpeedMultiplier}x`,
+        );
+      }
     }
 
     // Check for frame duration extension
@@ -351,9 +366,9 @@ export class EnemyAnimator {
     if (extensionFrames > 0) {
       this.currentExtendedFrame = frameType;
       this.frameExtensionCounter = extensionFrames;
-      console.log(
-        `${this.enemyType} extending frame ${frameType} for ${extensionFrames} extra frames`,
-      );
+      // console.log(
+      //   `${this.enemyType} extending frame ${frameType} for ${extensionFrames} extra frames`,
+      // );
     } else {
       this.currentExtendedFrame = null;
       this.frameExtensionCounter = 0;

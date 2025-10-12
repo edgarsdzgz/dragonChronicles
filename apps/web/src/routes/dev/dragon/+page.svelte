@@ -12,7 +12,7 @@
 
   async function loadDragonTexture() {
     try {
-      dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.svg');
+      dragonTexture = Texture.from('/sprites/dragon_fly_128_sheet.png');
       pool = createSpritePool(dragonTexture, 50);
       loaded = true;
       console.log('Dragon texture loaded successfully');

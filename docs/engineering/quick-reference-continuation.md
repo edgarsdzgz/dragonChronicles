@@ -1,65 +1,53 @@
-# Quick Reference - CI Pipeline Debugging
+# Quick Reference - Currency Background & UI Debugging
 
-## Current Status (2025-09-30)
+## Current Status (2025-01-15)
 
-- **Pipeline**: 0/6 workflows passing
-- **Branch**: `feat/p1-e4-s3-soul-forging-system`
-- **PR**: #58
-- **Main Issue**: TypeScript compilation errors
+- **Game Status**: ✅ RENDERING (Fixed critical crash)
+- **Branch**: Working on main branch
+- **Main Issue**: Currency background panel not rendering visually
+- **Critical Error**: `TypeError: Cannot read properties of null (reading 'x') at updateProjectiles`
 
 ## Immediate Actions Required
 
-### 1. Fix Missing Dependencies
+### 1. Fix Currency Background Panel Rendering
+
+- **File**: `apps/web/src/lib/pixi/scrolling-background.ts`
+- **Issue**: Graphics object created and added to stage but not visible
+- **Current Status**: Panel is bright red (debugging color) but still not visible
+- **Console Evidence**: Panel added at index 0, visible: true, alpha: 0.8
+
+### 2. Fix Critical Projectile Update Error
+
+- **File**: `apps/web/src/lib/pixi/scrolling-background.ts` line 1309
+- **Error**: `TypeError: Cannot read properties of null (reading 'x')`
+- **Impact**: Game instability during projectile updates
+- **Action**: Add null checks before accessing object properties
+
+### 3. Debug Dragon Health Bar Rendering
+
+- **Issue**: Dragon health bar not visible despite dragon being damaged (-110 HP)
+- **Console Shows**: "Drawing dragon health bar" but no visual output
+- **Action**: Investigate why Graphics drawing doesn't produce visible health bar
+
+### 4. Investigate Persistent Black Box
+
+- **Issue**: Small black box appearing above currency area intermittently
+- **Status**: Not visible in current screenshot but reported by user
+- **Action**: Enhanced debugging added to track Graphics objects
+
+## Debugging Commands
 
 ```bash
-pnpm add -D @types/uuid
+# Check current branch and status
+git status
+git branch
+
+# Run game locally
+pnpm run dev:web
+
+# Check for linting errors
+pnpm run lint
+
+# Check TypeScript compilation
+pnpm run typecheck
 ```
-
-### 2. Fix Export Issues
-
-- Export `EnchantCostCalculator` interface from `enchant-costs.ts`
-- Export missing classes from scaling files
-- Fix duplicate exports in `index.ts`
-
-### 3. Fix Type Mismatches
-
-- Align interface definitions with implementations
-- Fix return type mismatches in `enchant-manager.ts`
-- Add missing properties to interfaces
-
-### 4. Fix Private Method Access
-
-- Make private methods public or create public wrappers
-- Update method access in `soul-forging-costs.ts`
-
-### 5. Fix Null Safety
-
-- Add null checks in `soul-forging-persistence.ts`
-- Handle undefined objects properly
-
-## Commands to Run
-
-```bash
-# Check current status
-gh run list --limit 5
-
-# Run local type check
-pnpm run type-check
-
-# Run local tests
-pnpm run test:all
-
-# Fix and commit
-git add .
-git commit -m "fix: resolve TypeScript compilation errors"
-git push
-```
-
-## Files to Fix (Priority Order)
-
-1. `packages/sim/src/economy/enchant-costs.ts` - Export interface
-2. `packages/sim/src/economy/arcana-scaling.ts` - Export class
-3. `packages/sim/src/economy/soul-power-scaling.ts` - Export class
-4. `packages/sim/src/economy/enchant-manager.ts` - Fix type mismatches
-5. `packages/sim/src/economy/soul-forging-*.ts` - Fix remaining issues
-6. `packages/sim/src/index.ts` - Fix duplicate exports

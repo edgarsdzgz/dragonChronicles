@@ -20,7 +20,7 @@
     try {
       // Test 1: Assets API texture loading
       addDebug('Test 1: Loading texture using Assets API...');
-      const assetsTexture = await Assets.load('/sprites/dragon_fly_128_sheet.svg');
+      const assetsTexture = await Assets.load('/sprites/dragon_fly_128_sheet.png');
       addDebug(`Assets texture loaded: ${assetsTexture ? 'SUCCESS' : 'FAILED'}`);
 
       if (assetsTexture) {
@@ -29,7 +29,7 @@
 
       // Test 1b: Direct texture loading (for comparison)
       addDebug('Test 1b: Loading texture directly (legacy)...');
-      const directTexture = Texture.from('/sprites/dragon_fly_128_sheet.svg');
+      const directTexture = Texture.from('/sprites/dragon_fly_128_sheet.png');
       addDebug(`Direct texture created: ${directTexture ? 'SUCCESS' : 'FAILED'}`);
 
       // Test 2: Atlas initialization
