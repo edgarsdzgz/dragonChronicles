@@ -276,6 +276,11 @@ export async function createScrollingBackground(
   let isTabVisible = true;
   let gameLoopInterval: number | null = null;
   let fallbackInterval: number | null = null;
+  
+  // Smart pause/resume system
+  let gamePausedTime = 0;
+  let lastPauseTime = performance.now();
+  let totalPausedTime = 0;
   let dragonPreviousHealth = 200; // For smooth HP bar animation
   let dragonHealthAnimationStartTime = 0; // When dragon health animation started
   let arcanaManager: ArcanaDropManager;
@@ -2436,25 +2441,50 @@ export async function createScrollingBackground(
       isTabVisible = !document.hidden;
       
       if (isTabVisible && !wasVisible) {
-        // Tab became visible - catch up on missed time
-        console.log('🔄 Tab became visible, catching up on missed time...');
+        // Tab became visible - smart resume with catch-up
+        console.log('🔄 Tab became visible, smart resuming...');
         
         const currentTime = performance.now();
-        const timeElapsed = currentTime - lastUpdateTime;
-        lastUpdateTime = currentTime;
         
-        // Restart game loops with proper error handling
+        // Calculate total time the game was paused
+        if (gamePausedTime > 0) {
+          const pausedDuration = currentTime - lastPauseTime;
+          totalPausedTime += pausedDuration;
+          console.log(`⏱️ Game was paused for ${Math.round(pausedDuration)}ms`);
+        }
+        
+        // Restart game loops
         restartGameLoops();
         
-        // Clean up any corrupted projectiles from tab switching
+        // Clean up any corrupted projectiles
         cleanupCorruptedProjectiles();
         
-        console.log(`⏱️ Caught up ${timeElapsed}ms of missed time`);
+        // Reset pause tracking
+        gamePausedTime = 0;
+        lastPauseTime = currentTime;
+        lastUpdateTime = currentTime;
+        
+        console.log(`✅ Smart resume complete. Total paused time: ${Math.round(totalPausedTime)}ms`);
+        
+        // Hide pause indicator
+        hidePauseIndicator();
+        
       } else if (!isTabVisible && wasVisible) {
-        // Tab became hidden - switch to fallback mode
-        console.log('👁️ Tab became hidden, switching to fallback mode...');
+        // Tab became hidden - smart pause
+        console.log('👁️ Tab became hidden, smart pausing...');
+        
+        // Record pause start time
+        lastPauseTime = performance.now();
+        gamePausedTime = lastPauseTime;
+        
+        // Stop all game loops (clean pause)
         stopGameLoops();
-        startFallbackMode();
+        
+        // Don't start fallback mode - just pause cleanly
+        console.log('⏸️ Game paused cleanly');
+        
+        // Show visual pause indicator
+        showPauseIndicator();
       }
     };
     
@@ -2495,29 +2525,42 @@ export async function createScrollingBackground(
       }
     };
     
-    const startFallbackMode = () => {
-      // Use setInterval as fallback when tab is hidden
-      if (fallbackInterval) {
-        clearInterval(fallbackInterval);
-      }
+    // Removed startFallbackMode - using clean pause/resume instead
+    
+    // Visual pause indicator
+    let pauseIndicator: Graphics | null = null;
+    
+    const showPauseIndicator = () => {
+      if (!app || pauseIndicator) return;
       
-      fallbackInterval = window.setInterval(() => {
-        if (!document.hidden) {
-          // Tab is visible again, switch back to RAF
-          clearInterval(fallbackInterval!);
-          fallbackInterval = null;
-          return;
-        }
-        
-        // Run game logic at reduced rate in background
-        try {
-          updateProjectiles();
-          // Note: updateCombat will be called by the main loop when tab is visible
-          // For background mode, we only need projectile updates
-        } catch (error) {
-          console.error('Fallback mode error:', error);
-        }
-      }, 100); // 10 FPS in background
+      pauseIndicator = new Graphics();
+      pauseIndicator.beginFill(0x000000, 0.7);
+      pauseIndicator.drawRect(0, 0, app.screen.width, app.screen.height);
+      pauseIndicator.endFill();
+      
+      const pauseText = new Text('⏸️ Game Paused\n(Tab Hidden)', {
+        fontSize: 48,
+        fill: 0xffffff,
+        fontWeight: 'bold',
+        align: 'center'
+      });
+      pauseText.anchor.set(0.5);
+      pauseText.position.set(app.screen.width / 2, app.screen.height / 2);
+      
+      pauseIndicator.addChild(pauseText);
+      app.stage.addChild(pauseIndicator);
+      setZIndex(pauseIndicator, Z_LAYERS.EFFECTS_OVERLAY);
+      
+      console.log('📺 Pause indicator shown');
+    };
+    
+    const hidePauseIndicator = () => {
+      if (pauseIndicator && pauseIndicator.parent) {
+        pauseIndicator.parent.removeChild(pauseIndicator);
+        pauseIndicator.destroy();
+        pauseIndicator = null;
+        console.log('📺 Pause indicator hidden');
+      }
     };
     
     const cleanupCorruptedProjectiles = () => {
@@ -2682,6 +2725,12 @@ export async function createScrollingBackground(
     function updateProjectiles() {
       if (!app) return;
 
+      // Don't update if game is paused (tab hidden)
+      if (!isTabVisible) {
+        projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
+        return;
+      }
+
       // Update time tracking for tab switching
       const currentTime = performance.now();
       lastUpdateTime = currentTime;
@@ -2824,6 +2873,12 @@ export async function createScrollingBackground(
 
     function updateCombat() {
       if (!app) return;
+
+      // Don't update if game is paused (tab hidden)
+      if (!isTabVisible) {
+        combatUpdateLoop = requestAnimationFrame(updateCombat);
+        return;
+      }
 
       const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
