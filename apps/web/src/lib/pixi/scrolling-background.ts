@@ -2443,7 +2443,11 @@ export async function createScrollingBackground(
         
         // Start fresh loops
         projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
-        combatUpdateLoop = requestAnimationFrame(updateCombat);
+        
+        // Start combat loop if updateCombat is defined
+        if (typeof updateCombat === 'function') {
+          combatUpdateLoop = requestAnimationFrame(updateCombat);
+        }
         
         console.log('✅ Game loops restarted successfully');
       } catch (error) {
@@ -2479,7 +2483,8 @@ export async function createScrollingBackground(
         // Run game logic at reduced rate in background
         try {
           updateProjectiles();
-          updateCombat();
+          // Note: updateCombat will be called by the main loop when tab is visible
+          // For background mode, we only need projectile updates
         } catch (error) {
           console.error('Fallback mode error:', error);
         }
@@ -2489,7 +2494,8 @@ export async function createScrollingBackground(
     const cleanupCorruptedProjectiles = () => {
       // Remove any projectiles with corrupted sprites
       const validProjectiles = [];
-      for (const projectile of projectiles) {
+      for (let i = projectiles.length - 1; i >= 0; i--) {
+        const projectile = projectiles[i];
         try {
           const sprite = projectile.getSprite();
           if (sprite && typeof sprite.x === 'number' && typeof sprite.y === 'number') {
@@ -2497,13 +2503,14 @@ export async function createScrollingBackground(
           } else {
             console.log('🧹 Cleaning up corrupted projectile');
             projectile.destroy();
+            projectiles.splice(i, 1);
           }
         } catch (error) {
           console.log('🧹 Cleaning up corrupted projectile (error):', error);
           projectile.destroy();
+          projectiles.splice(i, 1);
         }
       }
-      projectiles = validProjectiles;
     };
     
     document.addEventListener('visibilitychange', handleVisibilityChange);
