@@ -599,7 +599,36 @@ export async function createScrollingBackground(
   }> = [];
   const projectiles: Array<Projectile> = [];
   const projectileTargets: Map<Projectile, Enemy> = new Map(); // Track which projectile targets which enemy
+  const projectilesToDestroy: Set<Projectile> = new Set(); // Track projectiles marked for deferred destruction
   let isGameplayActive = false;
+
+  // Deferred destruction cleanup function
+  const cleanupMarkedProjectiles = () => {
+    if (projectilesToDestroy.size === 0) return;
+    
+    console.log(`🧹 Cleaning up ${projectilesToDestroy.size} marked projectiles`);
+    
+    for (const projectile of projectilesToDestroy) {
+      try {
+        // Remove from main projectiles array
+        const index = projectiles.indexOf(projectile);
+        if (index !== -1) {
+          projectiles.splice(index, 1);
+        }
+        
+        // Remove from projectile targets map
+        projectileTargets.delete(projectile);
+        
+        // Actually destroy the sprite
+        projectile.performDestruction();
+      } catch (error) {
+        console.error('Error during projectile cleanup:', error);
+      }
+    }
+    
+    // Clear the set
+    projectilesToDestroy.clear();
+  };
   let autoSpawnInterval: number | null = null;
   let projectileUpdateLoop: number | null = null;
   let combatUpdateLoop: number | null = null;
@@ -2492,25 +2521,25 @@ export async function createScrollingBackground(
     };
     
     const cleanupCorruptedProjectiles = () => {
-      // Remove any projectiles with corrupted sprites
-      const validProjectiles = [];
+      // Mark any projectiles with corrupted sprites for deferred destruction
       for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i];
         try {
           const sprite = projectile.getSprite();
           if (sprite && typeof sprite.x === 'number' && typeof sprite.y === 'number') {
-            validProjectiles.push(projectile);
+            // Projectile is valid, keep it
+            continue;
           } else {
-            console.log('🧹 Cleaning up corrupted projectile');
-            projectile.destroy();
-            projectiles.splice(i, 1);
+            console.log('🧹 Marking corrupted projectile for destruction');
+            projectilesToDestroy.add(projectile);
           }
         } catch (error) {
-          console.log('🧹 Cleaning up corrupted projectile (error):', error);
-          projectile.destroy();
-          projectiles.splice(i, 1);
+          console.log('🧹 Marking corrupted projectile for destruction (error):', error);
+          projectilesToDestroy.add(projectile);
         }
       }
+      // Perform cleanup immediately for corrupted projectiles
+      cleanupMarkedProjectiles();
     };
     
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -2609,7 +2638,7 @@ export async function createScrollingBackground(
         try {
           const projectileSprite = projectile.getSprite();
           if (!projectileSprite) {
-            projectile.destroy();
+            projectilesToDestroy.add(projectile);
             continue;
           }
           
@@ -2618,7 +2647,7 @@ export async function createScrollingBackground(
           
         } catch (error) {
           console.error('Background projectile update error:', error);
-          projectile.destroy();
+          projectilesToDestroy.add(projectile);
         }
       }
     }
@@ -2666,7 +2695,6 @@ export async function createScrollingBackground(
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
 
-      const activeProjectiles = [];
       if (projectiles.length > 0) {
         // Only log projectile updates occasionally to reduce noise
         if (!updateProjectiles.logCounter) updateProjectiles.logCounter = 0;
@@ -2676,14 +2704,22 @@ export async function createScrollingBackground(
         }
       }
 
-      for (const projectile of projectiles) {
+      // Use reverse iteration for safe array modification
+      for (let i = projectiles.length - 1; i >= 0; i--) {
+        const projectile = projectiles[i];
+        
         try {
+          // Skip if already marked for destruction
+          if (projectilesToDestroy.has(projectile)) {
+            continue;
+          }
+
           const projectileSprite = projectile.getSprite();
 
           // Check if projectile sprite is valid before proceeding
           if (!projectileSprite) {
-            console.log(`⚠️ Projectile sprite is null, destroying projectile`);
-            projectile.destroy();
+            console.log(`⚠️ Projectile sprite is null, marking for destruction`);
+            projectilesToDestroy.add(projectile);
             continue;
           }
 
@@ -2694,30 +2730,33 @@ export async function createScrollingBackground(
 
             if (timeSinceHit >= 70) {
               // 0.07 seconds = 70ms
-              console.log(`⚡ Projectile pierce timer expired, destroying projectile`);
-              projectile.destroy();
-              continue; // Skip adding to active projectiles
+              console.log(`⚡ Projectile pierce timer expired, marking for destruction`);
+              projectilesToDestroy.add(projectile);
+              continue;
             }
           }
 
           let stillActive = false;
           try {
             stillActive = projectile.update(deltaTime);
+            
+            // Check if projectile was marked for destruction during update
+            if (!projectile.isActive) {
+              projectilesToDestroy.add(projectile);
+              continue;
+            }
           } catch (error) {
             console.error(`🚨 Error updating projectile:`, error);
-            // Destroy the problematic projectile and continue
-            projectile.destroy();
+            // Mark for destruction on next cleanup
+            projectilesToDestroy.add(projectile);
             continue;
           }
-
-          // Always keep projectiles active unless they've been explicitly marked for destruction
-          // This ensures projectiles continue traveling even when they "miss" according to internal logic
 
           // Re-get sprite after update in case it was modified
           const currentProjectileSprite = projectile.getSprite();
           if (!currentProjectileSprite) {
-            console.log(`⚠️ Projectile sprite became null after update, destroying projectile`);
-            projectile.destroy();
+            console.log(`⚠️ Projectile sprite became null after update, marking for destruction`);
+            projectilesToDestroy.add(projectile);
             continue;
           }
 
@@ -2725,52 +2764,37 @@ export async function createScrollingBackground(
           const screenWidth = app.screen.width;
           const offscreenBuffer = 100; // Extra buffer beyond screen edge
 
-          // Double-check sprite is still valid before accessing properties
-          if (!currentProjectileSprite) {
-            console.log(
-              `⚠️ Projectile sprite is null when checking offscreen, destroying projectile`,
-            );
-            projectile.destroy();
-            continue;
-          }
-          
-          // Single comprehensive safety check for x property access
+          // Comprehensive safety check for x property access
           if (!currentProjectileSprite || typeof currentProjectileSprite.x !== 'number') {
-            console.log(`⚠️ Projectile sprite invalid or x not a number, destroying projectile`);
-            projectile.destroy();
+            console.log(`⚠️ Projectile sprite invalid or x not a number, marking for destruction`);
+            projectilesToDestroy.add(projectile);
             continue;
           }
 
           if (currentProjectileSprite.x > screenWidth + offscreenBuffer) {
-            console.log(`💨 Projectile went offscreen, despawning`);
-            projectile.destroy();
-          } else if (
-            stillActive ||
-            (currentProjectileSprite.userData && !currentProjectileSprite.userData.hasHit)
-          ) {
-            // Keep projectile active if:
-            // 1. It's still active according to internal logic, OR
-            // 2. It hasn't hit anything yet (allows missed projectiles to continue)
-            activeProjectiles.push(projectile);
+            console.log(`💨 Projectile went offscreen, marking for destruction`);
+            projectilesToDestroy.add(projectile);
+            continue;
           }
+
+          // If projectile is no longer active, mark for destruction
+          if (!stillActive) {
+            projectilesToDestroy.add(projectile);
+            continue;
+          }
+
         } catch (error) {
-          console.error('Error updating projectile:', error);
-          // Remove the problematic projectile
-          projectile.destroy();
+          console.error(`🚨 Error processing projectile:`, error);
+          // Mark for destruction on next cleanup
+          projectilesToDestroy.add(projectile);
         }
       }
 
-      // Clean up projectile targets map for destroyed projectiles
-      const destroyedProjectiles = projectiles.filter((p) => !activeProjectiles.includes(p));
-      destroyedProjectiles.forEach((projectile) => {
-        projectileTargets.delete(projectile);
-      });
-
-      projectiles.length = 0;
-      projectiles.push(...activeProjectiles);
+      // Perform deferred cleanup at the end of the frame
+      cleanupMarkedProjectiles();
 
       // Use requestAnimationFrame but with fallback to setTimeout for tab switching stability
-      requestAnimationFrame(updateProjectiles);
+      projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
       
       // Fallback mechanism: if the game loop hasn't run in 2 seconds, restart it
       if (!updateProjectiles.lastRun) updateProjectiles.lastRun = performance.now();
@@ -2781,8 +2805,6 @@ export async function createScrollingBackground(
       }
       updateProjectiles.lastRun = performance.now();
     }
-
-    projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
   }
 
   function startCombatUpdateLoop() {
@@ -2820,17 +2842,17 @@ export async function createScrollingBackground(
             console.log(`👻 ${enemy.type} disappearing after death delay.`);
 
             // Destroy all projectiles targeting this enemy at the same time
-            const projectilesToDestroy: Projectile[] = [];
+            const projectilesToDestroyForEnemy: Projectile[] = [];
             projectileTargets.forEach((targetEnemy, projectile) => {
               if (targetEnemy === enemy) {
-                projectilesToDestroy.push(projectile);
+                projectilesToDestroyForEnemy.push(projectile);
                 projectileTargets.delete(projectile);
               }
             });
 
-            // Destroy the projectiles
-            projectilesToDestroy.forEach((projectile) => {
-              projectile.destroy();
+            // Mark projectiles for deferred destruction
+            projectilesToDestroyForEnemy.forEach((projectile) => {
+              projectilesToDestroy.add(projectile);
             });
 
             enemy.animator.destroy();
@@ -2985,9 +3007,9 @@ export async function createScrollingBackground(
     // Stop scrolling background
     isActive = false;
 
-    // Clear all projectiles
-    projectiles.forEach((projectile) => projectile.destroy());
-    projectiles.length = 0;
+    // Clear all projectiles using deferred destruction
+    projectiles.forEach((projectile) => projectilesToDestroy.add(projectile));
+    cleanupMarkedProjectiles();
     projectileTargets.clear();
     console.log('✨ All projectiles cleared');
 
@@ -3104,9 +3126,9 @@ export async function createScrollingBackground(
     });
     enemies.length = 0;
 
-    // Clean up all projectiles
-    projectiles.forEach((projectile) => projectile.destroy());
-    projectiles.length = 0;
+    // Clean up all projectiles using deferred destruction
+    projectiles.forEach((projectile) => projectilesToDestroy.add(projectile));
+    cleanupMarkedProjectiles();
     projectileTargets.clear();
   }
 

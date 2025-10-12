@@ -167,7 +167,7 @@ export class Projectile {
 
     // Check for collision using callback if provided
     if (this.collisionCallback && this.collisionCallback(this.sprite)) {
-      this.destroy();
+      this.markForDestruction();
       return false; // Projectile hit target
     }
 
@@ -175,8 +175,8 @@ export class Projectile {
     if (this.homingTargetCallback) {
       const currentTarget = this.homingTargetCallback();
       if (!currentTarget) {
-        // Target is gone (enemy defeated), destroy projectile
-        this.destroy();
+        // Target is gone (enemy defeated), mark for destruction
+        this.markForDestruction();
         return false;
       }
       // Update target coordinates for homing
@@ -184,16 +184,16 @@ export class Projectile {
         this.targetX = currentTarget.x;
         this.targetY = currentTarget.y;
       } else {
-        console.warn('⚠️ Invalid homing target coordinates, destroying projectile');
-        this.destroy();
+        console.warn('⚠️ Invalid homing target coordinates, marking projectile for destruction');
+        this.markForDestruction();
         return false;
       }
     }
 
     // Safety check: ensure sprite exists before accessing properties
     if (!this.sprite) {
-      console.warn('⚠️ Projectile sprite is null during update, destroying projectile');
-      this.destroy();
+      console.warn('⚠️ Projectile sprite is null during update, marking projectile for destruction');
+      this.markForDestruction();
       return false;
     }
 
@@ -205,7 +205,7 @@ export class Projectile {
     // Check if reached target position (fallback collision detection)
     if (distance < 20) {
       // 20 pixel collision radius
-      this.destroy();
+      this.markForDestruction();
       return false; // Projectile should be removed
     }
 
@@ -220,8 +220,8 @@ export class Projectile {
         this.sprite.x += moveX;
         this.sprite.y += moveY;
       } else {
-        console.warn('⚠️ Invalid sprite position during movement update, destroying projectile');
-        this.destroy();
+        console.warn('⚠️ Invalid sprite position during movement update, marking projectile for destruction');
+        this.markForDestruction();
         return false;
       }
     }
@@ -263,10 +263,30 @@ export class Projectile {
 
   destroy(): void {
     this.isActive = false;
-    if (this.sprite.parent) {
+    if (this.sprite && this.sprite.parent) {
       this.sprite.parent.removeChild(this.sprite);
     }
-    this.sprite.destroy();
+    if (this.sprite) {
+      this.sprite.destroy();
+    }
+    this.sprite = null;
+  }
+
+  // Mark for deferred destruction (used by main game loop)
+  markForDestruction(): void {
+    this.isActive = false;
+    // Don't destroy sprite immediately - let the main loop handle it
+  }
+
+  // Actually destroy the sprite (called by main game loop cleanup)
+  performDestruction(): void {
+    if (this.sprite && this.sprite.parent) {
+      this.sprite.parent.removeChild(this.sprite);
+    }
+    if (this.sprite) {
+      this.sprite.destroy();
+    }
+    this.sprite = null;
   }
 }
 
