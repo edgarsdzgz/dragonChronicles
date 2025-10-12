@@ -270,6 +270,12 @@ export async function createScrollingBackground(
   }
   let currentMovementMode = MovementMode.FORWARD;
   let movementControlButtons: Graphics[] = [];
+
+  // Tab switching and visibility management
+  let lastUpdateTime = performance.now();
+  let isTabVisible = true;
+  let gameLoopInterval: number | null = null;
+  let fallbackInterval: number | null = null;
   let dragonPreviousHealth = 200; // For smooth HP bar animation
   let dragonHealthAnimationStartTime = 0; // When dragon health animation started
   let arcanaManager: ArcanaDropManager;
@@ -2395,20 +2401,126 @@ export async function createScrollingBackground(
     let frameCount = 0;
 
     // Add visibility change handler to restart loops when tab becomes visible
+    // Comprehensive tab switching solution
     const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log('🔄 Tab became visible, restarting game loops...');
-        // Restart both loops if they were stalled
-        if (!projectileUpdateLoop) {
-          projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
-        }
-        if (!combatUpdateLoop) {
-          combatUpdateLoop = requestAnimationFrame(updateCombat);
-        }
+      const wasVisible = isTabVisible;
+      isTabVisible = !document.hidden;
+      
+      if (isTabVisible && !wasVisible) {
+        // Tab became visible - catch up on missed time
+        console.log('🔄 Tab became visible, catching up on missed time...');
+        
+        const currentTime = performance.now();
+        const timeElapsed = currentTime - lastUpdateTime;
+        lastUpdateTime = currentTime;
+        
+        // Restart game loops with proper error handling
+        restartGameLoops();
+        
+        // Clean up any corrupted projectiles from tab switching
+        cleanupCorruptedProjectiles();
+        
+        console.log(`⏱️ Caught up ${timeElapsed}ms of missed time`);
+      } else if (!isTabVisible && wasVisible) {
+        // Tab became hidden - switch to fallback mode
+        console.log('👁️ Tab became hidden, switching to fallback mode...');
+        stopGameLoops();
+        startFallbackMode();
       }
     };
     
+    const restartGameLoops = () => {
+      try {
+        // Stop any existing loops
+        if (projectileUpdateLoop) {
+          cancelAnimationFrame(projectileUpdateLoop);
+          projectileUpdateLoop = null;
+        }
+        if (combatUpdateLoop) {
+          cancelAnimationFrame(combatUpdateLoop);
+          combatUpdateLoop = null;
+        }
+        
+        // Start fresh loops
+        projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
+        combatUpdateLoop = requestAnimationFrame(updateCombat);
+        
+        console.log('✅ Game loops restarted successfully');
+      } catch (error) {
+        console.error('❌ Failed to restart game loops:', error);
+      }
+    };
+    
+    const stopGameLoops = () => {
+      if (projectileUpdateLoop) {
+        cancelAnimationFrame(projectileUpdateLoop);
+        projectileUpdateLoop = null;
+      }
+      if (combatUpdateLoop) {
+        cancelAnimationFrame(combatUpdateLoop);
+        combatUpdateLoop = null;
+      }
+    };
+    
+    const startFallbackMode = () => {
+      // Use setInterval as fallback when tab is hidden
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval);
+      }
+      
+      fallbackInterval = window.setInterval(() => {
+        if (!document.hidden) {
+          // Tab is visible again, switch back to RAF
+          clearInterval(fallbackInterval!);
+          fallbackInterval = null;
+          return;
+        }
+        
+        // Run game logic at reduced rate in background
+        try {
+          updateProjectiles();
+          updateCombat();
+        } catch (error) {
+          console.error('Fallback mode error:', error);
+        }
+      }, 100); // 10 FPS in background
+    };
+    
+    const cleanupCorruptedProjectiles = () => {
+      // Remove any projectiles with corrupted sprites
+      const validProjectiles = [];
+      for (const projectile of projectiles) {
+        try {
+          const sprite = projectile.getSprite();
+          if (sprite && typeof sprite.x === 'number' && typeof sprite.y === 'number') {
+            validProjectiles.push(projectile);
+          } else {
+            console.log('🧹 Cleaning up corrupted projectile');
+            projectile.destroy();
+          }
+        } catch (error) {
+          console.log('🧹 Cleaning up corrupted projectile (error):', error);
+          projectile.destroy();
+        }
+      }
+      projectiles = validProjectiles;
+    };
+    
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Add timeout-based fallback to detect and recover from stalled loops
+    let lastLoopCheck = performance.now();
+    const loopCheckInterval = setInterval(() => {
+      const now = performance.now();
+      const timeSinceLastUpdate = now - lastUpdateTime;
+      
+      // If no updates for more than 2 seconds, restart loops
+      if (timeSinceLastUpdate > 2000 && isTabVisible) {
+        console.log('⚠️ Detected stalled game loops, restarting...');
+        restartGameLoops();
+        lastUpdateTime = now;
+      }
+    }, 1000); // Check every second
 
     // Integrate with background simulation system for tab switching
     const handleBgTick = (event: CustomEvent<{ dt: number }>) => {
@@ -2534,13 +2646,16 @@ export async function createScrollingBackground(
     function updateProjectiles() {
       if (!app) return;
 
+      // Update time tracking for tab switching
+      const currentTime = performance.now();
+      lastUpdateTime = currentTime;
+      
       frameCount++;
       // if (frameCount % 600 === 0) {
       //   // Log every 600 frames (roughly every 10 seconds)
       //   console.log(`🔄 Projectile update loop running... frame ${frameCount}`);
       // }
 
-      const currentTime = performance.now();
       const deltaTime = currentTime - lastTime;
       lastTime = currentTime;
 
@@ -2612,25 +2727,9 @@ export async function createScrollingBackground(
             continue;
           }
           
-          // Additional safety check for x property access
-          if (!currentProjectileSprite || currentProjectileSprite.x === undefined || currentProjectileSprite.x === null) {
-            console.log(
-              `⚠️ Projectile sprite or x property is invalid, destroying projectile`,
-            );
-            projectile.destroy();
-            continue;
-          }
-
-          // Comprehensive null and undefined check to prevent race conditions
-          if (!currentProjectileSprite || currentProjectileSprite.x === undefined || currentProjectileSprite.x === null) {
-            console.log(`⚠️ Projectile sprite is null/undefined or x is invalid, destroying projectile`);
-            projectile.destroy();
-            continue;
-          }
-
-          // Final safety check before accessing x property
+          // Single comprehensive safety check for x property access
           if (!currentProjectileSprite || typeof currentProjectileSprite.x !== 'number') {
-            console.log(`⚠️ Final safety check failed - sprite invalid or x not a number, destroying projectile`);
+            console.log(`⚠️ Projectile sprite invalid or x not a number, destroying projectile`);
             projectile.destroy();
             continue;
           }
@@ -3055,6 +3154,19 @@ export async function createScrollingBackground(
       }
 
       container.destroy({ children: true });
+
+      // Clean up tab switching intervals
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval);
+        fallbackInterval = null;
+      }
+      if (gameLoopInterval) {
+        clearInterval(gameLoopInterval);
+        gameLoopInterval = null;
+      }
+      if (loopCheckInterval) {
+        clearInterval(loopCheckInterval);
+      }
 
       // Clean up debug graphics (if they exist)
       // Note: debugGraphics cleanup removed as it's not currently used
