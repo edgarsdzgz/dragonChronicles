@@ -2714,6 +2714,12 @@ export async function createScrollingBackground(
             continue;
           }
 
+          // Skip if projectile is not active (marked for destruction)
+          if (!projectile.isActive) {
+            projectilesToDestroy.add(projectile);
+            continue;
+          }
+
           const projectileSprite = projectile.getSprite();
 
           // Check if projectile sprite is valid before proceeding
@@ -2764,14 +2770,18 @@ export async function createScrollingBackground(
           const screenWidth = app.screen.width;
           const offscreenBuffer = 100; // Extra buffer beyond screen edge
 
+          // Store sprite properties locally to prevent race conditions
+          const spriteX = currentProjectileSprite.x;
+          const spriteY = currentProjectileSprite.y;
+
           // Comprehensive safety check for x property access
-          if (!currentProjectileSprite || typeof currentProjectileSprite.x !== 'number') {
-            console.log(`⚠️ Projectile sprite invalid or x not a number, marking for destruction`);
+          if (typeof spriteX !== 'number' || typeof spriteY !== 'number') {
+            console.log(`⚠️ Projectile sprite coordinates invalid, marking for destruction`);
             projectilesToDestroy.add(projectile);
             continue;
           }
 
-          if (currentProjectileSprite.x > screenWidth + offscreenBuffer) {
+          if (spriteX > screenWidth + offscreenBuffer) {
             console.log(`💨 Projectile went offscreen, marking for destruction`);
             projectilesToDestroy.add(projectile);
             continue;

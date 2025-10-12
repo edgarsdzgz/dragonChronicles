@@ -235,6 +235,11 @@ export class Projectile {
   }
 
   private async updateAnimation(_deltaTime: number) {
+    // Don't update animation if projectile is not active or sprite is null
+    if (!this.isActive || !this.sprite) {
+      return;
+    }
+
     const now = performance.now();
     if (now - this.lastFrameUpdate >= this.frameDuration) {
       this.animationFrameIndex = (this.animationFrameIndex + 1) % this.frameSequence.length;
@@ -243,7 +248,8 @@ export class Projectile {
       const frameType = this.frameSequence[this.animationFrameIndex];
       const frame = await getProjectileFrame(this.projectileType, frameType);
 
-      if (frame) {
+      // Double-check sprite is still valid after async operation
+      if (frame && this.sprite && this.isActive) {
         this.sprite.texture = frame.texture;
       }
     }
@@ -253,7 +259,11 @@ export class Projectile {
     this.frameDuration = 1000 / fps;
   }
 
-  getSprite(): Sprite {
+  getSprite(): Sprite | null {
+    // Return null if projectile is not active (marked for destruction)
+    if (!this.isActive) {
+      return null;
+    }
     return this.sprite;
   }
 
@@ -276,6 +286,7 @@ export class Projectile {
   markForDestruction(): void {
     this.isActive = false;
     // Don't destroy sprite immediately - let the main loop handle it
+    // This prevents any further updates or animations
   }
 
   // Actually destroy the sprite (called by main game loop cleanup)
