@@ -65,6 +65,8 @@ export const enemyConfigs: Record<
     frameHeight: number;
     rows: number;
     cols: number;
+    damage: number; // Base damage this enemy deals to the dragon
+    health: number; // Base health for this enemy type
   }
 > = {
   'mantair-corsair': {
@@ -74,6 +76,8 @@ export const enemyConfigs: Record<
     frameHeight: 128,
     rows: 2,
     cols: 2,
+    damage: 8, // Stronger enemy, deals more damage
+    health: 13,
   },
   swarm: {
     name: 'Swarm',
@@ -82,6 +86,8 @@ export const enemyConfigs: Record<
     frameHeight: 128,
     rows: 2,
     cols: 2,
+    damage: 3, // Weaker enemy, deals less damage
+    health: 8,
   },
 };
 

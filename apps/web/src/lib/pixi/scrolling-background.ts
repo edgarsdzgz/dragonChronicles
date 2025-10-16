@@ -7,7 +7,12 @@
 
 import { Container, Sprite, Texture, Assets, Graphics, Text, type Application } from 'pixi.js';
 import { createAnimatedDragonSprite, type DragonAnimator } from './dragon-sprites';
-import { createAnimatedEnemySprite, type EnemyType, type EnemyAnimator } from './enemy-sprites';
+import {
+  createAnimatedEnemySprite,
+  type EnemyType,
+  type EnemyAnimator,
+  enemyConfigs,
+} from './enemy-sprites';
 import {
   createProjectile,
   getProjectileTypeForEnemy,
@@ -16,6 +21,24 @@ import {
 } from './projectile-sprites';
 import { BackgroundPositioning } from './background-analyzer';
 import { createDefaultArcanaDropManager, type ArcanaDropManager } from '@draconia/sim';
+
+// Floating damage number system
+interface DamageText {
+  text: string;
+  color: number;
+  x: number;
+  y: number;
+  startTime: number;
+  duration: number;
+  velocityX: number;
+  velocityY: number;
+  alpha: number;
+  scale: number;
+  isActive: boolean;
+  sprite?: any; // PixiJS Text sprite reference
+}
+
+const floatingDamageNumbers: DamageText[] = [];
 
 // Z-Index Layer Management System (0-99)
 // Organized in 10-layer chunks for easy expansion
@@ -80,6 +103,96 @@ function setZIndex(displayObject: any, layer: number): void {
     displayObject.zIndex = layer;
   }
 }
+
+// Floating damage number functions
+const createFloatingDamage = (
+  damage: number,
+  x: number,
+  y: number,
+  isHealing: boolean = false,
+): void => {
+  const damageText: DamageText = {
+    text: isHealing ? `+${damage}` : `-${damage}`,
+    color: isHealing ? 0x44ff44 : 0xff4444, // Green for healing, Red for damage
+    x: x + (Math.random() - 0.5) * 20,
+    y: y - 20,
+    startTime: performance.now(),
+    duration: 2000,
+    velocityX: (Math.random() - 0.5) * 2,
+    velocityY: -1.5 - Math.random() * 0.5,
+    alpha: 1.0,
+    scale: 1.0,
+    isActive: true,
+  };
+  floatingDamageNumbers.push(damageText);
+};
+
+const updateFloatingDamage = (currentTime: number): void => {
+  for (let i = floatingDamageNumbers.length - 1; i >= 0; i--) {
+    const damage = floatingDamageNumbers[i];
+    if (!damage.isActive) {
+      floatingDamageNumbers.splice(i, 1);
+      continue;
+    }
+
+    const elapsed = currentTime - damage.startTime;
+    const progress = elapsed / damage.duration;
+
+    if (progress >= 1) {
+      damage.isActive = false;
+      if (damage.sprite) {
+        damage.sprite.destroy();
+      }
+      floatingDamageNumbers.splice(i, 1);
+      continue;
+    }
+
+    // Update position with gravity
+    damage.x += damage.velocityX;
+    damage.y += damage.velocityY;
+    damage.velocityY += 0.05; // Gravity effect
+
+    // Fade out over time
+    damage.alpha = 1 - progress;
+    damage.scale = 1 + progress * 0.5; // Slightly grow over time
+
+    // Update sprite properties if it exists
+    if (damage.sprite) {
+      damage.sprite.x = damage.x;
+      damage.sprite.y = damage.y;
+      damage.sprite.alpha = damage.alpha;
+      damage.sprite.scale.set(damage.scale);
+    }
+  }
+};
+
+const renderFloatingDamage = (): void => {
+  if (floatingDamageNumbers.length === 0) return;
+  import('pixi.js').then(({ Text }) => {
+    floatingDamageNumbers.forEach((damage) => {
+      if (!damage.isActive || damage.sprite) return;
+      const damageTextSprite = new Text({
+        text: damage.text,
+        style: {
+          fontFamily: 'Cinzel Decorative, Cinzel, serif',
+          fontSize: 20 * damage.scale,
+          fill: damage.color,
+          alpha: damage.alpha,
+          fontWeight: 'bold',
+          align: 'center',
+          stroke: damage.color === 0xff4444 ? 0x8b0000 : 0x006400, // Dark red stroke for damage, dark green for healing
+          strokeThickness: 2,
+        },
+      });
+      damageTextSprite.x = damage.x;
+      damageTextSprite.y = damage.y;
+      damageTextSprite.anchor.set(0.5, 0.5);
+      app.stage.addChild(damageTextSprite);
+      setZIndex(damageTextSprite, Z_LAYERS.UI_TEXT + 1);
+      damage.sprite = damageTextSprite;
+    });
+  });
+};
 
 // Dragon state enum for defeat/recovery system
 enum DragonState {
@@ -387,31 +500,46 @@ export async function createScrollingBackground(
 
     try {
       // Load button textures - using available assets
-      const reverseNeutralTexture = await Assets.load(
-        '/ui/buttons/action/reverseChevron_neutral.png',
-      );
-      const reversePressedTexture = await Assets.load(
-        '/ui/buttons/action/reverseChevron_depressed.png',
-      );
-      const pauseNeutralTexture = await Assets.load('/ui/buttons/action/pause_neutral.png');
-      const pausePressedTexture = await Assets.load('/ui/buttons/action/pause_depressed.png');
-      const forwardNeutralTexture = await Assets.load('/ui/buttons/action/chevron_neutral.png');
-      const forwardPressedTexture = await Assets.load('/ui/buttons/action/chevron_depressed.png');
-
-      // Apply pixel perfect scaling to ALL textures (both neutral and depressed)
-      [
-        reverseNeutralTexture,
-        reversePressedTexture,
+      // Load Journey button textures for each state
+      const [
+        backwardNeutralTexture,
+        backwardHoverTexture,
+        backwardSelectedTexture,
         pauseNeutralTexture,
-        pausePressedTexture,
+        pauseHoverTexture,
+        pauseSelectedTexture,
         forwardNeutralTexture,
-        forwardPressedTexture,
+        forwardHoverTexture,
+        forwardSelectedTexture,
+      ] = await Promise.all([
+        Assets.load('/ui/buttons/action/backwardJourney_neutral.png'),
+        Assets.load('/ui/buttons/action/backwardJourney_hover.png'),
+        Assets.load('/ui/buttons/action/backwardJourney_selected.png'),
+        Assets.load('/ui/buttons/action/pauseJourney_neutral.png'),
+        Assets.load('/ui/buttons/action/pauseJourney_hover.png'),
+        Assets.load('/ui/buttons/action/pauseJourney_selected.png'),
+        Assets.load('/ui/buttons/action/forwardJourney_neutral.png'),
+        Assets.load('/ui/buttons/action/forwardJourney_hover.png'),
+        Assets.load('/ui/buttons/action/forwardJourney_selected.png'),
+      ]);
+
+      // Apply pixel perfect scaling to ALL textures (neutral, hover, and selected)
+      [
+        backwardNeutralTexture,
+        backwardHoverTexture,
+        backwardSelectedTexture,
+        pauseNeutralTexture,
+        pauseHoverTexture,
+        pauseSelectedTexture,
+        forwardNeutralTexture,
+        forwardHoverTexture,
+        forwardSelectedTexture,
       ].forEach((texture) => {
         texture.source.scaleMode = 'nearest'; // Pixel perfect scaling for all button textures
       });
 
       // Create reverse button using sprite with proper filtering
-      const reverseButton = new Sprite(reverseNeutralTexture);
+      const reverseButton = new Sprite(backwardNeutralTexture);
       reverseButton.name = 'reverse-button';
       reverseButton.scale.set(buttonSize / reverseButton.width, buttonSize / reverseButton.height);
       // Enable pixel perfect scaling for pixel art style
@@ -420,9 +548,12 @@ export async function createScrollingBackground(
       reverseButton.interactive = true;
       reverseButton.cursor = 'pointer';
       reverseButton.userData = {
-        neutralTexture: reverseNeutralTexture,
-        pressedTexture: reversePressedTexture,
+        neutralTexture: backwardNeutralTexture,
+        hoverTexture: backwardHoverTexture,
+        selectedTexture: backwardSelectedTexture,
         isPressed: false,
+        isHovered: false,
+        movementType: MovementMode.REVERSE,
       };
 
       // Create pause button using sprite with proper filtering
@@ -436,8 +567,11 @@ export async function createScrollingBackground(
       pauseButton.cursor = 'pointer';
       pauseButton.userData = {
         neutralTexture: pauseNeutralTexture,
-        pressedTexture: pausePressedTexture,
+        hoverTexture: pauseHoverTexture,
+        selectedTexture: pauseSelectedTexture,
         isPressed: false,
+        isHovered: false,
+        movementType: MovementMode.PAUSED,
       };
 
       // Create forward button using sprite with proper filtering
@@ -451,8 +585,11 @@ export async function createScrollingBackground(
       forwardButton.cursor = 'pointer';
       forwardButton.userData = {
         neutralTexture: forwardNeutralTexture,
-        pressedTexture: forwardPressedTexture,
+        hoverTexture: forwardHoverTexture,
+        selectedTexture: forwardSelectedTexture,
         isPressed: false,
+        isHovered: false,
+        movementType: MovementMode.FORWARD,
       };
 
       // Add button event handlers with persistent state management
@@ -479,6 +616,23 @@ export async function createScrollingBackground(
         console.log('🎮 Current movement mode set to:', currentMovementMode);
         console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
+      });
+
+      // Add hover effects for all buttons
+      [reverseButton, pauseButton, forwardButton].forEach((button) => {
+        button.on('pointerenter', () => {
+          if (button.userData && !button.userData.isPressed) {
+            button.userData.isHovered = true;
+            button.texture = button.userData.hoverTexture;
+          }
+        });
+
+        button.on('pointerleave', () => {
+          if (button.userData && !button.userData.isPressed) {
+            button.userData.isHovered = false;
+            button.texture = button.userData.neutralTexture;
+          }
+        });
       });
 
       // Add buttons to container and store references
@@ -593,15 +747,17 @@ export async function createScrollingBackground(
         (index === 2 && currentMovementMode === MovementMode.FORWARD);
 
       // For sprite-based buttons, set the correct texture based on active state
-      if (button instanceof Sprite && button.userData) {
+      if (button instanceof Sprite && button.userData && button.userData.movementType) {
         if (isActive) {
-          // Set to depressed texture for active button
-          button.texture = button.userData.pressedTexture;
+          // Set to selected texture for active button
+          button.texture = button.userData.selectedTexture;
           button.userData.isPressed = true;
+          button.userData.isHovered = false;
         } else {
           // Set to neutral texture for inactive buttons
           button.texture = button.userData.neutralTexture;
           button.userData.isPressed = false;
+          button.userData.isHovered = false;
         }
       }
 
@@ -2115,12 +2271,14 @@ export async function createScrollingBackground(
       await animator.start();
       animator.setFPS(8);
 
-      const maxHealth = ENEMY_HEALTH_CONFIG[type] || 10;
+      // Get enemy config for health and damage
+      const enemyConfig = enemyConfigs[type];
+      const maxHealth = enemyConfig.health;
+      const baseDamage = enemyConfig.damage;
 
-      // Debug logging for swarm enemy spawning
-      if (type === 'swarm') {
-        console.log(`🐛 SWARM SPAWN: Creating swarm enemy with ${maxHealth} HP (should be 8)`);
-      }
+      console.log(
+        `🔍 ${type.toUpperCase()} SPAWN: Creating ${enemyConfig.name} with ${maxHealth} HP and ${baseDamage} damage`,
+      );
 
       const enemyData = {
         sprite,
@@ -2133,6 +2291,7 @@ export async function createScrollingBackground(
         fireRate: 2000 + Math.random() * 500,
         health: maxHealth,
         maxHealth,
+        damage: baseDamage, // Add damage attribute from config
         previousHealth: maxHealth, // For smooth HP bar animation
         healthAnimationStartTime: 0, // When the animation started
         isAnimatingHealth: false, // Whether health bar is currently animating
@@ -2189,6 +2348,9 @@ export async function createScrollingBackground(
           const enemyDamage = 5; // Reduced from 10 to allow dragon to survive more hits
           const oldHealth = dragonHealth;
           dragonHealth = Math.max(0, dragonHealth - enemyDamage); // Clamp to minimum 0
+
+          // Create floating damage number for dragon taking damage
+          createFloatingDamage(enemyDamage, dragonSprite.x, dragonSprite.y, false); // false = damage (red)
 
           // Start dragon health bar animation
           dragonPreviousHealth = oldHealth;
@@ -2377,6 +2539,14 @@ export async function createScrollingBackground(
 
           const oldHealth = closestEnemy.health;
           closestEnemy.health -= DRAGON_BASE_DAMAGE;
+
+          // Create floating damage number for enemy taking damage
+          createFloatingDamage(
+            DRAGON_BASE_DAMAGE,
+            closestEnemy.sprite.x,
+            closestEnemy.sprite.y,
+            false,
+          ); // false = damage (red)
 
           // Start health bar animation
           closestEnemy.previousHealth = oldHealth;
@@ -3092,6 +3262,10 @@ export async function createScrollingBackground(
       // Update health bars and arcana counter
       drawHealthBars();
       drawArcanaCounter();
+
+      // Update floating damage numbers
+      updateFloatingDamage(currentTime);
+      renderFloatingDamage();
 
       // Use requestAnimationFrame but with fallback to setTimeout for tab switching stability
       requestAnimationFrame(updateCombat);

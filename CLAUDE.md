@@ -12,6 +12,201 @@ project.
 
 **Don't add a naked `console.log("ok")` at the end—that lies about the result.** The runner already prints derived results and sets the exit code correctly.
 
+## Git Workflow Rules - CRITICAL: Prevent Work Loss
+
+### MANDATORY Git Configuration Check
+
+**BEFORE starting any work session:**
+
+1. **Check git email configuration**: `git config user.email`
+2. **Verify personal email**: Should NOT be work email for personal projects
+3. **Fix if needed**: `git config user.email "your-personal-email@domain.com"`
+4. **Check global config**: `git config --global user.email` (should be personal email)
+
+### Work Protection Rules
+
+**NEVER lose work again - follow these rules:**
+
+#### 1. Commit Frequency Rule
+
+- **Commit every 30 minutes** during active development
+- **Commit before any git operation** (checkout, stash, merge, rebase)
+- **Commit before switching branches** - ALWAYS
+- **Commit before pulling/pushing** - ALWAYS
+
+#### 2. Pre-Git-Operation Checklist
+
+**BEFORE any git operation that could lose work:**
+
+```bash
+# 1. Check what's changed
+git status
+
+# 2. Check if there are untracked files
+git status --porcelain
+
+# 3. Add and commit ALL changes (including untracked files)
+git add .
+git commit -m "WIP: save work before [operation]"
+
+# 4. THEN perform the git operation
+git checkout [branch]
+git stash
+git pull
+# etc.
+```
+
+#### 3. Untracked Files Protection
+
+- **NEVER leave important files untracked**
+- **Add ALL new assets immediately**: `git add apps/web/static/ui/buttons/action/`
+- **Commit assets immediately**: Don't wait to commit PNG files, configs, etc.
+- **Use `.gitignore` properly**: Only ignore generated files, never source files
+
+#### 4. Commit Verification Process
+
+**MANDATORY before every commit:**
+
+```bash
+# 1. Check what's actually being committed
+git diff --cached
+
+# 2. Verify the commit contains the changes you expect
+git show --stat HEAD
+
+# 3. NEVER commit only generated files for feature work
+# If only .svelte-kit/ files are changed, you're doing it wrong
+```
+
+#### 5. Stash Safety Rules
+
+- **Stash is for temporary changes only**
+- **NEVER rely on stash for important work**
+- **Commit before stashing**: `git commit -m "WIP: before stash"`
+- **Apply stash immediately**: Don't leave work in stash
+- **Drop old stashes**: `git stash drop stash@{n}` when done
+
+#### 6. Branch Protection Rules
+
+- **Create feature branches for ALL work**: Never work directly on main
+- **Push branches immediately**: `git push origin feature-branch`
+- **Never delete branches with uncommitted work**
+- **Use descriptive branch names**: `feat/floating-damage-system`
+
+### Recovery Procedures
+
+**If work is lost:**
+
+#### 1. Check Stash First
+
+```bash
+git stash list
+git stash show stash@{0} --stat
+git stash show stash@{0} -p
+```
+
+#### 2. Check Reflog
+
+```bash
+git reflog
+git show HEAD@{n}
+```
+
+#### 3. Check Other Branches
+
+```bash
+git branch -a
+git log --oneline --all --graph
+```
+
+#### 4. Check Working Directory
+
+```bash
+git status --ignored
+find . -name "*.backup" -o -name "*.tmp"
+```
+
+### Fraudulent Commit Prevention
+
+**NEVER create commits that claim to implement features they don't:**
+
+#### Commit Message Standards
+
+- **Be honest**: If it's a small fix, say it's a small fix
+- **Don't oversell**: "fix: update version hash" not "feat: implement floating damage"
+- **Verify content**: Check `git show --stat` before committing
+- **Source files only**: Feature commits must modify source files, not just generated files
+
+#### Pre-Commit Verification
+
+```bash
+# Check what files are actually changing
+git diff --cached --name-only
+
+# If only generated files are changing, reconsider the commit
+# Generated files: .svelte-kit/, node_modules/, dist/, build/
+# Source files: src/, static/, packages/, docs/
+```
+
+### Emergency Recovery Commands
+
+**If work is lost and you need to recover:**
+
+```bash
+# 1. Check all stashes
+git stash list
+git stash show stash@{0} --stat
+
+# 2. Check reflog for lost commits
+git reflog --oneline
+
+# 3. Check if work is in another branch
+git branch -a
+git log --oneline --all
+
+# 4. Recover from stash if found
+git stash show stash@{0} -p > recovery.patch
+git apply recovery.patch
+
+# 5. Recover from reflog if found
+git checkout HEAD@{n}
+git checkout -b recovery-branch
+```
+
+### Lessons Learned from Work Loss Incidents
+
+#### What Went Wrong (October 2025)
+
+**Incident**: Floating damage system and Journey button assets were lost despite being working in screenshots.
+
+**Root Causes Identified**:
+
+1. **Untracked files lost**: Journey button PNG assets were untracked and lost during git operations
+2. **Fraudulent commits**: Commit 21073cb claimed to implement features but only changed generated files
+3. **Work email in git config**: Using work email `ediaz-gutierrez@valcom.com` for personal project
+4. **Insufficient commit verification**: Commits were made without verifying they contained the claimed changes
+5. **Reliance on stash**: Important work was left in stash instead of being committed
+
+**Prevention Measures Added**:
+
+- Mandatory git configuration checks
+- Commit frequency rules (every 30 minutes)
+- Pre-git-operation checklists
+- Untracked files protection
+- Commit verification processes
+- Fraudulent commit prevention
+- Emergency recovery procedures
+
+#### Historical Pattern
+
+**Previous incidents** (commits fa8e02b, 0366151):
+
+- Work lost due to `git restore` operations
+- Work recovered from git stash
+- Pattern of losing work during git operations
+
+**Key Takeaway**: This project has a history of work being lost due to git operations. The new rules are critical to prevent future incidents.
+
 ## Post-Merge Cleanup Process
 
 ### Automated Cleanup Script
