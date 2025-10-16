@@ -21,46 +21,46 @@ import { createDefaultArcanaDropManager, type ArcanaDropManager } from '@draconi
 // Organized in 10-layer chunks for easy expansion
 const Z_LAYERS = {
   // 0-9: Background layers (furthest back)
-  BACKGROUND_STATIC: 0,           // Main background sprites
-  BACKGROUND_CLOUDS: 1,          // Sky clouds layer (behind mountain)
-  BACKGROUND_PARALLAX: 2,        // Distant parallax elements (mountains)
-  
+  BACKGROUND_STATIC: 0, // Main background sprites
+  BACKGROUND_CLOUDS: 1, // Sky clouds layer (behind mountain)
+  BACKGROUND_PARALLAX: 2, // Distant parallax elements (mountains)
+
   // 10-19: Environment layers
-  ENVIRONMENT_DECORATIVE: 10,     // Trees, rocks, buildings
-  ENVIRONMENT_INTERACTIVE: 11,    // Collectibles, power-ups
-  
+  ENVIRONMENT_DECORATIVE: 10, // Trees, rocks, buildings
+  ENVIRONMENT_INTERACTIVE: 11, // Collectibles, power-ups
+
   // 20-29: Gameplay layers
-  ENEMIES: 20,                    // Enemy sprites
-  ENEMY_PROJECTILES: 21,          // Enemy attacks
-  PLAYER_PROJECTILES: 22,         // Player attacks
-  
+  ENEMIES: 20, // Enemy sprites
+  ENEMY_PROJECTILES: 21, // Enemy attacks
+  PLAYER_PROJECTILES: 22, // Player attacks
+
   // 30-39: Player layers
-  PLAYER_DRAGON: 30,              // Main dragon character
-  
+  PLAYER_DRAGON: 30, // Main dragon character
+
   // 40-49: Foreground environment
-  FOREGROUND_GRASS: 40,           // Grassland layer
-  FOREGROUND_DECORATIVE: 41,      // Foreground trees, grass details
-  
+  FOREGROUND_GRASS: 40, // Grassland layer
+  FOREGROUND_DECORATIVE: 41, // Foreground trees, grass details
+
   // 50-59: UI Background layers
-  UI_BACKGROUND_PANELS: 50,       // Currency panels, health bar backgrounds
-  UI_BACKGROUND_ELEMENTS: 51,     // Other UI backgrounds
-  
+  UI_BACKGROUND_PANELS: 50, // Currency panels, health bar backgrounds
+  UI_BACKGROUND_ELEMENTS: 51, // Other UI backgrounds
+
   // 60-69: UI Content layers
-  UI_HEALTH_BARS: 60,             // Health bars
-  UI_TEXT: 61,                    // Text elements
-  UI_ICONS: 62,                   // Icons (Arcana, etc.)
-  UI_CONTROLS: 63,                // Movement control buttons
-  
+  UI_HEALTH_BARS: 60, // Health bars
+  UI_TEXT: 61, // Text elements
+  UI_ICONS: 62, // Icons (Arcana, etc.)
+  UI_CONTROLS: 63, // Movement control buttons
+
   // 70-79: Effects layers
-  EFFECTS_PARTICLES: 70,          // Particle effects
-  EFFECTS_LIGHTING: 71,           // Lighting effects
-  EFFECTS_OVERLAY: 72,            // Screen effects, transitions
-  
+  EFFECTS_PARTICLES: 70, // Particle effects
+  EFFECTS_LIGHTING: 71, // Lighting effects
+  EFFECTS_OVERLAY: 72, // Screen effects, transitions
+
   // 80-89: Debug layers
-  DEBUG_MEASUREMENT: 80,          // Measurement overlay, grid lines
-  DEBUG_HITBOXES: 81,             // Collision debug visuals
-  DEBUG_INFO: 82,                 // Debug text, performance info
-  
+  DEBUG_MEASUREMENT: 80, // Measurement overlay, grid lines
+  DEBUG_HITBOXES: 81, // Collision debug visuals
+  DEBUG_INFO: 82, // Debug text, performance info
+
   // 90-99: Reserved for future expansion
   RESERVED_90: 90,
   RESERVED_91: 91,
@@ -71,7 +71,7 @@ const Z_LAYERS = {
   RESERVED_96: 96,
   RESERVED_97: 97,
   RESERVED_98: 98,
-  RESERVED_99: 99
+  RESERVED_99: 99,
 } as const;
 
 // Helper function to set z-index for any display object
@@ -138,31 +138,39 @@ export async function createScrollingBackground(
 ): Promise<ScrollingBackgroundHandle> {
   // console.log('🎯 SCROLLING-BACKGROUND: Function called with config:', config);
   console.log('🔍 DEBUG: Initial stage children count:', app.stage.children.length);
-  console.log('🔍 DEBUG: Initial stage children details:', app.stage.children.map((child, index) => ({
-    index,
-    name: child.name,
-    type: child.constructor.name,
-    visible: child.visible,
-    alpha: child.alpha,
-    x: child.x,
-    y: child.y,
-    width: child.width,
-    height: child.height
-  })));
-  
-  // DEBUGGING: Check for any Graphics objects that might be the black box
-  const graphicsObjects = app.stage.children.filter(child => child.constructor.name === 'Graphics');
-  if (graphicsObjects.length > 0) {
-    console.log('🔍 DEBUG: Found Graphics objects on initial stage:', graphicsObjects.map((obj, index) => ({
+  console.log(
+    '🔍 DEBUG: Initial stage children details:',
+    app.stage.children.map((child, index) => ({
       index,
-      name: obj.name,
-      x: obj.x,
-      y: obj.y,
-      width: obj.width,
-      height: obj.height,
-      visible: obj.visible,
-      alpha: obj.alpha
-    })));
+      name: child.name,
+      type: child.constructor.name,
+      visible: child.visible,
+      alpha: child.alpha,
+      x: child.x,
+      y: child.y,
+      width: child.width,
+      height: child.height,
+    })),
+  );
+
+  // DEBUGGING: Check for any Graphics objects that might be the black box
+  const graphicsObjects = app.stage.children.filter(
+    (child) => child.constructor.name === 'Graphics',
+  );
+  if (graphicsObjects.length > 0) {
+    console.log(
+      '🔍 DEBUG: Found Graphics objects on initial stage:',
+      graphicsObjects.map((obj, index) => ({
+        index,
+        name: obj.name,
+        x: obj.x,
+        y: obj.y,
+        width: obj.width,
+        height: obj.height,
+        visible: obj.visible,
+        alpha: obj.alpha,
+      })),
+    );
   } else {
     console.log('🔍 DEBUG: No Graphics objects found on initial stage');
   }
@@ -171,12 +179,12 @@ export async function createScrollingBackground(
   (window as any).exportGameLogs = () => {
     const logs: string[] = [];
     const originalLog = console.log;
-    
+
     console.log = (...args: any[]) => {
       logs.push(`[${new Date().toISOString()}] ${args.join(' ')}`);
       originalLog(...args);
     };
-    
+
     setTimeout(() => {
       console.log = originalLog;
       const blob = new Blob([logs.join('\n')], { type: 'text/plain' });
@@ -188,12 +196,12 @@ export async function createScrollingBackground(
       URL.revokeObjectURL(url);
     }, 5000); // Capture 5 seconds of logs
   };
-  
+
   // console.log('📁 DEBUG: Call window.exportGameLogs() to download recent logs');
-  
+
   // DEBUGGING: Intercept stage.addChild to track Graphics objects
   const originalAddChild = app.stage.addChild.bind(app.stage);
-  app.stage.addChild = function(child: any) {
+  app.stage.addChild = function (child: any) {
     if (child.constructor.name === 'Graphics') {
       console.log('🔍 DEBUG: Graphics object added to stage:', {
         name: child.name || 'unnamed',
@@ -202,12 +210,12 @@ export async function createScrollingBackground(
         width: child.width,
         height: child.height,
         visible: child.visible,
-        alpha: child.alpha
+        alpha: child.alpha,
       });
     }
     return originalAddChild(child);
   };
-  
+
   // Track any Graphics objects created early
   const originalGraphics = (window as any).Graphics;
   if (originalGraphics) {
@@ -215,9 +223,9 @@ export async function createScrollingBackground(
   }
 
   // DEBUGGING: Intercept all Graphics object creation
-  const GraphicsClass = await import('pixi.js').then(m => m.Graphics);
+  const GraphicsClass = await import('pixi.js').then((m) => m.Graphics);
   const originalGraphicsConstructor = GraphicsClass;
-  
+
   // Override Graphics constructor to log all creations
   const OriginalGraphics = GraphicsClass;
   (window as any).Graphics = class extends OriginalGraphics {
@@ -231,11 +239,11 @@ export async function createScrollingBackground(
         height: this.height,
         visible: this.visible,
         alpha: this.alpha,
-        stack: new Error().stack?.split('\n').slice(1, 4)
+        stack: new Error().stack?.split('\n').slice(1, 4),
       });
     }
   };
-  
+
   // Note: Cannot override imported Graphics class directly due to read-only property
   // Using window-level override and direct logging instead
   const scrollSpeed = config.scrollSpeed ?? 100; // pixels per second
@@ -265,8 +273,8 @@ export async function createScrollingBackground(
   // Movement control state
   enum MovementMode {
     FORWARD = 'forward',
-    REVERSE = 'reverse', 
-    PAUSED = 'paused'
+    REVERSE = 'reverse',
+    PAUSED = 'paused',
   }
   let currentMovementMode = MovementMode.FORWARD;
   let movementControlButtons: Graphics[] = [];
@@ -276,7 +284,7 @@ export async function createScrollingBackground(
   let isTabVisible = true;
   let gameLoopInterval: number | null = null;
   let fallbackInterval: number | null = null;
-  
+
   // Smart pause/resume system
   let gamePausedTime = 0;
   let lastPauseTime = performance.now();
@@ -347,8 +355,8 @@ export async function createScrollingBackground(
     const scaledBgHeight = bgHeight * currentScale;
     const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
     const actionBandBottomY = positioning.getActionAreaBottomY();
-    const undergroundStartY = actionBandBottomY + (40 * currentScale); // 40px padding from top of underground area (perfect positioning)
-    
+    const undergroundStartY = actionBandBottomY + 40 * currentScale; // 40px padding from top of underground area (perfect positioning)
+
     // Debug logging for button positioning
     console.log('🎮 Button positioning debug:', {
       actionBandBottomY,
@@ -358,40 +366,50 @@ export async function createScrollingBackground(
       screenWidth: app.screen.width,
       screenHeight: app.screen.height,
       calculatedTopPadding: undergroundStartY - actionBandBottomY,
-      calculatedLeftPadding: startX
+      calculatedLeftPadding: startX,
     });
-    
+
     // Clear existing buttons
-    movementControlButtons.forEach(button => button.destroy());
+    movementControlButtons.forEach((button) => button.destroy());
     movementControlButtons = [];
-    
+
     // TEMPORARY: Add visual debug markers to show expected button positions (DISABLED)
     // const debugGraphics = new Graphics();
     // debugGraphics.beginFill(0xFF0000, 0.5); // Red semi-transparent
     // debugGraphics.drawRect(startX, undergroundStartY, buttonSize, buttonSize); // Left button position
-    // debugGraphics.drawRect(startX + buttonSize + (buttonSpacing * currentScale), undergroundStartY, buttonSize, buttonSize); // Middle button position  
+    // debugGraphics.drawRect(startX + buttonSize + (buttonSpacing * currentScale), undergroundStartY, buttonSize, buttonSize); // Middle button position
     // debugGraphics.drawRect(startX + (buttonSize + (buttonSpacing * currentScale)) * 2, undergroundStartY, buttonSize, buttonSize); // Right button position
     // debugGraphics.endFill();
     // container.addChild(debugGraphics);
     // setZIndex(debugGraphics, Z_LAYERS.UI_CONTROLS + 1); // Above buttons
-    
+
     // console.log('🎮 DEBUG: Red rectangles show expected button positions');
-    
+
     try {
       // Load button textures - using available assets
-      const reverseNeutralTexture = await Assets.load('/ui/buttons/action/reverseChevron_neutral.png');
-      const reversePressedTexture = await Assets.load('/ui/buttons/action/reverseChevron_depressed.png');
+      const reverseNeutralTexture = await Assets.load(
+        '/ui/buttons/action/reverseChevron_neutral.png',
+      );
+      const reversePressedTexture = await Assets.load(
+        '/ui/buttons/action/reverseChevron_depressed.png',
+      );
       const pauseNeutralTexture = await Assets.load('/ui/buttons/action/pause_neutral.png');
       const pausePressedTexture = await Assets.load('/ui/buttons/action/pause_depressed.png');
       const forwardNeutralTexture = await Assets.load('/ui/buttons/action/chevron_neutral.png');
       const forwardPressedTexture = await Assets.load('/ui/buttons/action/chevron_depressed.png');
-      
+
       // Apply pixel perfect scaling to ALL textures (both neutral and depressed)
-      [reverseNeutralTexture, reversePressedTexture, pauseNeutralTexture, 
-       pausePressedTexture, forwardNeutralTexture, forwardPressedTexture].forEach(texture => {
+      [
+        reverseNeutralTexture,
+        reversePressedTexture,
+        pauseNeutralTexture,
+        pausePressedTexture,
+        forwardNeutralTexture,
+        forwardPressedTexture,
+      ].forEach((texture) => {
         texture.source.scaleMode = 'nearest'; // Pixel perfect scaling for all button textures
       });
-      
+
       // Create reverse button using sprite with proper filtering
       const reverseButton = new Sprite(reverseNeutralTexture);
       reverseButton.name = 'reverse-button';
@@ -404,9 +422,9 @@ export async function createScrollingBackground(
       reverseButton.userData = {
         neutralTexture: reverseNeutralTexture,
         pressedTexture: reversePressedTexture,
-        isPressed: false
+        isPressed: false,
       };
-      
+
       // Create pause button using sprite with proper filtering
       const pauseButton = new Sprite(pauseNeutralTexture);
       pauseButton.name = 'pause-button';
@@ -419,9 +437,9 @@ export async function createScrollingBackground(
       pauseButton.userData = {
         neutralTexture: pauseNeutralTexture,
         pressedTexture: pausePressedTexture,
-        isPressed: false
+        isPressed: false,
       };
-      
+
       // Create forward button using sprite with proper filtering
       const forwardButton = new Sprite(forwardNeutralTexture);
       forwardButton.name = 'forward-button';
@@ -434,9 +452,9 @@ export async function createScrollingBackground(
       forwardButton.userData = {
         neutralTexture: forwardNeutralTexture,
         pressedTexture: forwardPressedTexture,
-        isPressed: false
+        isPressed: false,
       };
-      
+
       // Add button event handlers with persistent state management
       reverseButton.on('pointerdown', () => {
         console.log('🎮 Movement: REVERSE');
@@ -445,15 +463,16 @@ export async function createScrollingBackground(
         console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
-      
+
       pauseButton.on('pointerdown', () => {
         console.log('🎮 Movement: PAUSED');
-        currentMovementMode = currentMovementMode === MovementMode.PAUSED ? MovementMode.FORWARD : MovementMode.PAUSED;
+        currentMovementMode =
+          currentMovementMode === MovementMode.PAUSED ? MovementMode.FORWARD : MovementMode.PAUSED;
         console.log('🎮 Current movement mode set to:', currentMovementMode);
         console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
-      
+
       forwardButton.on('pointerdown', () => {
         console.log('🎮 Movement: FORWARD');
         currentMovementMode = MovementMode.FORWARD;
@@ -461,33 +480,45 @@ export async function createScrollingBackground(
         console.log('🎮 isActive status:', isActive);
         updateButtonStates(); // This will set the correct textures for all buttons
       });
-      
+
       // Add buttons to container and store references
       container.addChild(reverseButton);
       container.addChild(pauseButton);
       container.addChild(forwardButton);
-      
+
       movementControlButtons = [reverseButton, pauseButton, forwardButton];
-      
+
       // Set initial button states
       updateButtonStates();
-      
+
       // Set proper z-index
-      movementControlButtons.forEach(button => setZIndex(button, Z_LAYERS.UI_CONTROLS));
-      
+      movementControlButtons.forEach((button) => setZIndex(button, Z_LAYERS.UI_CONTROLS));
+
       console.log('🎮 Movement control buttons created with custom assets successfully');
-      
     } catch (error) {
-      console.warn('⚠️ Failed to load custom button assets, falling back to programmatic buttons:', error);
+      console.warn(
+        '⚠️ Failed to load custom button assets, falling back to programmatic buttons:',
+        error,
+      );
       // Fallback to programmatic buttons if asset loading fails
-      createFallbackMovementButtons(startX, undergroundStartY, buttonSize, buttonSpacing * currentScale);
+      createFallbackMovementButtons(
+        startX,
+        undergroundStartY,
+        buttonSize,
+        buttonSpacing * currentScale,
+      );
     }
   }
-  
-  function createFallbackMovementButtons(startX: number, undergroundStartY: number, buttonSize: number, buttonSpacing: number) {
+
+  function createFallbackMovementButtons(
+    startX: number,
+    undergroundStartY: number,
+    buttonSize: number,
+    buttonSpacing: number,
+  ) {
     // Fallback function for programmatic buttons if assets fail to load
     console.log('🎮 Creating fallback programmatic movement buttons');
-    
+
     // Create reverse button (<)
     const reverseButton = new Graphics();
     reverseButton.beginFill(0x666666, 0.8);
@@ -500,7 +531,7 @@ export async function createScrollingBackground(
     reverseText.anchor.set(0.5);
     reverseText.position.set(buttonSize / 2, buttonSize / 2);
     reverseButton.addChild(reverseText);
-    
+
     // Create pause button (||)
     const pauseButton = new Graphics();
     pauseButton.beginFill(0x666666, 0.8);
@@ -513,7 +544,7 @@ export async function createScrollingBackground(
     pauseText.anchor.set(0.5);
     pauseText.position.set(buttonSize / 2, buttonSize / 2);
     pauseButton.addChild(pauseText);
-    
+
     // Create forward button (>)
     const forwardButton = new Graphics();
     forwardButton.beginFill(0x666666, 0.8);
@@ -526,7 +557,7 @@ export async function createScrollingBackground(
     forwardText.anchor.set(0.5);
     forwardText.position.set(buttonSize / 2, buttonSize / 2);
     forwardButton.addChild(forwardText);
-    
+
     // Add button event handlers
     reverseButton.on('pointerdown', () => {
       console.log('🎮 Movement: REVERSE');
@@ -535,7 +566,8 @@ export async function createScrollingBackground(
     });
     pauseButton.on('pointerdown', () => {
       console.log('🎮 Movement: PAUSED');
-      currentMovementMode = currentMovementMode === MovementMode.PAUSED ? MovementMode.FORWARD : MovementMode.PAUSED;
+      currentMovementMode =
+        currentMovementMode === MovementMode.PAUSED ? MovementMode.FORWARD : MovementMode.PAUSED;
       updateButtonStates();
     });
     forwardButton.on('pointerdown', () => {
@@ -543,24 +575,23 @@ export async function createScrollingBackground(
       currentMovementMode = MovementMode.FORWARD;
       updateButtonStates();
     });
-    
+
     container.addChild(reverseButton);
     container.addChild(pauseButton);
     container.addChild(forwardButton);
-    
+
     movementControlButtons = [reverseButton, pauseButton, forwardButton];
     updateButtonStates();
-    movementControlButtons.forEach(button => setZIndex(button, Z_LAYERS.UI_CONTROLS));
+    movementControlButtons.forEach((button) => setZIndex(button, Z_LAYERS.UI_CONTROLS));
   }
-  
+
   function updateButtonStates() {
     movementControlButtons.forEach((button, index) => {
-      const isActive = (
+      const isActive =
         (index === 0 && currentMovementMode === MovementMode.REVERSE) ||
         (index === 1 && currentMovementMode === MovementMode.PAUSED) ||
-        (index === 2 && currentMovementMode === MovementMode.FORWARD)
-      );
-      
+        (index === 2 && currentMovementMode === MovementMode.FORWARD);
+
       // For sprite-based buttons, set the correct texture based on active state
       if (button instanceof Sprite && button.userData) {
         if (isActive) {
@@ -573,14 +604,14 @@ export async function createScrollingBackground(
           button.userData.isPressed = false;
         }
       }
-      
+
       // If it's a Graphics button (fallback), update appearance
       if (button instanceof Graphics) {
         button.clear();
-        button.beginFill(isActive ? 0x4CAF50 : 0x666666, 0.8);
+        button.beginFill(isActive ? 0x4caf50 : 0x666666, 0.8);
         button.drawRoundedRect(0, 0, 40, 40, 8);
         button.endFill();
-        
+
         // Re-add text after clearing
         const text = button.children[0] as Text;
         if (text) {
@@ -589,9 +620,9 @@ export async function createScrollingBackground(
       }
     });
   }
-  
+
   // Create the buttons
-  createMovementControlButtons().catch(error => {
+  createMovementControlButtons().catch((error) => {
     console.error('Failed to create movement control buttons:', error);
   });
 
@@ -616,9 +647,9 @@ export async function createScrollingBackground(
   // Deferred destruction cleanup function
   const cleanupMarkedProjectiles = () => {
     if (projectilesToDestroy.size === 0) return;
-    
+
     console.log(`🧹 Cleaning up ${projectilesToDestroy.size} marked projectiles`);
-    
+
     for (const projectile of projectilesToDestroy) {
       try {
         // Remove from main projectiles array
@@ -626,17 +657,17 @@ export async function createScrollingBackground(
         if (index !== -1) {
           projectiles.splice(index, 1);
         }
-        
+
         // Remove from projectile targets map
         projectileTargets.delete(projectile);
-        
+
         // Actually destroy the sprite
         projectile.performDestruction();
       } catch (error) {
         console.error('Error during projectile cleanup:', error);
       }
     }
-    
+
     // Clear the set
     projectilesToDestroy.clear();
   };
@@ -762,14 +793,14 @@ export async function createScrollingBackground(
         width: healthBarsGraphics.width,
         height: healthBarsGraphics.height,
         visible: healthBarsGraphics.visible,
-        alpha: healthBarsGraphics.alpha
+        alpha: healthBarsGraphics.alpha,
       });
       // Don't add to stage until we have content to draw
     }
 
     // Clear previous drawing
     healthBarsGraphics.clear();
-    
+
     // CRITICAL FIX: Hide the graphics object when cleared to prevent zero-dimension artifacts
     healthBarsGraphics.visible = false;
     healthBarsGraphics.alpha = 0;
@@ -941,7 +972,7 @@ export async function createScrollingBackground(
           width: healthBarsGraphics.width,
           height: healthBarsGraphics.height,
           visible: healthBarsGraphics.visible,
-          alpha: healthBarsGraphics.alpha
+          alpha: healthBarsGraphics.alpha,
         });
       }
       // CRITICAL FIX: Make sure it's visible and opaque when added to stage
@@ -957,7 +988,7 @@ export async function createScrollingBackground(
           width: healthBarsGraphics.width,
           height: healthBarsGraphics.height,
           visible: healthBarsGraphics.visible,
-          alpha: healthBarsGraphics.alpha
+          alpha: healthBarsGraphics.alpha,
         });
       }
       // CRITICAL FIX: Hide when removed from stage
@@ -1062,17 +1093,17 @@ export async function createScrollingBackground(
 
     // Create the single Arcana counter
     const color = goldColorOptions[0]; // We only have one option now
-    
+
     // First, create the text to measure its dimensions
     const arcanaText = new Text({
       text: `Arcana: ${arcanaManager.getCurrentBalance().toFixed(2)}`,
       style: {
-        fontFamily: 'Cinzel, serif',
-        fontSize: 18 * currentScale,
-        fill: color,
+        fontFamily: 'Cinzel',
+        fontSize: 22 * currentScale,
+        fill: 0xffffff,
         resolution: 2, // Higher resolution for crisp text
         align: 'left',
-        fontWeight: 'normal',
+        fontWeight: '400',
       },
     });
 
@@ -1081,7 +1112,7 @@ export async function createScrollingBackground(
     const totalContentHeight = Math.max(iconSize, arcanaText.height);
     const panelPadding = 8 * currentScale;
     const panelCornerRadius = 6 * currentScale;
-    
+
     // Create the background panel with proper dimensions
     const { Graphics } = await import('pixi.js');
     const currencyPanel = new Graphics();
@@ -1093,20 +1124,20 @@ export async function createScrollingBackground(
     //   visible: currencyPanel.visible,
     //   alpha: currencyPanel.alpha
     // });
-    
-    const panelWidth = totalContentWidth + (2 * panelPadding);
-    const panelHeight = totalContentHeight + (2 * panelPadding);
-    
+
+    const panelWidth = totalContentWidth + 2 * panelPadding;
+    const panelHeight = totalContentHeight + 2 * panelPadding;
+
     // Draw the panel background with low opacity
     currencyPanel
       .roundRect(0, 0, panelWidth, panelHeight, panelCornerRadius)
       .fill({ color: 0x000000, alpha: 0.5 }); // Slightly more visible for testing
-    
+
     // Position the panel centered around the content
     currencyPanel.x = startX - panelPadding;
     currencyPanel.y = startY - panelPadding;
     currencyPanel.name = 'currency-ui-panel';
-    
+
     // IMPORTANT: Add the panel to stage FIRST (lowest z-index)
     app.stage.addChild(currencyPanel);
     // console.log('🔍 DEBUG: Added currencyPanel to stage at:', {
@@ -1115,7 +1146,7 @@ export async function createScrollingBackground(
     //   width: panelWidth,
     //   height: panelHeight
     // });
-    
+
     // Create Arcana icon
     try {
       let iconTexture;
@@ -1133,7 +1164,7 @@ export async function createScrollingBackground(
       arcanaIcon.width = iconSize;
       arcanaIcon.height = iconSize;
       arcanaIcon.anchor.set(0, 0);
-      
+
       // Add icon to stage AFTER the panel (higher z-index)
       app.stage.addChild(arcanaIcon);
     } catch (error) {
@@ -1145,10 +1176,10 @@ export async function createScrollingBackground(
     arcanaText.x = currentX + iconSize + textSpacing;
     arcanaText.y = startY;
     arcanaText.anchor.set(0, 0);
-    
+
     // Add text to stage LAST (highest z-index)
     app.stage.addChild(arcanaText);
-    
+
     maxPanelWidth = totalContentWidth;
 
     // Debug: Log what's on the stage after arcana counter (throttled) - DISABLED FOR CLEAN CONSOLE
@@ -1183,7 +1214,9 @@ export async function createScrollingBackground(
   }
 
   // Load the background texture using Assets API for better reliability
-  console.log('Loading background texture from: /backgrounds/land1_steppe/static/steppe_background_grassless.png');
+  console.log(
+    'Loading background texture from: /backgrounds/land1_steppe/static/steppe_background_grassless.png',
+  );
 
   let texture: Texture;
   try {
@@ -1201,7 +1234,9 @@ export async function createScrollingBackground(
     console.warn('Assets.load failed, trying Texture.from:', error);
     // Fallback to Texture.from
     console.log('DEBUG: Attempting Texture.from...');
-    texture = await Texture.from('/backgrounds/land1_steppe/static/steppe_background_grassless.png');
+    texture = await Texture.from(
+      '/backgrounds/land1_steppe/static/steppe_background_grassless.png',
+    );
     console.log('DEBUG: Texture.from result:', {
       texture: !!texture,
       source: !!texture?.source,
@@ -1347,62 +1382,62 @@ export async function createScrollingBackground(
       const grasslandScale = currentScale;
       grasslandSprite1.scale.set(grasslandScale);
       grasslandSprite2.scale.set(grasslandScale);
-      
+
       // Reposition grassland sprites with new scale
       const bgHeight = 1024;
       const scaledBgHeight = bgHeight * currentScale;
       const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
       const actionBandBottomY = positioning.getActionAreaBottomY();
-      const grasslandYOffset = actionBandBottomY + (44 * currentScale);
-      
+      const grasslandYOffset = actionBandBottomY + 44 * currentScale;
+
       grasslandSprite1.position.set(0, grasslandYOffset);
       grasslandSprite2.position.set(grasslandSprite1.width, grasslandYOffset);
     }
 
-  // Scale clouds layer (sky behind mountain)
-  if (cloudsSprite) {
-    const cloudsScale = currentScale * 1.0; // Full scale for steppe_clouds-1.png
-    cloudsSprite.scale.set(cloudsScale);
-    
-    // Reposition clouds with new scale (positioned at action band bottom)
-    const bgHeight = 1024;
-    const scaledBgHeight = bgHeight * currentScale;
-    const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
-    const actionBandBottomY = positioning.getActionAreaBottomY();
-    
-    cloudsSprite.position.set(cloudsSprite.position.x, actionBandBottomY - (23 * currentScale)); // Maintain 23px offset for proper sky/space alignment
-  }
+    // Scale clouds layer (sky behind mountain)
+    if (cloudsSprite) {
+      const cloudsScale = currentScale * 1.0; // Full scale for steppe_clouds-1.png
+      cloudsSprite.scale.set(cloudsScale);
 
-  // Scale mountain layer
-  if (mountainSprite) {
-    const mountainScale = currentScale * 1.0; // Full scale for lonelyMountain-clouds-2.png
-    mountainSprite.scale.set(mountainScale);
-    
-    // Reposition mountain with new scale (maintaining 32-pixel offset)
-    const bgHeight = 1024;
-    const scaledBgHeight = bgHeight * currentScale;
-    const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
-    const actionBandBottomY = positioning.getActionAreaBottomY();
-    
-    mountainSprite.position.set(mountainSprite.position.x, actionBandBottomY + (32 * currentScale));
-  }
+      // Reposition clouds with new scale (positioned at action band bottom)
+      const bgHeight = 1024;
+      const scaledBgHeight = bgHeight * currentScale;
+      const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
+      const actionBandBottomY = positioning.getActionAreaBottomY();
 
-  // Scale hills layer
-  if (hillsSprite1 && hillsSprite2) {
-    const hillsScale = currentScale;
-    hillsSprite1.scale.set(hillsScale);
-    hillsSprite2.scale.set(hillsScale);
-    
-    // Reposition hills sprites with new scale
-    const bgHeight = 1024;
-    const scaledBgHeight = bgHeight * currentScale;
-    const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
-    const actionBandBottomY = positioning.getActionAreaBottomY();
-    const hillsYOffset = actionBandBottomY + (11 * currentScale); // 21 pixels higher than mountain for perfect balance
-    
-    hillsSprite1.position.set(0, hillsYOffset);
-    hillsSprite2.position.set(hillsSprite1.width, hillsYOffset);
-  }
+      cloudsSprite.position.set(cloudsSprite.position.x, actionBandBottomY - 23 * currentScale); // Maintain 23px offset for proper sky/space alignment
+    }
+
+    // Scale mountain layer
+    if (mountainSprite) {
+      const mountainScale = currentScale * 1.0; // Full scale for lonelyMountain-clouds-2.png
+      mountainSprite.scale.set(mountainScale);
+
+      // Reposition mountain with new scale (maintaining 32-pixel offset)
+      const bgHeight = 1024;
+      const scaledBgHeight = bgHeight * currentScale;
+      const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
+      const actionBandBottomY = positioning.getActionAreaBottomY();
+
+      mountainSprite.position.set(mountainSprite.position.x, actionBandBottomY + 32 * currentScale);
+    }
+
+    // Scale hills layer
+    if (hillsSprite1 && hillsSprite2) {
+      const hillsScale = currentScale;
+      hillsSprite1.scale.set(hillsScale);
+      hillsSprite2.scale.set(hillsScale);
+
+      // Reposition hills sprites with new scale
+      const bgHeight = 1024;
+      const scaledBgHeight = bgHeight * currentScale;
+      const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
+      const actionBandBottomY = positioning.getActionAreaBottomY();
+      const hillsYOffset = actionBandBottomY + 11 * currentScale; // 21 pixels higher than mountain for perfect balance
+
+      hillsSprite1.position.set(0, hillsYOffset);
+      hillsSprite2.position.set(hillsSprite1.width, hillsYOffset);
+    }
   }
 
   scaleToFit();
@@ -1440,8 +1475,10 @@ export async function createScrollingBackground(
     const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
     const actionBandBottomY = positioning.getActionAreaBottomY();
     console.log('☁️ DEBUG: Calculated actionBandBottomY for clouds:', actionBandBottomY);
-    
-    console.log('☁️ Loading clouds texture from: /backgrounds/land1_steppe/parallax/steppe_clouds-1.png');
+
+    console.log(
+      '☁️ Loading clouds texture from: /backgrounds/land1_steppe/parallax/steppe_clouds-1.png',
+    );
     let cloudsTexture: Texture;
     try {
       // Try using Assets API first
@@ -1467,20 +1504,20 @@ export async function createScrollingBackground(
         height: cloudsTexture?.height,
       });
     }
-    
+
     // Create clouds sprite
     cloudsSprite = new Sprite(cloudsTexture);
     const cloudsScale = currentScale * 1.0; // Full scale for steppe_clouds-1.png
     cloudsSprite.scale.set(cloudsScale, cloudsScale);
     cloudsSprite.anchor.set(0, 1); // Anchor at bottom
-    cloudsSprite.position.set(0, actionBandBottomY - (23 * currentScale)); // Position at action band bottom, raised by 23px to align top cloud with sky/space line
+    cloudsSprite.position.set(0, actionBandBottomY - 23 * currentScale); // Position at action band bottom, raised by 23px to align top cloud with sky/space line
     container.addChild(cloudsSprite);
     setZIndex(cloudsSprite, Z_LAYERS.BACKGROUND_CLOUDS); // Sky layer behind mountain but in front of background
     console.log('☁️ Clouds layer created successfully:', {
       position: cloudsSprite.position,
       scale: cloudsSprite.scale,
       zIndex: Z_LAYERS.BACKGROUND_CLOUDS,
-      actionBandBottomY
+      actionBandBottomY,
     });
   } catch (error) {
     console.error('☁️ Failed to load clouds texture, continuing without clouds layer:', error);
@@ -1488,19 +1525,23 @@ export async function createScrollingBackground(
       message: error.message,
       stack: error.stack,
       filename: error.filename,
-      lineNumber: error.lineNumber
+      lineNumber: error.lineNumber,
     });
   }
 
   // Load mountain texture
   console.log('🏔️ STARTING MOUNTAIN LOADING PROCESS');
   try {
-    console.log('🏔️ Loading mountain texture from: /backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png');
+    console.log(
+      '🏔️ Loading mountain texture from: /backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png',
+    );
     let mountainTexture: Texture;
     try {
       // Try using Assets API first
       console.log('🏔️ DEBUG: Attempting Assets.load...');
-      mountainTexture = await Assets.load('/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png');
+      mountainTexture = await Assets.load(
+        '/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png',
+      );
       console.log('🏔️ DEBUG: Assets.load successful, texture:', {
         texture: !!mountainTexture,
         source: !!mountainTexture?.source,
@@ -1512,7 +1553,9 @@ export async function createScrollingBackground(
       console.warn('🏔️ Assets.load failed, trying Texture.from:', error);
       // Fallback to Texture.from
       console.log('🏔️ DEBUG: Attempting Texture.from...');
-      mountainTexture = await Texture.from('/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png');
+      mountainTexture = await Texture.from(
+        '/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png',
+      );
       console.log('🏔️ DEBUG: Texture.from result:', {
         texture: !!mountainTexture,
         source: !!mountainTexture?.source,
@@ -1549,7 +1592,7 @@ export async function createScrollingBackground(
 
     // Position mountain so its base is fully covered by the grassland layer, moved down by 32 pixels total
     // The grassland layer will cover the part that overlaps with the grass
-      mountainSprite.position.set(startX, actionBandBottomY + (31 * currentScale));
+    mountainSprite.position.set(startX, actionBandBottomY + 31 * currentScale);
 
     // Set proper z-index for parallax background layer
     setZIndex(mountainSprite, Z_LAYERS.BACKGROUND_PARALLAX);
@@ -1563,7 +1606,7 @@ export async function createScrollingBackground(
       scale: mountainSprite.scale,
       zIndex: Z_LAYERS.BACKGROUND_PARALLAX,
       actionBandBottomY,
-      startX
+      startX,
     });
   } catch (error) {
     console.error('🏔️ Failed to load mountain texture, continuing without parallax layer:', error);
@@ -1571,13 +1614,15 @@ export async function createScrollingBackground(
       message: error.message,
       stack: error.stack,
       filename: error.filename,
-      lineNumber: error.lineNumber
+      lineNumber: error.lineNumber,
     });
   }
 
   // Load and create parallax hills layer (mid-ground depth)
   try {
-    console.log('🏔️ Loading hills texture from: /backgrounds/land1_steppe/parallax/steppe_hills-1.png');
+    console.log(
+      '🏔️ Loading hills texture from: /backgrounds/land1_steppe/parallax/steppe_hills-1.png',
+    );
     const hillsTexture = await Assets.load('/backgrounds/land1_steppe/parallax/steppe_hills-1.png');
 
     // Create two hills sprites for seamless looping
@@ -1604,7 +1649,7 @@ export async function createScrollingBackground(
     hillsSprite2.anchor.set(0, 1);
 
     // Position at the action band bottom (precisely fine-tuned positioning)
-    const hillsYOffset = actionBandBottomY + (11 * currentScale); // 21 pixels higher than mountain for perfect balance
+    const hillsYOffset = actionBandBottomY + 11 * currentScale; // 21 pixels higher than mountain for perfect balance
     hillsSprite1.position.set(0, hillsYOffset);
     hillsSprite2.position.set(hillsSprite1.width, hillsYOffset);
 
@@ -1628,8 +1673,12 @@ export async function createScrollingBackground(
   const GRASSLAND_PARALLAX_SPEED = 1.0; // Same speed as background for foreground effect
 
   try {
-    console.log('🌿 Loading grassland texture from: /backgrounds/land1_steppe/foreground/grasslandLayer_steppe.png');
-    const grasslandTexture = await Assets.load('/backgrounds/land1_steppe/foreground/grasslandLayer_steppe.png');
+    console.log(
+      '🌿 Loading grassland texture from: /backgrounds/land1_steppe/foreground/grasslandLayer_steppe.png',
+    );
+    const grasslandTexture = await Assets.load(
+      '/backgrounds/land1_steppe/foreground/grasslandLayer_steppe.png',
+    );
 
     // Create two grassland sprites for seamless looping
     grasslandSprite1 = new Sprite(grasslandTexture);
@@ -1656,10 +1705,10 @@ export async function createScrollingBackground(
 
     // Position at the orange line (action band bottom) - adjust Y to align with background grass
     // Perfect alignment: grassland layer should overlap perfectly with background grass
-    const grasslandYOffset = actionBandBottomY + (44 * currentScale); // Move down 44px from the orange line (400px) to around 444px for perfect overlap
+    const grasslandYOffset = actionBandBottomY + 44 * currentScale; // Move down 44px from the orange line (400px) to around 444px for perfect overlap
     grasslandSprite1.position.set(0, grasslandYOffset);
     grasslandSprite2.position.set(grasslandSprite1.width, grasslandYOffset);
-    
+
     // Debug logging for positioning (disabled for cleaner console)
     // console.log('🌿 Grassland positioning debug:', {
     //   actionBandBottomY,
@@ -1684,7 +1733,10 @@ export async function createScrollingBackground(
 
     console.log('🌿 Grassland layer created successfully');
   } catch (error) {
-    console.warn('🌿 Failed to load grassland texture, continuing without foreground layer:', error);
+    console.warn(
+      '🌿 Failed to load grassland texture, continuing without foreground layer:',
+      error,
+    );
   }
 
   // Track position for infinite scrolling
@@ -1692,38 +1744,38 @@ export async function createScrollingBackground(
 
   // Create measurement overlay for debugging positioning
   let measurementOverlay: Graphics | null = null;
-  
+
   // Add measurement overlay
   measurementOverlay = new Graphics();
   measurementOverlay.name = 'measurement-overlay';
-  
+
   const screenWidth = app.screen.width;
   const screenHeight = app.screen.height;
-  
+
   // Get positioning for the bands
   const bgHeight = 1024;
   const scaledBgHeight = bgHeight * currentScale;
   const positioning = new BackgroundPositioning(2048 * currentScale, scaledBgHeight);
   const actionAreaTopY = positioning.getActionAreaTopY();
   const actionAreaBottomY = positioning.getActionAreaBottomY();
-  
+
   // Draw horizontal grid lines every 25px
   const gridSpacing = 25;
-  
+
   // Horizontal grid lines every 25px (solid black 1px)
   for (let y = 0; y <= screenHeight; y += gridSpacing) {
     measurementOverlay.lineStyle(1, 0x000000, 1.0); // Solid black lines, 1px thick
     measurementOverlay.moveTo(0, y);
     measurementOverlay.lineTo(screenWidth, y);
   }
-  
+
   // Add coordinate labels every 50px (longer black lines and text labels)
   for (let y = 0; y <= screenHeight; y += 50) {
     // Longer line for 50px markers
     measurementOverlay.lineStyle(2, 0x000000, 1.0); // Solid black labels, 2px thick for visibility
     measurementOverlay.moveTo(0, y);
     measurementOverlay.lineTo(30, y); // Longer line for 50px markers
-    
+
     // Add text label
     const labelText = new Text({
       text: `${y}px`,
@@ -1731,66 +1783,71 @@ export async function createScrollingBackground(
         fontFamily: 'Arial',
         fontSize: 12,
         fill: 0x000000, // Black text
-        align: 'left'
-      }
+        align: 'left',
+      },
     });
     labelText.position.set(35, y - 6); // Position text to the right of the line marker
     measurementOverlay.addChild(labelText);
   }
-  
+
   // Add corner marker
-  measurementOverlay.lineStyle(2, 0xFF0000, 1.0); // Red corner marker
+  measurementOverlay.lineStyle(2, 0xff0000, 1.0); // Red corner marker
   measurementOverlay.moveTo(0, 0);
   measurementOverlay.lineTo(20, 0);
   measurementOverlay.moveTo(0, 0);
   measurementOverlay.lineTo(0, 20);
-  
+
   // Add color-coded bands based on Draconia Tome specifications
   // Zone 1: Space Area (0px - 100px / 0% - 9.26%) - Currency display
   const spaceAreaTop = 0;
   const spaceAreaBottom = screenHeight * 0.0926; // 9.26% of screen height
-  measurementOverlay.beginFill(0x0000FF, 0.15); // Blue with 15% opacity
+  measurementOverlay.beginFill(0x0000ff, 0.15); // Blue with 15% opacity
   measurementOverlay.drawRect(0, spaceAreaTop, screenWidth, spaceAreaBottom - spaceAreaTop);
   measurementOverlay.endFill();
-  
+
   // Zone 2: Action Area (100px - 525px / 9.26% - 48.61%) - Gameplay action
   const actionAreaTop = screenHeight * 0.0926; // 9.26% of screen height
   const actionAreaBottom = screenHeight * 0.4861; // 48.61% of screen height
-  measurementOverlay.beginFill(0xFF8800, 0.15); // Orange with 15% opacity
+  measurementOverlay.beginFill(0xff8800, 0.15); // Orange with 15% opacity
   measurementOverlay.drawRect(0, actionAreaTop, screenWidth, actionAreaBottom - actionAreaTop);
   measurementOverlay.endFill();
-  
+
   // Zone 3: Player UI Area (525px - 1080px / 48.61% - 100%) - Underground/UI
   const playerUIAreaTop = screenHeight * 0.4861; // 48.61% of screen height
   const playerUIAreaBottom = screenHeight; // 100% of screen height
-  measurementOverlay.beginFill(0xFF0000, 0.15); // Red with 15% opacity
-  measurementOverlay.drawRect(0, playerUIAreaTop, screenWidth, playerUIAreaBottom - playerUIAreaTop);
+  measurementOverlay.beginFill(0xff0000, 0.15); // Red with 15% opacity
+  measurementOverlay.drawRect(
+    0,
+    playerUIAreaTop,
+    screenWidth,
+    playerUIAreaBottom - playerUIAreaTop,
+  );
   measurementOverlay.endFill();
-  
-    // Set proper z-index for measurement overlay (debug layer)
-    setZIndex(measurementOverlay, Z_LAYERS.DEBUG_MEASUREMENT);
 
-    // Add to container (on top of everything for debugging)
-    container.addChild(measurementOverlay);
+  // Set proper z-index for measurement overlay (debug layer)
+  setZIndex(measurementOverlay, Z_LAYERS.DEBUG_MEASUREMENT);
 
-    // Turn off the measurement overlay by default (keep it for future use)
-    measurementOverlay.visible = false;
+  // Add to container (on top of everything for debugging)
+  container.addChild(measurementOverlay);
 
-    // Debug logging for overlay (disabled for cleaner console)
-    // console.log('📏 Measurement overlay created and added (turned off by default):', {
-    //   overlayName: measurementOverlay.name,
-    //   overlayPosition: { x: measurementOverlay.x, y: measurementOverlay.y },
-    //   overlayVisible: measurementOverlay.visible,
-    //   overlayAlpha: measurementOverlay.alpha,
-    //   screenWidth,
-    //   screenHeight,
-    //   zones: {
-    //     spaceArea: { top: spaceAreaTop, bottom: spaceAreaBottom, height: spaceAreaBottom - spaceAreaTop },
-    //     actionArea: { top: actionAreaTop, bottom: actionAreaBottom, height: actionAreaBottom - actionAreaTop },
-    //     playerUIArea: { top: playerUIAreaTop, bottom: playerUIAreaBottom, height: playerUIAreaBottom - playerUIAreaTop }
-    //   },
-    //   containerChildrenCount: container.children.length
-    // });
+  // Turn off the measurement overlay by default (keep it for future use)
+  measurementOverlay.visible = false;
+
+  // Debug logging for overlay (disabled for cleaner console)
+  // console.log('📏 Measurement overlay created and added (turned off by default):', {
+  //   overlayName: measurementOverlay.name,
+  //   overlayPosition: { x: measurementOverlay.x, y: measurementOverlay.y },
+  //   overlayVisible: measurementOverlay.visible,
+  //   overlayAlpha: measurementOverlay.alpha,
+  //   screenWidth,
+  //   screenHeight,
+  //   zones: {
+  //     spaceArea: { top: spaceAreaTop, bottom: spaceAreaBottom, height: spaceAreaBottom - spaceAreaTop },
+  //     actionArea: { top: actionAreaTop, bottom: actionAreaBottom, height: actionAreaBottom - actionAreaTop },
+  //     playerUIArea: { top: playerUIAreaTop, bottom: playerUIAreaBottom, height: playerUIAreaBottom - playerUIAreaTop }
+  //   },
+  //   containerChildrenCount: container.children.length
+  // });
 
   // Scrolling animation with advanced anti-tearing logic
   const onTick = (ticker: { deltaTime: number; deltaMS: number }) => {
@@ -1801,7 +1858,7 @@ export async function createScrollingBackground(
 
     // Calculate scroll amount based on time elapsed and movement mode
     let scrollAmount = 0;
-    
+
     if (currentMovementMode === MovementMode.PAUSED) {
       // No movement when paused
       scrollAmount = 0;
@@ -1863,14 +1920,14 @@ export async function createScrollingBackground(
     // Update clouds parallax (12.5% of background speed - 5% faster than mountain)
     if (cloudsSprite) {
       const oldCloudsX = cloudsSprite.position.x;
-      
+
       // Move clouds slightly faster than mountain for sky depth effect
       cloudsSprite.position.x -= scrollAmount * CLOUDS_PARALLAX_SPEED;
-      
+
       // Reset clouds position for seamless looping in both directions
       const screenWidth = app.screen.width;
       const cloudsWidth = cloudsSprite.width;
-      
+
       // Forward movement: reset when completely off-screen to the left
       if (scrollAmount > 0 && cloudsSprite.position.x + cloudsWidth < 0) {
         cloudsSprite.position.x = screenWidth; // Reset to right side for continuous loop
@@ -1884,10 +1941,10 @@ export async function createScrollingBackground(
     // Update mountain parallax (7.5% of background speed for distant effect)
     if (mountainSprite) {
       const oldMountainX = mountainSprite.position.x;
-      
+
       // Move mountain slowly from right to left across the screen
       mountainSprite.position.x -= scrollAmount * MOUNTAIN_PARALLAX_SPEED;
-      
+
       // Debug mountain movement every 100px
       if (Math.floor(oldMountainX / 100) !== Math.floor(mountainSprite.position.x / 100)) {
         console.log('🏔️ Mountain movement:', {
@@ -1896,14 +1953,14 @@ export async function createScrollingBackground(
           speed: MOUNTAIN_PARALLAX_SPEED,
           scrollAmount,
           width: mountainSprite.width,
-          visible: mountainSprite.visible
+          visible: mountainSprite.visible,
         });
       }
-      
+
       // Reset mountain position for seamless looping in both directions
       const screenWidth = app.screen.width;
       const mountainWidth = mountainSprite.width;
-      
+
       // Forward movement: reset when completely off-screen to the left
       if (scrollAmount > 0 && mountainSprite.position.x + mountainWidth < 0) {
         // Position it back offscreen to the right for another pass
@@ -1932,7 +1989,7 @@ export async function createScrollingBackground(
         hillsOffset = hillsOffset % hillsWidth;
       } else if (scrollAmount < 0 && hillsOffset >= 0) {
         // Reverse movement: reset when completely off-screen to the right
-        hillsOffset = hillsOffset % hillsWidth - hillsWidth;
+        hillsOffset = (hillsOffset % hillsWidth) - hillsWidth;
       }
 
       hillsSprite1.position.x = Math.round(hillsOffset);
@@ -1951,12 +2008,12 @@ export async function createScrollingBackground(
         grasslandOffset = grasslandOffset % grasslandWidth;
       } else if (scrollAmount < 0 && grasslandOffset >= 0) {
         // Reverse movement: reset when completely off-screen to the right
-        grasslandOffset = grasslandOffset % grasslandWidth - grasslandWidth;
+        grasslandOffset = (grasslandOffset % grasslandWidth) - grasslandWidth;
       }
 
       grasslandSprite1.position.x = Math.round(grasslandOffset);
       grasslandSprite2.position.x = Math.round(grasslandOffset + grasslandWidth);
-      
+
       // Debug grassland movement
       if (Math.floor(oldOffset / 100) !== Math.floor(grasslandOffset / 100)) {
         console.log('🌿 Grassland movement:', {
@@ -1965,7 +2022,7 @@ export async function createScrollingBackground(
           newOffset: grasslandOffset.toFixed(2),
           speed: GRASSLAND_PARALLAX_SPEED,
           sprite1X: grasslandSprite1.position.x,
-          sprite2X: grasslandSprite2.position.x
+          sprite2X: grasslandSprite2.position.x,
         });
       }
     }
@@ -2013,7 +2070,7 @@ export async function createScrollingBackground(
 
     // Scale all game elements to match the new background scale
     scaleGameElements();
-    
+
     // Scale parallax layers if they exist
     scaleParallaxLayers();
   };
@@ -2022,9 +2079,13 @@ export async function createScrollingBackground(
 
   // Combat system functions
   async function spawnEnemy(type: EnemyType) {
-    console.log(`🔍 SPAWN ATTEMPT: Trying to spawn ${type}, current enemies: ${enemies.length}/${AUTO_SPAWN_CONFIG.maxEnemies}`);
+    console.log(
+      `🔍 SPAWN ATTEMPT: Trying to spawn ${type}, current enemies: ${enemies.length}/${AUTO_SPAWN_CONFIG.maxEnemies}`,
+    );
     if (!app || enemies.length >= AUTO_SPAWN_CONFIG.maxEnemies) {
-      console.log(`🔍 SPAWN BLOCKED: app=${!!app}, enemies=${enemies.length}, max=${AUTO_SPAWN_CONFIG.maxEnemies}`);
+      console.log(
+        `🔍 SPAWN BLOCKED: app=${!!app}, enemies=${enemies.length}, max=${AUTO_SPAWN_CONFIG.maxEnemies}`,
+      );
       return;
     }
 
@@ -2113,13 +2174,13 @@ export async function createScrollingBackground(
           if (!projectileSprite.userData) {
             projectileSprite.userData = {};
           }
-          
+
           // Prevent multiple hits on the dragon by this projectile
           if (projectileSprite.userData.hasHit) {
             // Projectile has already hit the dragon, don't apply damage again
             return false;
           }
-          
+
           // Mark projectile as hit and set pierce timer
           projectileSprite.userData.hasHit = true;
           projectileSprite.userData.hitTime = performance.now();
@@ -2189,7 +2250,7 @@ export async function createScrollingBackground(
       const dx = enemy.x - dragonSprite.x;
       const dy = enemy.y - dragonSprite.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       // Keep the existing range validation
       if (distance < closestDistance && distance <= DRAGON_ATTACK_RANGE) {
         closestDistance = distance;
@@ -2220,7 +2281,7 @@ export async function createScrollingBackground(
         const dx = enemy.x - dragonSprite.x;
         const dy = enemy.y - dragonSprite.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
+
         // Must be in range
         if (distance < nextClosestDistance && distance <= DRAGON_ATTACK_RANGE) {
           nextClosestDistance = distance;
@@ -2229,11 +2290,15 @@ export async function createScrollingBackground(
       });
 
       if (nextClosestEnemy) {
-        console.log(`🎯 Smart targeting: ${closestEnemy.type} will die, switching to ${nextClosestEnemy.type}`);
+        console.log(
+          `🎯 Smart targeting: ${closestEnemy.type} will die, switching to ${nextClosestEnemy.type}`,
+        );
         return nextClosestEnemy;
       } else {
         // No other targets in range - don't fire (let the killing blow happen naturally)
-        console.log(`🎯 Smart targeting: ${closestEnemy.type} will die, no other targets in range - not firing`);
+        console.log(
+          `🎯 Smart targeting: ${closestEnemy.type} will die, no other targets in range - not firing`,
+        );
         return null;
       }
     }
@@ -2247,7 +2312,7 @@ export async function createScrollingBackground(
 
     // Use smart targeting to find best target
     const targetEnemy = findBestTarget();
-    
+
     if (!targetEnemy) {
       console.log('🎯 No valid targets found');
       return;
@@ -2285,20 +2350,22 @@ export async function createScrollingBackground(
           if (!projectileSprite.userData) {
             projectileSprite.userData = {};
           }
-          
+
           // Prevent multiple hits on the same enemy by this projectile
           if (projectileSprite.userData.hasHit) {
             // Projectile has already hit something, don't apply damage again
             return false;
           }
-          
+
           // Track which enemy this projectile has hit to prevent double-hits
           if (!projectileSprite.userData.hitEnemyId) {
             projectileSprite.userData.hitEnemyId = closestEnemy.sprite; // Use sprite reference as unique ID
             projectileSprite.userData.hasHit = true;
             projectileSprite.userData.hitTime = performance.now();
-            
-            console.log(`⚡ Projectile FIRST HIT on ${closestEnemy.type} - applying damage and piercing for 0.07 seconds...`);
+
+            console.log(
+              `⚡ Projectile FIRST HIT on ${closestEnemy.type} - applying damage and piercing for 0.07 seconds...`,
+            );
           } else if (projectileSprite.userData.hitEnemyId !== closestEnemy.sprite) {
             // Projectile hit a different enemy, which shouldn't happen with homing
             console.log(`⚠️ Projectile hit different enemy than expected, ignoring`);
@@ -2370,9 +2437,15 @@ export async function createScrollingBackground(
       };
 
       // Validate target coordinates before creating projectile
-      if (closestEnemy.sprite.x === null || closestEnemy.sprite.x === undefined || 
-          closestEnemy.sprite.y === null || closestEnemy.sprite.y === undefined) {
-        console.warn(`⚠️ Invalid target coordinates for ${closestEnemy.type}: x=${closestEnemy.sprite.x}, y=${closestEnemy.sprite.y}`);
+      if (
+        closestEnemy.sprite.x === null ||
+        closestEnemy.sprite.x === undefined ||
+        closestEnemy.sprite.y === null ||
+        closestEnemy.sprite.y === undefined
+      ) {
+        console.warn(
+          `⚠️ Invalid target coordinates for ${closestEnemy.type}: x=${closestEnemy.sprite.x}, y=${closestEnemy.sprite.y}`,
+        );
         return; // Don't create projectile with invalid coordinates
       }
 
@@ -2380,7 +2453,7 @@ export async function createScrollingBackground(
       // Dragon head is on the right side of the sprite (facing right)
       const dragonHeadOffsetX = dragonSprite.width * 0.4; // 40% of sprite width from center to right edge
       const dragonHeadOffsetY = -dragonSprite.height * 0.1 + 15; // Mouth position (10% up from center, then 15px down for mouth)
-      
+
       const projectileOriginX = dragonSprite.x + dragonHeadOffsetX;
       const projectileOriginY = dragonSprite.y + dragonHeadOffsetY;
 
@@ -2389,7 +2462,7 @@ export async function createScrollingBackground(
         dragonSize: { width: dragonSprite.width, height: dragonSprite.height },
         headOffset: { x: dragonHeadOffsetX, y: dragonHeadOffsetY },
         projectileOrigin: { x: projectileOriginX, y: projectileOriginY },
-        target: { x: closestEnemy.sprite.x, y: closestEnemy.sprite.y }
+        target: { x: closestEnemy.sprite.x, y: closestEnemy.sprite.y },
       });
 
       const projectile = await createProjectile(
@@ -2451,55 +2524,56 @@ export async function createScrollingBackground(
     const handleVisibilityChange = () => {
       const wasVisible = isTabVisible;
       isTabVisible = !document.hidden;
-      
+
       if (isTabVisible && !wasVisible) {
         // Tab became visible - smart resume with catch-up
         console.log('🔄 Tab became visible, smart resuming...');
-        
+
         const currentTime = performance.now();
-        
+
         // Calculate total time the game was paused
         if (gamePausedTime > 0) {
           const pausedDuration = currentTime - lastPauseTime;
           totalPausedTime += pausedDuration;
           console.log(`⏱️ Game was paused for ${Math.round(pausedDuration)}ms`);
         }
-        
+
         // Restart game loops
         restartGameLoops();
-        
+
         // Clean up any corrupted projectiles
         cleanupCorruptedProjectiles();
-        
+
         // Reset pause tracking
         gamePausedTime = 0;
         lastPauseTime = currentTime;
         lastUpdateTime = currentTime;
-        
-        console.log(`✅ Smart resume complete. Total paused time: ${Math.round(totalPausedTime)}ms`);
-        
+
+        console.log(
+          `✅ Smart resume complete. Total paused time: ${Math.round(totalPausedTime)}ms`,
+        );
+
         // Hide pause indicator
         hidePauseIndicator();
-        
       } else if (!isTabVisible && wasVisible) {
         // Tab became hidden - smart pause
         console.log('👁️ Tab became hidden, smart pausing...');
-        
+
         // Record pause start time
         lastPauseTime = performance.now();
         gamePausedTime = lastPauseTime;
-        
+
         // Stop all game loops (clean pause)
         stopGameLoops();
-        
+
         // Don't start fallback mode - just pause cleanly
         console.log('⏸️ Game paused cleanly');
-        
+
         // Show visual pause indicator
         showPauseIndicator();
       }
     };
-    
+
     const restartGameLoops = () => {
       try {
         // Stop any existing loops
@@ -2511,21 +2585,21 @@ export async function createScrollingBackground(
           cancelAnimationFrame(combatUpdateLoop);
           combatUpdateLoop = null;
         }
-        
+
         // Start fresh loops
         projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
-        
+
         // Start combat loop if updateCombat is defined
         if (typeof updateCombat === 'function') {
           combatUpdateLoop = requestAnimationFrame(updateCombat);
         }
-        
+
         console.log('✅ Game loops restarted successfully');
       } catch (error) {
         console.error('❌ Failed to restart game loops:', error);
       }
     };
-    
+
     const stopGameLoops = () => {
       if (projectileUpdateLoop) {
         cancelAnimationFrame(projectileUpdateLoop);
@@ -2536,36 +2610,36 @@ export async function createScrollingBackground(
         combatUpdateLoop = null;
       }
     };
-    
+
     // Removed startFallbackMode - using clean pause/resume instead
-    
+
     // Visual pause indicator
     let pauseIndicator: Graphics | null = null;
-    
+
     const showPauseIndicator = () => {
       if (!app || pauseIndicator) return;
-      
+
       pauseIndicator = new Graphics();
       pauseIndicator.beginFill(0x000000, 0.7);
       pauseIndicator.drawRect(0, 0, app.screen.width, app.screen.height);
       pauseIndicator.endFill();
-      
+
       const pauseText = new Text('⏸️ Game Paused\n(Tab Hidden)', {
         fontSize: 48,
         fill: 0xffffff,
         fontWeight: 'bold',
-        align: 'center'
+        align: 'center',
       });
       pauseText.anchor.set(0.5);
       pauseText.position.set(app.screen.width / 2, app.screen.height / 2);
-      
+
       pauseIndicator.addChild(pauseText);
       app.stage.addChild(pauseIndicator);
       setZIndex(pauseIndicator, Z_LAYERS.EFFECTS_OVERLAY);
-      
+
       console.log('📺 Pause indicator shown');
     };
-    
+
     const hidePauseIndicator = () => {
       if (pauseIndicator && pauseIndicator.parent) {
         pauseIndicator.parent.removeChild(pauseIndicator);
@@ -2574,7 +2648,7 @@ export async function createScrollingBackground(
         console.log('📺 Pause indicator hidden');
       }
     };
-    
+
     const cleanupCorruptedProjectiles = () => {
       // Mark any projectiles with corrupted sprites for deferred destruction
       for (let i = projectiles.length - 1; i >= 0; i--) {
@@ -2596,15 +2670,15 @@ export async function createScrollingBackground(
       // Perform cleanup immediately for corrupted projectiles
       cleanupMarkedProjectiles();
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     // Add timeout-based fallback to detect and recover from stalled loops
     let lastLoopCheck = performance.now();
     const loopCheckInterval = setInterval(() => {
       const now = performance.now();
       const timeSinceLastUpdate = now - lastUpdateTime;
-      
+
       // If no updates for more than 2 seconds, restart loops
       if (timeSinceLastUpdate > 2000 && isTabVisible) {
         console.log('⚠️ Detected stalled game loops, restarting...');
@@ -2616,28 +2690,28 @@ export async function createScrollingBackground(
     // Integrate with background simulation system for tab switching
     const handleBgTick = (event: CustomEvent<{ dt: number }>) => {
       if (!document.hidden) return; // Only run when tab is hidden
-      
+
       const dt = event.detail.dt;
-      
+
       // Update parallax layers when tab is hidden (background simulation)
       updateParallaxLayers(dt);
-      
+
       // Update projectiles when tab is hidden
       updateProjectilesInBackground(dt);
-      
-      // Update combat when tab is hidden  
+
+      // Update combat when tab is hidden
       updateCombatInBackground(dt);
     };
-    
+
     window.addEventListener('bg-tick', handleBgTick as EventListener);
 
     // Background simulation functions (called when tab is hidden)
     function updateParallaxLayers(dt: number) {
       if (!app) return;
-      
+
       // Update all parallax layers at reduced rate when tab is hidden
       const currentScale = app.screen.width / 2048; // Match the scaling logic
-      
+
       // Update clouds
       if (cloudsSprite) {
         const cloudsSpeed = CLOUDS_PARALLAX_SPEED * 0.5; // Reduced speed in background
@@ -2646,7 +2720,7 @@ export async function createScrollingBackground(
           cloudsSprite.position.x = 0;
         }
       }
-      
+
       // Update mountain
       if (mountainSprite) {
         const mountainSpeed = MOUNTAIN_PARALLAX_SPEED * 0.5; // Reduced speed in background
@@ -2655,13 +2729,13 @@ export async function createScrollingBackground(
           mountainSprite.position.x = 0;
         }
       }
-      
+
       // Update hills
       if (hillsSprite1 && hillsSprite2) {
         const hillsSpeed = HILLS_PARALLAX_SPEED * 0.5; // Reduced speed in background
         hillsSprite1.position.x -= hillsSpeed * dt * 0.001;
         hillsSprite2.position.x -= hillsSpeed * dt * 0.001;
-        
+
         // Reset positions when they go off screen
         if (hillsSprite1.position.x < -hillsSprite1.width) {
           hillsSprite1.position.x = hillsSprite2.position.x + hillsSprite2.width;
@@ -2670,13 +2744,13 @@ export async function createScrollingBackground(
           hillsSprite2.position.x = hillsSprite1.position.x + hillsSprite1.width;
         }
       }
-      
+
       // Update grassland
       if (grasslandSprite1 && grasslandSprite2) {
         const grasslandSpeed = GRASSLAND_PARALLAX_SPEED * 0.5; // Reduced speed in background
         grasslandSprite1.position.x -= grasslandSpeed * dt * 0.001;
         grasslandSprite2.position.x -= grasslandSpeed * dt * 0.001;
-        
+
         // Reset positions when they go off screen
         if (grasslandSprite1.position.x < -grasslandSprite1.width) {
           grasslandSprite1.position.x = grasslandSprite2.position.x + grasslandSprite2.width;
@@ -2686,7 +2760,7 @@ export async function createScrollingBackground(
         }
       }
     }
-    
+
     function updateProjectilesInBackground(dt: number) {
       // Update projectiles at reduced rate when tab is hidden
       for (const projectile of projectiles) {
@@ -2696,39 +2770,41 @@ export async function createScrollingBackground(
             projectilesToDestroy.add(projectile);
             continue;
           }
-          
+
           // Update projectile at reduced rate
           projectile.update(dt * 0.5); // Slower updates in background
-          
         } catch (error) {
           console.error('Background projectile update error:', error);
           projectilesToDestroy.add(projectile);
         }
       }
     }
-    
+
     function updateCombatInBackground(dt: number) {
       // Update combat systems at reduced rate when tab is hidden
       if (dragonState === DragonState.RECOVERING) {
         updateDragonRecovery(performance.now());
         return;
       }
-      
+
       // Update enemies at reduced rate
       for (const enemy of enemies) {
         if (enemy.sprite.userData && enemy.sprite.userData.isDefeated) {
           continue;
         }
-        
+
         // Move enemies at reduced speed
         enemy.x -= enemy.speed * dt * 0.001 * 0.5; // Half speed in background
         if (enemy.sprite) {
           enemy.sprite.position.x = enemy.x;
         }
       }
-      
+
       // Update dragon firing at reduced rate
-      if (dragonAnimatorWithFireTime && performance.now() - dragonAnimatorWithFireTime.lastFireTime > 2000) {
+      if (
+        dragonAnimatorWithFireTime &&
+        performance.now() - dragonAnimatorWithFireTime.lastFireTime > 2000
+      ) {
         fireProjectileFromDragon();
         dragonAnimatorWithFireTime.lastFireTime = performance.now();
       }
@@ -2746,7 +2822,7 @@ export async function createScrollingBackground(
       // Update time tracking for tab switching
       const currentTime = performance.now();
       lastUpdateTime = currentTime;
-      
+
       frameCount++;
       // if (frameCount % 600 === 0) {
       //   // Log every 600 frames (roughly every 10 seconds)
@@ -2768,7 +2844,7 @@ export async function createScrollingBackground(
       // Use reverse iteration for safe array modification
       for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i];
-        
+
         try {
           // Skip if already marked for destruction
           if (projectilesToDestroy.has(projectile)) {
@@ -2806,7 +2882,7 @@ export async function createScrollingBackground(
           let stillActive = false;
           try {
             stillActive = projectile.update(deltaTime);
-            
+
             // Check if projectile was marked for destruction during update
             if (!projectile.isActive) {
               projectilesToDestroy.add(projectile);
@@ -2853,7 +2929,6 @@ export async function createScrollingBackground(
             projectilesToDestroy.add(projectile);
             continue;
           }
-
         } catch (error) {
           console.error(`🚨 Error processing projectile:`, error);
           // Mark for destruction on next cleanup
@@ -2866,7 +2941,7 @@ export async function createScrollingBackground(
 
       // Use requestAnimationFrame but with fallback to setTimeout for tab switching stability
       projectileUpdateLoop = requestAnimationFrame(updateProjectiles);
-      
+
       // Fallback mechanism: if the game loop hasn't run in 2 seconds, restart it
       if (!updateProjectiles.lastRun) updateProjectiles.lastRun = performance.now();
       const timeSinceLastRun = performance.now() - updateProjectiles.lastRun;
@@ -3020,7 +3095,7 @@ export async function createScrollingBackground(
 
       // Use requestAnimationFrame but with fallback to setTimeout for tab switching stability
       requestAnimationFrame(updateCombat);
-      
+
       // Fallback mechanism: if the game loop hasn't run in 2 seconds, restart it
       if (!updateCombat.lastRun) updateCombat.lastRun = performance.now();
       const timeSinceLastRun = performance.now() - updateCombat.lastRun;
