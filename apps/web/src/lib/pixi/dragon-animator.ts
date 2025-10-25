@@ -11,8 +11,8 @@ export class DragonAnimator {
   private renderer: Renderer | null = null;
   private stage: Container | null = null;
 
-  // Wing flap hold: variable hold (2-5 frames) at fly_1
-  private readonly crestFrame = 'fly_1'; // The hold point of the wing flap
+  // Wing flap hold: variable hold (2-5 frames) at idle
+  private readonly crestFrame = 'idle'; // The rest position between flaps
   private crestHoldCounter = 0; // Current hold count
   private crestHoldDuration = 0; // Random duration (2-5) for this loop
 
