@@ -12,6 +12,7 @@ import { DraconiaMenuManager } from './draconia-menu';
 import { MigrationAdapter } from './migration-adapter';
 import { LandManager } from './land-manager';
 import { EntityManager } from './entity-manager';
+import { HPBarDesignTest } from './hp-bar-design-test';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -58,6 +59,7 @@ export class GameStartManager {
   private migrationAdapter: MigrationAdapter | null = null;
   private landManager: LandManager | null = null;
   private entityManager: EntityManager | null = null;
+  private hpBarTest: HPBarDesignTest | null = null;
 
   // Journey system state
   private isJourneyActive = false;
@@ -251,18 +253,14 @@ export class GameStartManager {
         debugMode: true,
       });
 
-      // Initialize entity manager (after migration adapter so we can get HealthBarManager)
-      const healthBarManager = this.migrationAdapter.getHealthBarManager();
-      this.entityManager = new EntityManager(this.app, this.assetManager, healthBarManager);
-
-      // Initialize land manager (will be refactored to not create dragon)
+      // Initialize land manager (background only)
       this.landManager = new LandManager(this.app, this.assetManager);
       await this.landManager.loadLand('land1_steppe');
       this.landManager.start();
 
-      // Create dragon protagonist through entity manager
-      await this.entityManager.createDragonProtagonist();
-      await this.entityManager.enterLandWithDragon('land1_steppe');
+      // Initialize HP Bar Design Test (6 dragons with different HP bar styles)
+      this.hpBarTest = new HPBarDesignTest(this.app, this.assetManager);
+      await this.hpBarTest.initialize();
 
       // Start the journey update loop
       this.startJourneyUpdateLoop();
@@ -361,6 +359,11 @@ export class GameStartManager {
       this.draconiaMenuManager = null;
     }
 
+    if (this.hpBarTest) {
+      this.hpBarTest.destroy();
+      this.hpBarTest = null;
+    }
+
     if (this.entityManager) {
       this.entityManager.destroy();
       this.entityManager = null;
@@ -411,9 +414,9 @@ export class GameStartManager {
         this.landManager.update(deltaTime, 0);
       }
 
-      // Update entity manager (dragon and enemies)
-      if (this.entityManager) {
-        this.entityManager.update(deltaTime);
+      // Update HP bar test (combat simulation)
+      if (this.hpBarTest) {
+        this.hpBarTest.update(deltaTime);
       }
 
       this.animationFrameId = requestAnimationFrame(updateLoop);
