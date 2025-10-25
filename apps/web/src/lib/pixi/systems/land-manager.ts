@@ -5,10 +5,9 @@
  * background layers, parallax effects, and terrain.
  */
 
-import { Container, Sprite, Texture, type Application } from 'pixi.js';
+import { Container, Sprite, type Application } from 'pixi.js';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { AssetManager } from './rendering/asset-manager';
-import { DragonProtagonistManager } from './dragon-protagonist';
 
 /**
  * Land layer configuration
@@ -43,7 +42,6 @@ export class LandManager {
   private app: Application;
   private assetManager: AssetManager;
   private container: Container;
-  private dragonProtagonist: DragonProtagonistManager;
   private currentLand: LandConfig | null = null;
   private landLayers: Map<string, Sprite> = new Map();
   private scrollOffset: number = 0;
@@ -56,9 +54,6 @@ export class LandManager {
     this.container = new Container();
     this.container.label = 'land-manager';
     app.stage.addChildAt(this.container, 0);
-
-    // Initialize dragon protagonist
-    this.dragonProtagonist = new DragonProtagonistManager(app, assetManager);
   }
 
   /**
@@ -84,9 +79,6 @@ export class LandManager {
       for (const layer of landConfig.layers) {
         await this.loadLandLayer(layer);
       }
-
-      // Show dragon protagonist when entering a land
-      await this.dragonProtagonist.enterLand(landId);
 
       console.log(`✅ Land Manager: Successfully loaded land ${landId}`);
       return true;
@@ -170,9 +162,6 @@ export class LandManager {
   private clearCurrentLand(): void {
     console.log('🧹 Land Manager: Clearing current land...');
 
-    // Hide dragon protagonist when leaving land
-    this.dragonProtagonist.exitLand();
-
     // Remove all sprites
     this.landLayers.forEach((sprite) => {
       this.container.removeChild(sprite);
@@ -187,11 +176,9 @@ export class LandManager {
   /**
    * Update land rendering
    */
-  update(deltaTime: number, scrollOffset: number = 0): void {
-    // Update dragon protagonist animation
-    this.dragonProtagonist.update(deltaTime);
-
+  update(_deltaTime: number, _scrollOffset: number = 0): void {
     // No movement, no parallax - just static background
+    // Future: Update parallax layers here
     return;
   }
 
@@ -233,27 +220,6 @@ export class LandManager {
   stop(): void {
     this.isActive = false;
     console.log('🌍 Land Manager: Stopped');
-  }
-
-  /**
-   * Get dragon protagonist manager
-   */
-  getDragonProtagonist(): DragonProtagonistManager {
-    return this.dragonProtagonist;
-  }
-
-  /**
-   * Start a journey (dragon will appear when entering lands)
-   */
-  startJourney(): void {
-    this.dragonProtagonist.startJourney();
-  }
-
-  /**
-   * End a journey (dragon will be hidden)
-   */
-  endJourney(): void {
-    this.dragonProtagonist.endJourney();
   }
 
   /**
@@ -333,7 +299,6 @@ export class LandManager {
   destroy(): void {
     this.cleanupResizeHandler();
     this.clearCurrentLand();
-    this.dragonProtagonist.destroy();
     this.container.destroy();
     console.log('🌍 Land Manager: Destroyed');
   }

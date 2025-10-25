@@ -9,10 +9,9 @@ import { type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { SplashScreenManager } from './splash-screen';
 import { DraconiaMenuManager } from './draconia-menu';
-import {
-  createScrollingBackground,
-  type ScrollingBackgroundHandle,
-} from '../scrolling-background-phase2';
+import { MigrationAdapter } from './migration-adapter';
+import { LandManager } from './land-manager';
+import { EntityManager } from './entity-manager';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -56,7 +55,15 @@ export class GameStartManager {
   // Systems
   private splashScreenManager: SplashScreenManager | null = null;
   private draconiaMenuManager: DraconiaMenuManager | null = null;
-  private scrollingBackground: ScrollingBackgroundHandle | null = null;
+  private migrationAdapter: MigrationAdapter | null = null;
+  private landManager: LandManager | null = null;
+  private entityManager: EntityManager | null = null;
+
+  // Journey system state
+  private isJourneyActive = false;
+  private currentSpeed = 0;
+  private lastTime = 0;
+  private animationFrameId: number | null = null;
 
   // Callbacks
   private onJourneyStartCallback: (() => void) | null = null;
@@ -68,7 +75,7 @@ export class GameStartManager {
     this.config = {
       showSplashScreen: true,
       splashScreenConfig: {
-        backgroundColor: 0x7e2453, // Mauve/purple
+        backgroundColor: 0x0d4f3c, // Draconia green background
         splashImagePath: '/ui/buttons/menu/splash/draconia_splash_2.png', // Updated to splash_2
         textColor: 0xffffff,
         fontSize: 32,
@@ -83,6 +90,7 @@ export class GameStartManager {
         buttonColor: 0x2d5a3d,
         buttonHoverColor: 0x4a7c59,
         buttonTextColor: 0xffffff,
+        onJourneyStart: () => this.startJourney(),
       },
       autoStartJourney: false,
       ...config,
@@ -168,8 +176,9 @@ export class GameStartManager {
     }
 
     // Update journey systems if started
-    if (this.state.isJourneyStarted && this.scrollingBackground) {
-      // Journey systems are self-updating through their own loops
+    if (this.state.isJourneyStarted) {
+      // Journey systems are self-updating through their own update loops
+      // (migrationAdapter, landManager, dragonProtagonist)
     }
   }
 
@@ -232,16 +241,31 @@ export class GameStartManager {
     }
 
     try {
-      console.log('🎮 Game Start: Starting journey systems...');
-
-      // Create scrolling background (journey systems)
-      this.scrollingBackground = await createScrollingBackground(this.app, {
-        scrollSpeed: 0, // No movement for now
-        enabled: true,
+      // Initialize migration adapter
+      this.migrationAdapter = new MigrationAdapter(this.app, {
+        enableNewSystems: true,
+        enableBackgroundRenderer: false,
+        enableHealthBarManager: true,
+        enableFloatingDamage: true,
+        enableLayerManager: true,
+        debugMode: true,
       });
 
-      // Start the journey
-      await this.scrollingBackground.start();
+      // Initialize entity manager (after migration adapter so we can get HealthBarManager)
+      const healthBarManager = this.migrationAdapter.getHealthBarManager();
+      this.entityManager = new EntityManager(this.app, this.assetManager, healthBarManager);
+
+      // Initialize land manager (will be refactored to not create dragon)
+      this.landManager = new LandManager(this.app, this.assetManager);
+      await this.landManager.loadLand('land1_steppe');
+      this.landManager.start();
+
+      // Create dragon protagonist through entity manager
+      await this.entityManager.createDragonProtagonist();
+      await this.entityManager.enterLandWithDragon('land1_steppe');
+
+      // Start the journey update loop
+      this.startJourneyUpdateLoop();
 
       this.state.isJourneyStarted = true;
       this.state.currentPhase = 'complete';
@@ -300,13 +324,6 @@ export class GameStartManager {
   }
 
   /**
-   * Get scrolling background handle (for external access)
-   */
-  getScrollingBackground(): ScrollingBackgroundHandle | null {
-    return this.scrollingBackground;
-  }
-
-  /**
    * Handle window resize for responsive behavior
    */
   handleResize(): void {
@@ -320,6 +337,11 @@ export class GameStartManager {
     // Update Draconia menu if visible
     if (this.draconiaMenuManager) {
       this.draconiaMenuManager.handleResize();
+    }
+
+    // Update land manager if active
+    if (this.landManager) {
+      this.landManager.handleResize();
     }
 
     console.log('🎮 Game Start Manager: Resize completed');
@@ -339,10 +361,23 @@ export class GameStartManager {
       this.draconiaMenuManager = null;
     }
 
-    if (this.scrollingBackground) {
-      this.scrollingBackground.destroy();
-      this.scrollingBackground = null;
+    if (this.entityManager) {
+      this.entityManager.destroy();
+      this.entityManager = null;
     }
+
+    if (this.landManager) {
+      this.landManager.destroy();
+      this.landManager = null;
+    }
+
+    if (this.migrationAdapter) {
+      this.migrationAdapter.destroy();
+      this.migrationAdapter = null;
+    }
+
+    // Stop the journey update loop
+    this.stopJourneyUpdateLoop();
 
     this.state.isInitialized = false;
     this.state.isShowingSplash = false;
@@ -352,4 +387,91 @@ export class GameStartManager {
 
     console.log('🎮 Game Start: Destroyed');
   }
+
+  /**
+   * Start the journey update loop (replaces scrolling-background-phase2 functionality)
+   */
+  private startJourneyUpdateLoop(): void {
+    this.isJourneyActive = true;
+    this.lastTime = performance.now();
+
+    const updateLoop = (currentTime: number) => {
+      if (!this.isJourneyActive) return;
+
+      const deltaTime = currentTime - this.lastTime;
+      this.lastTime = currentTime;
+
+      // Update systems (no scroll offset for static background)
+      if (this.migrationAdapter) {
+        this.migrationAdapter.update(deltaTime, currentTime, 0);
+      }
+
+      // Update land manager (no movement)
+      if (this.landManager) {
+        this.landManager.update(deltaTime, 0);
+      }
+
+      // Update entity manager (dragon and enemies)
+      if (this.entityManager) {
+        this.entityManager.update(deltaTime);
+      }
+
+      this.animationFrameId = requestAnimationFrame(updateLoop);
+    };
+
+    this.animationFrameId = requestAnimationFrame(updateLoop);
+  }
+
+  /**
+   * Stop the journey update loop
+   */
+  private stopJourneyUpdateLoop(): void {
+    this.isJourneyActive = false;
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+  }
+
+  /**
+   * Set journey speed (from scrolling-background-phase2)
+   */
+  setJourneySpeed(speed: number): void {
+    this.currentSpeed = speed;
+  }
+
+  /**
+   * Set dragon movement speed (from scrolling-background-phase2)
+   */
+  setDragonMovementSpeed(_speed: number): void {
+    // Dragon movement speed handling - delegate to entity manager
+    if (this.entityManager) {
+      // This would be implemented in EntityManager
+    }
+  }
+
+  /**
+   * Get dragon instance (from scrolling-background-phase2)
+   */
+  getDragon(): unknown {
+    return this.entityManager?.getDragonProtagonist();
+  }
+
+  /**
+   * Get dragon animator (from scrolling-background-phase2)
+   */
+  getDragonAnimator(): unknown {
+    return this.entityManager?.getDragonProtagonist()?.getDragonAnimator();
+  }
+
+  /**
+   * Spawn enemy (from scrolling-background-phase2)
+   */
+  spawnEnemy(_type: string): void {
+    // Enemy spawning disabled in Phase 2 - but method preserved for compatibility
+  }
+
+  /**
+   * Handle resize (from scrolling-background-phase2)
+   */
 }

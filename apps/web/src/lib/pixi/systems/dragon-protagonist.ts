@@ -5,7 +5,7 @@
  * Integrates with the land manager to show/hide the dragon appropriately.
  */
 
-import { Sprite, Container, Graphics, type Application } from 'pixi.js';
+import { Sprite, Container, type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { createAnimatedDragonSprite, type DragonAnimator } from '../dragon-sprites';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
@@ -35,7 +35,6 @@ export class DragonProtagonistManager {
   private container: Container;
   private dragonSprite: Sprite | null = null;
   private dragonAnimator: DragonAnimator | null = null;
-  private healthBar: Graphics | null = null;
   private config: DragonProtagonistConfig;
   private state: DragonProtagonistState;
   private isInitialized: boolean = false;
@@ -125,9 +124,6 @@ export class DragonProtagonistManager {
       this.dragonSprite.visible = true;
       this.state.isVisible = true;
 
-      // Create health bar
-      this.createHealthBar();
-
       console.log(
         `🐉 Dragon Protagonist: Dragon visible at (${this.dragonSprite.x}, ${this.dragonSprite.y})`,
       );
@@ -191,9 +187,6 @@ export class DragonProtagonistManager {
       if (!this.dragonAnimator.isAnimating()) {
         this.dragonAnimator.start();
       }
-
-      // Update health bar position (dragon stays in fixed position)
-      this.updateHealthBarPosition();
     }
   }
 
@@ -266,57 +259,11 @@ export class DragonProtagonistManager {
   }
 
   /**
-   * Create health bar above the dragon
-   */
-  private createHealthBar(): void {
-    if (this.healthBar) {
-      this.container.removeChild(this.healthBar);
-      this.healthBar.destroy();
-    }
-
-    this.healthBar = new Graphics();
-    this.healthBar.label = 'dragon-health-bar';
-
-    // Health bar dimensions
-    const barWidth = 60;
-    const barHeight = 8;
-    const healthPercentage = this.state.health / this.state.maxHealth;
-
-    // Background (red)
-    this.healthBar.rect(0, 0, barWidth, barHeight);
-    this.healthBar.fill(0xff0000);
-
-    // Health (green)
-    this.healthBar.rect(0, 0, barWidth * healthPercentage, barHeight);
-    this.healthBar.fill(0x00ff00);
-
-    // Border
-    this.healthBar.rect(0, 0, barWidth, barHeight);
-    this.healthBar.stroke({ width: 1, color: 0xffffff });
-
-    this.container.addChild(this.healthBar);
-    setZIndex(this.healthBar, Z_LAYERS.UI);
-  }
-
-  /**
-   * Update health bar position to stay above the dragon
-   */
-  private updateHealthBarPosition(): void {
-    if (!this.healthBar || !this.dragonSprite) return;
-
-    // Position health bar above the dragon
-    this.healthBar.x = this.dragonSprite.x - 30; // Center the bar
-    this.healthBar.y = this.dragonSprite.y - 40; // Above the dragon
-  }
-
-  /**
    * Update dragon health
+   * Note: Health bar is now managed by HealthBarManager via EntityManager
    */
   setHealth(health: number): void {
     this.state.health = Math.max(0, Math.min(health, this.state.maxHealth));
-    if (this.healthBar) {
-      this.createHealthBar(); // Recreate to update the visual
-    }
   }
 
   /**
@@ -341,9 +288,6 @@ export class DragonProtagonistManager {
         `🐉 Dragon Protagonist: Updated dragon position to (${this.dragonSprite.x}, ${this.dragonSprite.y})`,
       );
     }
-
-    // Update health bar position
-    this.updateHealthBarPosition();
 
     // Force a render to ensure the changes are visible
     this.app.render();
@@ -399,12 +343,6 @@ export class DragonProtagonistManager {
     if (this.dragonAnimator) {
       this.dragonAnimator.destroy();
       this.dragonAnimator = null;
-    }
-
-    if (this.healthBar) {
-      this.container.removeChild(this.healthBar);
-      this.healthBar.destroy();
-      this.healthBar = null;
     }
 
     this.app.stage.removeChild(this.container);
