@@ -11,6 +11,11 @@ export class DragonAnimator {
   private renderer: Renderer | null = null;
   private stage: Container | null = null;
 
+  // Wing flap crest hold: variable hold (2-5 frames) at fly_3
+  private readonly crestFrame = 'fly_3'; // The crest of the wing flap
+  private crestHoldCounter = 0; // Current hold count
+  private crestHoldDuration = 0; // Random duration (2-5) for this loop
+
   constructor(sprite: Sprite, renderer?: Renderer, stage?: Container) {
     this.sprite = sprite;
     this.renderer = renderer || null;
@@ -29,6 +34,28 @@ export class DragonAnimator {
     this.intervalId = window.setInterval(async () => {
       if (!this.isPlaying) return;
 
+      // Check if we're on the crest frame and should hold it
+      const currentFrame = this.frameSequence[this.currentFrameIndex];
+      if (currentFrame === this.crestFrame) {
+        // If we haven't set a hold duration yet, pick a random one (2-5 frames)
+        if (this.crestHoldDuration === 0) {
+          this.crestHoldDuration = Math.floor(Math.random() * 4) + 2; // Random 2-5
+        }
+
+        // Hold the frame
+        if (this.crestHoldCounter < this.crestHoldDuration) {
+          this.crestHoldCounter++;
+          // Stay on current frame (don't advance)
+          await this.updateFrame();
+          return;
+        }
+
+        // Hold complete, reset counters and advance to next frame
+        this.crestHoldCounter = 0;
+        this.crestHoldDuration = 0;
+      }
+
+      // Advance to next frame
       this.currentFrameIndex = (this.currentFrameIndex + 1) % this.frameSequence.length;
       await this.updateFrame();
     }, this.frameDuration);
@@ -99,7 +126,6 @@ export class DragonAnimator {
     }
 
     this.frameDuration = 1000 / fps; // Convert FPS to milliseconds per frame
-    console.log(`Dragon animation FPS changed to: ${fps} (${this.frameDuration}ms per frame)`);
 
     // If currently playing, restart with new timing
     if (this.isPlaying) {
@@ -133,7 +159,6 @@ export async function createAnimatedDragonSprite(
 
     const animator = new DragonAnimator(sprite, renderer, stage);
 
-    console.log('Created animated dragon sprite successfully');
     return { sprite, animator };
   } catch (error) {
     console.error('Failed to create animated dragon sprite:', error);
