@@ -293,12 +293,17 @@ export class SplashScreenManager {
       const imageScaledHeight = this.splashImage.texture.height * this.splashImage.scale.y;
       const imageBottom = this.splashImage.y + imageScaledHeight;
 
-      // Position text just above the image bottom (brown ground area)
-      // 40px up from bottom to sit on the ground
-      this.pressEnterText.y = imageBottom - 40;
+      // Position text on the brown ground area
+      // Use 80px up from image bottom as ideal position
+      const idealTextY = imageBottom - 80;
+
+      // Clamp to viewport to prevent off-screen positioning
+      // Keep text at least 50px from viewport bottom
+      const minTextY = viewportHeight - 50;
+      this.pressEnterText.y = Math.min(idealTextY, minTextY);
 
       console.log(
-        `🎮 Splash Screen: Text positioned at y=${this.pressEnterText.y.toFixed(0)} (image bottom: ${imageBottom.toFixed(0)}, viewport height: ${viewportHeight})`,
+        `🎮 Splash Screen: Text positioned at y=${this.pressEnterText.y.toFixed(0)} (ideal: ${idealTextY.toFixed(0)}, image bottom: ${imageBottom.toFixed(0)}, viewport height: ${viewportHeight})`,
       );
     }
 
