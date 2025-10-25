@@ -82,10 +82,8 @@ export class ResponsiveManager {
    * Initialize responsive system
    */
   initialize(): void {
-    console.log('📱 Responsive Manager: Initializing...');
     this.setupResizeHandlers();
     this.updateResponsiveState();
-    console.log('✅ Responsive Manager: Initialized');
   }
 
   /**
@@ -111,6 +109,14 @@ export class ResponsiveManager {
 
   /**
    * Calculate responsive scale for content
+   *
+   * WIDTH-FIRST SCALING RULE:
+   * - Width is ALWAYS more important than height
+   * - Images should fill edge-to-edge horizontally (no dead space on sides)
+   * - It's okay to cut off top/bottom of images
+   * - Maintains aspect ratio (no stretching)
+   *
+   * Exception: Portrait mobile (future - force landscape for now)
    */
   calculateScale(contentWidth: number, contentHeight: number): number {
     const { viewportWidth, viewportHeight } = this.state;
@@ -120,12 +126,11 @@ export class ResponsiveManager {
       return Math.min(viewportWidth / contentWidth, this.config.maxScale);
     }
 
-    // Maintain aspect ratio scaling
+    // WIDTH-FIRST RULE: Always use width scale
+    // This ensures no dead space on sides (top/bottom may be cut off)
     const scaleX = viewportWidth / contentWidth;
-    const scaleY = viewportHeight / contentHeight;
-    const scale = Math.min(scaleX, scaleY);
 
-    return Math.max(this.config.minScale, Math.min(scale, this.config.maxScale));
+    return Math.max(this.config.minScale, Math.min(scaleX, this.config.maxScale));
   }
 
   /**
@@ -150,11 +155,36 @@ export class ResponsiveManager {
   }
 
   /**
+   * Convert mouse event coordinates to PixiJS canvas coordinates
+   *
+   * Handles browser zoom, window resize, F12 DevTools, and canvas scaling.
+   * Use this for ALL mouse/pointer event handling.
+   *
+   * @param event MouseEvent or PointerEvent
+   * @returns { x, y } coordinates in PixiJS canvas space
+   *
+   * @example
+   * const coords = responsiveManager.getMouseCoordinates(event);
+   * if (isPointInButton(coords.x, coords.y, button)) { ... }
+   */
+  getMouseCoordinates(event: MouseEvent | PointerEvent): { x: number; y: number } {
+    const rect = this.app.canvas.getBoundingClientRect();
+
+    // Calculate scale factors between canvas internal size and DOM display size
+    const scaleX = this.app.screen.width / rect.width;
+    const scaleY = this.app.screen.height / rect.height;
+
+    // Convert client coordinates to canvas coordinates
+    return {
+      x: (event.clientX - rect.left) * scaleX,
+      y: (event.clientY - rect.top) * scaleY,
+    };
+  }
+
+  /**
    * Handle window resize with unified rules
    */
   handleResize(): void {
-    console.log('📱 Responsive Manager: Handling resize...');
-
     // Clear any pending resize
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout);
@@ -170,8 +200,6 @@ export class ResponsiveManager {
    * Process resize after debounce
    */
   private processResize(): void {
-    console.log('📱 Responsive Manager: Processing resize...');
-
     // Update viewport dimensions
     this.state.viewportWidth = window.innerWidth;
     this.state.viewportHeight = window.innerHeight;
@@ -190,10 +218,6 @@ export class ResponsiveManager {
     if (this.config.forceRenderAfterResize) {
       this.app.render();
     }
-
-    console.log(
-      `📱 Responsive Manager: Resize completed - ${this.state.viewportWidth}x${this.state.viewportHeight}, scale: ${this.state.scale.toFixed(2)}, breakpoint: ${this.state.currentBreakpoint}`,
-    );
   }
 
   /**
@@ -244,7 +268,6 @@ export class ResponsiveManager {
     };
 
     this.devToolsHandler = () => {
-      console.log('🔧 Responsive Manager: Dev tools toggle detected');
       this.state.isDevToolsOpen = !this.state.isDevToolsOpen;
       // Force resize after dev tools toggle
       setTimeout(() => {
@@ -295,9 +318,7 @@ export class ResponsiveManager {
    * Destroy responsive manager
    */
   destroy(): void {
-    console.log('📱 Responsive Manager: Destroying...');
     this.cleanupHandlers();
-    console.log('📱 Responsive Manager: Destroyed');
   }
 }
 
