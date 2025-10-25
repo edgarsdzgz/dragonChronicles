@@ -1,12 +1,13 @@
 import { Application } from 'pixi.js';
 import { clampDPR } from './dpr';
-import { createScrollingBackground, type ScrollingBackgroundHandle } from './scrolling-background';
+import { GameStartManager } from './systems/game-start-manager';
+import { AssetManager } from './systems/rendering/asset-manager';
 // Lazy load background simulation to reduce initial bundle size
 let createBackgroundSim: typeof import('../sim/background').createBackgroundSim | null = null;
 
 export type PixiHandle = {
   app: Application;
-  scrollingBackground: ScrollingBackgroundHandle;
+  gameStartManager: GameStartManager;
   resize: () => void;
   destroy: () => void;
 };
@@ -22,12 +23,15 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   const app = new Application();
   await app.init({
     view: canvas,
-    antialias: false,
+    antialias: true, // Enable antialiasing for smoother sprites
     resolution: dpr,
     autoDensity: true,
-    background: 0x7e2453, // Underground color #7e2453
+    background: 0x0d4f3c, // Draconia green background
     resizeTo: canvas.parentElement ?? window,
   });
+
+  // Enable z-index sorting on the stage
+  app.stage.sortableChildren = true;
 
   // Lazy load background simulation
   if (!createBackgroundSim) {
@@ -52,27 +56,48 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
   // also apply once on mount to honor current state
   applyVisibilityPolicy();
 
-  // Create scrolling background
-  console.log('🚀 MOUNTING: About to create scrolling background...');
-  const scrollingBackground = await createScrollingBackground(app, {
-    scrollSpeed: 100, // 100 pixels per second
-    enabled: true,
-  });
-  console.log('✅ MOUNTING: Scrolling background created successfully!', scrollingBackground);
+  // Create asset manager and game start manager
+  const assetManager = new AssetManager(app);
 
-  // Start automatic gameplay for preview
-  console.log('🎮 MOUNTING: Starting automatic gameplay...');
-  scrollingBackground.startAutomaticGameplay();
-  console.log('✅ MOUNTING: Automatic gameplay started!');
+  // Preload assets before showing splash screen
+  console.log('🎨 Preloading assets...');
+  await assetManager.initialize();
+  console.log('✅ Assets preloaded');
+
+  const gameStartManager = new GameStartManager(app, assetManager, {
+    showSplashScreen: true,
+    showDraconiaMenu: true,
+    autoStartJourney: false,
+  });
+
+  // Initialize the game start sequence (splash -> menu -> journey)
+  await gameStartManager.initialize();
+
+  // Add ticker callback to update game start manager (for splash screen fade-in/out animations)
+  app.ticker.add((ticker) => {
+    gameStartManager.update(ticker.deltaMS);
+  });
+
+  // Set up ResizeObserver to notify game systems when canvas resizes
+  // This handles window resize, F12 DevTools, browser zoom, etc.
+  const resizeObserver = new ResizeObserver(() => {
+    // GameStartManager will propagate resize to all active systems
+    gameStartManager.handleResize();
+  });
+  resizeObserver.observe(canvas.parentElement ?? canvas);
 
   const handle: PixiHandle = {
     app,
-    scrollingBackground,
-    resize: () => app.renderer.resize(canvas.clientWidth, canvas.clientHeight),
+    gameStartManager,
+    resize: () => {
+      app.renderer.resize(canvas.clientWidth, canvas.clientHeight);
+      gameStartManager.handleResize();
+    },
     destroy: () => {
       document.removeEventListener('visibilitychange', applyVisibilityPolicy);
+      resizeObserver.disconnect();
       bg.stop();
-      scrollingBackground.destroy();
+      gameStartManager.destroy();
       app.destroy(true, { children: true });
     },
   };

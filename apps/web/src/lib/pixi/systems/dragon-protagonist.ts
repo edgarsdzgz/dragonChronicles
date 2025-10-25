@@ -63,6 +63,7 @@ export class DragonProtagonistManager {
     // Create container for dragon
     this.container = new Container();
     this.container.label = 'dragon-protagonist-container';
+    setZIndex(this.container, Z_LAYERS.PLAYER);
     this.app.stage.addChild(this.container);
   }
 
