@@ -11,10 +11,10 @@ export class DragonAnimator {
   private renderer: Renderer | null = null;
   private stage: Container | null = null;
 
-  // Wing flap hold: variable hold (2-5 frames) at idle
+  // Wing flap hold: variable hold (1-6 frames) at idle
   private readonly crestFrame = 'idle'; // The rest position between flaps
   private crestHoldCounter = 0; // Current hold count
-  private crestHoldDuration = 0; // Random duration (2-5) for this loop
+  private crestHoldDuration = 0; // Random duration (1-6) for this loop
 
   constructor(sprite: Sprite, renderer?: Renderer, stage?: Container) {
     this.sprite = sprite;
@@ -37,9 +37,9 @@ export class DragonAnimator {
       // Check if we're on the crest frame and should hold it
       const currentFrame = this.frameSequence[this.currentFrameIndex];
       if (currentFrame === this.crestFrame) {
-        // If we haven't set a hold duration yet, pick a random one (2-5 frames)
+        // If we haven't set a hold duration yet, pick a random one (1-6 frames)
         if (this.crestHoldDuration === 0) {
-          this.crestHoldDuration = Math.floor(Math.random() * 4) + 2; // Random 2-5
+          this.crestHoldDuration = Math.floor(Math.random() * 6) + 1; // Random 1-6
         }
 
         // Hold the frame
