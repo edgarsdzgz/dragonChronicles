@@ -14,6 +14,7 @@ import { LandManager } from './land-manager';
 import { EntityManager } from './entity-manager';
 import { HPBarDesignTest } from './hp-bar-design-test';
 import { UIManager } from './ui-manager';
+import { JourneyProgressionManager } from './journey-progression-manager';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -62,6 +63,7 @@ export class GameStartManager {
   private entityManager: EntityManager | null = null;
   private hpBarTest: HPBarDesignTest | null = null;
   private uiManager: UIManager | null = null;
+  private journeyProgressionManager: JourneyProgressionManager | null = null;
 
   // Journey system state
   private isJourneyActive = false;
@@ -317,6 +319,10 @@ export class GameStartManager {
       await this.uiManager.initialize();
       this.uiManager.setLandManager(this.landManager); // Connect UI to land manager
 
+      // Initialize Journey Progression Manager (distance tracking, ward progression)
+      this.journeyProgressionManager = new JourneyProgressionManager();
+      this.journeyProgressionManager.startJourney();
+
       // Start the journey update loop
       this.startJourneyUpdateLoop();
 
@@ -429,6 +435,16 @@ export class GameStartManager {
       this.landManager = null;
     }
 
+    if (this.uiManager) {
+      this.uiManager.destroy();
+      this.uiManager = null;
+    }
+
+    if (this.journeyProgressionManager) {
+      this.journeyProgressionManager.destroy();
+      this.journeyProgressionManager = null;
+    }
+
     if (this.migrationAdapter) {
       this.migrationAdapter.destroy();
       this.migrationAdapter = null;
@@ -491,6 +507,12 @@ export class GameStartManager {
       // Update UI Manager
       if (this.uiManager) {
         this.uiManager.update(deltaTime);
+      }
+
+      // Update Journey Progression Manager (distance tracking)
+      if (this.journeyProgressionManager && this.uiManager && this.landManager) {
+        const movementState = this.landManager.getMovementState();
+        this.journeyProgressionManager.update(deltaTime, dragonSpeed, movementState);
       }
 
       // Update HP bar test - DISABLED
