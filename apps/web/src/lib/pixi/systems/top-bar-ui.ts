@@ -84,14 +84,14 @@ export class TopBarUI {
     this.rightContainer.label = 'TopBarUI-Right';
     this.container.addChild(this.rightContainer);
 
-    // Initialize left side texts
+    // Initialize left side texts (dark color for visibility on sky)
     this.distanceText = new Text({
       text: '0m from Home',
       style: {
-        fontFamily: 'Arial',
+        fontFamily: 'Cinzel, serif',
         fontSize: 18,
-        fill: 0xffffff,
-        align: 'right',
+        fill: 0x1a1a1a, // Dark gray/black
+        align: 'left',
       },
     });
     this.leftContainer.addChild(this.distanceText);
@@ -99,21 +99,21 @@ export class TopBarUI {
     this.speedText = new Text({
       text: '40.00 m/s',
       style: {
-        fontFamily: 'Arial',
+        fontFamily: 'Cinzel, serif',
         fontSize: 14,
-        fill: 0xcccccc,
-        align: 'right',
+        fill: 0x333333, // Slightly lighter dark gray
+        align: 'left',
       },
     });
     this.leftContainer.addChild(this.speedText);
 
-    // Initialize right side texts
+    // Initialize right side texts (dark color for visibility on sky)
     this.landWardText = new Text({
       text: 'Land 1: Horizon Steppe  Ward 1: The Parting Stones',
       style: {
-        fontFamily: 'Arial',
+        fontFamily: 'Cinzel, serif',
         fontSize: 20,
-        fill: 0xffffff,
+        fill: 0x1a1a1a, // Dark gray/black
         align: 'left',
       },
     });
@@ -122,9 +122,9 @@ export class TopBarUI {
     this.distanceToWardText = new Text({
       text: '1000m to Ward 2',
       style: {
-        fontFamily: 'Arial',
+        fontFamily: 'Cinzel, serif',
         fontSize: 14,
-        fill: 0xcccccc,
+        fill: 0x333333, // Slightly lighter dark gray
         align: 'right',
       },
     });
@@ -269,30 +269,33 @@ export class TopBarUI {
     const gameWorldScale = this.responsiveManager.getGameWorldScale();
     const { width: screenWidth } = this.app.screen;
 
-    // Calculate bar dimensions
+    // Calculate bar dimensions (right side is 3/4 of screen, no padding)
     const leftSideWidth = screenWidth * 0.25;
     const rightSideWidth = screenWidth * 0.75;
-    const barWidth = rightSideWidth - 40 * gameWorldScale; // 20px padding on each side
+    const barWidth = rightSideWidth;
     const barHeight = BAR_THICKNESS * gameWorldScale;
 
     // Clear and redraw progress bar
     this.progressBar.clear();
     this.progressBar.rect(0, 0, barWidth, barHeight);
-    this.progressBar.fill(0xcccccc);
+    this.progressBar.fill(0x666666); // Dark gray bar for visibility on sky
 
     // Calculate diamond position (0-100% along bar)
     const diamondX = (progressPercent / 100) * barWidth;
 
-    // Clear and redraw diamond
+    // Clear and redraw diamond (centered at origin in local space)
     this.diamond.clear();
     const diamondSize = DIAMOND_SIZE * gameWorldScale;
 
-    // Draw diamond shape (rotated square)
-    this.diamond.moveTo(diamondX, -diamondSize);
-    this.diamond.lineTo(diamondX + diamondSize, 0);
-    this.diamond.lineTo(diamondX, diamondSize);
-    this.diamond.lineTo(diamondX - diamondSize, 0);
-    this.diamond.lineTo(diamondX, -diamondSize);
+    // Draw diamond shape centered at (0, 0) in local coordinates
+    this.diamond.moveTo(0, -diamondSize);
+    this.diamond.lineTo(diamondSize, 0);
+    this.diamond.lineTo(0, diamondSize);
+    this.diamond.lineTo(-diamondSize, 0);
+    this.diamond.lineTo(0, -diamondSize);
+
+    // Position diamond along bar (move entire Graphics object)
+    this.diamond.x = diamondX;
 
     // Apply flash effect (if active)
     if (this.isFlashing) {
@@ -305,7 +308,7 @@ export class TopBarUI {
       this.diamond.fill(0xffd700); // Gold color during flash
     } else {
       this.diamond.rotation = Math.PI / 4; // 45-degree rotation (diamond shape)
-      this.diamond.fill(0xffffff);
+      this.diamond.fill(0x1a1a1a); // Dark diamond for visibility
     }
   }
 
@@ -314,45 +317,49 @@ export class TopBarUI {
    */
   private updateLayout(): void {
     const gameWorldScale = this.responsiveManager.getGameWorldScale();
-    const { width: screenWidth } = this.app.screen;
+    const { width: screenWidth, height: screenHeight } = this.app.screen;
 
     const leftSideWidth = screenWidth * 0.25;
     const rightSideWidth = screenWidth * 0.75;
-    const padding = 20 * gameWorldScale;
 
-    // Position left container
-    this.leftContainer.x = padding;
-    this.leftContainer.y = padding;
+    // Position at top of SKY area (action band), not SPACE area
+    // Action band starts at ~9.26% of screen (100px at 1080p)
+    const skyTopY = screenHeight * 0.0926; // Top of action/sky area
+    const topPadding = 10 * gameWorldScale; // Small padding from absolute top
 
-    // Position left side texts (right-aligned)
-    this.distanceText.x = leftSideWidth - padding * 2;
+    // Position left container at leftmost edge
+    this.leftContainer.x = 10 * gameWorldScale; // Small left margin
+    this.leftContainer.y = skyTopY + topPadding;
+
+    // Position left side texts (LEFT-aligned, above dragon)
+    this.distanceText.x = 0;
     this.distanceText.y = 0;
-    this.distanceText.anchor.set(1, 0); // Right-aligned
+    this.distanceText.anchor.set(0, 0); // Left-aligned
 
-    this.speedText.x = leftSideWidth - padding * 2;
+    this.speedText.x = 0;
     this.speedText.y = this.distanceText.height + 5 * gameWorldScale;
-    this.speedText.anchor.set(1, 0); // Right-aligned
+    this.speedText.anchor.set(0, 0); // Left-aligned
 
-    // Position right container
-    this.rightContainer.x = leftSideWidth + padding;
-    this.rightContainer.y = padding;
+    // Position right container (starts at 1/4 screen width)
+    this.rightContainer.x = leftSideWidth;
+    this.rightContainer.y = skyTopY + topPadding;
 
     // Position right side texts
     this.landWardText.x = 0;
     this.landWardText.y = 0;
-    this.landWardText.anchor.set(0, 0); // Left-aligned
+    this.landWardText.anchor.set(0, 0); // Left-aligned (at bar start)
 
-    this.distanceToWardText.x = rightSideWidth - leftSideWidth - padding * 2;
+    this.distanceToWardText.x = rightSideWidth - 10 * gameWorldScale; // Small right margin
     this.distanceToWardText.y = 0;
-    this.distanceToWardText.anchor.set(1, 0); // Right-aligned
+    this.distanceToWardText.anchor.set(1, 0); // Right-aligned (at bar end)
 
     // Position progress bar (line 2)
     const barY = this.landWardText.height + 5 * gameWorldScale;
     this.progressBar.x = 0;
     this.progressBar.y = barY;
 
-    this.diamond.x = 0;
-    this.diamond.y = barY + (BAR_THICKNESS * gameWorldScale) / 2; // Center on bar
+    // Position diamond on bar (Y is fixed, X is set in updateProgressBar)
+    this.diamond.y = barY + (BAR_THICKNESS * gameWorldScale) / 2; // Center on bar vertically
   }
 
   /**

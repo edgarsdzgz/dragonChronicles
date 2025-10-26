@@ -51,70 +51,69 @@ export class JourneyProgressionManager {
 
   constructor() {
     // Initialize ward milestones
+    // NOTE: Draconia is home (0m), but we START at Ward 1 when journeying
     // TODO: Load from game data/configuration
     this.wardMilestones = [
       {
-        id: 'draconia',
-        name: 'Draconia',
-        distanceFromStart: 0,
-        landId: 'land1_steppe',
-      },
-      {
         id: 'ward1',
         name: 'The Parting Stones',
-        distanceFromStart: 1000, // 1km
+        distanceFromStart: 0, // Starting ward (0-1000m)
         landId: 'land1_steppe',
       },
       {
         id: 'ward2',
         name: 'Windwhisper Plains',
-        distanceFromStart: 2500, // 2.5km
+        distanceFromStart: 1000, // 1km-2.5km
         landId: 'land1_steppe',
       },
       {
         id: 'ward3',
         name: 'Sunstone Outlook',
-        distanceFromStart: 5000, // 5km
+        distanceFromStart: 2500, // 2.5km-5km
         landId: 'land1_steppe',
       },
       {
         id: 'ward4',
         name: 'Embergrass Crossing',
-        distanceFromStart: 10000, // 10km - TODO: Adjust based on game balance
+        distanceFromStart: 5000, // 5km-10km
         landId: 'land1_steppe',
       },
       {
         id: 'ward5',
         name: 'Stormwatch Frontier',
-        distanceFromStart: 20000, // 20km - TODO: Adjust based on game balance
+        distanceFromStart: 10000, // 10km+ - TODO: Adjust based on game balance
         landId: 'land1_steppe',
       },
     ];
 
-    // Initialize state
+    // Initialize state - start at Ward 1 (The Parting Stones)
     this.state = {
       distanceTraveledMeters: 0,
-      currentWardId: 'draconia',
+      currentWardId: 'ward1',
       currentLandId: 'land1_steppe',
       distanceToNextWard: this.wardMilestones[1].distanceFromStart,
       isJourneyActive: false,
     };
 
-    console.log('🗺️ Journey Progression Manager: Initialized at Draconia (0m)');
+    console.log(
+      '🗺️ Journey Progression Manager: Initialized at Ward 1: The Parting Stones (0m from Home)',
+    );
   }
 
   /**
-   * Start the journey (reset distance to 0)
+   * Start the journey (reset distance to 0 at Ward 1)
    */
   startJourney(): void {
     this.state.distanceTraveledMeters = 0;
-    this.state.currentWardId = 'draconia';
+    this.state.currentWardId = 'ward1';
     this.state.currentLandId = 'land1_steppe';
     this.currentWardIndex = 0;
     this.state.distanceToNextWard = this.wardMilestones[1].distanceFromStart;
     this.state.isJourneyActive = true;
 
-    console.log('🗺️ Journey Progression Manager: Journey started from Draconia');
+    console.log(
+      '🗺️ Journey Progression Manager: Journey started from Ward 1: The Parting Stones (0m from Home)',
+    );
   }
 
   /**
@@ -257,18 +256,18 @@ export class JourneyProgressionManager {
   }
 
   /**
-   * Get current ward number (1-indexed, excludes Draconia)
+   * Get current ward number (1-indexed)
    */
   getCurrentWardNumber(): number {
-    // Draconia is index 0, Ward 1 is index 1, etc.
-    return Math.max(1, this.currentWardIndex);
+    // Ward 1 is index 0, Ward 2 is index 1, etc.
+    return this.currentWardIndex + 1;
   }
 
   /**
-   * Get next ward number (1-indexed, excludes Draconia)
+   * Get next ward number (1-indexed)
    */
   getNextWardNumber(): number {
-    return this.currentWardIndex + 1;
+    return this.currentWardIndex + 2;
   }
 
   /**
@@ -286,9 +285,6 @@ export class JourneyProgressionManager {
    */
   getWardDisplayName(): string {
     const ward = this.getCurrentWard();
-    if (ward.id === 'draconia') {
-      return 'Draconia';
-    }
     return `Ward ${this.getCurrentWardNumber()}: ${ward.name}`;
   }
 

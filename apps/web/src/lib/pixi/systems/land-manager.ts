@@ -361,7 +361,8 @@ export class LandManager {
 
         // Calculate wrapped position for seamless looping
         // Handle negative modulo correctly for backward scrolling
-        const layerWidth = layer.width; // Use unscaled width for calculations
+        // Use actual texture width, not configured width, for accurate tiling
+        const layerWidth = sprite.texture.width; // Use actual texture width
         const scaledLayerWidth = layerWidth * gameWorldScale;
         const normalizedOffset = ((layerScrollOffset % layerWidth) + layerWidth) % layerWidth;
 
