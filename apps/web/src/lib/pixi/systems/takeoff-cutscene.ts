@@ -48,7 +48,7 @@ const INITIAL_GROUND_SCALE = 3.0; // 3x zoomed in
 const INITIAL_GROUND_SPEED_MULTIPLIER = 3.0; // 3x protag speed
 const INITIAL_ANIMATION_SPEED = 2.0; // 2x animation speed
 const INITIAL_DRAGON_Y_OFFSET = 0.15; // 15% lower than normal (closer to ground)
-const INITIAL_BACKGROUND_Y_OFFSET = -900; // Move background up 900px to frame horizon properly
+const INITIAL_BACKGROUND_Y_OFFSET = -750; // Move background up 750px to frame horizon properly
 
 /**
  * Normal state values (journey)
