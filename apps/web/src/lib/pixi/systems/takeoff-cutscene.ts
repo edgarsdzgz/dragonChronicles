@@ -182,7 +182,11 @@ export class TakeoffCutsceneManager {
       return;
     }
 
-    this.timer += deltaTime;
+    // DEBUG: FREEZE ON FIRST FRAME - DO NOT PROGRESS ANIMATION
+    // Comment out the timer increment to stay frozen at initial state
+    // this.timer += deltaTime;
+    console.log('🎬 Cutscene FROZEN at initial state (3x zoom) for debugging');
+    return; // Stop here, don't animate
 
     const dragonContainer = this.dragon.getContainer();
 
