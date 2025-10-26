@@ -16,9 +16,12 @@ import type { MovementState } from './land-manager';
 
 /**
  * Distance conversion constants
+ * Dragon speed: 100 pixels/second = 40 m/s = 144 km/h
  */
 export const PIXELS_PER_METER = 2.5;
 export const METERS_PER_PIXEL = 0.4; // 1 / 2.5
+export const METERS_PER_KM = 1000;
+export const KM_PER_METER = 0.001;
 
 /**
  * Ward milestone distances (in meters from Draconia)
@@ -52,36 +55,38 @@ export class JourneyProgressionManager {
   constructor() {
     // Initialize ward milestones
     // NOTE: Draconia is home (0m), but we START at Ward 1 when journeying
+    // Ward 1: 5.0km long (~2.08 min at 144 km/h)
+    // Progression: Each ward is 1.5x to 2.0x longer than previous
     // TODO: Load from game data/configuration
     this.wardMilestones = [
       {
         id: 'ward1',
         name: 'The Parting Stones',
-        distanceFromStart: 0, // Starting ward (0-1000m)
+        distanceFromStart: 0, // 0 → 5km (5km long)
         landId: 'land1_steppe',
       },
       {
         id: 'ward2',
         name: 'Windwhisper Plains',
-        distanceFromStart: 1000, // 1km-2.5km
+        distanceFromStart: 5000, // 5km → 12.5km (7.5km long = 1.5x Ward 1)
         landId: 'land1_steppe',
       },
       {
         id: 'ward3',
         name: 'Sunstone Outlook',
-        distanceFromStart: 2500, // 2.5km-5km
+        distanceFromStart: 12500, // 12.5km → 25km (12.5km long = 1.67x Ward 2)
         landId: 'land1_steppe',
       },
       {
         id: 'ward4',
         name: 'Embergrass Crossing',
-        distanceFromStart: 5000, // 5km-10km
+        distanceFromStart: 25000, // 25km → 50km (25km long = 2.0x Ward 3)
         landId: 'land1_steppe',
       },
       {
         id: 'ward5',
         name: 'Stormwatch Frontier',
-        distanceFromStart: 10000, // 10km+ - TODO: Adjust based on game balance
+        distanceFromStart: 50000, // 50km+ (TODO: Define next wards)
         landId: 'land1_steppe',
       },
     ];
@@ -217,18 +222,19 @@ export class JourneyProgressionManager {
   }
 
   /**
-   * Get current distance traveled (formatted string)
+   * Get current distance traveled (in kilometers)
+   */
+  getDistanceKm(): number {
+    return this.state.distanceTraveledMeters * KM_PER_METER;
+  }
+
+  /**
+   * Get current distance traveled (formatted string with 2 decimals)
+   * @returns "1.23 km from Home"
    */
   getDistanceFormatted(): string {
-    const meters = this.state.distanceTraveledMeters;
-
-    if (meters >= 1000) {
-      // Show as kilometers with 1 decimal place
-      return `${(meters / 1000).toFixed(1)}km`;
-    } else {
-      // Show as meters (whole number)
-      return `${Math.floor(meters)}m`;
-    }
+    const km = this.getDistanceKm();
+    return `${km.toFixed(2)} km`;
   }
 
   /**
@@ -236,6 +242,22 @@ export class JourneyProgressionManager {
    */
   getDistanceToNextWard(): number {
     return this.state.distanceToNextWard;
+  }
+
+  /**
+   * Get distance to next ward (in kilometers)
+   */
+  getDistanceToNextWardKm(): number {
+    return this.state.distanceToNextWard * KM_PER_METER;
+  }
+
+  /**
+   * Get distance to next ward (formatted string with 2 decimals)
+   * @returns "1.23 km"
+   */
+  getDistanceToNextWardFormatted(): string {
+    const km = this.getDistanceToNextWardKm();
+    return `${km.toFixed(2)} km`;
   }
 
   /**

@@ -17,11 +17,12 @@ import type { ResponsiveManager } from './responsive-manager';
 
 /**
  * Speed fluctuation configuration
+ * Dragon speed: 100 pixels/second = 40 m/s = 144 km/h
  */
-const SPEED_BASE = 40.0; // Base speed in m/s
-const SPEED_FLUCTUATION_MIN = 0.01; // Min change per tick
-const SPEED_FLUCTUATION_MAX = 0.05; // Max change per tick
-const SPEED_FLUCTUATION_RANGE = 0.35; // Total range ±0.35 m/s
+const SPEED_BASE = 144.0; // Base speed in km/h (40 m/s × 3.6)
+const SPEED_FLUCTUATION_MIN_MS = 0.01 * 3.6; // Min change per tick in km/h (~0.036)
+const SPEED_FLUCTUATION_MAX_MS = 0.05 * 3.6; // Max change per tick in km/h (~0.18)
+const SPEED_FLUCTUATION_RANGE = 0.35 * 3.6; // Total range ±1.26 km/h
 const SPEED_UPDATE_INTERVAL_MIN = 750; // Min ms between updates
 const SPEED_UPDATE_INTERVAL_MAX = 1000; // Max ms between updates
 
@@ -29,8 +30,15 @@ const SPEED_UPDATE_INTERVAL_MAX = 1000; // Max ms between updates
  * Progress bar configuration
  */
 const BAR_THICKNESS = 2; // Bar height in pixels
-const DIAMOND_SIZE = 4; // Diamond size in pixels
-const FLASH_DURATION = 200; // Flash duration in ms
+const DIAMOND_SIZE = 6; // Diamond size in pixels (increased from 4px)
+const BAR_RIGHT_MARGIN = 20; // Right margin in pixels
+
+/**
+ * Ward transition animation configuration
+ */
+const PULSE_DURATION = 200; // Pulse duration in ms
+const SWIPE_DURATION = 300; // Swipe duration in ms
+const PULSE_SCALE = 2.5; // How much to scale diamond during pulse
 
 /**
  * Top Bar UI Manager
@@ -60,10 +68,15 @@ export class TopBarUI {
   private speedUpdateTimer: number = 0;
   private nextSpeedUpdateDelay: number = 0;
   private lastWardProgress: number = 0;
+  private lastWardIndex: number = 0;
 
-  // Flash effect state
-  private isFlashing: boolean = false;
-  private flashTimer: number = 0;
+  // Ward transition animation state
+  private isPulsing: boolean = false;
+  private pulseTimer: number = 0;
+  private isSwiping: boolean = false;
+  private swipeTimer: number = 0;
+  private swipeStartX: number = 0;
+  private swipeEndX: number = 0;
 
   constructor(app: Application, responsiveManager: ResponsiveManager) {
     this.app = app;
@@ -86,10 +99,11 @@ export class TopBarUI {
 
     // Initialize left side texts (dark color for visibility on sky)
     this.distanceText = new Text({
-      text: '0m from Home',
+      text: '0.00 km from Home',
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 18,
+        fontWeight: 'bold', // Bold for better readability
         fill: 0x1a1a1a, // Dark gray/black
         align: 'left',
       },
@@ -97,7 +111,7 @@ export class TopBarUI {
     this.leftContainer.addChild(this.distanceText);
 
     this.speedText = new Text({
-      text: '40.00 m/s',
+      text: '144.00 km/h',
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 14,
@@ -120,7 +134,7 @@ export class TopBarUI {
     this.rightContainer.addChild(this.landWardText);
 
     this.distanceToWardText = new Text({
-      text: '1000m to Ward 2',
+      text: '5.00 km to Ward 2',
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 14,
@@ -165,29 +179,33 @@ export class TopBarUI {
     // Update speed fluctuation
     this.updateSpeedFluctuation(deltaTime);
 
-    // Update distance display
-    const distanceMeters = Math.floor(this.journeyProgressionManager.getDistanceMeters());
-    this.distanceText.text = `${distanceMeters}m from Home`;
+    // Update distance display (km with 2 decimals)
+    const distanceKm = this.journeyProgressionManager.getDistanceKm();
+    this.distanceText.text = `${distanceKm.toFixed(2)} km from Home`;
 
-    // Update speed display
-    this.speedText.text = `${this.displayedSpeed.toFixed(2)} m/s`;
+    // Update speed display (km/h with 2 decimals)
+    this.speedText.text = `${this.displayedSpeed.toFixed(2)} km/h`;
 
     // Update Land/Ward display
     const landName = this.journeyProgressionManager.getLandDisplayName();
     const wardName = this.journeyProgressionManager.getWardDisplayName();
     this.landWardText.text = `${landName}  ${wardName}`;
 
-    // Update distance to next ward
-    const distanceToWard = Math.ceil(this.journeyProgressionManager.getDistanceToNextWard());
+    // Update distance to next ward (km with 2 decimals)
+    const distanceToWardKm = this.journeyProgressionManager.getDistanceToNextWardKm();
     const nextWardNumber = this.journeyProgressionManager.getNextWardNumber();
-    this.distanceToWardText.text = `${distanceToWard}m to Ward ${nextWardNumber}`;
+    this.distanceToWardText.text = `${distanceToWardKm.toFixed(2)} km to Ward ${nextWardNumber}`;
 
     // Update progress bar and diamond
     const wardProgress = this.journeyProgressionManager.getCurrentWardProgress();
     this.updateProgressBar(wardProgress);
 
-    // Check for ward transitions (flash effect)
-    this.checkWardTransition(wardProgress, deltaTime);
+    // Check for ward transitions and update animation
+    const currentWardIndex = this.journeyProgressionManager.getCurrentWardNumber() - 1; // Convert to 0-indexed
+    this.checkWardTransition(wardProgress, currentWardIndex, deltaTime);
+
+    // Update ward transition animations
+    this.updateTransitionAnimations(deltaTime);
 
     // Update layout (in case of screen resize)
     this.updateLayout();
@@ -202,11 +220,12 @@ export class TopBarUI {
     if (this.speedUpdateTimer >= this.nextSpeedUpdateDelay) {
       // Apply random speed change
       const changeAmount =
-        SPEED_FLUCTUATION_MIN + Math.random() * (SPEED_FLUCTUATION_MAX - SPEED_FLUCTUATION_MIN);
+        SPEED_FLUCTUATION_MIN_MS +
+        Math.random() * (SPEED_FLUCTUATION_MAX_MS - SPEED_FLUCTUATION_MIN_MS);
       const changeDirection = Math.random() < 0.5 ? -1 : 1;
       this.displayedSpeed += changeAmount * changeDirection;
 
-      // Clamp to allowed range (40 ± 0.35 m/s)
+      // Clamp to allowed range (144 ± 1.26 km/h)
       this.displayedSpeed = Math.max(
         SPEED_BASE - SPEED_FLUCTUATION_RANGE,
         Math.min(SPEED_BASE + SPEED_FLUCTUATION_RANGE, this.displayedSpeed),
@@ -229,37 +248,68 @@ export class TopBarUI {
   }
 
   /**
-   * Check for ward transitions and trigger flash effect
+   * Check for ward transitions and trigger pulse + swipe animation
    */
-  private checkWardTransition(currentProgress: number, deltaTime: number): void {
-    // Detect transition forward (0% → 100% → flash)
-    if (currentProgress < 5 && this.lastWardProgress > 95) {
-      this.triggerFlash();
-    }
-    // Detect transition backward (100% → 0% → flash)
-    else if (currentProgress > 95 && this.lastWardProgress < 5) {
-      this.triggerFlash();
+  private checkWardTransition(
+    currentProgress: number,
+    currentWardIndex: number,
+    deltaTime: number,
+  ): void {
+    // Detect ward change by comparing ward indices
+    if (currentWardIndex !== this.lastWardIndex) {
+      // Ward changed - trigger transition animation
+      this.triggerWardTransition(currentProgress);
+      this.lastWardIndex = currentWardIndex;
     }
 
     this.lastWardProgress = currentProgress;
-
-    // Update flash animation
-    if (this.isFlashing) {
-      this.flashTimer += deltaTime;
-      if (this.flashTimer >= FLASH_DURATION) {
-        this.isFlashing = false;
-        this.flashTimer = 0;
-      }
-    }
   }
 
   /**
-   * Trigger diamond flash effect (spin + sun glint)
+   * Trigger ward transition animation (pulse + swipe)
    */
-  private triggerFlash(): void {
-    this.isFlashing = true;
-    this.flashTimer = 0;
-    console.log('✨ Top Bar UI: Ward transition flash');
+  private triggerWardTransition(newProgressPercent: number): void {
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const { width: screenWidth } = this.app.screen;
+    const leftSideWidth = screenWidth * 0.25;
+    const rightSideWidth = screenWidth * 0.75;
+    const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
+
+    // Start pulse animation
+    this.isPulsing = true;
+    this.pulseTimer = 0;
+
+    // Calculate swipe positions
+    this.swipeStartX = this.diamond.x; // Current position
+    this.swipeEndX = (newProgressPercent / 100) * barWidth; // New position
+
+    console.log('✨ Top Bar UI: Ward transition - pulse and swipe animation');
+  }
+
+  /**
+   * Update ward transition animations (pulse and swipe)
+   */
+  private updateTransitionAnimations(deltaTime: number): void {
+    // Update pulse animation
+    if (this.isPulsing) {
+      this.pulseTimer += deltaTime;
+      if (this.pulseTimer >= PULSE_DURATION) {
+        // Pulse complete, start swipe
+        this.isPulsing = false;
+        this.isSwiping = true;
+        this.swipeTimer = 0;
+      }
+    }
+
+    // Update swipe animation
+    if (this.isSwiping) {
+      this.swipeTimer += deltaTime;
+      if (this.swipeTimer >= SWIPE_DURATION) {
+        // Swipe complete
+        this.isSwiping = false;
+        this.swipeTimer = 0;
+      }
+    }
   }
 
   /**
@@ -269,10 +319,10 @@ export class TopBarUI {
     const gameWorldScale = this.responsiveManager.getGameWorldScale();
     const { width: screenWidth } = this.app.screen;
 
-    // Calculate bar dimensions (right side is 3/4 of screen, no padding)
+    // Calculate bar dimensions (right side is 3/4 of screen, with right margin)
     const leftSideWidth = screenWidth * 0.25;
     const rightSideWidth = screenWidth * 0.75;
-    const barWidth = rightSideWidth;
+    const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
     const barHeight = BAR_THICKNESS * gameWorldScale;
 
     // Clear and redraw progress bar
@@ -281,11 +331,30 @@ export class TopBarUI {
     this.progressBar.fill(0x666666); // Dark gray bar for visibility on sky
 
     // Calculate diamond position (0-100% along bar)
-    const diamondX = (progressPercent / 100) * barWidth;
+    let diamondX = (progressPercent / 100) * barWidth;
+
+    // Apply swipe animation if active
+    if (this.isSwiping) {
+      const swipeProgress = this.swipeTimer / SWIPE_DURATION;
+      // Ease-out cubic for smooth deceleration
+      const easedProgress = 1 - Math.pow(1 - swipeProgress, 3);
+      diamondX = this.swipeStartX + (this.swipeEndX - this.swipeStartX) * easedProgress;
+    }
+
+    // Position diamond along bar
+    this.diamond.x = diamondX;
 
     // Clear and redraw diamond (centered at origin in local space)
     this.diamond.clear();
-    const diamondSize = DIAMOND_SIZE * gameWorldScale;
+    let diamondSize = DIAMOND_SIZE * gameWorldScale;
+
+    // Apply pulse animation if active
+    if (this.isPulsing) {
+      const pulseProgress = this.pulseTimer / PULSE_DURATION;
+      // Pulse in and out using sine wave
+      const pulseAmount = Math.sin(pulseProgress * Math.PI);
+      diamondSize *= 1 + (PULSE_SCALE - 1) * pulseAmount;
+    }
 
     // Draw diamond shape centered at (0, 0) in local coordinates
     this.diamond.moveTo(0, -diamondSize);
@@ -294,22 +363,9 @@ export class TopBarUI {
     this.diamond.lineTo(-diamondSize, 0);
     this.diamond.lineTo(0, -diamondSize);
 
-    // Position diamond along bar (move entire Graphics object)
-    this.diamond.x = diamondX;
-
-    // Apply flash effect (if active)
-    if (this.isFlashing) {
-      const flashProgress = this.flashTimer / FLASH_DURATION;
-      const rotation = flashProgress * Math.PI * 2; // Full rotation
-      this.diamond.rotation = rotation;
-
-      // Add sun glint (bright white outline)
-      this.diamond.stroke({ width: 2 * gameWorldScale, color: 0xffffff, alpha: 1 - flashProgress });
-      this.diamond.fill(0xffd700); // Gold color during flash
-    } else {
-      this.diamond.rotation = Math.PI / 4; // 45-degree rotation (diamond shape)
-      this.diamond.fill(0x1a1a1a); // Dark diamond for visibility
-    }
+    // Set diamond rotation and color
+    this.diamond.rotation = Math.PI / 4; // 45-degree rotation (diamond shape)
+    this.diamond.fill(0xcc2200); // Red color matching dragon
   }
 
   /**
@@ -349,7 +405,8 @@ export class TopBarUI {
     this.landWardText.y = 0;
     this.landWardText.anchor.set(0, 0); // Left-aligned (at bar start)
 
-    this.distanceToWardText.x = rightSideWidth - 10 * gameWorldScale; // Small right margin
+    const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
+    this.distanceToWardText.x = barWidth; // Right-aligned to bar end
     this.distanceToWardText.y = 0;
     this.distanceToWardText.anchor.set(1, 0); // Right-aligned (at bar end)
 
