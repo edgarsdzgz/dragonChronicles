@@ -18,11 +18,26 @@ import type { TopBarUI } from './top-bar-ui';
 import type { JourneyProgressionManager } from './journey-progression-manager';
 
 /**
- * Cutscene phase durations (in milliseconds)
+ * CUTSCENE TIMING CONFIGURATION
+ *
+ * Toggle DEBUG_MODE to slow down cutscene for fine-tuning:
+ * - DEBUG_MODE = true:  32 seconds total (16x slower, easy to see what's happening)
+ * - DEBUG_MODE = false: 8 seconds total (production speed)
+ *
+ * Press ESC or click anywhere to skip cutscene during testing.
  */
-const PHASE_1_DURATION = 1200; // Takeoff phase
-const PHASE_2_DURATION = 800; // Forward flight phase
-const TOTAL_DURATION = PHASE_1_DURATION + PHASE_2_DURATION; // 2000ms total
+const DEBUG_MODE = true; // Set to false for production timing
+const TIME_SCALE = DEBUG_MODE ? 16 : 4; // 32s debug / 8s production (vs 2s base)
+
+/**
+ * Base cutscene phase durations (in milliseconds)
+ * These are multiplied by TIME_SCALE for actual duration
+ */
+const BASE_PHASE_1_DURATION = 1200; // Takeoff phase (60% of cutscene)
+const BASE_PHASE_2_DURATION = 800; // Forward flight phase (40% of cutscene)
+const PHASE_1_DURATION = BASE_PHASE_1_DURATION * TIME_SCALE;
+const PHASE_2_DURATION = BASE_PHASE_2_DURATION * TIME_SCALE;
+const TOTAL_DURATION = PHASE_1_DURATION + PHASE_2_DURATION;
 
 /**
  * Initial state values (ground/pre-takeoff)
@@ -75,11 +90,16 @@ export class TakeoffCutsceneManager {
   private initialDragonX: number = 0;
   private targetDragonX: number = 0;
 
+  // Skip handlers
+  private keyboardHandler: ((e: KeyboardEvent) => void) | null = null;
+  private clickHandler: (() => void) | null = null;
+
   constructor(app: Application, responsiveManager: ResponsiveManager) {
     this.app = app;
     this.responsiveManager = responsiveManager;
 
-    console.log('🎬 Takeoff Cutscene: Manager created');
+    const mode = DEBUG_MODE ? '32 seconds (DEBUG)' : '8 seconds (PRODUCTION)';
+    console.log(`🎬 Takeoff Cutscene: Manager created - Duration: ${mode}`);
   }
 
   /**
@@ -110,11 +130,15 @@ export class TakeoffCutsceneManager {
       return;
     }
 
-    console.log('🎬 Takeoff Cutscene: Starting...');
+    const mode = DEBUG_MODE ? '32s DEBUG MODE' : '8s PRODUCTION MODE';
+    console.log(`🎬 Takeoff Cutscene: Starting... [${mode}] - Press ESC or click to skip`);
 
     this.isActive = true;
     this.isComplete = false;
     this.timer = 0;
+
+    // Set up skip handlers
+    this.setupSkipHandlers();
 
     // Save initial dragon position
     const dragonContainer = this.dragon.getContainer();
@@ -222,6 +246,42 @@ export class TakeoffCutsceneManager {
   }
 
   /**
+   * Set up skip handlers (ESC key and click)
+   */
+  private setupSkipHandlers(): void {
+    // ESC key handler
+    this.keyboardHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        this.skip();
+      }
+    };
+    window.addEventListener('keydown', this.keyboardHandler);
+
+    // Click handler
+    this.clickHandler = () => {
+      this.skip();
+    };
+    this.app.canvas.addEventListener('click', this.clickHandler);
+
+    console.log('🎬 Takeoff Cutscene: Skip handlers enabled (ESC or click to skip)');
+  }
+
+  /**
+   * Remove skip handlers
+   */
+  private removeSkipHandlers(): void {
+    if (this.keyboardHandler) {
+      window.removeEventListener('keydown', this.keyboardHandler);
+      this.keyboardHandler = null;
+    }
+
+    if (this.clickHandler) {
+      this.app.canvas.removeEventListener('click', this.clickHandler);
+      this.clickHandler = null;
+    }
+  }
+
+  /**
    * Complete the cutscene and transition to normal journey
    */
   private completeCutscene(): void {
@@ -229,6 +289,9 @@ export class TakeoffCutsceneManager {
 
     this.isActive = false;
     this.isComplete = true;
+
+    // Remove skip handlers
+    this.removeSkipHandlers();
 
     // Ensure everything is at normal state
     if (this.dragon) {
