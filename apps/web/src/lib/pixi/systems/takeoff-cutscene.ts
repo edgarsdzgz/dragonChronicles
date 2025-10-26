@@ -249,7 +249,7 @@ export class TakeoffCutsceneManager {
    * Set up skip handlers (ESC key and click)
    */
   private setupSkipHandlers(): void {
-    // ESC key handler
+    // ESC key handler (immediate)
     this.keyboardHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         this.skip();
@@ -257,13 +257,19 @@ export class TakeoffCutsceneManager {
     };
     window.addEventListener('keydown', this.keyboardHandler);
 
-    // Click handler
-    this.clickHandler = () => {
-      this.skip();
-    };
-    this.app.canvas.addEventListener('click', this.clickHandler);
+    // Click handler (delayed to avoid catching the "Start Journey" button click)
+    setTimeout(() => {
+      if (!this.isActive) return; // Cutscene already ended
 
-    console.log('🎬 Takeoff Cutscene: Skip handlers enabled (ESC or click to skip)');
+      this.clickHandler = () => {
+        this.skip();
+      };
+      this.app.canvas.addEventListener('click', this.clickHandler);
+
+      console.log('🎬 Takeoff Cutscene: Click-to-skip enabled');
+    }, 500); // 500ms delay
+
+    console.log('🎬 Takeoff Cutscene: Skip handlers enabled (ESC now, click in 0.5s)');
   }
 
   /**
