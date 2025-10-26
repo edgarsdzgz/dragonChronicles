@@ -153,22 +153,38 @@ export function microRamp(distM: number, stepM: number, inc = 0.01) {
 ### Land 1: Horizon Steppe (Complete Specification)
 
 **Status**: Fully specified in Region R01 documentation
+**Total Wards**: 17 named wards
+**Complete Lore**: See [Horizon Steppe Ward Lore](Horizon_Steppe_Ward_Lore.md)
 
 #### Ward Breakdown:
 
-- **Ward 1**: Sunwake Downs (D0-D0.5) — Tutorial area
+**Early Journey (Tutorial & Trade Routes)**
+- **Ward 1**: Sunwake Downs (D0→D0.5) — Tutorial picnic grounds
+- **Ward 2**: Waystone Mile (D0.5→D1.0) — Ancient trade markers
+- **Ward 3**: Skylark Flats (D1.0→D1.5) — Bird migration routes
+- **Ward 4**: Longgrass Reach (D1.5→D2.0) — Erosion prevention gone wild
 
-- **Ward 2**: Waystone Mile (D0.5-D1.0) — Basic progression
+**Mid Journey (Geography & History)**
+- **Ward 5**: Bluewind Shelf (D2.0→D2.5) — Glider training cliffs
+- **Ward 6**: Old Hoard Road (D2.5→D3.0) — Mining convoy route
+- **Ward 7**: First Horizon (D3.0→D3.5) — Mountains first visible
+- **Ward 8**: Windwhisper Plain (D3.5→D4.0) — Whistling rock formations
+- **Ward 9**: Duskrunner's Stand (D4.0→D4.5) — Famous last stand site
 
-- **Ward 3**: Skylark Flats (D1.0-D1.5) — Air combat introduction
+**Rising Tension (Nomad Territory)**
+- **Ward 10**: Thornhedge Crossing (D4.5→D5.0) — Natural barrier path
+- **Ward 11**: Kite-Banner Flats (D5.0→D5.5) — Nomad communication zone
+- **Ward 12**: Rumblefoot Trace (D5.5→D6.0) — Beast migration trail
 
-- **Ward 4**: Longgrass Reach (D1.5-D2.0) — Accuracy challenges
+**Approaching Danger (Buffer Zone)**
+- **Ward 13**: Emberwatch Ridge (D6.0→D6.5) — Border guard post
+- **Ward 14**: Scorchline Gap (D6.5→D7.0) — Environmental boundary
+- **Ward 15**: Ashfall March (D7.0→D7.5) — Volcanic ash zone
 
-- **Ward 5**: Bluewind Shelf (D2.0-D2.5) — Crosswind mechanics
-
-- **Ward 6**: Old Hoard Road (D2.5-D3.0) — Caravan encounters
-
-- **Ward 7**: First Horizon (D3.0+) — Boss approach area
+**Final Approach (Boss Territory)**
+- **Ward 16**: Border's End (D7.5→D8.0) — Ancient fortifications
+- **Ward 17**: Pyrean Gate (D8.0→D8.5) — The arch that still stands
+- **Boss Gate**: Khagan of the Sirocco (D8.5+) — Final confrontation beneath Pyrean Gate
 
 ### Land 2: Ember Reaches (The Pyrean Commonwealth's Grave)
 
