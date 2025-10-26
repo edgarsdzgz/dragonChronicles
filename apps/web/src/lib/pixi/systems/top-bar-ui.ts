@@ -36,8 +36,8 @@ const BAR_RIGHT_MARGIN = 20; // Right margin in pixels
 /**
  * Ward transition animation configuration
  */
-const PULSE_DURATION = 200; // Pulse duration in ms
-const SWIPE_DURATION = 300; // Swipe duration in ms
+const PULSE_DURATION = 400; // Pulse duration in ms (40% of total)
+const SWIPE_DURATION = 600; // Swipe duration in ms (60% of total)
 const PULSE_SCALE = 2.5; // How much to scale diamond during pulse
 
 /**
@@ -115,6 +115,7 @@ export class TopBarUI {
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 14,
+        fontWeight: 'bold', // Bold for consistency
         fill: 0x333333, // Slightly lighter dark gray
         align: 'left',
       },
@@ -127,6 +128,7 @@ export class TopBarUI {
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 20,
+        fontWeight: 'bold', // Bold for consistency
         fill: 0x1a1a1a, // Dark gray/black
         align: 'left',
       },
@@ -138,6 +140,7 @@ export class TopBarUI {
       style: {
         fontFamily: 'Cinzel, serif',
         fontSize: 14,
+        fontWeight: 'bold', // Bold for consistency
         fill: 0x333333, // Slightly lighter dark gray
         align: 'right',
       },
@@ -349,22 +352,35 @@ export class TopBarUI {
     let diamondSize = DIAMOND_SIZE * gameWorldScale;
 
     // Apply pulse animation if active
+    let rotationAngle = 0;
     if (this.isPulsing) {
       const pulseProgress = this.pulseTimer / PULSE_DURATION;
       // Pulse in and out using sine wave
       const pulseAmount = Math.sin(pulseProgress * Math.PI);
       diamondSize *= 1 + (PULSE_SCALE - 1) * pulseAmount;
+
+      // Add 360-degree rotation during pulse (0 to 2π radians)
+      // Synchronized with pulse: start spin -> grow -> continue spin -> shrink -> finish spin
+      rotationAngle = pulseProgress * Math.PI * 2;
     }
 
-    // Draw diamond shape centered at (0, 0) in local coordinates
+    // Draw sparkle shape with rounded sides (4-pointed star)
+    // Create rounded diamond by using quadratic curves at each point
+    const curveAmount = diamondSize * 0.3; // How much to curve the sides
+
+    // Top point
     this.diamond.moveTo(0, -diamondSize);
-    this.diamond.lineTo(diamondSize, 0);
-    this.diamond.lineTo(0, diamondSize);
-    this.diamond.lineTo(-diamondSize, 0);
-    this.diamond.lineTo(0, -diamondSize);
+    // Curve to right point
+    this.diamond.quadraticCurveTo(curveAmount, -curveAmount, diamondSize, 0);
+    // Curve to bottom point
+    this.diamond.quadraticCurveTo(curveAmount, curveAmount, 0, diamondSize);
+    // Curve to left point
+    this.diamond.quadraticCurveTo(-curveAmount, curveAmount, -diamondSize, 0);
+    // Curve back to top point
+    this.diamond.quadraticCurveTo(-curveAmount, -curveAmount, 0, -diamondSize);
 
     // Set diamond rotation and color
-    this.diamond.rotation = Math.PI / 4; // 45-degree rotation (diamond shape)
+    this.diamond.rotation = rotationAngle; // Rotate during pulse, 0 otherwise
     this.diamond.fill(0xcc2200); // Red color matching dragon
   }
 
