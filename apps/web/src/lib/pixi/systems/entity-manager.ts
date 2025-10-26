@@ -10,6 +10,7 @@ import type { Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { DragonProtagonistManager } from './dragon-protagonist';
 import { HealthBarManager } from './health-bar-manager';
+import type { ResponsiveManager } from './responsive-manager';
 
 export interface EntityManagerConfig {
   enableHealthBars?: boolean;
@@ -27,8 +28,10 @@ export interface EntityManagerConfig {
 export class EntityManager {
   private app: Application;
   private assetManager: AssetManager;
+  private responsiveManager: ResponsiveManager;
   private healthBarManager: HealthBarManager | null = null;
   private config: EntityManagerConfig;
+  private resizeCallback: (() => void) | null = null;
 
   // Entity references (singleton pattern for unique entities)
   private dragonProtagonist: DragonProtagonistManager | null = null;
@@ -39,16 +42,22 @@ export class EntityManager {
   constructor(
     app: Application,
     assetManager: AssetManager,
+    responsiveManager: ResponsiveManager,
     healthBarManager?: HealthBarManager,
     config: EntityManagerConfig = {},
   ) {
     this.app = app;
     this.assetManager = assetManager;
+    this.responsiveManager = responsiveManager;
     this.healthBarManager = healthBarManager || null;
     this.config = {
       enableHealthBars: true,
       ...config,
     };
+
+    // Subscribe to responsive manager resize events
+    this.resizeCallback = () => this.handleResize();
+    this.responsiveManager.onResize(this.resizeCallback);
 
     console.log('🎯 Entity Manager: Initialized');
   }
@@ -74,7 +83,12 @@ export class EntityManager {
     console.log('🎯 Entity Manager: Creating dragon protagonist...');
 
     // Create dragon protagonist
-    this.dragonProtagonist = new DragonProtagonistManager(this.app, this.assetManager, config);
+    this.dragonProtagonist = new DragonProtagonistManager(
+      this.app,
+      this.assetManager,
+      this.responsiveManager,
+      config,
+    );
 
     await this.dragonProtagonist.initialize();
 
@@ -112,15 +126,27 @@ export class EntityManager {
 
     const state = this.dragonProtagonist.getState();
 
-    // Create health bar above dragon
+    // Calculate HP bar offset using game world coordinates
+    // Dragon: 128px sprite * 0.8 scale = 102.4px visual width, half = 51.2px
+    // HP bar: Arc from 120° to 240° with 50px radius
+    //   - Rightmost point of arc is at 120° = radius * cos(120°) = -radius/2 from center
+    // Gap: 8px desired spacing at baseline
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
+    const hpBarRadius = 50; // Baseline radius
+    const desiredGap = 8; // Baseline gap in pixels
+    // Offset = -(dragon half-width + gap - HP bar rightmost extent)
+    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
+
+    // Create health bar to the left of dragon at head level
+    // Offset accounts for dragon size, HP bar size, and desired gap - all scaled uniformly
     this.healthBarManager.createHealthBar(
       'dragon-protagonist',
-      sprite.x - 30, // Center the bar (60px width / 2)
-      sprite.y - 40, // Above the dragon
-      60, // Width
-      8, // Height
+      sprite.x + hpBarOffsetX,
+      sprite.y + 1, // Raised ~1.75% total (19px up from original +20)
       state.maxHealth,
       state.health,
+      // Using default classic-green palette
     );
 
     console.log('✅ Entity Manager: Dragon health bar created');
@@ -137,7 +163,20 @@ export class EntityManager {
     const sprite = this.dragonProtagonist.getDragonSprite();
     if (!sprite) return;
 
-    this.healthBarManager.setHealthBarPosition('dragon-protagonist', sprite.x - 30, sprite.y - 40);
+    // Calculate HP bar offset using game world coordinates (same as creation)
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
+    const hpBarRadius = 50; // Baseline radius
+    const desiredGap = 8; // Baseline gap in pixels
+    // Offset accounts for arc geometry: rightmost point is at 120° = -radius/2 from center
+    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
+
+    // Keep HP bar positioned properly (same as creation)
+    this.healthBarManager.setHealthBarPosition(
+      'dragon-protagonist',
+      sprite.x + hpBarOffsetX,
+      sprite.y + 1,
+    );
   }
 
   /**
@@ -207,6 +246,26 @@ export class EntityManager {
   }
 
   /**
+   * Handle resize events from ResponsiveManager
+   * Re-render HP bars at new scale and update positions
+   */
+  handleResize(): void {
+    console.log('🎯 Entity Manager: Handling resize...');
+
+    // Re-render all HP bars with new gameWorldScale
+    if (this.healthBarManager) {
+      this.healthBarManager.rerender();
+      console.log('🎯 Entity Manager: Re-rendered HP bars with new scale');
+    }
+
+    // Update dragon health bar position immediately after dragon resizes
+    if (this.dragonProtagonist && this.dragonProtagonist.isVisible()) {
+      this.updateDragonHealthBarPosition();
+      console.log('🎯 Entity Manager: Updated dragon health bar position on resize');
+    }
+  }
+
+  /**
    * Spawn an enemy (future implementation)
    */
   spawnEnemy(_type: string, _position: { x: number; y: number }): string {
@@ -227,6 +286,12 @@ export class EntityManager {
    * Destroy the entity manager
    */
   destroy(): void {
+    // Unsubscribe from responsive manager
+    if (this.resizeCallback) {
+      this.responsiveManager.offResize(this.resizeCallback);
+      this.resizeCallback = null;
+    }
+
     // Destroy dragon protagonist
     if (this.dragonProtagonist) {
       this.dragonProtagonist.destroy();

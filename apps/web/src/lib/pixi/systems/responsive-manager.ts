@@ -3,15 +3,46 @@
  *
  * Unified responsive system for all screens and systems.
  * Provides consistent stretching, scaling, and positioning rules.
+ *
+ * GAME WORLD COORDINATE SYSTEM:
+ * - Baseline: 1920x1080 "game world" coordinates
+ * - All elements positioned in game world space
+ * - Uniform WIDTH-FIRST scaling applied to entire game world
+ * - Underground (purple) extends below viewport on tall screens
  */
 
 import { type Application } from 'pixi.js';
+
+/**
+ * Game world dimensions (1080p baseline)
+ * All game elements are positioned in this coordinate system
+ */
+export const GAME_WORLD_WIDTH = 1920;
+export const GAME_WORLD_HEIGHT = 1080;
+
+/**
+ * Display breakpoint types for responsive design
+ * Height-first detection: 4K/8K trump ultra-wide
+ */
+export type DisplayBreakpoint = 'mobile' | 'tablet' | 'desktop' | 'ultra-wide' | '4K' | '8K+';
+
+/**
+ * Breakpoint change event
+ */
+export interface BreakpointChangeEvent {
+  oldBreakpoint: DisplayBreakpoint;
+  newBreakpoint: DisplayBreakpoint;
+  timestamp: number;
+}
 
 export interface ResponsiveConfig {
   // Screen breakpoints
   mobile: { width: number; height: number };
   tablet: { width: number; height: number };
   desktop: { width: number; height: number };
+  ultraWide: { width: number; height: number };
+  fourK: { width: number; height: number };
+  eightKPlus: { width: number; height: number };
 
   // Scaling rules
   minScale: number;
@@ -28,12 +59,12 @@ export interface ResponsiveConfig {
 }
 
 export interface ResponsiveState {
-  currentBreakpoint: 'mobile' | 'tablet' | 'desktop';
+  currentBreakpoint: DisplayBreakpoint;
   scale: number;
   viewportWidth: number;
   viewportHeight: number;
-  isDevToolsOpen: boolean;
   lastResizeTime: number;
+  gameWorldScale: number; // WIDTH-FIRST scale: viewport.width / GAME_WORLD_WIDTH
 }
 
 export class ResponsiveManager {
@@ -41,8 +72,10 @@ export class ResponsiveManager {
   private config: ResponsiveConfig;
   private state: ResponsiveState;
   private resizeHandler: (() => void) | null = null;
-  private devToolsHandler: (() => void) | null = null;
   private resizeTimeout: number | null = null;
+  private breakpointChangeCallbacks: Array<(event: BreakpointChangeEvent) => void> = [];
+  private resizeCallbacks: Array<() => void> = [];
+  private previousBreakpoint: DisplayBreakpoint = 'desktop';
 
   constructor(app: Application, config: Partial<ResponsiveConfig> = {}) {
     this.app = app;
@@ -51,6 +84,9 @@ export class ResponsiveManager {
       mobile: { width: 480, height: 800 },
       tablet: { width: 768, height: 1024 },
       desktop: { width: 1920, height: 1080 },
+      ultraWide: { width: 2560, height: 1440 },
+      fourK: { width: 3840, height: 2160 },
+      eightKPlus: { width: 7680, height: 4320 },
 
       // Default scaling
       minScale: 0.5,
@@ -73,8 +109,8 @@ export class ResponsiveManager {
       scale: 1.0,
       viewportWidth: window.innerWidth,
       viewportHeight: window.innerHeight,
-      isDevToolsOpen: false,
       lastResizeTime: 0,
+      gameWorldScale: window.innerWidth / GAME_WORLD_WIDTH, // Initial WIDTH-FIRST scale
     };
   }
 
@@ -96,7 +132,7 @@ export class ResponsiveManager {
   /**
    * Get current breakpoint
    */
-  getCurrentBreakpoint(): 'mobile' | 'tablet' | 'desktop' {
+  getCurrentBreakpoint(): DisplayBreakpoint {
     return this.state.currentBreakpoint;
   }
 
@@ -105,6 +141,59 @@ export class ResponsiveManager {
    */
   getScale(): number {
     return this.state.scale;
+  }
+
+  /**
+   * Get game world scale (WIDTH-FIRST: viewport.width / GAME_WORLD_WIDTH)
+   * All game elements should multiply their intended scale by this value
+   *
+   * @example
+   * // Dragon intended scale: 0.8 at 1080p baseline
+   * const finalScale = 0.8 * responsiveManager.getGameWorldScale();
+   * dragonSprite.scale.set(finalScale);
+   *
+   * @example
+   * // Grass positioned at 507.6px from top in game world
+   * const finalY = 507.6 * responsiveManager.getGameWorldScale();
+   * grassSprite.y = finalY;
+   */
+  getGameWorldScale(): number {
+    return this.state.gameWorldScale;
+  }
+
+  /**
+   * Subscribe to breakpoint change events
+   */
+  onBreakpointChange(callback: (event: BreakpointChangeEvent) => void): void {
+    this.breakpointChangeCallbacks.push(callback);
+  }
+
+  /**
+   * Unsubscribe from breakpoint change events
+   */
+  offBreakpointChange(callback: (event: BreakpointChangeEvent) => void): void {
+    const index = this.breakpointChangeCallbacks.indexOf(callback);
+    if (index !== -1) {
+      this.breakpointChangeCallbacks.splice(index, 1);
+    }
+  }
+
+  /**
+   * Subscribe to resize events
+   * All managers should use this instead of window.addEventListener('resize')
+   */
+  onResize(callback: () => void): void {
+    this.resizeCallbacks.push(callback);
+  }
+
+  /**
+   * Unsubscribe from resize events
+   */
+  offResize(callback: () => void): void {
+    const index = this.resizeCallbacks.indexOf(callback);
+    if (index !== -1) {
+      this.resizeCallbacks.splice(index, 1);
+    }
   }
 
   /**
@@ -205,6 +294,9 @@ export class ResponsiveManager {
     this.state.viewportHeight = window.innerHeight;
     this.state.lastResizeTime = Date.now();
 
+    // Update game world scale (WIDTH-FIRST)
+    this.state.gameWorldScale = this.state.viewportWidth / GAME_WORLD_WIDTH;
+
     // Detect breakpoint
     this.updateBreakpoint();
 
@@ -218,6 +310,9 @@ export class ResponsiveManager {
     if (this.config.forceRenderAfterResize) {
       this.app.render();
     }
+
+    // Notify all subscribers that resize is complete
+    this.notifyResize();
   }
 
   /**
@@ -226,23 +321,72 @@ export class ResponsiveManager {
   private updateResponsiveState(): void {
     this.state.viewportWidth = window.innerWidth;
     this.state.viewportHeight = window.innerHeight;
+    this.state.gameWorldScale = this.state.viewportWidth / GAME_WORLD_WIDTH; // WIDTH-FIRST
     this.updateBreakpoint();
     this.updateScale();
   }
 
   /**
-   * Update current breakpoint
+   * Update breakpoint based on viewport size
+   * HEIGHT-FIRST DETECTION: 4K/8K trump ultra-wide
    */
   private updateBreakpoint(): void {
-    const { viewportWidth } = this.state;
+    const { viewportWidth, viewportHeight } = this.state;
+    const oldBreakpoint = this.state.currentBreakpoint;
+    let newBreakpoint: DisplayBreakpoint;
 
-    if (viewportWidth <= this.config.mobile.width) {
-      this.state.currentBreakpoint = 'mobile';
-    } else if (viewportWidth <= this.config.tablet.width) {
-      this.state.currentBreakpoint = 'tablet';
+    // Height-first detection (4K/8K trump ultra-wide)
+    if (viewportHeight > 2160) {
+      newBreakpoint = '8K+';
+    } else if (viewportHeight > 1440) {
+      newBreakpoint = '4K';
+    } else if (viewportWidth > 2560) {
+      newBreakpoint = 'ultra-wide';
+    } else if (viewportWidth > 1024) {
+      newBreakpoint = 'desktop';
+    } else if (viewportWidth > 480) {
+      newBreakpoint = 'tablet';
     } else {
-      this.state.currentBreakpoint = 'desktop';
+      newBreakpoint = 'mobile';
     }
+
+    this.state.currentBreakpoint = newBreakpoint;
+
+    // Fire event if breakpoint changed
+    if (oldBreakpoint !== newBreakpoint) {
+      this.notifyBreakpointChange({
+        oldBreakpoint,
+        newBreakpoint,
+        timestamp: Date.now(),
+      });
+    }
+  }
+
+  /**
+   * Notify all subscribers of breakpoint change
+   */
+  private notifyBreakpointChange(event: BreakpointChangeEvent): void {
+    this.breakpointChangeCallbacks.forEach((callback) => {
+      try {
+        callback(event);
+      } catch (error) {
+        console.error('Error in breakpoint change callback:', error);
+      }
+    });
+  }
+
+  /**
+   * Notify all subscribers of resize event
+   * This is called after ResponsiveManager has processed the resize
+   */
+  private notifyResize(): void {
+    this.resizeCallbacks.forEach((callback) => {
+      try {
+        callback();
+      } catch (error) {
+        console.error('Error in resize callback:', error);
+      }
+    });
   }
 
   /**
@@ -267,14 +411,6 @@ export class ResponsiveManager {
       this.handleResize();
     };
 
-    this.devToolsHandler = () => {
-      this.state.isDevToolsOpen = !this.state.isDevToolsOpen;
-      // Force resize after dev tools toggle
-      setTimeout(() => {
-        this.handleResize();
-      }, 200);
-    };
-
     // Standard resize
     window.addEventListener('resize', this.resizeHandler);
 
@@ -283,10 +419,9 @@ export class ResponsiveManager {
       window.visualViewport?.addEventListener('resize', this.resizeHandler);
     }
 
-    // Dev tools detection
-    document.addEventListener('visibilitychange', this.devToolsHandler);
-    window.addEventListener('focus', this.devToolsHandler);
-    window.addEventListener('blur', this.devToolsHandler);
+    // Note: Removed focus/blur/visibilitychange listeners - they triggered on normal
+    // window interactions (clicking in/out), causing unnecessary resize events.
+    // Standard resize listener handles actual viewport size changes including F12 toggle.
   }
 
   /**
@@ -299,13 +434,6 @@ export class ResponsiveManager {
         window.visualViewport?.removeEventListener('resize', this.resizeHandler);
       }
       this.resizeHandler = null;
-    }
-
-    if (this.devToolsHandler) {
-      document.removeEventListener('visibilitychange', this.devToolsHandler);
-      window.removeEventListener('focus', this.devToolsHandler);
-      window.removeEventListener('blur', this.devToolsHandler);
-      this.devToolsHandler = null;
     }
 
     if (this.resizeTimeout) {

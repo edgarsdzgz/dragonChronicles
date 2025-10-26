@@ -53,16 +53,20 @@ export class SplashScreenManager {
 
   // Event handling
   private keyHandler: ((event: KeyboardEvent) => void) | null = null;
-  private resizeHandler: (() => void) | null = null;
+  private clickHandler: ((event: PointerEvent) => void) | null = null;
+  private resizeCallback: (() => void) | null = null;
   private isInitialized: boolean = false;
 
-  constructor(app: Application, assetManager: AssetManager, config: SplashScreenConfig = {}) {
+  constructor(
+    app: Application,
+    assetManager: AssetManager,
+    responsiveManager: ResponsiveManager,
+    config: SplashScreenConfig = {},
+  ) {
     this.app = app;
     this.assetManager = assetManager;
+    this.responsiveManager = responsiveManager;
 
-    // Initialize responsive manager
-    this.responsiveManager = new ResponsiveManager(app);
-    this.responsiveManager.initialize();
     this.config = {
       backgroundColor: 0x0d4f3c, // Draconia green background
       splashImagePath: '/ui/buttons/menu/splash/draconia_splash_5.png',
@@ -88,6 +92,10 @@ export class SplashScreenManager {
     this.container.x = 0;
     this.container.y = 0;
     this.app.stage.addChildAt(this.container, 0); // Add at bottom layer
+
+    // Subscribe to responsive manager resize events
+    this.resizeCallback = () => this.handleResize();
+    this.responsiveManager.onResize(this.resizeCallback);
   }
 
   /**
@@ -116,11 +124,9 @@ export class SplashScreenManager {
       // Create overlay for fade effects
       this.createOverlay();
 
-      // Set up keyboard handler
+      // Set up keyboard and click handlers
       this.setupKeyboardHandler();
-
-      // Set up resize handler for responsiveness
-      this.setupResizeHandler();
+      this.setupClickHandler();
 
       this.isInitialized = true;
       console.log('✅ Splash Screen: Ready');
@@ -218,12 +224,10 @@ export class SplashScreenManager {
   }
 
   /**
-   * Handle window resize for responsive behavior
+   * Handle resize events from ResponsiveManager
+   * ResponsiveManager has already handled app.resize() and app.render()
    */
   handleResize(): void {
-    // Force app to resize
-    this.app.resize();
-
     // Use canvas dimensions, not window dimensions
     const viewportWidth = this.app.screen.width;
     const viewportHeight = this.app.screen.height;
@@ -385,7 +389,7 @@ export class SplashScreenManager {
     const fontSize = Math.max(16, Math.min(this.config.fontSize! * scale, 48));
 
     this.pressEnterText = new Text({
-      text: 'Press ENTER to start',
+      text: 'START',
       style: {
         fontFamily: this.config.fontFamily!,
         fontSize: fontSize,
@@ -591,18 +595,34 @@ export class SplashScreenManager {
   }
 
   /**
-   * Set up keyboard handler
+   * Set up keyboard handler (accepts any key)
    */
   private setupKeyboardHandler(): void {
     this.keyHandler = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && this.state.isVisible && !this.state.isFadingOut) {
-        console.log('🎮 Splash Screen: ENTER pressed, starting game...');
+      if (this.state.isVisible && !this.state.isFadingOut) {
+        console.log('🎮 Splash Screen: Key pressed, starting game...');
         this.hide();
       }
     };
 
     window.addEventListener('keydown', this.keyHandler);
     // Keyboard handler set up silently
+  }
+
+  /**
+   * Set up click/pointer handler
+   */
+  private setupClickHandler(): void {
+    this.clickHandler = (event: PointerEvent) => {
+      if (this.state.isVisible && !this.state.isFadingOut) {
+        console.log('🎮 Splash Screen: Click detected, starting game...');
+        this.hide();
+      }
+    };
+
+    // Add click handler to the canvas
+    this.app.canvas.addEventListener('pointerdown', this.clickHandler);
+    // Click handler set up silently
   }
 
   /**
@@ -616,33 +636,12 @@ export class SplashScreenManager {
   }
 
   /**
-   * Set up resize handler for responsiveness
+   * Clean up click handler
    */
-  private setupResizeHandler(): void {
-    this.resizeHandler = () => {
-      this.handleResize();
-    };
-    window.addEventListener('resize', this.resizeHandler);
-
-    // Also listen for zoom changes (visual viewport API)
-    if ('visualViewport' in window) {
-      window.visualViewport?.addEventListener('resize', this.resizeHandler);
-    }
-  }
-
-  /**
-   * Clean up resize handler
-   */
-  private cleanupResizeHandler(): void {
-    if (this.resizeHandler) {
-      window.removeEventListener('resize', this.resizeHandler);
-
-      // Also remove visual viewport listener
-      if ('visualViewport' in window) {
-        window.visualViewport?.removeEventListener('resize', this.resizeHandler);
-      }
-
-      this.resizeHandler = null;
+  private cleanupClickHandler(): void {
+    if (this.clickHandler) {
+      this.app.canvas.removeEventListener('pointerdown', this.clickHandler);
+      this.clickHandler = null;
     }
   }
 
@@ -651,10 +650,13 @@ export class SplashScreenManager {
    */
   destroy(): void {
     this.cleanupKeyboardHandler();
-    this.cleanupResizeHandler();
+    this.cleanupClickHandler();
 
-    // Destroy responsive manager
-    this.responsiveManager.destroy();
+    // Unsubscribe from responsive manager
+    if (this.resizeCallback) {
+      this.responsiveManager.offResize(this.resizeCallback);
+      this.resizeCallback = null;
+    }
 
     if (this.backgroundSprite) {
       this.backgroundSprite.destroy();

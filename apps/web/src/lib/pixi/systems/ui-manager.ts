@@ -15,6 +15,8 @@ import { AssetManager } from './rendering/asset-manager';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { ResponsiveManager } from './responsive-manager';
 import type { LandManager } from './land-manager';
+import { TopBarUI } from './top-bar-ui';
+import type { JourneyProgressionManager } from './journey-progression-manager';
 
 /**
  * Journey button types
@@ -54,6 +56,7 @@ export class UIManager {
   private assetManager: AssetManager;
   private responsiveManager: ResponsiveManager;
   private landManager: LandManager | null = null;
+  private journeyProgressionManager: JourneyProgressionManager | null = null;
   private container: Container;
   private config: UIManagerConfig;
   private isInitialized: boolean = false;
@@ -62,6 +65,9 @@ export class UIManager {
   private journeyControlsContainer: Container;
   private journeyButtons: Map<JourneyButtonType, JourneyButton> = new Map();
   private currentJourneyState: JourneyButtonType = 'forward'; // Default: moving forward
+
+  // Top Bar UI
+  private topBarUI: TopBarUI | null = null;
 
   // Event handlers
   private mouseHandler: ((event: MouseEvent) => void) | null = null;
@@ -113,6 +119,9 @@ export class UIManager {
       // Create journey controls
       await this.createJourneyControls();
 
+      // Create top bar UI
+      this.topBarUI = new TopBarUI(this.app, this.responsiveManager);
+
       // Setup mouse event handlers
       this.setupMouseHandlers();
 
@@ -131,6 +140,17 @@ export class UIManager {
   setLandManager(landManager: LandManager): void {
     this.landManager = landManager;
     console.log('🎮 UI Manager: Land manager reference set');
+  }
+
+  /**
+   * Set the journey progression manager reference (for distance tracking)
+   */
+  setJourneyProgressionManager(manager: JourneyProgressionManager): void {
+    this.journeyProgressionManager = manager;
+    if (this.topBarUI) {
+      this.topBarUI.setJourneyProgressionManager(manager);
+    }
+    console.log('🎮 UI Manager: Journey progression manager reference set');
   }
 
   /**
@@ -343,9 +363,13 @@ export class UIManager {
   /**
    * Update UI elements (called from game loop)
    */
-  update(_deltaTime: number): void {
+  update(deltaTime: number): void {
+    // Update top bar UI
+    if (this.topBarUI) {
+      this.topBarUI.update(deltaTime);
+    }
+
     // Future: Update animations, states, etc.
-    return;
   }
 
   /**
@@ -366,6 +390,11 @@ export class UIManager {
       button.sprite.x = button.x * gameWorldScale;
       button.sprite.y = button.y * gameWorldScale;
     });
+
+    // Update top bar UI
+    if (this.topBarUI) {
+      this.topBarUI.handleResize();
+    }
 
     console.log(
       `🎮 UI Manager: Resize completed - ${this.app.screen.width}x${this.app.screen.height}`,
@@ -393,6 +422,12 @@ export class UIManager {
       button.sprite.destroy();
     });
     this.journeyButtons.clear();
+
+    // Destroy top bar UI
+    if (this.topBarUI) {
+      this.topBarUI.destroy();
+      this.topBarUI = null;
+    }
 
     // Destroy containers
     this.journeyControlsContainer.destroy();

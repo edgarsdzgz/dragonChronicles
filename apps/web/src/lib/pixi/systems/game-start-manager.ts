@@ -322,6 +322,7 @@ export class GameStartManager {
       // Initialize Journey Progression Manager (distance tracking, ward progression)
       this.journeyProgressionManager = new JourneyProgressionManager();
       this.journeyProgressionManager.startJourney();
+      this.uiManager.setJourneyProgressionManager(this.journeyProgressionManager); // Connect UI to progression manager
 
       // Start the journey update loop
       this.startJourneyUpdateLoop();

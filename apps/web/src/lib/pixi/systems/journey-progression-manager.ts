@@ -61,20 +61,32 @@ export class JourneyProgressionManager {
       },
       {
         id: 'ward1',
-        name: 'First Ward',
+        name: 'The Parting Stones',
         distanceFromStart: 1000, // 1km
         landId: 'land1_steppe',
       },
       {
         id: 'ward2',
-        name: 'Second Ward',
+        name: 'Windwhisper Plains',
         distanceFromStart: 2500, // 2.5km
         landId: 'land1_steppe',
       },
       {
         id: 'ward3',
-        name: 'Third Ward',
+        name: 'Sunstone Outlook',
         distanceFromStart: 5000, // 5km
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward4',
+        name: 'Embergrass Crossing',
+        distanceFromStart: 10000, // 10km - TODO: Adjust based on game balance
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward5',
+        name: 'Stormwatch Frontier',
+        distanceFromStart: 20000, // 20km - TODO: Adjust based on game balance
         landId: 'land1_steppe',
       },
     ];
@@ -242,6 +254,63 @@ export class JourneyProgressionManager {
       return this.wardMilestones[this.currentWardIndex + 1];
     }
     return null;
+  }
+
+  /**
+   * Get current ward number (1-indexed, excludes Draconia)
+   */
+  getCurrentWardNumber(): number {
+    // Draconia is index 0, Ward 1 is index 1, etc.
+    return Math.max(1, this.currentWardIndex);
+  }
+
+  /**
+   * Get next ward number (1-indexed, excludes Draconia)
+   */
+  getNextWardNumber(): number {
+    return this.currentWardIndex + 1;
+  }
+
+  /**
+   * Get land display name with number
+   * @returns "Land 1: Horizon Steppe"
+   */
+  getLandDisplayName(): string {
+    // TODO: Support multiple lands
+    return 'Land 1: Horizon Steppe';
+  }
+
+  /**
+   * Get current ward display name with number
+   * @returns "Ward 1: The Parting Stones"
+   */
+  getWardDisplayName(): string {
+    const ward = this.getCurrentWard();
+    if (ward.id === 'draconia') {
+      return 'Draconia';
+    }
+    return `Ward ${this.getCurrentWardNumber()}: ${ward.name}`;
+  }
+
+  /**
+   * Get current ward progress percentage (0-100)
+   * Progress through current ward only
+   */
+  getCurrentWardProgress(): number {
+    const currentWard = this.wardMilestones[this.currentWardIndex];
+    const nextWard = this.getNextWard();
+
+    if (!nextWard) {
+      // At final ward
+      return 100;
+    }
+
+    const wardStart = currentWard.distanceFromStart;
+    const wardEnd = nextWard.distanceFromStart;
+    const wardLength = wardEnd - wardStart;
+    const progressInWard = this.state.distanceTraveledMeters - wardStart;
+
+    return Math.max(0, Math.min(100, (progressInWard / wardLength) * 100));
   }
 
   /**

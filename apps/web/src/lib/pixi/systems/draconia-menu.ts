@@ -1,6 +1,7 @@
 import { Application, Container, Graphics, Text, Sprite } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
+import { ResponsiveManager } from './responsive-manager';
 
 export interface DraconiaMenuConfig {
   backgroundColor?: number;
@@ -12,6 +13,7 @@ export interface DraconiaMenuConfig {
   buttonTextColor?: number;
   fadeInDuration?: number;
   fadeOutDuration?: number;
+  onJourneyStart?: () => void;
 }
 
 interface DraconiaMenuState {
@@ -20,6 +22,19 @@ interface DraconiaMenuState {
   isFadingOut: boolean;
   isComplete: boolean;
   fadeProgress: number;
+}
+
+interface Sparkle {
+  graphics: Graphics;
+  x: number;
+  y: number;
+  velocityX: number;
+  velocityY: number;
+  life: number;
+  maxLife: number;
+  scale: number;
+  rotation: number;
+  rotationSpeed: number;
 }
 
 interface MenuButton {
@@ -32,6 +47,10 @@ interface MenuButton {
   graphics: Graphics;
   textSprite: Text;
   isHovered: boolean;
+  isPressed: boolean;
+  decoration?: Sprite; // Optional decoration sprite
+  sparkles: Sparkle[];
+  sparkleContainer: Container;
 }
 
 export class DraconiaMenuManager {
@@ -43,6 +62,7 @@ export class DraconiaMenuManager {
   private buttons: Map<string, MenuButton> = new Map();
   private isInitialized: boolean = false;
   private state: DraconiaMenuState;
+  private responsiveManager: ResponsiveManager;
 
   // Animation
   private fadeInStartTime: number = 0;
@@ -50,11 +70,22 @@ export class DraconiaMenuManager {
 
   // Event handling
   private mouseHandler: ((_event: MouseEvent) => void) | null = null;
-  private resizeHandler: (() => void) | null = null;
+  private resizeCallback: (() => void) | null = null;
 
-  constructor(app: Application, assetManager: AssetManager, config: DraconiaMenuConfig = {}) {
+  // Sparkle animation
+  private sparkleTimer: number = 0;
+  private sparkleInterval: number = 100; // Spawn sparkle every 100ms
+
+  constructor(
+    app: Application,
+    assetManager: AssetManager,
+    responsiveManager: ResponsiveManager,
+    config: DraconiaMenuConfig = {},
+  ) {
     this.app = app;
     this.assetManager = assetManager;
+    this.responsiveManager = responsiveManager;
+
     this.config = {
       backgroundColor: 0x0d4f3c, // Dark green
       textColor: 0xffffff, // White text
@@ -83,6 +114,10 @@ export class DraconiaMenuManager {
     this.container.width = this.app.screen.width;
     this.container.height = this.app.screen.height;
     this.app.stage.addChildAt(this.container, 0); // Add at bottom layer
+
+    // Subscribe to responsive manager resize events
+    this.resizeCallback = () => this.handleResize();
+    this.responsiveManager.onResize(this.resizeCallback);
   }
 
   /**
@@ -100,11 +135,10 @@ export class DraconiaMenuManager {
       await this.createBackground();
 
       // Create menu buttons
-      this.createMenuButtons();
+      await this.createMenuButtons();
 
       // Set up event handlers
       this.setupMouseHandler();
-      this.setupResizeHandler();
 
       this.isInitialized = true;
       console.log('✅ Draconia Menu: Ready');
@@ -158,7 +192,7 @@ export class DraconiaMenuManager {
   /**
    * Update Draconia menu animation
    */
-  update(_deltaTime: number): void {
+  update(deltaTime: number): void {
     if (!this.state.isVisible) {
       return;
     }
@@ -190,6 +224,9 @@ export class DraconiaMenuManager {
         console.log('🏰 Draconia Menu: Fade out complete');
       }
     }
+
+    // Update sparkles
+    this.updateSparkles(deltaTime);
   }
 
   /**
@@ -207,12 +244,10 @@ export class DraconiaMenuManager {
   }
 
   /**
-   * Handle window resize for responsive behavior
+   * Handle resize events from ResponsiveManager
+   * ResponsiveManager has already handled app.resize() and app.render()
    */
   handleResize(): void {
-    // Force app to resize
-    this.app.resize();
-
     // Update container size to fill entire screen
     this.container.width = this.app.screen.width;
     this.container.height = this.app.screen.height;
@@ -259,12 +294,12 @@ export class DraconiaMenuManager {
   /**
    * Create menu buttons
    */
-  private createMenuButtons(): void {
+  private async createMenuButtons(): Promise<void> {
     const centerX = this.app.screen.width / 2;
     const centerY = this.app.screen.height / 2;
 
     // Journey button
-    const journeyButton = this.createButton('journey', 'Journey', centerX, centerY, 200, 60);
+    const journeyButton = await this.createButton('journey', 'Journey', centerX, centerY, 200, 60);
     this.buttons.set('journey', journeyButton);
 
     // Future buttons can be added here
@@ -275,25 +310,37 @@ export class DraconiaMenuManager {
   /**
    * Create a menu button
    */
-  private createButton(
+  private async createButton(
     id: string,
     text: string,
     x: number,
     y: number,
     width: number,
     height: number,
-  ): MenuButton {
-    // Create button graphics
+  ): Promise<MenuButton> {
+    // Create button graphics with rounded corners
     const graphics = new Graphics();
-    graphics.rect(-width / 2, -height / 2, width, height);
+    const cornerRadius = 12;
+    graphics.roundRect(-width / 2, -height / 2, width, height, cornerRadius);
     graphics.fill(this.config.buttonColor!);
     graphics.stroke({ color: 0xffffff, width: 2 });
 
-    // Create button text
+    // Add inner border (double border effect)
+    const innerPadding = 6;
+    graphics.roundRect(
+      -width / 2 + innerPadding,
+      -height / 2 + innerPadding,
+      width - innerPadding * 2,
+      height - innerPadding * 2,
+      cornerRadius - 3,
+    );
+    graphics.stroke({ color: 0xffffff, width: 2 });
+
+    // Create button text with Cinzel font
     const textSprite = new Text({
       text: text,
       style: {
-        fontFamily: this.config.fontFamily!,
+        fontFamily: 'Cinzel, serif',
         fontSize: this.config.fontSize!,
         fill: this.config.buttonTextColor!,
         align: 'center',
@@ -313,6 +360,48 @@ export class DraconiaMenuManager {
     this.container.addChild(graphics);
     this.container.addChild(textSprite);
 
+    // Add dragon silhouette decoration for Journey button
+    let decoration: Sprite | undefined;
+    if (id === 'journey') {
+      try {
+        const assetResult = await this.assetManager.loadAsset('draconia-silhouette');
+        if (assetResult.success && assetResult.asset) {
+          decoration = new Sprite(assetResult.asset);
+
+          // Enable texture filtering for smooth scaling
+          decoration.texture.source.scaleMode = 'linear'; // Smooth scaling
+          decoration.texture.updateUvs();
+
+          // Scale the dragon to be larger - about 80% of button width
+          const dragonScale = Math.min(
+            (width * 0.8) / decoration.texture.width,
+            (height * 1.2) / decoration.texture.height,
+          );
+          decoration.scale.set(dragonScale);
+
+          // Position dragon at top-right corner of button with feet just above the white border
+          // Move to top-right corner of button
+          decoration.x = x + width * 0.25; // More to the right (top-right corner)
+          decoration.y = y - height * 0.25; // Lowered slightly, still above white border
+          decoration.anchor.set(0.2, 0.9); // Anchor at bottom-left of dragon so feet sit just above button border
+
+          setZIndex(decoration, Z_LAYERS.UI + 1); // Above button and text
+          this.container.addChild(decoration);
+
+          console.log('🏰 Draconia Menu: Dragon silhouette added to Journey button');
+        }
+      } catch (error) {
+        console.log('🏰 Draconia Menu: Dragon silhouette not found, skipping decoration');
+      }
+    }
+
+    // Create sparkle container
+    const sparkleContainer = new Container();
+    sparkleContainer.x = x;
+    sparkleContainer.y = y;
+    setZIndex(sparkleContainer, Z_LAYERS.UI + 2); // Above decoration
+    this.container.addChild(sparkleContainer);
+
     return {
       id,
       text,
@@ -323,6 +412,10 @@ export class DraconiaMenuManager {
       graphics,
       textSprite,
       isHovered: false,
+      isPressed: false,
+      decoration,
+      sparkles: [],
+      sparkleContainer,
     };
   }
 
@@ -341,8 +434,60 @@ export class DraconiaMenuManager {
         button.graphics.y = centerY;
         button.textSprite.x = centerX;
         button.textSprite.y = centerY;
+
+        // Redraw button graphics to prevent stretching
+        this.redrawButton(button);
+
+        // Update sparkle container position
+        button.sparkleContainer.x = centerX;
+        button.sparkleContainer.y = centerY;
+
+        // Update dragon decoration position
+        if (button.decoration) {
+          button.decoration.x = centerX + button.width * 0.25; // Top-right corner of button
+          button.decoration.y = centerY - button.height * 0.25; // Lowered slightly, still above white border
+        }
       }
     });
+  }
+
+  /**
+   * Redraw button to prevent stretching on resize
+   */
+  private redrawButton(button: MenuButton): void {
+    const cornerRadius = 12;
+    const innerPadding = 6;
+
+    button.graphics.clear();
+
+    // Determine fill color based on state
+    let fillColor = this.config.buttonColor!;
+    if (button.isPressed) {
+      fillColor = 0x1a4d2e;
+    } else if (button.isHovered) {
+      fillColor = this.config.buttonHoverColor!;
+    }
+
+    // Draw outer rounded rectangle
+    button.graphics.roundRect(
+      -button.width / 2,
+      -button.height / 2,
+      button.width,
+      button.height,
+      cornerRadius,
+    );
+    button.graphics.fill(fillColor);
+    button.graphics.stroke({ color: 0xffffff, width: 2 });
+
+    // Draw inner border
+    button.graphics.roundRect(
+      -button.width / 2 + innerPadding,
+      -button.height / 2 + innerPadding,
+      button.width - innerPadding * 2,
+      button.height - innerPadding * 2,
+      cornerRadius - 3,
+    );
+    button.graphics.stroke({ color: 0xffffff, width: 2 });
   }
 
   /**
@@ -354,9 +499,8 @@ export class DraconiaMenuManager {
         return;
       }
 
-      const rect = this.app.canvas.getBoundingClientRect();
-      const mouseX = event.clientX - rect.left;
-      const mouseY = event.clientY - rect.top;
+      // Use ResponsiveManager for mouse coordinate conversion
+      const { x: mouseX, y: mouseY } = this.responsiveManager.getMouseCoordinates(event);
 
       // Check button hover
       this.buttons.forEach((button) => {
@@ -375,27 +519,132 @@ export class DraconiaMenuManager {
           // Enter hover
           button.isHovered = true;
           button.graphics.clear();
-          button.graphics.rect(-button.width / 2, -button.height / 2, button.width, button.height);
+          const cornerRadius = 12;
+          button.graphics.roundRect(
+            -button.width / 2,
+            -button.height / 2,
+            button.width,
+            button.height,
+            cornerRadius,
+          );
           button.graphics.fill(this.config.buttonHoverColor!);
+          button.graphics.stroke({ color: 0xffffff, width: 2 });
+          // Add inner border
+          const innerPadding = 6;
+          button.graphics.roundRect(
+            -button.width / 2 + innerPadding,
+            -button.height / 2 + innerPadding,
+            button.width - innerPadding * 2,
+            button.height - innerPadding * 2,
+            cornerRadius - 3,
+          );
           button.graphics.stroke({ color: 0xffffff, width: 2 });
         } else if (!isHovered && button.isHovered) {
           // Exit hover
           button.isHovered = false;
           button.graphics.clear();
-          button.graphics.rect(-button.width / 2, -button.height / 2, button.width, button.height);
+          const cornerRadius = 12;
+          button.graphics.roundRect(
+            -button.width / 2,
+            -button.height / 2,
+            button.width,
+            button.height,
+            cornerRadius,
+          );
           button.graphics.fill(this.config.buttonColor!);
+          button.graphics.stroke({ color: 0xffffff, width: 2 });
+          // Add inner border
+          const innerPadding = 6;
+          button.graphics.roundRect(
+            -button.width / 2 + innerPadding,
+            -button.height / 2 + innerPadding,
+            button.width - innerPadding * 2,
+            button.height - innerPadding * 2,
+            cornerRadius - 3,
+          );
           button.graphics.stroke({ color: 0xffffff, width: 2 });
         }
 
-        // Check click
-        if (isHovered && event.type === 'click') {
-          this.handleButtonClick(button.id);
+        // Handle button press and click
+        if (isHovered && event.type === 'mousedown') {
+          button.isPressed = true;
+          button.graphics.clear();
+          const cornerRadius = 12;
+          button.graphics.roundRect(
+            -button.width / 2,
+            -button.height / 2,
+            button.width,
+            button.height,
+            cornerRadius,
+          );
+          button.graphics.fill(0x1a4d2e); // Darker green for pressed state
+          button.graphics.stroke({ color: 0xffffff, width: 2 });
+          // Add inner border
+          const innerPadding = 6;
+          button.graphics.roundRect(
+            -button.width / 2 + innerPadding,
+            -button.height / 2 + innerPadding,
+            button.width - innerPadding * 2,
+            button.height - innerPadding * 2,
+            cornerRadius - 3,
+          );
+          button.graphics.stroke({ color: 0xffffff, width: 2 });
+        } else if (button.isPressed && event.type === 'mouseup') {
+          button.isPressed = false;
+          const cornerRadius = 12;
+          const innerPadding = 6;
+          if (button.isHovered) {
+            // Still hovering, show hover state
+            button.graphics.clear();
+            button.graphics.roundRect(
+              -button.width / 2,
+              -button.height / 2,
+              button.width,
+              button.height,
+              cornerRadius,
+            );
+            button.graphics.fill(this.config.buttonHoverColor!);
+            button.graphics.stroke({ color: 0xffffff, width: 2 });
+            // Add inner border
+            button.graphics.roundRect(
+              -button.width / 2 + innerPadding,
+              -button.height / 2 + innerPadding,
+              button.width - innerPadding * 2,
+              button.height - innerPadding * 2,
+              cornerRadius - 3,
+            );
+            button.graphics.stroke({ color: 0xffffff, width: 2 });
+            // Trigger click
+            this.handleButtonClick(button.id);
+          } else {
+            // Not hovering, show normal state
+            button.graphics.clear();
+            button.graphics.roundRect(
+              -button.width / 2,
+              -button.height / 2,
+              button.width,
+              button.height,
+              cornerRadius,
+            );
+            button.graphics.fill(this.config.buttonColor!);
+            button.graphics.stroke({ color: 0xffffff, width: 2 });
+            // Add inner border
+            button.graphics.roundRect(
+              -button.width / 2 + innerPadding,
+              -button.height / 2 + innerPadding,
+              button.width - innerPadding * 2,
+              button.height - innerPadding * 2,
+              cornerRadius - 3,
+            );
+            button.graphics.stroke({ color: 0xffffff, width: 2 });
+          }
         }
       });
     };
 
     this.app.canvas.addEventListener('mousemove', this.mouseHandler);
-    this.app.canvas.addEventListener('click', this.mouseHandler);
+    this.app.canvas.addEventListener('mousedown', this.mouseHandler);
+    this.app.canvas.addEventListener('mouseup', this.mouseHandler);
   }
 
   /**
@@ -407,7 +656,11 @@ export class DraconiaMenuManager {
     switch (buttonId) {
       case 'journey':
         this.hide();
-        // Emit journey start event
+        // Call the journey start callback if provided
+        if (this.config.onJourneyStart) {
+          this.config.onJourneyStart();
+        }
+        // Also emit journey start event for backward compatibility
         window.dispatchEvent(new CustomEvent('draconia-journey-start'));
         break;
       default:
@@ -416,33 +669,106 @@ export class DraconiaMenuManager {
   }
 
   /**
-   * Set up resize handler for responsiveness
-   */
-  private setupResizeHandler(): void {
-    this.resizeHandler = () => {
-      this.handleResize();
-    };
-    window.addEventListener('resize', this.resizeHandler);
-  }
-
-  /**
    * Clean up mouse handler
    */
   private cleanupMouseHandler(): void {
     if (this.mouseHandler) {
       this.app.canvas.removeEventListener('mousemove', this.mouseHandler);
-      this.app.canvas.removeEventListener('click', this.mouseHandler);
+      this.app.canvas.removeEventListener('mousedown', this.mouseHandler);
+      this.app.canvas.removeEventListener('mouseup', this.mouseHandler);
       this.mouseHandler = null;
     }
   }
 
   /**
-   * Clean up resize handler
+   * Create a sparkle particle
    */
-  private cleanupResizeHandler(): void {
-    if (this.resizeHandler) {
-      window.removeEventListener('resize', this.resizeHandler);
-      this.resizeHandler = null;
+  private createSparkle(button: MenuButton): void {
+    // Random position within button bounds
+    const offsetX = (Math.random() - 0.5) * button.width * 0.8;
+    const offsetY = (Math.random() - 0.5) * button.height * 0.8;
+
+    // Create star shape
+    const graphics = new Graphics();
+    const size = 3 + Math.random() * 4;
+
+    // Draw 4-pointed star
+    graphics.star(0, 0, 4, size, size * 0.5);
+    graphics.fill({ color: 0xffd700, alpha: 0.9 }); // Gold color
+
+    graphics.x = offsetX;
+    graphics.y = offsetY;
+
+    const sparkle: Sparkle = {
+      graphics,
+      x: offsetX,
+      y: offsetY,
+      velocityX: (Math.random() - 0.5) * 0.5,
+      velocityY: -0.5 - Math.random() * 0.5, // Upward movement
+      life: 0,
+      maxLife: 800 + Math.random() * 400, // 800-1200ms lifetime
+      scale: 1,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.1,
+    };
+
+    button.sparkles.push(sparkle);
+    button.sparkleContainer.addChild(graphics);
+  }
+
+  /**
+   * Update sparkle animations
+   */
+  private updateSparkles(deltaTime: number): void {
+    this.sparkleTimer += deltaTime;
+
+    this.buttons.forEach((button) => {
+      // Spawn new sparkles when hovering
+      if (button.isHovered && this.sparkleTimer >= this.sparkleInterval) {
+        this.createSparkle(button);
+      }
+
+      // Update existing sparkles
+      const toRemove: number[] = [];
+
+      button.sparkles.forEach((sparkle, index) => {
+        sparkle.life += deltaTime;
+
+        // Update position
+        sparkle.x += sparkle.velocityX;
+        sparkle.y += sparkle.velocityY;
+        sparkle.graphics.x = sparkle.x;
+        sparkle.graphics.y = sparkle.y;
+
+        // Update rotation
+        sparkle.rotation += sparkle.rotationSpeed;
+        sparkle.graphics.rotation = sparkle.rotation;
+
+        // Update scale and alpha based on life
+        const lifePercent = sparkle.life / sparkle.maxLife;
+        sparkle.scale = 1 - lifePercent * 0.5; // Shrink to 50%
+        sparkle.graphics.scale.set(sparkle.scale);
+        sparkle.graphics.alpha = Math.max(0, 1 - lifePercent);
+
+        // Mark for removal if expired
+        if (sparkle.life >= sparkle.maxLife) {
+          toRemove.push(index);
+        }
+      });
+
+      // Remove expired sparkles
+      for (let i = toRemove.length - 1; i >= 0; i--) {
+        const index = toRemove[i];
+        const sparkle = button.sparkles[index];
+        button.sparkleContainer.removeChild(sparkle.graphics);
+        sparkle.graphics.destroy();
+        button.sparkles.splice(index, 1);
+      }
+    });
+
+    // Reset sparkle timer
+    if (this.sparkleTimer >= this.sparkleInterval) {
+      this.sparkleTimer = 0;
     }
   }
 
@@ -451,15 +777,30 @@ export class DraconiaMenuManager {
    */
   destroy(): void {
     this.cleanupMouseHandler();
-    this.cleanupResizeHandler();
+
+    // Unsubscribe from responsive manager
+    if (this.resizeCallback) {
+      this.responsiveManager.offResize(this.resizeCallback);
+      this.resizeCallback = null;
+    }
 
     if (this.backgroundSprite) {
       this.backgroundSprite.destroy();
     }
 
     this.buttons.forEach((button) => {
+      // Destroy sparkles
+      button.sparkles.forEach((sparkle) => {
+        sparkle.graphics.destroy();
+      });
+      button.sparkles = [];
+      button.sparkleContainer.destroy();
+
       button.graphics.destroy();
       button.textSprite.destroy();
+      if (button.decoration) {
+        button.decoration.destroy();
+      }
     });
     this.buttons.clear();
 

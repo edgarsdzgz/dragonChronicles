@@ -4,6 +4,7 @@ import { BackgroundRenderer } from './rendering/background-renderer';
 import { HealthBarManager } from './health-bar-manager';
 import { FloatingDamageManager } from './floating-damage';
 import { LayerManager } from './rendering/layer-manager';
+import { ResponsiveManager } from './responsive-manager';
 
 export interface MigrationAdapterConfig {
   enableNewSystems: boolean;
@@ -20,6 +21,7 @@ export class MigrationAdapter {
   private config: MigrationAdapterConfig;
 
   // System components
+  private responsiveManager: ResponsiveManager;
   private backgroundRenderer?: BackgroundRenderer;
   private healthBarManager?: HealthBarManager;
   private floatingDamageManager?: FloatingDamageManager;
@@ -29,6 +31,11 @@ export class MigrationAdapter {
     this.app = app;
     this.assetManager = new AssetManager(app);
     this.config = config;
+
+    // Initialize ResponsiveManager first (required by other systems)
+    this.responsiveManager = new ResponsiveManager(this.app);
+    this.responsiveManager.initialize();
+    console.log('🔧 Migration Adapter: ResponsiveManager initialized');
 
     // Initialize synchronous systems immediately
     this.initializeSyncSystems();
@@ -45,7 +52,7 @@ export class MigrationAdapter {
     try {
       // Initialize health bar manager if enabled
       if (this.config.enableHealthBarManager) {
-        this.healthBarManager = new HealthBarManager(this.app);
+        this.healthBarManager = new HealthBarManager(this.app, this.responsiveManager);
         console.log('🔧 Migration Adapter: HealthBarManager initialized');
       }
 
@@ -124,6 +131,10 @@ export class MigrationAdapter {
 
   getLayerManager(): LayerManager | undefined {
     return this.layerManager;
+  }
+
+  getResponsiveManager(): ResponsiveManager {
+    return this.responsiveManager;
   }
 
   destroy(): void {
