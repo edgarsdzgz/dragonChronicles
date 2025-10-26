@@ -496,6 +496,22 @@ export class UIManager {
   }
 
   /**
+   * Hide UI during cutscene (journey controls, top bar, etc.)
+   */
+  hideForCutscene(): void {
+    this.container.visible = false;
+    console.log('🎬 UI Manager: Hidden for cutscene');
+  }
+
+  /**
+   * Show UI after cutscene
+   */
+  showAfterCutscene(): void {
+    this.container.visible = true;
+    console.log('🎬 UI Manager: Shown after cutscene');
+  }
+
+  /**
    * Destroy the UI Manager
    */
   destroy(): void {

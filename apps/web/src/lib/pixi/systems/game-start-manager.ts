@@ -332,6 +332,8 @@ export class GameStartManager {
       this.takeoffCutsceneManager.setLandManager(this.landManager);
       this.takeoffCutsceneManager.setTopBarUI(this.uiManager.getTopBarUI());
       this.takeoffCutsceneManager.setJourneyProgression(this.journeyProgressionManager);
+      this.takeoffCutsceneManager.setUIManager(this.uiManager);
+      this.takeoffCutsceneManager.setEntityManager(this.entityManager);
 
       // Start the journey update loop
       this.startJourneyUpdateLoop();

@@ -283,6 +283,36 @@ export class EntityManager {
   }
 
   /**
+   * Hide dragon health bar during cutscene
+   */
+  hideDragonHealthBarForCutscene(): void {
+    if (!this.healthBarManager) {
+      return;
+    }
+
+    const healthBar = this.healthBarManager.getHealthBar('dragon-protagonist');
+    if (healthBar) {
+      healthBar.visible = false;
+      console.log('🎬 Entity Manager: Dragon health bar hidden for cutscene');
+    }
+  }
+
+  /**
+   * Show dragon health bar after cutscene
+   */
+  showDragonHealthBarAfterCutscene(): void {
+    if (!this.healthBarManager) {
+      return;
+    }
+
+    const healthBar = this.healthBarManager.getHealthBar('dragon-protagonist');
+    if (healthBar) {
+      healthBar.visible = true;
+      console.log('🎬 Entity Manager: Dragon health bar shown after cutscene');
+    }
+  }
+
+  /**
    * Destroy the entity manager
    */
   destroy(): void {

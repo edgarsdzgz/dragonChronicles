@@ -16,6 +16,8 @@ import type { DragonProtagonistManager } from './dragon-protagonist';
 import type { LandManager } from './land-manager';
 import type { TopBarUI } from './top-bar-ui';
 import type { JourneyProgressionManager } from './journey-progression-manager';
+import type { UIManager } from './ui-manager';
+import type { EntityManager } from './entity-manager';
 
 /**
  * CUTSCENE TIMING CONFIGURATION
@@ -46,6 +48,7 @@ const INITIAL_GROUND_SCALE = 3.0; // 3x zoomed in
 const INITIAL_GROUND_SPEED_MULTIPLIER = 3.0; // 3x protag speed
 const INITIAL_ANIMATION_SPEED = 2.0; // 2x animation speed
 const INITIAL_DRAGON_Y_OFFSET = 0.15; // 15% lower than normal (closer to ground)
+const INITIAL_BACKGROUND_Y_OFFSET = -200; // Move background up 200px to frame horizon at bottom
 
 /**
  * Normal state values (journey)
@@ -78,6 +81,8 @@ export class TakeoffCutsceneManager {
   private landManager: LandManager | null = null;
   private topBarUI: TopBarUI | null = null;
   private journeyProgression: JourneyProgressionManager | null = null;
+  private uiManager: UIManager | null = null;
+  private entityManager: EntityManager | null = null;
 
   // Cutscene state
   private isActive: boolean = false;
@@ -121,6 +126,14 @@ export class TakeoffCutsceneManager {
     this.journeyProgression = journeyProgression;
   }
 
+  setUIManager(uiManager: UIManager): void {
+    this.uiManager = uiManager;
+  }
+
+  setEntityManager(entityManager: EntityManager): void {
+    this.entityManager = entityManager;
+  }
+
   /**
    * Start the takeoff cutscene
    */
@@ -156,10 +169,23 @@ export class TakeoffCutsceneManager {
     // Target X is slightly forward
     this.targetDragonX = this.initialDragonX;
 
+    // Hide UI and HP bar during cutscene
+    if (this.uiManager) {
+      this.uiManager.hideForCutscene();
+    }
+
+    if (this.entityManager) {
+      this.entityManager.hideDragonHealthBarForCutscene();
+    }
+
     // Set initial state
     dragonContainer.y = this.initialDragonY;
     this.dragon.setAnimationSpeed(INITIAL_ANIMATION_SPEED);
-    this.landManager.setCutsceneState(INITIAL_GROUND_SCALE, INITIAL_GROUND_SPEED_MULTIPLIER);
+    this.landManager.setCutsceneState(
+      INITIAL_GROUND_SCALE,
+      INITIAL_GROUND_SPEED_MULTIPLIER,
+      INITIAL_BACKGROUND_Y_OFFSET,
+    );
 
     if (this.topBarUI) {
       this.topBarUI.setCutsceneSpeed(0); // Start at 0 km/h
@@ -312,7 +338,7 @@ export class TakeoffCutsceneManager {
     }
 
     if (this.landManager) {
-      this.landManager.setCutsceneState(NORMAL_GROUND_SCALE, NORMAL_GROUND_SPEED_MULTIPLIER);
+      this.landManager.setCutsceneState(NORMAL_GROUND_SCALE, NORMAL_GROUND_SPEED_MULTIPLIER, 0);
       this.landManager.exitCutsceneMode(); // Return to normal scrolling
     }
 
@@ -322,6 +348,15 @@ export class TakeoffCutsceneManager {
 
     if (this.journeyProgression) {
       this.journeyProgression.resumeFromCutscene(); // Start distance tracking
+    }
+
+    // Show UI and HP bar after cutscene
+    if (this.uiManager) {
+      this.uiManager.showAfterCutscene();
+    }
+
+    if (this.entityManager) {
+      this.entityManager.showDragonHealthBarAfterCutscene();
     }
   }
 

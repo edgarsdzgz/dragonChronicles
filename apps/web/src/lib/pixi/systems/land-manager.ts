@@ -66,6 +66,7 @@ export class LandManager {
   private isInCutscene: boolean = false;
   private cutsceneScale: number = 1.0; // Scale multiplier for layers during cutscene
   private cutsceneSpeedMultiplier: number = 1.0; // Speed multiplier for scrolling during cutscene
+  private cutsceneBackgroundYOffset: number = 0; // Y offset for background during cutscene (in pixels)
 
   constructor(app: Application, assetManager: AssetManager, responsiveManager: ResponsiveManager) {
     this.app = app;
@@ -357,6 +358,15 @@ export class LandManager {
         tiledSprite.scale.set(effectiveScale);
       }
 
+      // Apply cutscene background Y offset if in cutscene mode
+      const effectiveY = this.isInCutscene
+        ? layer.y * gameWorldScale + this.cutsceneBackgroundYOffset * gameWorldScale
+        : layer.y * gameWorldScale;
+      sprite.y = effectiveY;
+      if (tiledSprite) {
+        tiledSprite.y = effectiveY;
+      }
+
       if (layer.id === 'background') {
         // Background: static, no scrolling
         sprite.x = 0;
@@ -517,18 +527,20 @@ export class LandManager {
   }
 
   /**
-   * Set cutscene state (scale and speed multiplier)
+   * Set cutscene state (scale, speed multiplier, and background Y offset)
    * Used by cutscene manager to control land appearance and scrolling
    * @param scale - Scale multiplier for all layers (1.0 = normal, 3.0 = 3x zoomed in)
    * @param speedMultiplier - Speed multiplier for scrolling (1.0 = normal, 3.0 = 3x faster)
+   * @param backgroundYOffset - Y offset for background in pixels (negative moves up)
    */
-  setCutsceneState(scale: number, speedMultiplier: number): void {
+  setCutsceneState(scale: number, speedMultiplier: number, backgroundYOffset: number = 0): void {
     this.isInCutscene = true;
     this.cutsceneScale = scale;
     this.cutsceneSpeedMultiplier = speedMultiplier;
+    this.cutsceneBackgroundYOffset = backgroundYOffset;
 
     console.log(
-      `🎬 Land Manager: Cutscene state set - scale: ${scale.toFixed(2)}x, speed: ${speedMultiplier.toFixed(2)}x`,
+      `🎬 Land Manager: Cutscene state set - scale: ${scale.toFixed(2)}x, speed: ${speedMultiplier.toFixed(2)}x, Y offset: ${backgroundYOffset}px`,
     );
   }
 
