@@ -3,18 +3,33 @@
  *
  * Manages the dragon protagonist sprite that appears only when in a land during a journey.
  * Integrates with the land manager to show/hide the dragon appropriately.
+ *
+ * GAME WORLD COORDINATES:
+ * - Dragon positioned at (86.4, 302.4) in game world (4.5%, 28% of 1920x1080)
+ * - Dragon intended scale: 0.8 at baseline
+ * - ResponsiveManager.getGameWorldScale() applied to position and scale
  */
 
 import { Sprite, Container, type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { createAnimatedDragonSprite, type DragonAnimator } from '../dragon-sprites';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
+import { GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, type ResponsiveManager } from './responsive-manager';
+
+/**
+ * Dragon position in game world coordinates (at 1080p baseline)
+ */
+const DRAGON_GAME_WORLD_X = 115.2; // 6% of 1920
+const DRAGON_GAME_WORLD_Y = 302.4; // 28% of 1080
+const DRAGON_INTENDED_SCALE = 0.8; // Scale at 1080p baseline
+const DRAGON_BASE_MOVEMENT_SPEED = 100; // Pixels per second (base speed for journey scrolling)
 
 export interface DragonProtagonistConfig {
   x?: number;
   y?: number;
   scale?: number;
   visible?: boolean;
+  movementSpeed?: number; // Pixels per second (for journey scrolling)
 }
 
 export interface DragonProtagonistState {
@@ -24,6 +39,7 @@ export interface DragonProtagonistState {
   currentLand: string | null;
   health: number;
   maxHealth: number;
+  movementSpeed: number; // Pixels per second (for journey scrolling)
 }
 
 /**
@@ -32,20 +48,26 @@ export interface DragonProtagonistState {
 export class DragonProtagonistManager {
   private app: Application;
   private assetManager: AssetManager;
+  private responsiveManager: ResponsiveManager;
   private container: Container;
   private dragonSprite: Sprite | null = null;
   private dragonAnimator: DragonAnimator | null = null;
   private config: DragonProtagonistConfig;
   private state: DragonProtagonistState;
   private isInitialized: boolean = false;
-  private resizeHandler: (() => void) | null = null;
+  private resizeCallback: (() => void) | null = null;
 
-  constructor(app: Application, assetManager: AssetManager, config: DragonProtagonistConfig = {}) {
+  constructor(
+    app: Application,
+    assetManager: AssetManager,
+    responsiveManager: ResponsiveManager,
+    config: DragonProtagonistConfig = {},
+  ) {
     this.app = app;
     this.assetManager = assetManager;
+    this.responsiveManager = responsiveManager;
     this.config = {
-      x: 150, // Position on left side of action area
-      y: 300, // Center vertically in action area
+      // x and y removed - always use game world constants for consistency
       scale: 1.0,
       visible: true,
       ...config,
@@ -58,6 +80,7 @@ export class DragonProtagonistManager {
       currentLand: null,
       health: 100,
       maxHealth: 100,
+      movementSpeed: config.movementSpeed ?? DRAGON_BASE_MOVEMENT_SPEED,
     };
 
     // Create container for dragon
@@ -65,10 +88,15 @@ export class DragonProtagonistManager {
     this.container.label = 'dragon-protagonist-container';
     setZIndex(this.container, Z_LAYERS.PLAYER);
     this.app.stage.addChild(this.container);
+
+    // Subscribe to responsive manager resize events
+    this.resizeCallback = () => this.handleResize();
+    this.responsiveManager.onResize(this.resizeCallback);
   }
 
   /**
    * Initialize the dragon protagonist
+   * Uses UNIFIED GAME WORLD SCALING
    */
   async initialize(): Promise<boolean> {
     if (this.isInitialized) {
@@ -86,10 +114,16 @@ export class DragonProtagonistManager {
       this.dragonAnimator = animator;
       console.log('🐉 Dragon Protagonist: Dragon sprite created successfully');
 
-      // Configure sprite
-      this.dragonSprite.x = this.config.x || 200;
-      this.dragonSprite.y = this.config.y || 400;
-      this.dragonSprite.scale.set(this.config.scale || 1.0);
+      // Get uniform game world scale
+      const gameWorldScale = this.responsiveManager.getGameWorldScale();
+
+      // Configure sprite using game world coordinates
+      // Position: (115.2, 302.4) in game world = (6%, 28%) of (1920, 1080)
+      // Scale: 0.8 at baseline * game world scale
+      // IMPORTANT: Always scale coordinates, whether from config or constants
+      this.dragonSprite.x = (this.config.x ?? DRAGON_GAME_WORLD_X) * gameWorldScale;
+      this.dragonSprite.y = (this.config.y ?? DRAGON_GAME_WORLD_Y) * gameWorldScale;
+      this.dragonSprite.scale.set((this.config.scale ?? DRAGON_INTENDED_SCALE) * gameWorldScale);
       this.dragonSprite.visible = false; // Start hidden
 
       // Set proper z-index (above background, below UI)
@@ -99,7 +133,9 @@ export class DragonProtagonistManager {
       this.container.addChild(this.dragonSprite);
 
       this.isInitialized = true;
-      console.log('✅ Dragon Protagonist: Initialized successfully');
+      console.log(
+        `✅ Dragon Protagonist: Initialized at (${this.dragonSprite.x.toFixed(1)}, ${this.dragonSprite.y.toFixed(1)}), scale: ${this.dragonSprite.scale.x.toFixed(3)}`,
+      );
       return true;
     } catch (error) {
       console.error('❌ Dragon Protagonist: Failed to initialize:', error);
@@ -268,30 +304,48 @@ export class DragonProtagonistManager {
   }
 
   /**
-   * Handle window resize for responsive behavior
+   * Get dragon movement speed (pixels per second)
+   */
+  getMovementSpeed(): number {
+    return this.state.movementSpeed;
+  }
+
+  /**
+   * Set dragon movement speed (pixels per second)
+   * Used by enchantments, upgrades, or other systems that modify dragon speed
+   */
+  setMovementSpeed(speed: number): void {
+    this.state.movementSpeed = Math.max(0, speed); // Ensure non-negative
+    console.log(
+      `🐉 Dragon Protagonist: Movement speed set to ${this.state.movementSpeed} pixels/second`,
+    );
+  }
+
+  /**
+   * Handle resize events from ResponsiveManager
+   * ResponsiveManager has already handled app.resize() and app.render()
+   * Uses UNIFIED GAME WORLD SCALING - dragon scales uniformly with all elements
    */
   handleResize(): void {
     console.log(
       `🐉 Dragon Protagonist: Handling resize - ${this.app.screen.width}x${this.app.screen.height}`,
     );
 
-    // Force app to resize
-    this.app.resize();
+    if (!this.dragonSprite) return;
 
-    // Update dragon position to maintain relative position
-    if (this.dragonSprite) {
-      // Keep dragon on left side of action area
-      const actionAreaWidth = this.app.screen.width * 0.3; // 30% of screen width
-      this.dragonSprite.x = Math.min(150, actionAreaWidth / 2);
-      this.dragonSprite.y = this.app.screen.height * 0.4; // 40% from top
+    // Get uniform game world scale
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
 
-      console.log(
-        `🐉 Dragon Protagonist: Updated dragon position to (${this.dragonSprite.x}, ${this.dragonSprite.y})`,
-      );
-    }
+    // Apply game world coordinates and scale
+    // Position: (86.4, 302.4) in game world = (4.5%, 28%) of (1920, 1080)
+    // Scale: 0.8 at baseline * game world scale
+    this.dragonSprite.x = DRAGON_GAME_WORLD_X * gameWorldScale;
+    this.dragonSprite.y = DRAGON_GAME_WORLD_Y * gameWorldScale;
+    this.dragonSprite.scale.set(DRAGON_INTENDED_SCALE * gameWorldScale);
 
-    // Force a render to ensure the changes are visible
-    this.app.render();
+    console.log(
+      `🐉 Dragon Protagonist: Updated dragon - pos: (${this.dragonSprite.x.toFixed(1)}, ${this.dragonSprite.y.toFixed(1)}), scale: ${this.dragonSprite.scale.x.toFixed(3)}, gameWorldScale: ${gameWorldScale.toFixed(3)}`,
+    );
 
     console.log(
       `🐉 Dragon Protagonist: Resize completed - ${this.app.screen.width}x${this.app.screen.height}`,
@@ -299,41 +353,14 @@ export class DragonProtagonistManager {
   }
 
   /**
-   * Set up resize handler for responsiveness
-   */
-  private setupResizeHandler(): void {
-    this.resizeHandler = () => {
-      this.handleResize();
-    };
-    window.addEventListener('resize', this.resizeHandler);
-
-    // Also listen for zoom changes (visual viewport API)
-    if ('visualViewport' in window) {
-      window.visualViewport?.addEventListener('resize', this.resizeHandler);
-    }
-  }
-
-  /**
-   * Clean up resize handler
-   */
-  private cleanupResizeHandler(): void {
-    if (this.resizeHandler) {
-      window.removeEventListener('resize', this.resizeHandler);
-
-      // Also remove visual viewport listener
-      if ('visualViewport' in window) {
-        window.visualViewport?.removeEventListener('resize', this.resizeHandler);
-      }
-
-      this.resizeHandler = null;
-    }
-  }
-
-  /**
    * Destroy the dragon protagonist system
    */
   destroy(): void {
-    this.cleanupResizeHandler();
+    // Unsubscribe from responsive manager
+    if (this.resizeCallback) {
+      this.responsiveManager.offResize(this.resizeCallback);
+      this.resizeCallback = null;
+    }
 
     if (this.dragonSprite) {
       this.container.removeChild(this.dragonSprite);

@@ -13,6 +13,7 @@ import { MigrationAdapter } from './migration-adapter';
 import { LandManager } from './land-manager';
 import { EntityManager } from './entity-manager';
 import { HPBarDesignTest } from './hp-bar-design-test';
+import { UIManager } from './ui-manager';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -60,6 +61,7 @@ export class GameStartManager {
   private landManager: LandManager | null = null;
   private entityManager: EntityManager | null = null;
   private hpBarTest: HPBarDesignTest | null = null;
+  private uiManager: UIManager | null = null;
 
   // Journey system state
   private isJourneyActive = false;
@@ -118,11 +120,27 @@ export class GameStartManager {
     try {
       console.log('🎮 Game Start: Initializing...');
 
+      // Initialize migration adapter early so all managers can access shared systems
+      if (!this.migrationAdapter) {
+        this.migrationAdapter = new MigrationAdapter(this.app, {
+          enableNewSystems: true,
+          enableBackgroundRenderer: false,
+          enableHealthBarManager: true,
+          enableFloatingDamage: true,
+          enableLayerManager: true,
+          debugMode: true,
+        });
+      }
+
+      // Get responsive manager for use by all managers
+      const responsiveManager = this.migrationAdapter.getResponsiveManager();
+
       // Create splash screen if enabled
       if (this.config.showSplashScreen) {
         this.splashScreenManager = new SplashScreenManager(
           this.app,
           this.assetManager,
+          responsiveManager,
           this.config.splashScreenConfig,
         );
 
@@ -207,9 +225,11 @@ export class GameStartManager {
   private async showDraconiaMenu(): Promise<void> {
     console.log('🏰 Game Start: Showing Draconia menu...');
 
+    const responsiveManager = this.migrationAdapter.getResponsiveManager();
     this.draconiaMenuManager = new DraconiaMenuManager(
       this.app,
       this.assetManager,
+      responsiveManager,
       this.config.draconiaMenuConfig,
     );
 
@@ -243,24 +263,59 @@ export class GameStartManager {
     }
 
     try {
-      // Initialize migration adapter
-      this.migrationAdapter = new MigrationAdapter(this.app, {
-        enableNewSystems: true,
-        enableBackgroundRenderer: false,
-        enableHealthBarManager: true,
-        enableFloatingDamage: true,
-        enableLayerManager: true,
-        debugMode: true,
-      });
+      // Migration adapter should already be initialized from initialize()
+      // But create it if somehow it's not (defensive programming)
+      if (!this.migrationAdapter) {
+        this.migrationAdapter = new MigrationAdapter(this.app, {
+          enableNewSystems: true,
+          enableBackgroundRenderer: false,
+          enableHealthBarManager: true,
+          enableFloatingDamage: true,
+          enableLayerManager: true,
+          debugMode: true,
+        });
+      }
+
+      // Get responsive manager for use by multiple managers
+      const responsiveManager = this.migrationAdapter.getResponsiveManager();
 
       // Initialize land manager (background only)
-      this.landManager = new LandManager(this.app, this.assetManager);
+      this.landManager = new LandManager(this.app, this.assetManager, responsiveManager);
       await this.landManager.loadLand('land1_steppe');
       this.landManager.start();
 
-      // Initialize HP Bar Design Test (6 dragons with different HP bar styles)
-      this.hpBarTest = new HPBarDesignTest(this.app, this.assetManager);
-      await this.hpBarTest.initialize();
+      // HP Bar Design Test - DISABLED (test complete, using production HP bar now)
+      // this.hpBarTest = new HPBarDesignTest(this.app, this.assetManager);
+      // await this.hpBarTest.initialize();
+
+      // Initialize Entity Manager with Responsive Manager and Health Bar Manager
+      const healthBarManager = this.migrationAdapter.getHealthBarManager();
+      this.entityManager = new EntityManager(
+        this.app,
+        this.assetManager,
+        responsiveManager,
+        healthBarManager,
+      );
+
+      // Create dragon protagonist
+      // Position and scale are handled internally using game world coordinates
+      await this.entityManager.createDragonProtagonist({
+        visible: true,
+      });
+
+      // Create health bar for dragon
+      this.entityManager.createDragonHealthBar();
+
+      // Start journey for dragon
+      const dragon = this.entityManager.getDragonProtagonist();
+      if (dragon) {
+        await dragon.enterLand('land1_steppe');
+      }
+
+      // Initialize UI Manager (journey controls, top bar, etc.)
+      this.uiManager = new UIManager(this.app, this.assetManager, responsiveManager);
+      await this.uiManager.initialize();
+      this.uiManager.setLandManager(this.landManager); // Connect UI to land manager
 
       // Start the journey update loop
       this.startJourneyUpdateLoop();
@@ -404,20 +459,44 @@ export class GameStartManager {
       const deltaTime = currentTime - this.lastTime;
       this.lastTime = currentTime;
 
-      // Update systems (no scroll offset for static background)
+      // Get dragon movement speed for scrolling
+      let dragonSpeed = 0;
+      if (this.entityManager) {
+        const dragon = this.entityManager.getDragonProtagonist();
+        if (dragon) {
+          dragonSpeed = dragon.getMovementSpeed();
+        }
+      }
+
+      // Update systems (scroll offset now based on dragon speed)
       if (this.migrationAdapter) {
         this.migrationAdapter.update(deltaTime, currentTime, 0);
       }
 
-      // Update land manager (no movement)
+      // Update land manager with dragon speed for parallax scrolling
       if (this.landManager) {
-        this.landManager.update(deltaTime, 0);
+        this.landManager.update(deltaTime, dragonSpeed);
       }
 
-      // Update HP bar test (combat simulation)
-      if (this.hpBarTest) {
-        this.hpBarTest.update(deltaTime);
+      // Update dragon protagonist
+      if (this.entityManager) {
+        const dragon = this.entityManager.getDragonProtagonist();
+        if (dragon) {
+          dragon.update(deltaTime);
+          // Update HP bar position to follow dragon
+          this.entityManager.updateDragonHealthBarPosition();
+        }
       }
+
+      // Update UI Manager
+      if (this.uiManager) {
+        this.uiManager.update(deltaTime);
+      }
+
+      // Update HP bar test - DISABLED
+      // if (this.hpBarTest) {
+      //   this.hpBarTest.update(deltaTime);
+      // }
 
       this.animationFrameId = requestAnimationFrame(updateLoop);
     };
