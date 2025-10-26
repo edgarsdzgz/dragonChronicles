@@ -301,6 +301,75 @@ All positions in 1920x1080 game world space, scale 1.0 at baseline:
 
 ---
 
-**Last Updated**: October 2025 (Scrolling parallax system implemented with seamless tiling)
-**Version**: 2.0
-**Status**: Active Development - Journey Movement Complete
+## Journey Progression System
+
+### Distance Tracking
+
+**Physics-Based Movement Speed:**
+
+- Dragon cruising speed: 100 pixels/second
+- Conversion ratio: 2.5 pixels = 1 meter
+- Real-world speed: 40 meters/second (~144 km/h)
+- Calculation basis: Bird of prey cruising speeds (~50 km/h) scaled by square-cube law to dragon size (8x linear scale = 2.83x speed multiplier)
+
+**Movement States:**
+
+- **Forward**: Distance increases at 40 m/s
+- **Backward**: Distance decreases at 40 m/s (cannot go below 0m)
+- **Paused**: Distance frozen
+
+### Ward Milestones (Land 1: Horizon Steppe)
+
+Ward distances are constant across all playthroughs:
+
+1. **Draconia** (Starting Point)
+   - Distance: 0 meters
+   - Land: land1_steppe
+
+2. **First Ward**
+   - Distance: 1,000 meters (1 km)
+   - Land: land1_steppe
+
+3. **Second Ward**
+   - Distance: 2,500 meters (2.5 km)
+   - Land: land1_steppe
+
+4. **Third Ward**
+   - Distance: 5,000 meters (5 km)
+   - Land: land1_steppe
+
+### Enemy Difficulty Scaling
+
+Enemy difficulty increases with distance traveled:
+
+```typescript
+difficultyMultiplier = 1.0 + (0.1 * distanceInKilometers)
+
+Examples:
+- At 0m (Draconia):     1.0x difficulty
+- At 1km (First Ward):  1.1x difficulty
+- At 2.5km (Second):    1.25x difficulty
+- At 5km (Third Ward):  1.5x difficulty
+```
+
+### System Integration
+
+**JourneyProgressionManager** ([journey-progression-manager.ts](../../apps/web/src/lib/pixi/systems/journey-progression-manager.ts)):
+
+- Tracks total distance traveled from Draconia
+- Detects ward transitions and logs milestone arrivals
+- Calculates enemy difficulty multipliers
+- Prevents negative distance (cannot retreat past Draconia)
+- Updates every frame with dragon speed and movement state
+
+**Integration Points:**
+
+- Initialized in [game-start-manager.ts](../../apps/web/src/lib/pixi/systems/game-start-manager.ts) during journey start
+- Updates in main game loop with dragon speed and current movement state
+- Provides difficulty multipliers for enemy spawning system
+
+---
+
+**Last Updated**: October 2025 (Journey progression system with distance tracking added)
+**Version**: 2.1
+**Status**: Active Development - Journey Movement and Progression Complete

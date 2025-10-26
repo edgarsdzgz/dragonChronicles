@@ -145,15 +145,15 @@ export class UIManager {
     const spacing = this.config.journeyButtonSpacing!;
 
     // Calculate positions
-    // Underground area starts at ~490px (ground Y position)
-    // Buttons positioned at underground + 150px - 25px = 615px
-    const baseY = 615; // Underground area top + 150px, pulled up 25px
+    // Underground area starts at ~483px (ground Y position)
+    // Buttons positioned at underground + 150px - 75px = 565px
+    const baseY = 565; // Underground area top + 150px, pulled up 75px total
 
-    // Position buttons on left side, with pause centered below dragon
+    // Position buttons on left side, with pause centered below dragon + 45px right
     // Dragon X = 115.2 (6% of 1920)
-    // Pause button center = dragon X = 115.2
-    // Pause button left edge = 115.2 - (80/2) = 75.2
-    const pauseX = 115.2 - buttonSize / 2; // Center pause button under dragon
+    // Pause button center = dragon X + 45 = 160.2
+    // Pause button left edge = 160.2 - (80/2) = 120.2
+    const pauseX = 160.2 - buttonSize / 2; // Center pause button under dragon, shifted right 45px
 
     // Button positions (in game world coordinates)
     const buttonPositions: Array<{ type: JourneyButtonType; x: number }> = [

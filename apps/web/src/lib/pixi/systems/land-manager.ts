@@ -166,14 +166,14 @@ export class LandManager {
             width: 2048, // Native width (extends off-screen to the right)
             height: 80, // Native height
           },
-          // Layer 5: Grassland foreground (44.91% from top, -2% offscreen left)
+          // Layer 5: Grassland foreground (44.72% from top, -2% offscreen left)
           {
             id: 'foreground-grass',
             assetPath: 'steppe-ground', // Asset ID from AssetManager definitions
             zIndex: 4,
             parallaxSpeed: 1.0, // 100% of dragon speed (full speed)
             x: -38, // -2% offscreen left (-38.4px at 1080p)
-            y: 485, // 44.91% from top (raised 5px from 490)
+            y: 483, // 44.72% from top (raised 7px from 490)
             width: 2048, // Native width
             height: 64, // Native height (estimated, will scale naturally)
           },
@@ -223,12 +223,12 @@ export class LandManager {
         sprite.x = 0;
         sprite.y = 0;
       } else if (layer.id === 'foreground-grass') {
-        // Grass: 2048x64 native, positioned at (-38.4, 489.6) in game world
-        // -38.4 = -2% of 1920, 489.6 = 45.33% of 1080 (raised 18px from original 47%)
+        // Grass: 2048x64 native, positioned at (-38.4, 483) in game world
+        // -38.4 = -2% of 1920, 483 = 44.72% of 1080 (raised 25px from original 508)
         // Intended scale: 1.0 at baseline (native size)
         sprite.scale.set(gameWorldScale);
         sprite.x = -38.4 * gameWorldScale;
-        sprite.y = 489.6 * gameWorldScale;
+        sprite.y = 483 * gameWorldScale;
       } else {
         // Other layers: Use game world scale
         sprite.scale.set(gameWorldScale);
@@ -360,20 +360,17 @@ export class LandManager {
         }
 
         // Calculate wrapped position for seamless looping
-        const layerWidth = layer.width * gameWorldScale; // Scaled layer width
-        const wrappedOffset = layerScrollOffset % layer.width;
+        // Handle negative modulo correctly for backward scrolling
+        const layerWidth = layer.width; // Use unscaled width for calculations
+        const scaledLayerWidth = layerWidth * gameWorldScale;
+        const normalizedOffset = ((layerScrollOffset % layerWidth) + layerWidth) % layerWidth;
 
         // Position first sprite
-        sprite.x = (baseX - wrappedOffset) * gameWorldScale;
+        sprite.x = (baseX - normalizedOffset) * gameWorldScale;
 
-        // Position second sprite to create seamless tile
-        // When scrolling forward (right to left), second sprite is to the right
-        // When scrolling backward (left to right), second sprite is to the left
-        if (this.movementState === 'forward') {
-          tiledSprite.x = sprite.x + layerWidth;
-        } else {
-          tiledSprite.x = sprite.x - layerWidth;
-        }
+        // Position second sprite to always create seamless tile to the right
+        // This works for both forward and backward scrolling
+        tiledSprite.x = sprite.x + scaledLayerWidth;
       }
     });
   }
