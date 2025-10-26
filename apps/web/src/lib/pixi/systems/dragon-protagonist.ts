@@ -261,6 +261,38 @@ export class DragonProtagonistManager {
   }
 
   /**
+   * Get dragon container (for other systems that need to control position)
+   */
+  getContainer(): Container {
+    return this.container;
+  }
+
+  /**
+   * Set animation speed as a multiplier (1.0 = normal, 2.0 = double speed)
+   * Used by cutscenes and special effects
+   */
+  setAnimationSpeed(multiplier: number): void {
+    if (!this.dragonAnimator) return;
+
+    const baseFPS = 8; // Default FPS for dragon animation
+    const targetFPS = baseFPS * multiplier;
+    this.dragonAnimator.setFPS(targetFPS);
+
+    console.log(`🐉 Dragon Protagonist: Animation speed set to ${multiplier}x (${targetFPS} FPS)`);
+  }
+
+  /**
+   * Get current animation speed multiplier
+   */
+  getAnimationSpeed(): number {
+    if (!this.dragonAnimator) return 1.0;
+
+    const baseFPS = 8; // Default FPS for dragon animation
+    const currentFPS = this.dragonAnimator.getFPS();
+    return currentFPS / baseFPS;
+  }
+
+  /**
    * Get current state
    */
   getState(): DragonProtagonistState {

@@ -62,6 +62,11 @@ export class LandManager {
   private resizeCallback: (() => void) | null = null;
   private movementState: MovementState = 'forward'; // Default: moving forward
 
+  // Cutscene state
+  private isInCutscene: boolean = false;
+  private cutsceneScale: number = 1.0; // Scale multiplier for layers during cutscene
+  private cutsceneSpeedMultiplier: number = 1.0; // Speed multiplier for scrolling during cutscene
+
   constructor(app: Application, assetManager: AssetManager, responsiveManager: ResponsiveManager) {
     this.app = app;
     this.assetManager = assetManager;
@@ -308,14 +313,19 @@ export class LandManager {
     let scrollDelta = 0;
     const deltaSeconds = deltaTime / 1000; // Convert to seconds
 
+    // Apply cutscene speed multiplier if in cutscene mode
+    const effectiveSpeed = this.isInCutscene
+      ? dragonSpeed * this.cutsceneSpeedMultiplier
+      : dragonSpeed;
+
     switch (this.movementState) {
       case 'forward':
         // Forward: scroll right to left (positive scroll)
-        scrollDelta = dragonSpeed * deltaSeconds;
+        scrollDelta = effectiveSpeed * deltaSeconds;
         break;
       case 'backward':
         // Backward: scroll left to right (negative scroll)
-        scrollDelta = -dragonSpeed * deltaSeconds;
+        scrollDelta = -effectiveSpeed * deltaSeconds;
         break;
       case 'paused':
         // Paused: no scrolling
@@ -336,6 +346,16 @@ export class LandManager {
 
       // Apply scroll offset (move layers left/right)
       const gameWorldScale = this.responsiveManager.getGameWorldScale();
+
+      // Apply cutscene scale if in cutscene mode
+      const effectiveScale = this.isInCutscene
+        ? gameWorldScale * this.cutsceneScale
+        : gameWorldScale;
+      sprite.scale.set(effectiveScale);
+      const tiledSprite = this.landLayersTiled.get(layer.id);
+      if (tiledSprite) {
+        tiledSprite.scale.set(effectiveScale);
+      }
 
       if (layer.id === 'background') {
         // Background: static, no scrolling
@@ -363,11 +383,11 @@ export class LandManager {
         // Handle negative modulo correctly for backward scrolling
         // Use actual texture width, not configured width, for accurate tiling
         const layerWidth = sprite.texture.width; // Use actual texture width
-        const scaledLayerWidth = layerWidth * gameWorldScale;
+        const scaledLayerWidth = layerWidth * effectiveScale;
         const normalizedOffset = ((layerScrollOffset % layerWidth) + layerWidth) % layerWidth;
 
         // Position first sprite
-        sprite.x = (baseX - normalizedOffset) * gameWorldScale;
+        sprite.x = (baseX - normalizedOffset) * effectiveScale;
 
         // Position second sprite to always create seamless tile to the right
         // This works for both forward and backward scrolling
@@ -494,6 +514,33 @@ export class LandManager {
     console.log(
       `🌍 Land Manager: Resize completed - ${this.app.screen.width}x${this.app.screen.height}`,
     );
+  }
+
+  /**
+   * Set cutscene state (scale and speed multiplier)
+   * Used by cutscene manager to control land appearance and scrolling
+   * @param scale - Scale multiplier for all layers (1.0 = normal, 3.0 = 3x zoomed in)
+   * @param speedMultiplier - Speed multiplier for scrolling (1.0 = normal, 3.0 = 3x faster)
+   */
+  setCutsceneState(scale: number, speedMultiplier: number): void {
+    this.isInCutscene = true;
+    this.cutsceneScale = scale;
+    this.cutsceneSpeedMultiplier = speedMultiplier;
+
+    console.log(
+      `🎬 Land Manager: Cutscene state set - scale: ${scale.toFixed(2)}x, speed: ${speedMultiplier.toFixed(2)}x`,
+    );
+  }
+
+  /**
+   * Exit cutscene mode and return to normal state
+   */
+  exitCutsceneMode(): void {
+    this.isInCutscene = false;
+    this.cutsceneScale = 1.0;
+    this.cutsceneSpeedMultiplier = 1.0;
+
+    console.log('🎬 Land Manager: Exited cutscene mode');
   }
 
   destroy(): void {

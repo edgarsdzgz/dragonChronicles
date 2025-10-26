@@ -78,6 +78,10 @@ export class TopBarUI {
   private swipeStartX: number = 0;
   private swipeEndX: number = 0;
 
+  // Cutscene state
+  private isInCutscene: boolean = false;
+  private cutsceneSpeed: number = 0; // Speed to display during cutscene (km/h)
+
   constructor(app: Application, responsiveManager: ResponsiveManager) {
     this.app = app;
     this.responsiveManager = responsiveManager;
@@ -179,15 +183,19 @@ export class TopBarUI {
       return;
     }
 
-    // Update speed fluctuation
-    this.updateSpeedFluctuation(deltaTime);
+    // Update speed fluctuation (skip if in cutscene mode)
+    if (!this.isInCutscene) {
+      this.updateSpeedFluctuation(deltaTime);
+    }
 
     // Update distance display (km with 2 decimals)
     const distanceKm = this.journeyProgressionManager.getDistanceKm();
     this.distanceText.text = `${distanceKm.toFixed(2)} km from Home`;
 
     // Update speed display (km/h with 2 decimals)
-    this.speedText.text = `${this.displayedSpeed.toFixed(2)} km/h`;
+    // Use cutscene speed if in cutscene mode, otherwise use fluctuating speed
+    const speedToDisplay = this.isInCutscene ? this.cutsceneSpeed : this.displayedSpeed;
+    this.speedText.text = `${speedToDisplay.toFixed(2)} km/h`;
 
     // Update Land/Ward display
     const landName = this.journeyProgressionManager.getLandDisplayName();
@@ -440,6 +448,23 @@ export class TopBarUI {
    */
   handleResize(): void {
     this.updateLayout();
+  }
+
+  /**
+   * Set cutscene speed (overrides normal speed fluctuation)
+   * @param speed - Speed to display in km/h
+   */
+  setCutsceneSpeed(speed: number): void {
+    this.isInCutscene = true;
+    this.cutsceneSpeed = speed;
+  }
+
+  /**
+   * Exit cutscene mode and return to normal speed fluctuation
+   */
+  exitCutsceneMode(): void {
+    this.isInCutscene = false;
+    this.cutsceneSpeed = 0;
   }
 
   /**

@@ -51,6 +51,7 @@ export class JourneyProgressionManager {
   private state: JourneyProgressionState;
   private wardMilestones: WardMilestone[];
   private currentWardIndex: number = 0;
+  private isPausedForCutscene: boolean = false; // Pause distance tracking during cutscene
 
   constructor() {
     // Initialize ward milestones
@@ -129,6 +130,11 @@ export class JourneyProgressionManager {
    */
   update(deltaTime: number, dragonSpeed: number, movementState: MovementState): void {
     if (!this.state.isJourneyActive) {
+      return;
+    }
+
+    // Skip distance tracking if paused for cutscene
+    if (this.isPausedForCutscene) {
       return;
     }
 
@@ -382,6 +388,22 @@ export class JourneyProgressionManager {
   stopJourney(): void {
     this.state.isJourneyActive = false;
     console.log('🗺️ Journey Progression Manager: Journey stopped');
+  }
+
+  /**
+   * Pause distance tracking for cutscene
+   */
+  pauseForCutscene(): void {
+    this.isPausedForCutscene = true;
+    console.log('🎬 Journey Progression Manager: Paused for cutscene');
+  }
+
+  /**
+   * Resume distance tracking after cutscene
+   */
+  resumeFromCutscene(): void {
+    this.isPausedForCutscene = false;
+    console.log('🎬 Journey Progression Manager: Resumed from cutscene');
   }
 
   /**

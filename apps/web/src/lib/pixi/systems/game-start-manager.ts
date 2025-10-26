@@ -15,6 +15,7 @@ import { EntityManager } from './entity-manager';
 import { HPBarDesignTest } from './hp-bar-design-test';
 import { UIManager } from './ui-manager';
 import { JourneyProgressionManager } from './journey-progression-manager';
+import { TakeoffCutsceneManager } from './takeoff-cutscene';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -64,6 +65,7 @@ export class GameStartManager {
   private hpBarTest: HPBarDesignTest | null = null;
   private uiManager: UIManager | null = null;
   private journeyProgressionManager: JourneyProgressionManager | null = null;
+  private takeoffCutsceneManager: TakeoffCutsceneManager | null = null;
 
   // Journey system state
   private isJourneyActive = false;
@@ -324,8 +326,18 @@ export class GameStartManager {
       this.journeyProgressionManager.startJourney();
       this.uiManager.setJourneyProgressionManager(this.journeyProgressionManager); // Connect UI to progression manager
 
+      // Initialize Takeoff Cutscene Manager
+      this.takeoffCutsceneManager = new TakeoffCutsceneManager(this.app, responsiveManager);
+      this.takeoffCutsceneManager.setDragon(dragon!);
+      this.takeoffCutsceneManager.setLandManager(this.landManager);
+      this.takeoffCutsceneManager.setTopBarUI(this.uiManager.getTopBarUI());
+      this.takeoffCutsceneManager.setJourneyProgression(this.journeyProgressionManager);
+
       // Start the journey update loop
       this.startJourneyUpdateLoop();
+
+      // Start takeoff cutscene
+      this.takeoffCutsceneManager.start();
 
       this.state.isJourneyStarted = true;
       this.state.currentPhase = 'complete';
@@ -520,6 +532,11 @@ export class GameStartManager {
       // if (this.hpBarTest) {
       //   this.hpBarTest.update(deltaTime);
       // }
+
+      // Update Takeoff Cutscene (if playing)
+      if (this.takeoffCutsceneManager && this.takeoffCutsceneManager.isPlaying()) {
+        this.takeoffCutsceneManager.update(deltaTime);
+      }
 
       this.animationFrameId = requestAnimationFrame(updateLoop);
     };

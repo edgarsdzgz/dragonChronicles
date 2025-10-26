@@ -10,13 +10,14 @@
  * All UI elements positioned using ResponsiveManager's game world scaling
  */
 
-import { Application, Container, Sprite } from 'pixi.js';
+import { Application, Container, Sprite, Graphics, Text } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { ResponsiveManager } from './responsive-manager';
 import type { LandManager } from './land-manager';
 import { TopBarUI } from './top-bar-ui';
 import type { JourneyProgressionManager } from './journey-progression-manager';
+import type { DragonProtagonistManager } from './dragon-protagonist';
 
 /**
  * Journey button types
@@ -57,6 +58,7 @@ export class UIManager {
   private responsiveManager: ResponsiveManager;
   private landManager: LandManager | null = null;
   private journeyProgressionManager: JourneyProgressionManager | null = null;
+  private dragonProtagonist: DragonProtagonistManager | null = null;
   private container: Container;
   private config: UIManagerConfig;
   private isInitialized: boolean = false;
@@ -65,6 +67,9 @@ export class UIManager {
   private journeyControlsContainer: Container;
   private journeyButtons: Map<JourneyButtonType, JourneyButton> = new Map();
   private currentJourneyState: JourneyButtonType = 'forward'; // Default: moving forward
+
+  // Test Controls (temporary for development)
+  private test4xButton: Container | null = null;
 
   // Top Bar UI
   private topBarUI: TopBarUI | null = null;
@@ -154,6 +159,23 @@ export class UIManager {
   }
 
   /**
+   * Set the dragon protagonist reference (for speed control)
+   */
+  setDragonProtagonist(dragon: DragonProtagonistManager): void {
+    this.dragonProtagonist = dragon;
+    // Create test 4x speed button
+    this.create4xSpeedTestButton();
+    console.log('🎮 UI Manager: Dragon protagonist reference set');
+  }
+
+  /**
+   * Get the top bar UI reference (for cutscene control)
+   */
+  getTopBarUI(): TopBarUI | null {
+    return this.topBarUI;
+  }
+
+  /**
    * Create journey control buttons (backward, pause, forward)
    * Positioned in underground area: underground top + 150px
    */
@@ -192,6 +214,72 @@ export class UIManager {
     }
 
     console.log('✅ UI Manager: Journey controls created');
+  }
+
+  /**
+   * Create test 4x speed button (temporary for testing)
+   */
+  private create4xSpeedTestButton(): void {
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const buttonSize = this.config.journeyButtonSize!;
+    const spacing = this.config.journeyButtonSpacing!;
+    const baseY = 565;
+    const pauseX = 160.2 - buttonSize / 2;
+    const forwardX = pauseX + buttonSize + spacing;
+
+    // Position 4x button to the right of forward button
+    const test4xX = forwardX + buttonSize + spacing;
+
+    // Create container for test button
+    this.test4xButton = new Container();
+    this.test4xButton.label = 'test-4x-button';
+
+    // Create background
+    const bg = new Graphics();
+    bg.rect(0, 0, buttonSize, buttonSize);
+    bg.fill(0xff6600); // Orange background
+    bg.stroke({ width: 2, color: 0xffffff });
+    this.test4xButton.addChild(bg);
+
+    // Create text
+    const text = new Text({
+      text: '4X',
+      style: {
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fill: 0xffffff,
+        align: 'center',
+      },
+    });
+    text.anchor.set(0.5);
+    text.x = buttonSize / 2;
+    text.y = buttonSize / 2;
+    this.test4xButton.addChild(text);
+
+    // Position and scale
+    this.test4xButton.x = test4xX * gameWorldScale;
+    this.test4xButton.y = baseY * gameWorldScale;
+    this.test4xButton.scale.set(gameWorldScale);
+
+    // Make interactive
+    this.test4xButton.eventMode = 'static';
+    this.test4xButton.cursor = 'pointer';
+    this.test4xButton.on('pointerdown', () => this.handle4xSpeedClick());
+
+    this.journeyControlsContainer.addChild(this.test4xButton);
+    console.log('🎮 UI Manager: Test 4x speed button created');
+  }
+
+  /**
+   * Handle 4x speed test button click
+   */
+  private handle4xSpeedClick(): void {
+    if (!this.dragonProtagonist) return;
+
+    // Set to 4x speed (400 pixels/second)
+    this.dragonProtagonist.setMovementSpeed(400);
+    console.log('🎮 UI Manager: Dragon speed set to 4x (400 pps)');
   }
 
   /**
@@ -311,6 +399,12 @@ export class UIManager {
     // Update current state
     const previousState = this.currentJourneyState;
     this.currentJourneyState = buttonType;
+
+    // Reset dragon speed to 1x when clicking forward button
+    if (buttonType === 'forward' && this.dragonProtagonist) {
+      this.dragonProtagonist.setMovementSpeed(100); // Reset to 1x speed
+      console.log('🎮 UI Manager: Dragon speed reset to 1x (100 pps)');
+    }
 
     // Update button states
     this.journeyButtons.forEach((button) => {
