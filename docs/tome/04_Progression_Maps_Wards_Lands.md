@@ -153,38 +153,44 @@ export function microRamp(distM: number, stepM: number, inc = 0.01) {
 ### Land 1: Horizon Steppe (Complete Specification)
 
 **Status**: Fully specified in Region R01 documentation
-**Total Wards**: 17 named wards
+**Total Wards**: 22 named wards
+**Distance Range**: D0 → D110km
 **Complete Lore**: See [Horizon Steppe Ward Lore](Horizon_Steppe_Ward_Lore.md)
 
 #### Ward Breakdown:
 
-**Early Journey (Tutorial & Trade Routes)**
-- **Ward 1**: Sunwake Downs (D0→D0.5) — Tutorial picnic grounds
-- **Ward 2**: Waystone Mile (D0.5→D1.0) — Ancient trade markers
-- **Ward 3**: Skylark Flats (D1.0→D1.5) — Bird migration routes
-- **Ward 4**: Longgrass Reach (D1.5→D2.0) — Erosion prevention gone wild
+**Starting Wards (Draconia's Gates)**
+- **Ward 1**: The Parting Stones (D0→D5km) — Seven ancient stones at city gates
+- **Ward 2**: Windwhisper Plains (D5km→D12.5km) — Wind-singing grasslands
+- **Ward 3**: Sunstone Outlook (D12.5km→D25km) — Warm stones, information hub
+- **Ward 4**: Embergrass Crossing (D25km→D50km) — Iron-grass ford with Pyrean bridge
+- **Ward 5**: Stormwatch Frontier (D50km→D60km) — Old watchtowers, former border
 
-**Mid Journey (Geography & History)**
-- **Ward 5**: Bluewind Shelf (D2.0→D2.5) — Glider training cliffs
-- **Ward 6**: Old Hoard Road (D2.5→D3.0) — Mining convoy route
-- **Ward 7**: First Horizon (D3.0→D3.5) — Mountains first visible
-- **Ward 8**: Windwhisper Plain (D3.5→D4.0) — Whistling rock formations
-- **Ward 9**: Duskrunner's Stand (D4.0→D4.5) — Famous last stand site
+**Early Journey (Transition to Wilds)**
+- **Ward 6**: Sunwake Downs (D60km→D65km) — Tutorial picnic grounds
+- **Ward 7**: Waystone Mile (D65km→D70km) — Ancient trade markers
+- **Ward 8**: Skylark Flats (D70km→D75km) — Bird migration routes
+- **Ward 9**: Longgrass Reach (D75km→D80km) — Erosion prevention gone wild
+- **Ward 10**: Bluewind Shelf (D80km→D85km) — Glider training cliffs
+- **Ward 11**: Old Hoard Road (D85km→D90km) — Mining convoy route
 
-**Rising Tension (Nomad Territory)**
-- **Ward 10**: Thornhedge Crossing (D4.5→D5.0) — Natural barrier path
-- **Ward 11**: Kite-Banner Flats (D5.0→D5.5) — Nomad communication zone
-- **Ward 12**: Rumblefoot Trace (D5.5→D6.0) — Beast migration trail
+**Mid Journey (Rising Tension)**
+- **Ward 12**: First Horizon (D90km→D93km) — Mountains first visible
+- **Ward 13**: Windwhisper Plain (D93km→D96km) — Whistling rock formations
+- **Ward 14**: Duskrunner's Stand (D96km→D99km) — Famous last stand site
 
-**Approaching Danger (Buffer Zone)**
-- **Ward 13**: Emberwatch Ridge (D6.0→D6.5) — Border guard post
-- **Ward 14**: Scorchline Gap (D6.5→D7.0) — Environmental boundary
-- **Ward 15**: Ashfall March (D7.0→D7.5) — Volcanic ash zone
+**Rising Danger (Nomad Territory)**
+- **Ward 15**: Thornhedge Crossing (D99km→D101km) — Natural barrier path
+- **Ward 16**: Kite-Banner Flats (D101km→D103km) — Nomad communication zone
+- **Ward 17**: Rumblefoot Trace (D103km→D105km) — Beast migration trail
 
-**Final Approach (Boss Territory)**
-- **Ward 16**: Border's End (D7.5→D8.0) — Ancient fortifications
-- **Ward 17**: Pyrean Gate (D8.0→D8.5) — The arch that still stands
-- **Boss Gate**: Khagan of the Sirocco (D8.5+) — Final confrontation beneath Pyrean Gate
+**Final Approach (The Scorched Border)**
+- **Ward 18**: Emberwatch Ridge (D105km→D106.5km) — View of eternal flame
+- **Ward 19**: Scorchline Gap (D106.5km→D107.5km) — Vegetation death line
+- **Ward 20**: Ashfall March (D107.5km→D108.5km) — Gray zone of volcanic ash
+- **Ward 21**: Border's End (D108.5km→D109.5km) — Last fortifications
+- **Ward 22**: Pyrean Gate (D109.5km→D110km) — The arch that refuses to fall
+- **Boss Encounter**: Khagan of the Sirocco (D110km+) — Beneath Pyrean Gate
 
 ### Land 2: Ember Reaches (The Pyrean Commonwealth's Grave)
 

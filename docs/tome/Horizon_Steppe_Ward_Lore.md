@@ -5,17 +5,207 @@
 **Region Code**: R01
 **Theme**: Peaceful inner rim grasslands, former trade corridor
 **Faction**: Wind-Taken Nomads
-**Total Wards**: 17
-**Distance Range**: D0 → D8.5 (Boss Gate)
+**Total Wards**: 22
+**Distance Range**: D0 → D110km (Boss Gate)
 
 ---
 
 ## Ward Progression with Lore
 
-### **Ward 1: Sunwake Downs** (D0 → D0.5)
+### **Ward 1: The Parting Stones** (D0 → D5km)
+
+**Geography**: A circle of seven standing stones just beyond Draconia's gates, each carved
+with farewell blessings in ancient Draconic. The stones mark the traditional departure
+point for journeys. Well-maintained road, gentle terrain, absolute safety this close to home.
+
+**Name Origin**: "Parting" because this is where dragons part from Draconia, and "Stones"
+for the seven monoliths. The stones are ancient - older than Draconia itself, possibly
+predating dragon civilization. No one knows who carved them or why there are exactly seven.
+
+**Historical Note**: The Parting Stones predate written history. Archaeological evidence
+suggests they're 3,000+ years old. Early dragons found them and decided "this seems like
+a good place to build a city nearby." The carvings were added later - each generation adds
+new blessings. The most recent addition (50 years ago) reads: "May your fire burn true, and
+may Draconia's light guide you home."
+
+**The Seven Stones**: Each has a name and traditional meaning:
+
+1. **Hope's Gate** - Touch for courage
+2. **Memory's Anchor** - Remember why you journey
+3. **Flame's Promise** - Your fire will not falter
+4. **Wing's Blessing** - May winds favor your flight
+5. **Heart's Tether** - Those you love await your return
+6. **Wisdom's Warning** - Hubris precedes the fall
+7. **Home's Call** - Draconia calls you back
+
+**Ritual**: Dragons traditionally circle the stones three times before departing, touching
+each one. It's become such a universal custom that NOT doing it is considered bad luck.
+Even skeptical dragons do it "just in case."
+
+**Humorous Detail**: Stone #6 (Wisdom's Warning) has been touched smooth by nervous dragons.
+It's the most popular stone. Everyone wants to avoid hubris, apparently. Stone #4 (Wing's
+Blessing) is second most popular. Stone #2 (Memory's Anchor) is least touched - no one
+wants to get emotional before leaving.
+
+---
+
+### **Ward 2: Windwhisper Plains** (D5km → D12.5km)
+
+**Geography**: Wide open grassland where wind moves in strange patterns, creating natural
+harmonics through rock formations scattered across the plains. The wind literally "sings"
+here - not quite musical, but eerie and beautiful.
+
+**Name Origin**: The wind whispers across these plains. Early travelers reported hearing
+voices in the wind - warnings, prophecies, or just their own thoughts reflected back. Hence
+"Windwhisper." The "Plains" part is self-evident.
+
+**Historical Note**: Pyrean merchants claimed the wind here could predict weather three days
+in advance. They'd camp and "listen" to the wind before making travel decisions. Draconian
+meteorologists insisted it was just acoustic patterns from rock formations. Both were
+partially right - the wind patterns DO correlate with incoming weather, but there's no
+magic involved. Just geology and atmospheric pressure.
+
+**The Listening Stones**: Scattered rock formations with natural holes act as "wind organs."
+Different winds create different tones. Experienced travelers can actually predict weather
+by the sounds. A low moan = incoming storm. A high whistle = clear skies ahead. Silence =
+something's wrong with the natural patterns (usually means magical disturbance).
+
+**After the Combustion**: The wind changed. Travelers report new sounds - not predictions,
+but echoes. Some claim to hear Pyrean voices carried on the wind from the distant Ember
+Reaches. Most likely: the wind patterns shifted due to heat from the burning lands,
+creating new acoustic effects. But the superstition persists.
+
+**Funny Moment**: A Draconian scholar once tried to map every rock formation and catalog
+its sounds. He spent three months here with recording equipment. His published work: "The
+Acoustic Properties of Steppe Rock Formations and Their Meteorological Correlates" (347
+pages, with appendices). It sold 12 copies. He was very proud. His family gently suggested
+he "maybe pursue other interests."
+
+---
+
+### **Ward 3: Sunstone Outlook** (D12.5km → D25km)
+
+**Geography**: A high ridge with excellent visibility in all directions. Large flat stones
+dotting the ridge absorb heat during the day and glow with warmth into the night. Perfect
+camping spot - natural warmth, clear sightlines, defensible position.
+
+**Name Origin**: "Sunstone" because the stones hold solar heat and radiate it after sunset,
+staying warm through the night. "Outlook" because you can see for kilometers in every
+direction. Practical naming from practical people.
+
+**Historical Note**: This was a major rest stop on the Pyrean trade route. Caravans would
+time their journeys to camp here. The warm stones meant no need to carry extra firewood.
+Multiple permanent fire pits were built. Stone benches. Even a small shrine to safe travels.
+
+**The Outlook Tradition**: Pyrean and Draconian traders would meet here to exchange news
+before continuing their respective journeys. It became an informal information hub - want to
+know what's happening in the Pyrean Commonwealth? Stop at Sunstone Outlook and ask the
+eastbound travelers. Want Draconian news? Ask the westbound ones. The tradition was called
+"trading words before trading goods."
+
+**Post-Combustion**: When the Pyrean Commonwealth burned, the last Pyrean refugees passed
+through Sunstone Outlook. Some stayed, too injured or exhausted to continue. A small
+memorial now sits on the highest point - a pile of stones, each representing someone who
+didn't make it to Draconia. Travelers add stones for their own lost loved ones. The pile
+grows slowly.
+
+**Current Use**: Dragons still use Sunstone Outlook as a rest stop. The warm stones are
+genuinely comfortable to sleep on. The fire pits still work. It's one of the few places on
+the steppe that feels safe and peaceful. Many first-journey dragons make it this far and
+feel genuinely accomplished. It's a milestone.
+
+**Humorous Detail**: Someone carved "I made it to Sunstone!" into one of the bench stones
+50 years ago. Every year since, someone adds another "I made it to Sunstone!" marking. The
+stone is now covered in tally marks and exclamation points. It's accidentally become an
+artwork representing generations of relieved travelers.
+
+---
+
+### **Ward 4: Embergrass Crossing** (D25km → D50km)
+
+**Geography**: A region where the grass has a reddish-orange tint, especially at sunset when
+it looks like fields of ember. A wide, shallow stream crosses the area - hence "crossing."
+The grass gets its color from high iron content in the soil.
+
+**Name Origin**: "Embergrass" for the ember-colored grass (especially visible at golden
+hour), and "Crossing" for the stream ford that travelers must navigate. The name is
+picturesque but the reality is muddy boots and damp supplies.
+
+**Historical Note**: The ford was a notorious bottleneck. During heavy rain, the stream
+became impassable - travelers would camp for days waiting for water levels to drop. A
+Pyrean engineering project built a low stone bridge 80 years ago. Massive improvement. The
+bridge still stands, though some stones have shifted. It's still safer than the ford.
+
+**The Pyrean Bridge**: Elegant design - low arches that let floodwater pass underneath
+without washing the bridge away. Engraved with the names of the construction crew. One name
+stands out: "Marten Stoneshaper - Master Engineer - May his bridges stand eternal." They
+have, Marten. They have.
+
+**The Embergrass**: Draconian agriculturalists tried to cultivate embergrass for ornamental
+gardens in Draconia. Total failure. The grass only grows in this specific soil composition.
+Transplanted embergrass turns boring green within a month. The iron-rich soil can't be
+replicated economically. Result: embergrass remains wild and free, exactly where it belongs.
+
+**Current Challenge**: Wind-Taken Nomads recognized that Embergrass Crossing is a natural
+chokepoint. They raid here frequently, knowing travelers must use the bridge. Smart dragons
+scout ahead or travel in groups. The stream is shallow enough that dragons can fly over it,
+but it's bad form to abandon ground-bound travelers.
+
+**Amusing Note**: Pyrean traders used to sell "Authentic Embergrass Seeds - Grow Your Own!"
+They were regular grass seeds. The scam was discovered when dozens of angry customers
+returned with "Why is my embergrass just... grass?" The trader fled. Was never found. Legend
+says he retired rich in a distant land. More likely explanation: the embergrass got him.
+
+---
+
+### **Ward 5: Stormwatch Frontier** (D50km → D60km)
+
+**Geography**: The edge of "safe" Draconian territory - hills with old watchtowers marking
+the former border patrol zone. Weather turns more violent here - thunderstorms roll in from
+the mountains with little warning. Hence "Stormwatch."
+
+**Name Origin**: "Stormwatch" because Draconian border guards stationed here watched for
+storms (weather and military). "Frontier" because this was the official edge of Draconian
+jurisdiction before the Pyrean Combustion.
+
+**The Watchtowers**: Seven stone towers, evenly spaced, built 120 years ago. Each tower had
+a beacon that could be lit to signal the next tower - a relay warning system stretching back
+to Draconia. The system worked perfectly for decades. Then peacetime made it seem
+unnecessary. The towers were decommissioned 40 years ago. Guards reassigned. Beacons went
+dark.
+
+**After the Combustion**: The Council tried to reactivate the watchtower system. Found them
+in poor repair - roofs collapsed, beacon mechanisms rusted, supply caches looted or rotted.
+It would cost too much to restore them properly. They remain abandoned. Occasionally a
+dragon will camp in one. They're drafty, but the stone walls provide some protection.
+
+**Border Politics**: When this was the border, Pyrean and Draconian guards would meet at the
+center tower for joint patrols. It was a symbol of alliance - shared responsibility for
+shared safety. The center tower has carvings from both cultures. After the Combustion, a
+Draconian sergeant carved one final message: "We failed to protect you. Forgive us."
+
+**Storm Patterns**: The storms here are genuinely dangerous - sudden, violent, and seemingly
+targeted. Meteorologically explained: the meeting of warm steppe air and cool mountain air
+creates instability. Feels personal though. Many dragons report feeling "watched" during
+storms here. Probably just the psychological weight of being at the frontier. Probably.
+
+**Current Status**: Stormwatch Frontier is where "casual journey" becomes "serious journey."
+Past this point, you're beyond Draconian patrols, beyond easy rescue, beyond the safety net.
+Many first-time dragons turn back here. No shame in it. The frontier is the frontier for a
+reason.
+
+**Humorous-But-Dark Detail**: The center tower has a guest book - a journal where travelers
+leave messages. Entries range from "Beautiful sunset, 10/10" to "Goblin raid, barely
+survived, 1/10, would not recommend." The journal is now three volumes thick. Someone
+maintains it - no one knows who. New journals appear when old ones fill. It's become a
+tradition to read the last few entries before leaving, to understand what dangers lie ahead.
+
+---
+
+### **Ward 6: Sunwake Downs** (D60km → D65km)
 
 **Geography**: Gentle rolling hills with scattered wildflowers, golden morning grass, clear
-skies. The closest safe zone to Draconia's walls.
+skies. Once the closest "safe" recreational zone to Draconia (before the border contracted).
 
 **Name Origin**: Named for the spectacular sunrises visible from these downs. Draconian
 picnic-goers and young dragons practicing their first flights called it "Sunwake" because
@@ -31,7 +221,7 @@ gentle terrain remains, but the picnickers are long gone.
 
 ---
 
-### **Ward 2: Waystone Mile** (D0.5 → D1.0)
+### **Ward 7: Waystone Mile** (D65km → D70km)
 
 **Geography**: Ancient stone markers dot a well-worn trade path. Weathered standing stones
 every hundred meters, carved with distance markers and trader blessings.
@@ -51,7 +241,7 @@ Locals call it "Greedy Gareth's Folly."
 
 ---
 
-### **Ward 3: Skylark Flats** (D1.0 → D1.5)
+### **Ward 8: Skylark Flats** (D70km → D75km)
 
 **Geography**: Endless flat grasslands where skylarks nest and soar. Clear sightlines for
 miles, open sky, gentle breezes.
@@ -73,7 +263,7 @@ watching where skylarks flush from the grass.
 
 ---
 
-### **Ward 4: Longgrass Reach** (D1.5 → D2.0)
+### **Ward 9: Longgrass Reach** (D75km → D80km)
 
 **Geography**: Tall grass that grows waist-high to a human, chest-high to most dragonborn.
 The grass sways in hypnotic patterns with the wind, creating the illusion of waves across
@@ -95,7 +285,7 @@ longgrass."
 
 ---
 
-### **Ward 5: Bluewind Shelf** (D2.0 → D2.5)
+### **Ward 10: Bluewind Shelf** (D80km → D85km)
 
 **Geography**: An elevated plateau with dramatic drop-offs. Strong crosswinds blow
 constantly across the shelf, creating updrafts along the cliff edges. The wind here has a
@@ -117,7 +307,7 @@ wind and create even more turbulence.
 
 ---
 
-### **Ward 6: Old Hoard Road** (D2.5 → D3.0)
+### **Ward 11: Old Hoard Road** (D85km → D90km)
 
 **Geography**: A wide, well-constructed stone road, now cracked and overgrown but still
 visible. Abandoned way-stations and collapsed caravanserais dot the roadside.
@@ -140,7 +330,7 @@ stations - they're too exposed. Smart dragons can ambush Nomad convoys between s
 
 ---
 
-### **Ward 7: First Horizon** (D3.0 → D3.5)
+### **Ward 12: First Horizon** (D90km → D93km)
 
 **Geography**: The land begins to rise here, with the first glimpses of distant mountains.
 The horizon "rises" - hence the name. Storm clouds gather more frequently, and the wind
@@ -162,7 +352,7 @@ this point.
 
 ---
 
-### **Ward 8: Windwhisper Plain** (D3.5 → D4.0)
+### **Ward 13: Windwhisper Plain** (D93km → D96km)
 
 **Geography**: Utterly flat grassland where the wind makes strange sounds as it moves
 through specific rock formations jutting from the earth. The rocks create natural
@@ -171,6 +361,9 @@ through specific rock formations jutting from the earth. The rocks create natura
 **Name Origin**: The wind literally whispers here. Pyrean traders believed the whispers were
 spirits giving advice. Draconian scholars insisted it was just wind moving through porous
 stone. Everyone agreed it was unsettling at night.
+
+**Note**: Similar to Ward 2 "Windwhisper Plains" but distinct - this is a smaller, more
+isolated area with more intense acoustic phenomena.
 
 **Historical Note**: A superstition developed: if you hear your name whispered at
 Windwhisper Plain, tell no one for three days or you'll have bad luck. This led to awkward
@@ -189,7 +382,7 @@ learned to make the rocks produce specific tones by placing objects in the openi
 
 ---
 
-### **Ward 9: Duskrunner's Stand** (D4.0 → D4.5)
+### **Ward 14: Duskrunner's Stand** (D96km → D99km)
 
 **Geography**: A series of low rocky outcrops providing natural defensive positions. Named
 after a single dramatic last stand.
@@ -214,7 +407,7 @@ Wind-Taken Nomads hate it. Battles here tend to be dragon victories.
 
 ---
 
-### **Ward 10: Thornhedge Crossing** (D4.5 → D5.0)
+### **Ward 15: Thornhedge Crossing** (D99km → D101km)
 
 **Geography**: A natural border of thorny scrubland, dense and nearly impassable. A single
 clear path cuts through - the "crossing."
@@ -239,7 +432,7 @@ thornhedge.
 
 ---
 
-### **Ward 11: Kite-Banner Flats** (D5.0 → D5.5)
+### **Ward 16: Kite-Banner Flats** (D101km → D103km)
 
 **Geography**: Wide open flats where Wind-Taken Nomads plant tall banner poles and fly huge
 kites for communication, intimidation, and prayer rituals.
@@ -265,7 +458,7 @@ centuries. Both are probably lying for pride's sake.
 
 ---
 
-### **Ward 12: Rumblefoot Trace** (D5.5 → D6.0)
+### **Ward 17: Rumblefoot Trace** (D103km → D105km)
 
 **Geography**: A wide, muddy trail carved by heavy creature migration. The ground literally
 rumbles when herds pass.
@@ -291,7 +484,7 @@ the sense of a rancher trying to pen rumblefeet."
 
 ---
 
-### **Ward 13: Emberwatch Ridge** (D6.0 → D6.5)
+### **Ward 18: Emberwatch Ridge** (D105km → D106.5km)
 
 **Geography**: An elevated ridgeline where, on clear nights, the eternal flame of Mount
 Ashencrown is visible on the distant horizon - a faint purple-orange glow.
@@ -316,7 +509,7 @@ the ridge for reconnaissance - the high ground provides excellent sightlines.
 
 ---
 
-### **Ward 14: Scorchline Gap** (D6.5 → D7.0)
+### **Ward 19: Scorchline Gap** (D106.5km → D107.5km)
 
 **Geography**: A narrow pass between two hills where the vegetation changes abruptly. On
 the Draconia-ward side: golden grass. On the Ember Reaches side: scorched brown earth and
@@ -342,7 +535,7 @@ psychologically uncomfortable - the environment is warning you to turn back.
 
 ---
 
-### **Ward 15: Ashfall March** (D7.0 → D7.5)
+### **Ward 20: Ashfall March** (D107.5km → D108.5km)
 
 **Geography**: A bleak stretch where ash from the Ember Reaches falls like gray snow. The
 grass is stunted and gray. Everything has a coating of fine volcanic ash.
@@ -367,7 +560,7 @@ particulates.
 
 ---
 
-### **Ward 16: Border's End** (D7.5 → D8.0)
+### **Ward 21: Border's End** (D108.5km → D109.5km)
 
 **Geography**: The last defendable position before the Ember Reaches proper. A series of
 ancient stone fortifications, half-buried in ash, marking the absolute edge of what was
@@ -394,7 +587,7 @@ is strongest. The ground trembles with hoofbeats. The wind carries his war-chant
 
 ---
 
-### **Ward 17: Pyrean Gate** (D8.0 → D8.5 - Boss Gate)
+### **Ward 22: Pyrean Gate** (D109.5km → D110km - Boss Gate)
 
 **Geography**: The remains of a massive archway that once served as the ceremonial entrance
 to the Pyrean Commonwealth. The arch still stands, blackened by heat and cracked by
@@ -418,7 +611,7 @@ hasn't. It stubbornly remains standing, a gateway to a nation that no longer exi
 **The Khagan's Choice**: The Khagan of the Sirocco makes his final stand beneath Pyrean
 Gate. This is deliberate. He's a Wind-Taken Nomad, but he respects what the arch represents
 
-- he position himself as the inheritor of Pyrean martial prowess. When dragons fight him
+- he positions himself as the inheritor of Pyrean martial prowess. When dragons fight him
   here, they're not just battling a raider lord. They're fighting at the grave-marker of an
   entire civilization.
 
@@ -432,31 +625,32 @@ both nations."
 
 ## Progression Summary
 
-**Early Wards (1-4)**: Peaceful, pastoral, with humor and history.
-**Mid Wards (5-9)**: Signs of Nomad presence, battle sites, rising tension.
-**Late Wards (10-14)**: Buffer zone, environmental warnings, approaching danger.
-**Final Wards (15-17)**: The edge of catastrophe, the weight of history, the boss gate.
+**Starting Wards (1-5)**: Draconia's immediate vicinity, transition to wilderness
+**Early Journey (6-9)**: Peaceful pastoral lands with history and humor
+**Mid Journey (10-14)**: Signs of Nomad presence, battle sites, rising tension
+**Buffer Zone (15-19)**: Environmental warnings, approaching danger
+**Final Approach (20-22)**: The edge of catastrophe, the weight of history, the boss gate
 
 ---
 
 ## Design Notes
 
 **Narrative Arc**: The ward names and lore tell a story of gradual escalation - from
-morning picnics at Sunwake Downs to the apocalyptic weight of Pyrean Gate.
+farewell stones at Draconia's gates to the apocalyptic weight of Pyrean Gate.
 
 **Humor Balance**: Early wards have light humor (Greedy Gareth, Duskrunner the Reluctant
 Hero). Later wards have dark humor (Gray jokes in Ashfall March) or no humor - just weight.
 
 **Environmental Storytelling**: Each ward shows the layers of history - Draconian
-recreational areas, Pyrean trade infrastructure, joint cooperation projects, and finally
-the scars of the Combustion.
+infrastructure, Pyrean cooperation, joint projects, and finally the scars of the Combustion.
 
 **Emotional Progression**: Players should feel:
 
-- Wards 1-4: "This is pleasant, I understand why people lived here."
-- Wards 5-9: "Things are getting dangerous, but there's history here."
-- Wards 10-14: "Something terrible happened nearby."
-- Wards 15-17: "I'm walking through a graveyard. This is where hope died."
+- Wards 1-5: "I'm leaving home. This is both exciting and scary."
+- Wards 6-9: "This is pleasant, I understand why people lived here."
+- Wards 10-14: "Things are getting dangerous, but there's history here."
+- Wards 15-19: "Something terrible happened nearby."
+- Wards 20-22: "I'm walking through a graveyard. This is where hope died."
 
 ---
 

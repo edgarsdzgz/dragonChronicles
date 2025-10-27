@@ -56,38 +56,139 @@ export class JourneyProgressionManager {
   constructor() {
     // Initialize ward milestones
     // NOTE: Draconia is home (0m), but we START at Ward 1 when journeying
-    // Ward 1: 5.0km long (~2.08 min at 144 km/h)
-    // Progression: Each ward is 1.5x to 2.0x longer than previous
-    // TODO: Load from game data/configuration
+    // Total wards: 22 across Land 1: Horizon Steppe
+    // Distance range: 0km → 110km (Boss Gate at Pyrean Gate)
     this.wardMilestones = [
       {
         id: 'ward1',
         name: 'The Parting Stones',
-        distanceFromStart: 0, // 0 → 5km (5km long)
+        distanceFromStart: 0, // 0km → 5km (5km long)
         landId: 'land1_steppe',
       },
       {
         id: 'ward2',
         name: 'Windwhisper Plains',
-        distanceFromStart: 5000, // 5km → 12.5km (7.5km long = 1.5x Ward 1)
+        distanceFromStart: 5000, // 5km → 12.5km (7.5km long)
         landId: 'land1_steppe',
       },
       {
         id: 'ward3',
         name: 'Sunstone Outlook',
-        distanceFromStart: 12500, // 12.5km → 25km (12.5km long = 1.67x Ward 2)
+        distanceFromStart: 12500, // 12.5km → 25km (12.5km long)
         landId: 'land1_steppe',
       },
       {
         id: 'ward4',
         name: 'Embergrass Crossing',
-        distanceFromStart: 25000, // 25km → 50km (25km long = 2.0x Ward 3)
+        distanceFromStart: 25000, // 25km → 50km (25km long)
         landId: 'land1_steppe',
       },
       {
         id: 'ward5',
         name: 'Stormwatch Frontier',
-        distanceFromStart: 50000, // 50km+ (TODO: Define next wards)
+        distanceFromStart: 50000, // 50km → 60km (10km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward6',
+        name: 'Sunwake Downs',
+        distanceFromStart: 60000, // 60km → 65km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward7',
+        name: 'Waystone Mile',
+        distanceFromStart: 65000, // 65km → 70km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward8',
+        name: 'Skylark Flats',
+        distanceFromStart: 70000, // 70km → 75km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward9',
+        name: 'Longgrass Reach',
+        distanceFromStart: 75000, // 75km → 80km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward10',
+        name: 'Bluewind Shelf',
+        distanceFromStart: 80000, // 80km → 85km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward11',
+        name: 'Old Hoard Road',
+        distanceFromStart: 85000, // 85km → 90km (5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward12',
+        name: 'First Horizon',
+        distanceFromStart: 90000, // 90km → 93km (3km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward13',
+        name: 'Windwhisper Plain',
+        distanceFromStart: 93000, // 93km → 96km (3km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward14',
+        name: "Duskrunner's Stand",
+        distanceFromStart: 96000, // 96km → 99km (3km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward15',
+        name: 'Thornhedge Crossing',
+        distanceFromStart: 99000, // 99km → 101km (2km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward16',
+        name: 'Kite-Banner Flats',
+        distanceFromStart: 101000, // 101km → 103km (2km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward17',
+        name: 'Rumblefoot Trace',
+        distanceFromStart: 103000, // 103km → 105km (2km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward18',
+        name: 'Emberwatch Ridge',
+        distanceFromStart: 105000, // 105km → 106.5km (1.5km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward19',
+        name: 'Scorchline Gap',
+        distanceFromStart: 106500, // 106.5km → 107.5km (1km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward20',
+        name: 'Ashfall March',
+        distanceFromStart: 107500, // 107.5km → 108.5km (1km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward21',
+        name: "Border's End",
+        distanceFromStart: 108500, // 108.5km → 109.5km (1km long)
+        landId: 'land1_steppe',
+      },
+      {
+        id: 'ward22',
+        name: 'Pyrean Gate',
+        distanceFromStart: 109500, // 109.5km → 110km (0.5km long - Boss Gate)
         landId: 'land1_steppe',
       },
     ];
