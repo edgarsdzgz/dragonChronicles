@@ -8,6 +8,8 @@
 import { type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { SplashScreenManager } from './splash-screen';
+import { ProfileSelectionManager } from './profile-selection-manager';
+import { ProfileNameEntryManager } from './profile-name-entry';
 import { DraconiaMenuManager } from './draconia-menu';
 import { MigrationAdapter } from './migration-adapter';
 import { LandManager } from './land-manager';
@@ -16,6 +18,7 @@ import { HPBarDesignTest } from './hp-bar-design-test';
 import { UIManager } from './ui-manager';
 import { JourneyProgressionManager } from './journey-progression-manager';
 import { TakeoffCutsceneManager } from './takeoff-cutscene';
+import { profileRepo } from '@draconia/db';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -42,9 +45,13 @@ export interface GameStartConfig {
 export interface GameStartState {
   isInitialized: boolean;
   isShowingSplash: boolean;
+  isShowingProfileSelection: boolean;
+  isShowingNameEntry: boolean;
   isShowingDraconiaMenu: boolean;
   isJourneyStarted: boolean;
-  currentPhase: 'splash' | 'draconia' | 'journey' | 'complete';
+  currentPhase: 'splash' | 'profile-selection' | 'name-entry' | 'draconia' | 'journey' | 'complete';
+  selectedProfileId?: string;
+  selectedSlotNumber?: 1 | 2 | 3;
 }
 
 /**
@@ -58,6 +65,8 @@ export class GameStartManager {
 
   // Systems
   private splashScreenManager: SplashScreenManager | null = null;
+  private profileSelectionManager: ProfileSelectionManager | null = null;
+  private profileNameEntryManager: ProfileNameEntryManager | null = null;
   private draconiaMenuManager: DraconiaMenuManager | null = null;
   private migrationAdapter: MigrationAdapter | null = null;
   private landManager: LandManager | null = null;
@@ -107,6 +116,8 @@ export class GameStartManager {
     this.state = {
       isInitialized: false,
       isShowingSplash: false,
+      isShowingProfileSelection: false,
+      isShowingNameEntry: false,
       isShowingDraconiaMenu: false,
       isJourneyStarted: false,
       currentPhase: 'splash',
@@ -138,6 +149,22 @@ export class GameStartManager {
 
       // Get responsive manager for use by all managers
       const responsiveManager = this.migrationAdapter.getResponsiveManager();
+
+      // Initialize profile managers (always available)
+      this.profileSelectionManager = new ProfileSelectionManager(this.app, responsiveManager, {
+        onProfileSelected: (profileId, slotNumber) => this.onProfileSelected(profileId, slotNumber),
+        onNewProfile: (slotNumber) => this.onNewProfile(slotNumber),
+        onCopy: () => console.log('Copy profile (not yet implemented)'),
+        onErase: () => console.log('Erase profile (not yet implemented)'),
+        onOptions: () => console.log('Options (not yet implemented)'),
+        onCancel: () => console.log('Cancel (not yet implemented)'),
+        onTestJourney: () => this.onTestJourney(),
+      });
+
+      this.profileNameEntryManager = new ProfileNameEntryManager(this.app, responsiveManager, {
+        onNameConfirmed: (name, slotNumber) => this.onNameConfirmed(name, slotNumber),
+        onCancel: () => this.onNameEntryCancel(),
+      });
 
       // Create splash screen if enabled
       if (this.config.showSplashScreen) {
@@ -189,6 +216,16 @@ export class GameStartManager {
       }
     }
 
+    // Update profile selection if showing
+    if (this.state.isShowingProfileSelection && this.profileSelectionManager) {
+      this.profileSelectionManager.update(deltaTime);
+    }
+
+    // Update profile name entry if showing
+    if (this.state.isShowingNameEntry && this.profileNameEntryManager) {
+      this.profileNameEntryManager.update(deltaTime);
+    }
+
     // Update Draconia menu if showing
     if (this.state.isShowingDraconiaMenu && this.draconiaMenuManager) {
       this.draconiaMenuManager.update(deltaTime);
@@ -214,13 +251,26 @@ export class GameStartManager {
 
     this.state.isShowingSplash = false;
 
-    // Show Draconia menu if enabled
-    if (this.config.showDraconiaMenu) {
-      await this.showDraconiaMenu();
-    } else {
-      // Skip Draconia menu, go directly to journey
-      await this.startJourney();
+    // Show profile selection (new flow: Splash → Profile → Draconia → Journey)
+    await this.showProfileSelection();
+  }
+
+  /**
+   * Show profile selection screen
+   */
+  private async showProfileSelection(): Promise<void> {
+    console.log('👤 Game Start: Showing profile selection...');
+
+    if (!this.profileSelectionManager) {
+      console.error('❌ Profile selection manager not initialized');
+      return;
     }
+
+    await this.profileSelectionManager.show();
+    this.state.isShowingProfileSelection = true;
+    this.state.currentPhase = 'profile-selection';
+
+    console.log('👤 Game Start: Profile selection shown');
   }
 
   /**
@@ -259,6 +309,145 @@ export class GameStartManager {
   }
 
   /**
+   * Handle profile selection (existing profile selected)
+   */
+  private async onProfileSelected(profileId: string, slotNumber: 1 | 2 | 3): Promise<void> {
+    console.log(`👤 Game Start: Profile selected - ID: ${profileId}, Slot: ${slotNumber}`);
+
+    this.state.isShowingProfileSelection = false;
+    this.state.selectedProfileId = profileId;
+    this.state.selectedSlotNumber = slotNumber;
+
+    // Hide profile selection
+    if (this.profileSelectionManager) {
+      this.profileSelectionManager.hide();
+    }
+
+    // Load profile from database
+    try {
+      const profile = await profileRepo.loadProfileBySlot(slotNumber);
+      if (profile) {
+        console.log(`✅ Profile loaded: ${profile.dragonName} (Ward ${profile.currentWardNumber})`);
+        // TODO: Apply profile data to game state (arcana, inventory, progress, etc.)
+      }
+    } catch (error) {
+      console.error('❌ Failed to load profile:', error);
+    }
+
+    // Show Draconia menu if enabled
+    if (this.config.showDraconiaMenu) {
+      await this.showDraconiaMenu();
+    } else {
+      // Skip Draconia menu, go directly to journey
+      await this.startJourney();
+    }
+  }
+
+  /**
+   * Handle new profile selection (empty slot selected)
+   */
+  private async onNewProfile(slotNumber: 1 | 2 | 3): Promise<void> {
+    console.log(`👤 Game Start: New profile selected - Slot: ${slotNumber}`);
+
+    this.state.isShowingProfileSelection = false;
+    this.state.selectedSlotNumber = slotNumber;
+
+    // Hide profile selection
+    if (this.profileSelectionManager) {
+      this.profileSelectionManager.hide();
+    }
+
+    // Show name entry screen
+    await this.showNameEntry(slotNumber);
+  }
+
+  /**
+   * Show name entry screen
+   */
+  private async showNameEntry(slotNumber: 1 | 2 | 3): Promise<void> {
+    console.log(`✏️ Game Start: Showing name entry for slot ${slotNumber}...`);
+
+    if (!this.profileNameEntryManager) {
+      console.error('❌ Profile name entry manager not initialized');
+      return;
+    }
+
+    await this.profileNameEntryManager.show(slotNumber);
+    this.state.isShowingNameEntry = true;
+    this.state.currentPhase = 'name-entry';
+
+    console.log('✏️ Game Start: Name entry shown');
+  }
+
+  /**
+   * Handle name confirmation (new profile created)
+   */
+  private async onNameConfirmed(name: string, slotNumber: 1 | 2 | 3): Promise<void> {
+    console.log(`✅ Game Start: Name confirmed - "${name}" for slot ${slotNumber}`);
+
+    this.state.isShowingNameEntry = false;
+
+    // Hide name entry
+    if (this.profileNameEntryManager) {
+      this.profileNameEntryManager.hide();
+    }
+
+    // Create new profile in database
+    try {
+      const profileId = await profileRepo.createProfile(slotNumber, name);
+      this.state.selectedProfileId = profileId;
+      console.log(`✅ Profile created: ${name} (ID: ${profileId})`);
+    } catch (error) {
+      console.error('❌ Failed to create profile:', error);
+      // On error, go back to profile selection
+      await this.showProfileSelection();
+      return;
+    }
+
+    // Show Draconia menu if enabled
+    if (this.config.showDraconiaMenu) {
+      await this.showDraconiaMenu();
+    } else {
+      // Skip Draconia menu, go directly to journey
+      await this.startJourney();
+    }
+  }
+
+  /**
+   * Handle name entry cancel (back to profile selection)
+   */
+  private async onNameEntryCancel(): Promise<void> {
+    console.log('❌ Game Start: Name entry cancelled');
+
+    this.state.isShowingNameEntry = false;
+
+    // Hide name entry
+    if (this.profileNameEntryManager) {
+      this.profileNameEntryManager.hide();
+    }
+
+    // Show profile selection again
+    await this.showProfileSelection();
+  }
+
+  /**
+   * Handle test journey button (skip profile logic, go to Draconia)
+   */
+  private async onTestJourney(): Promise<void> {
+    console.log('🧪 TEST: Going to Draconia menu (bypassing profiles)...');
+
+    this.state.isShowingProfileSelection = false;
+
+    // Hide profile selection
+    if (this.profileSelectionManager) {
+      this.profileSelectionManager.hide();
+    }
+
+    // Show Draconia menu
+    await this.showDraconiaMenu();
+  }
+
+  /**
    * Start the journey systems
    */
   async startJourney(): Promise<void> {
@@ -292,14 +481,9 @@ export class GameStartManager {
       // this.hpBarTest = new HPBarDesignTest(this.app, this.assetManager);
       // await this.hpBarTest.initialize();
 
-      // Initialize Entity Manager with Responsive Manager and Health Bar Manager
-      const healthBarManager = this.migrationAdapter.getHealthBarManager();
-      this.entityManager = new EntityManager(
-        this.app,
-        this.assetManager,
-        responsiveManager,
-        healthBarManager,
-      );
+      // Initialize Entity Manager
+      // HP bars now managed by UIManager (UI elements, not entity logic)
+      this.entityManager = new EntityManager(this.app, this.assetManager, responsiveManager);
 
       // Create dragon protagonist
       // Position and scale are handled internally using game world coordinates
@@ -307,19 +491,21 @@ export class GameStartManager {
         visible: true,
       });
 
-      // Create health bar for dragon
-      this.entityManager.createDragonHealthBar();
-
       // Start journey for dragon
       const dragon = this.entityManager.getDragonProtagonist();
       if (dragon) {
         await dragon.enterLand('land1_steppe');
       }
 
-      // Initialize UI Manager (journey controls, top bar, etc.)
+      // Initialize UI Manager (journey controls, top bar, HP bars, etc.)
+      // UIManager creates and owns HealthBarManager - proper UI hierarchy
       this.uiManager = new UIManager(this.app, this.assetManager, responsiveManager);
       await this.uiManager.initialize();
       this.uiManager.setLandManager(this.landManager); // Connect UI to land manager
+      this.uiManager.setDragonProtagonist(dragon!); // Connect UI to dragon for HP bar tracking
+
+      // Create dragon health bar (managed by UI Manager)
+      this.uiManager.createDragonHealthBar();
 
       // Initialize Journey Progression Manager (distance tracking, ward progression)
       this.journeyProgressionManager = new JourneyProgressionManager();
@@ -334,12 +520,17 @@ export class GameStartManager {
       this.takeoffCutsceneManager.setJourneyProgression(this.journeyProgressionManager);
       this.takeoffCutsceneManager.setUIManager(this.uiManager);
       this.takeoffCutsceneManager.setEntityManager(this.entityManager);
+      // Inject topbar container so cutscene can control zoom/pan
+      const topbarContainer = (this.uiManager as any).topbarContainer;
+      if (topbarContainer) {
+        this.takeoffCutsceneManager.setTopbarContainer(topbarContainer);
+      }
 
-      // Start the journey update loop
-      this.startJourneyUpdateLoop();
-
-      // Start takeoff cutscene
+      // Start takeoff cutscene BEFORE update loop (so UI/HP bar hide happens first)
       this.takeoffCutsceneManager.start();
+
+      // Start the journey update loop (after cutscene state is set)
+      this.startJourneyUpdateLoop();
 
       this.state.isJourneyStarted = true;
       this.state.currentPhase = 'complete';
@@ -408,6 +599,16 @@ export class GameStartManager {
       this.splashScreenManager.handleResize();
     }
 
+    // Update profile selection if visible
+    if (this.profileSelectionManager) {
+      this.profileSelectionManager.handleResize();
+    }
+
+    // Update profile name entry if visible
+    if (this.profileNameEntryManager) {
+      this.profileNameEntryManager.handleResize();
+    }
+
     // Update Draconia menu if visible
     if (this.draconiaMenuManager) {
       this.draconiaMenuManager.handleResize();
@@ -428,6 +629,16 @@ export class GameStartManager {
     if (this.splashScreenManager) {
       this.splashScreenManager.destroy();
       this.splashScreenManager = null;
+    }
+
+    if (this.profileSelectionManager) {
+      this.profileSelectionManager.destroy();
+      this.profileSelectionManager = null;
+    }
+
+    if (this.profileNameEntryManager) {
+      this.profileNameEntryManager.destroy();
+      this.profileNameEntryManager = null;
     }
 
     if (this.draconiaMenuManager) {
@@ -470,9 +681,13 @@ export class GameStartManager {
 
     this.state.isInitialized = false;
     this.state.isShowingSplash = false;
+    this.state.isShowingProfileSelection = false;
+    this.state.isShowingNameEntry = false;
     this.state.isShowingDraconiaMenu = false;
     this.state.isJourneyStarted = false;
     this.state.currentPhase = 'splash';
+    this.state.selectedProfileId = undefined;
+    this.state.selectedSlotNumber = undefined;
 
     console.log('🎮 Game Start: Destroyed');
   }
@@ -514,12 +729,11 @@ export class GameStartManager {
         const dragon = this.entityManager.getDragonProtagonist();
         if (dragon) {
           dragon.update(deltaTime);
-          // Update HP bar position to follow dragon
-          this.entityManager.updateDragonHealthBarPosition();
+          // HP bar position is now updated by UIManager.update()
         }
       }
 
-      // Update UI Manager
+      // Update UI Manager (handles HP bar position updates)
       if (this.uiManager) {
         this.uiManager.update(deltaTime);
       }

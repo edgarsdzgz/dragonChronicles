@@ -30,6 +30,8 @@ export interface ProfileSelectionConfig {
   onCopy?: () => void;
   onErase?: () => void;
   onOptions?: () => void;
+  onCancel?: () => void;
+  onTestJourney?: () => void; // Test button to start journey directly
 }
 
 interface ProfileSelectionState {
@@ -373,7 +375,7 @@ export class ProfileSelectionManager {
   }
 
   /**
-   * Create buttons (Copy, Erase, Options)
+   * Create buttons (Copy, Erase, Options, Test Journey)
    */
   private createButtons(scale: number): void {
     const buttonWidth = 150 * scale;
@@ -420,6 +422,51 @@ export class ProfileSelectionManager {
         height: buttonHeight,
       });
     }
+
+    // Add test journey button (larger, centered below other buttons)
+    const testButtonWidth = 300 * scale;
+    const testButtonHeight = 60 * scale;
+    const testButtonY = startY + 100 * scale;
+
+    const testGraphics = new Graphics();
+    testGraphics.roundRect(0, 0, testButtonWidth, testButtonHeight, 8 * scale);
+    testGraphics.fill(0xff6600); // Orange for visibility
+    testGraphics.x = centerX - testButtonWidth / 2;
+    testGraphics.y = testButtonY;
+    testGraphics.eventMode = 'static';
+    testGraphics.cursor = 'pointer';
+
+    const testText = new Text({
+      text: 'TEST: Start Journey',
+      style: {
+        fontFamily: this.config.fontFamily,
+        fontSize: 24 * scale,
+        fill: 0xffffff,
+        fontWeight: 'bold',
+      },
+    });
+    testText.anchor.set(0.5);
+    testText.x = centerX;
+    testText.y = testButtonY + testButtonHeight / 2;
+
+    // Add click handler
+    testGraphics.on('pointerdown', () => {
+      console.log('🧪 TEST: Starting journey directly...');
+      this.config.onTestJourney?.();
+    });
+
+    this.container.addChild(testGraphics);
+    this.container.addChild(testText);
+
+    this.buttons.push({
+      id: 'test-journey',
+      graphics: testGraphics,
+      text: testText,
+      x: centerX - testButtonWidth / 2,
+      y: testButtonY,
+      width: testButtonWidth,
+      height: testButtonHeight,
+    });
   }
 
   /**
