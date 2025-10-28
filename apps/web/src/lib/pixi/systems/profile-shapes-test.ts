@@ -978,8 +978,8 @@ export class ProfileShapesTestManager {
       particle.graphics.x += particle.velocityX;
       particle.graphics.y += particle.velocityY;
 
-      // Decrease life very fast so particles barely travel 10px upward
-      particle.life -= 0.12 * deltaTime; // Max ~6-8px travel at 60fps
+      // Decrease life very fast so particles barely travel 5px upward
+      particle.life -= 0.18 * deltaTime; // Max ~5px travel at 60fps
 
       // Fade out with smooth curve
       particle.graphics.alpha = Math.max(0, particle.life * 0.7);
