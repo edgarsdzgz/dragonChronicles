@@ -505,6 +505,17 @@ export class GameStartManager {
         await dragon.enterLand('land1_steppe');
       }
 
+      // Create and start enemy manager
+      await this.entityManager.createEnemyManager({
+        maxEnemies: 10,
+        spawnInterval: 3000, // Spawn every 3 seconds
+      });
+
+      const enemyManager = this.entityManager.getEnemyManager();
+      if (enemyManager) {
+        enemyManager.start(); // Start automatic spawning
+      }
+
       // Initialize UI Manager (journey controls, top bar, HP bars, etc.)
       // UIManager creates and owns HealthBarManager - proper UI hierarchy
       this.uiManager = new UIManager(this.app, this.assetManager, responsiveManager);

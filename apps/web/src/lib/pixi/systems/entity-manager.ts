@@ -3,14 +3,15 @@
  *
  * Centralizes creation and management of all game entities (dragon, enemies, etc.).
  * Ensures single responsibility and prevents duplicate entity creation.
- * Delegates health bar creation to HealthBarManager.
+ * HP bars are managed by UIManager (UI elements, not entity logic).
  */
 
 import type { Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { DragonProtagonistManager } from './dragon-protagonist';
-import { HealthBarManager } from './health-bar-manager';
+import { EnemyManager } from './enemy-manager';
 import type { ResponsiveManager } from './responsive-manager';
+import { ItemInventory, SeededRNG, getItemsByRarity, type ItemRarity } from '@draconia/sim';
 
 export interface EntityManagerConfig {
   enableHealthBars?: boolean;
@@ -22,14 +23,13 @@ export interface EntityManagerConfig {
  * Single source of truth for entity creation and lifecycle management.
  * Follows the Single Responsibility Principle by:
  * - Managing entity creation (not rendering)
- * - Delegating health bars to HealthBarManager
+ * - HP bars managed by UIManager (UI elements, not entity logic)
  * - Providing clean API for entity access
  */
 export class EntityManager {
   private app: Application;
   private assetManager: AssetManager;
   private responsiveManager: ResponsiveManager;
-  private healthBarManager: HealthBarManager | null = null;
   private config: EntityManagerConfig;
   private resizeCallback: (() => void) | null = null;
 
@@ -38,22 +38,29 @@ export class EntityManager {
 
   // Entity collections (for multiple entities)
   private enemies: Map<string, unknown> = new Map();
+  private enemyManager: EnemyManager | null = null;
+
+  // Item system (Phase 1: simple drops)
+  private itemInventory: ItemInventory = new ItemInventory();
+  private dropRNG: SeededRNG;
 
   constructor(
     app: Application,
     assetManager: AssetManager,
     responsiveManager: ResponsiveManager,
-    healthBarManager?: HealthBarManager,
     config: EntityManagerConfig = {},
+    profileId: string = 'default-profile', // TODO: Get from actual profile system
   ) {
     this.app = app;
     this.assetManager = assetManager;
     this.responsiveManager = responsiveManager;
-    this.healthBarManager = healthBarManager || null;
     this.config = {
       enableHealthBars: true,
       ...config,
     };
+
+    // Initialize item drop RNG (seeded for anti-save-scum)
+    this.dropRNG = new SeededRNG(profileId);
 
     // Subscribe to responsive manager resize events
     this.resizeCallback = () => this.handleResize();
@@ -105,126 +112,35 @@ export class EntityManager {
   }
 
   /**
-   * Create health bar for dragon protagonist
-   * Delegates to HealthBarManager
+   * Create and initialize the enemy manager
    */
-  createDragonHealthBar(): void {
-    if (!this.config.enableHealthBars || !this.healthBarManager) {
-      return;
+  async createEnemyManager(config?: {
+    maxEnemies?: number;
+    spawnInterval?: number;
+  }): Promise<EnemyManager> {
+    // Return existing instance if already created
+    if (this.enemyManager) {
+      console.log('🎯 Entity Manager: Enemy manager already exists, returning existing instance');
+      return this.enemyManager;
     }
 
-    if (!this.dragonProtagonist) {
-      console.warn('🎯 Entity Manager: Cannot create health bar - dragon not initialized');
-      return;
-    }
+    console.log('🎯 Entity Manager: Creating enemy manager...');
 
-    const sprite = this.dragonProtagonist.getDragonSprite();
-    if (!sprite) {
-      console.warn('🎯 Entity Manager: Cannot create health bar - dragon sprite not ready');
-      return;
-    }
+    // Create enemy manager
+    this.enemyManager = new EnemyManager(this.app, this.responsiveManager, config);
 
-    const state = this.dragonProtagonist.getState();
+    await this.enemyManager.initialize();
 
-    // Calculate HP bar offset using game world coordinates
-    // Dragon: 128px sprite * 0.8 scale = 102.4px visual width, half = 51.2px
-    // HP bar: Arc from 120° to 240° with 50px radius
-    //   - Rightmost point of arc is at 120° = radius * cos(120°) = -radius/2 from center
-    // Gap: 8px desired spacing at baseline
-    const gameWorldScale = this.responsiveManager.getGameWorldScale();
-    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
-    const hpBarRadius = 50; // Baseline radius
-    const desiredGap = 8; // Baseline gap in pixels
-    // Offset = -(dragon half-width + gap - HP bar rightmost extent)
-    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
+    console.log('✅ Entity Manager: Enemy manager created');
 
-    // Create health bar to the left of dragon at head level
-    // Offset accounts for dragon size, HP bar size, and desired gap - all scaled uniformly
-    this.healthBarManager.createHealthBar(
-      'dragon-protagonist',
-      sprite.x + hpBarOffsetX,
-      sprite.y + 1, // Raised ~1.75% total (19px up from original +20)
-      state.maxHealth,
-      state.health,
-      // Using default classic-green palette
-    );
-
-    console.log('✅ Entity Manager: Dragon health bar created');
+    return this.enemyManager;
   }
 
   /**
-   * Update dragon health bar position
+   * Get the enemy manager instance
    */
-  updateDragonHealthBarPosition(): void {
-    if (!this.config.enableHealthBars || !this.healthBarManager || !this.dragonProtagonist) {
-      return;
-    }
-
-    const sprite = this.dragonProtagonist.getDragonSprite();
-    if (!sprite) return;
-
-    // Calculate HP bar offset using game world coordinates (same as creation)
-    const gameWorldScale = this.responsiveManager.getGameWorldScale();
-    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
-    const hpBarRadius = 50; // Baseline radius
-    const desiredGap = 8; // Baseline gap in pixels
-    // Offset accounts for arc geometry: rightmost point is at 120° = -radius/2 from center
-    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
-
-    // Keep HP bar positioned properly (same as creation)
-    this.healthBarManager.setHealthBarPosition(
-      'dragon-protagonist',
-      sprite.x + hpBarOffsetX,
-      sprite.y + 1,
-    );
-  }
-
-  /**
-   * Update dragon health bar value
-   */
-  updateDragonHealth(health: number, maxHealth: number): void {
-    if (!this.config.enableHealthBars || !this.healthBarManager) {
-      return;
-    }
-
-    this.healthBarManager.updateHealthBar('dragon-protagonist', health, maxHealth);
-  }
-
-  /**
-   * Enter a land with the dragon
-   */
-  async enterLandWithDragon(landId: string): Promise<void> {
-    if (!this.dragonProtagonist) {
-      console.warn('🎯 Entity Manager: Cannot enter land - dragon not created');
-      return;
-    }
-
-    await this.dragonProtagonist.enterLand(landId);
-
-    // Create health bar after dragon enters land
-    if (this.config.enableHealthBars) {
-      this.createDragonHealthBar();
-    }
-
-    console.log(`🎯 Entity Manager: Dragon entered land ${landId}`);
-  }
-
-  /**
-   * Exit land with the dragon
-   */
-  exitLandWithDragon(): void {
-    if (!this.dragonProtagonist) {
-      return;
-    }
-
-    this.dragonProtagonist.exitLand();
-
-    // Remove health bar when dragon exits land
-    if (this.healthBarManager) {
-      this.healthBarManager.removeHealthBar('dragon-protagonist');
-    }
-
-    console.log('🎯 Entity Manager: Dragon exited land');
+  getEnemyManager(): EnemyManager | null {
+    return this.enemyManager;
   }
 
   /**
@@ -234,34 +150,23 @@ export class EntityManager {
     // Update dragon protagonist
     if (this.dragonProtagonist) {
       this.dragonProtagonist.update(deltaTime);
-
-      // Update health bar position to follow dragon
-      if (this.dragonProtagonist.isVisible()) {
-        this.updateDragonHealthBarPosition();
-      }
     }
 
-    // Update enemies (future)
-    // this.enemies.forEach(enemy => enemy.update(deltaTime));
+    // Update enemy manager
+    if (this.enemyManager) {
+      this.enemyManager.update(deltaTime);
+    }
   }
 
   /**
    * Handle resize events from ResponsiveManager
-   * Re-render HP bars at new scale and update positions
    */
   handleResize(): void {
     console.log('🎯 Entity Manager: Handling resize...');
 
-    // Re-render all HP bars with new gameWorldScale
-    if (this.healthBarManager) {
-      this.healthBarManager.rerender();
-      console.log('🎯 Entity Manager: Re-rendered HP bars with new scale');
-    }
-
-    // Update dragon health bar position immediately after dragon resizes
-    if (this.dragonProtagonist && this.dragonProtagonist.isVisible()) {
-      this.updateDragonHealthBarPosition();
-      console.log('🎯 Entity Manager: Updated dragon health bar position on resize');
+    // Update enemy manager
+    if (this.enemyManager) {
+      this.enemyManager.handleResize();
     }
   }
 
@@ -283,33 +188,58 @@ export class EntityManager {
   }
 
   /**
-   * Hide dragon health bar during cutscene
+   * Handle enemy death - roll for item drops
+   * Phase 1: Simple 15% drop chance, weighted by rarity
    */
-  hideDragonHealthBarForCutscene(): void {
-    if (!this.healthBarManager) {
-      return;
-    }
+  handleEnemyDeath(enemy: { type: string; landId: number; id?: number }): void {
+    console.log(`💀 Enemy died: ${enemy.type}`);
 
-    const healthBar = this.healthBarManager.getHealthBar('dragon-protagonist');
-    if (healthBar) {
-      healthBar.visible = false;
-      console.log('🎬 Entity Manager: Dragon health bar hidden for cutscene');
+    // 15% chance to drop an item
+    if (this.dropRNG.random() < 0.15) {
+      const item = this.selectRandomItem();
+
+      if (item) {
+        this.itemInventory.addItem(item.id);
+      }
     }
   }
 
   /**
-   * Show dragon health bar after cutscene
+   * Select random item using weighted rarity distribution
+   * Common: 50%, Uncommon: 30%, Rare: 15%, Epic: 4%, Legendary: 1%
    */
-  showDragonHealthBarAfterCutscene(): void {
-    if (!this.healthBarManager) {
-      return;
+  private selectRandomItem() {
+    const roll = this.dropRNG.random();
+
+    let targetRarity: ItemRarity;
+    if (roll < 0.5)
+      targetRarity = 1; // Common (50%)
+    else if (roll < 0.8)
+      targetRarity = 2; // Uncommon (30%)
+    else if (roll < 0.95)
+      targetRarity = 3; // Rare (15%)
+    else if (roll < 0.99)
+      targetRarity = 4; // Epic (4%)
+    else targetRarity = 5; // Legendary (1%)
+
+    // Get all items of that rarity
+    const itemsOfRarity = getItemsByRarity(targetRarity);
+
+    if (itemsOfRarity.length === 0) {
+      console.warn(`⚠️  No items found for rarity ${targetRarity}`);
+      return null;
     }
 
-    const healthBar = this.healthBarManager.getHealthBar('dragon-protagonist');
-    if (healthBar) {
-      healthBar.visible = true;
-      console.log('🎬 Entity Manager: Dragon health bar shown after cutscene');
-    }
+    // Pick random one
+    const index = this.dropRNG.randomInt(0, itemsOfRarity.length - 1);
+    return itemsOfRarity[index];
+  }
+
+  /**
+   * Get item inventory (for UI and database saving)
+   */
+  getItemInventory(): ItemInventory {
+    return this.itemInventory;
   }
 
   /**
@@ -322,16 +252,19 @@ export class EntityManager {
       this.resizeCallback = null;
     }
 
+    // Destroy enemy manager
+    if (this.enemyManager) {
+      this.enemyManager.destroy();
+      this.enemyManager = null;
+    }
+
     // Destroy dragon protagonist
     if (this.dragonProtagonist) {
       this.dragonProtagonist.destroy();
       this.dragonProtagonist = null;
     }
 
-    // Remove dragon health bar
-    if (this.healthBarManager) {
-      this.healthBarManager.removeHealthBar('dragon-protagonist');
-    }
+    // HP bar cleanup is handled by UIManager (UI owns all health bars)
 
     // Destroy all enemies (future)
     this.enemies.clear();
