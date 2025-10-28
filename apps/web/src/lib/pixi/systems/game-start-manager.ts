@@ -431,10 +431,10 @@ export class GameStartManager {
   }
 
   /**
-   * Handle test journey button (skip all menus, start journey directly)
+   * Handle test journey button (skip profile logic, show Draconia)
    */
   private async onTestJourney(): Promise<void> {
-    console.log('🧪 TEST: Starting journey directly (bypassing profiles and menus)...');
+    console.log('🧪 TEST: Going to Draconia menu (bypassing profiles)...');
 
     this.state.isShowingProfileSelection = false;
 
@@ -443,8 +443,8 @@ export class GameStartManager {
       this.profileSelectionManager.hide();
     }
 
-    // Skip all menus and start journey immediately
-    await this.startJourney();
+    // Show Draconia menu
+    await this.showDraconiaMenu();
   }
 
   /**
