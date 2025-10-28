@@ -15,6 +15,7 @@ interface MagicalParticle {
   velocityY: number;
   gemX: number; // Original gem X position
   gemY: number; // Original gem Y position
+  active: boolean; // Whether particle is currently in use
 }
 
 /**
@@ -27,6 +28,16 @@ interface GemData {
   isLit: boolean;
   isHovered: boolean;
   hoverGlow?: Container; // Glow for unlit gem on hover
+}
+
+/**
+ * Profile container data for hover interactions
+ */
+interface ProfileContainerData {
+  nameplate: Container;
+  attachment?: Container;
+  gems: GemData[];
+  isHovered: boolean;
 }
 
 export interface ProfileShapeConfig {
@@ -562,12 +573,16 @@ export function createCenterLine(
 export class ProfileShapesTestManager {
   private app: Application;
   private container: Container;
-  private particles: MagicalParticle[] = [];
+  private particlePool: MagicalParticle[] = [];
+  private activeParticles: MagicalParticle[] = [];
   private gems: GemData[] = [];
+  private profileContainers: ProfileContainerData[] = [];
   private particleContainer: Container;
   private updateBound: (ticker: Ticker) => void;
   private timeAccumulator: number = 0;
   private hoverParticleAccumulator: number = 0;
+
+  private readonly PARTICLE_POOL_SIZE = 200; // Pre-allocate 200 particles
 
   constructor(app: Application) {
     this.app = app;
@@ -580,9 +595,64 @@ export class ProfileShapesTestManager {
     setZIndex(this.particleContainer, Z_LAYERS.UI + 1);
     this.app.stage.addChild(this.particleContainer);
 
+    // Pre-create particle pool
+    this.initializeParticlePool();
+
     // Bind update method and add to ticker
     this.updateBound = this.update.bind(this);
     this.app.ticker.add(this.updateBound);
+  }
+
+  /**
+   * Pre-creates particle pool to avoid constant allocation/deallocation
+   */
+  private initializeParticlePool(): void {
+    for (let i = 0; i < this.PARTICLE_POOL_SIZE; i++) {
+      const particleContainer = this.createParticleGraphics();
+      particleContainer.visible = false;
+      this.particleContainer.addChild(particleContainer);
+
+      this.particlePool.push({
+        graphics: particleContainer,
+        life: 0,
+        velocityX: 0,
+        velocityY: 0,
+        gemX: 0,
+        gemY: 0,
+        active: false,
+      });
+    }
+  }
+
+  /**
+   * Creates the graphics for a single particle (reusable)
+   */
+  private createParticleGraphics(): Container {
+    const particleContainer = new Container();
+
+    // Base size - will be scaled when spawned
+    const baseSize = 1;
+
+    // Base orb
+    const particle = new Graphics();
+    particle.circle(0, 0, baseSize);
+    particle.fill({ color: 0xffffff, alpha: 0.7 });
+    particleContainer.addChild(particle);
+
+    // Highlight
+    const highlight = new Graphics();
+    const highlightOffset = -baseSize * 0.35;
+    highlight.ellipse(highlightOffset * 0.3, highlightOffset, baseSize * 0.4, baseSize * 0.3);
+    highlight.fill({ color: 0xffffff, alpha: 0.6 });
+    particleContainer.addChild(highlight);
+
+    // Bright spot
+    const brightSpot = new Graphics();
+    brightSpot.circle(highlightOffset * 0.5, highlightOffset * 0.8, baseSize * 0.2);
+    brightSpot.fill({ color: 0xffffff, alpha: 0.8 });
+    particleContainer.addChild(brightSpot);
+
+    return particleContainer;
   }
 
   displayTestShapes(): void {
@@ -745,106 +815,86 @@ export class ProfileShapesTestManager {
     gemContainer.eventMode = 'static';
     gemContainer.cursor = 'pointer';
 
-    // Create hover glow for unlit gems (but don't add it yet)
+    // Create hover glow for unlit gems (pre-create and add, start at alpha 0)
     if (!isLit) {
       const hoverGlow = new Container();
       const glowColor = lightenColor(color, 0.3);
 
-      // Very soft glow layers for unlit gems
+      // Stronger glow layers for unlit gems on hover
       const outerGlow = new Graphics();
       outerGlow.circle(0, 0, radius * 1.4);
-      outerGlow.fill({ color: glowColor, alpha: 0.06 });
+      outerGlow.fill({ color: glowColor, alpha: 0.18 }); // Tripled from 0.06
       hoverGlow.addChild(outerGlow);
 
       const middleGlow = new Graphics();
       middleGlow.circle(0, 0, radius * 1.2);
-      middleGlow.fill({ color: glowColor, alpha: 0.1 });
+      middleGlow.fill({ color: glowColor, alpha: 0.3 }); // Tripled from 0.1
       hoverGlow.addChild(middleGlow);
 
       const innerGlow = new Graphics();
       innerGlow.circle(0, 0, radius * 1.05);
-      innerGlow.fill({ color: glowColor, alpha: 0.15 });
+      innerGlow.fill({ color: glowColor, alpha: 0.45 }); // Tripled from 0.15
       hoverGlow.addChild(innerGlow);
 
       hoverGlow.alpha = 0; // Start invisible
       gemData.hoverGlow = hoverGlow;
+
+      // Pre-add to container but keep invisible
+      gemContainer.addChildAt(hoverGlow, 0);
     }
 
-    // Hover events
+    // Hover events (glow is pre-added, just fade in/out)
     gemContainer.on('pointerenter', () => {
       gemData.isHovered = true;
-
-      // For unlit gems, add the hover glow
-      if (!isLit && gemData.hoverGlow) {
-        gemContainer.addChildAt(gemData.hoverGlow, 0); // Add behind gem
-      }
     });
 
     gemContainer.on('pointerleave', () => {
       gemData.isHovered = false;
-
-      // For unlit gems, remove the hover glow
-      if (!isLit && gemData.hoverGlow) {
-        gemData.hoverGlow.removeFromParent();
-      }
     });
 
     this.gems.push(gemData);
   }
 
   /**
-   * Spawns a magical particle from a gem
+   * Spawns a magical particle from a gem using object pool
    */
   private spawnParticle(gemX: number, gemY: number, color: number, radius: number): void {
+    // Find inactive particle from pool
+    const particle = this.particlePool.find((p) => !p.active);
+    if (!particle) return; // Pool exhausted
+
     // Vary particle size (60% to 100% of base size)
-    const baseSizeMultiplier = 0.12; // Slightly smaller base size
+    const baseSizeMultiplier = 0.12;
     const sizeVariation = 0.6 + Math.random() * 0.4;
     const particleSize = radius * baseSizeMultiplier * sizeVariation;
 
-    const particleContainer = new Container();
+    // Set particle color (first child is the base orb)
+    const baseOrb = particle.graphics.children[0] as Graphics;
+    baseOrb.tint = lightenColor(color, 0.4);
 
-    // Base orb - main particle color
-    const particle = new Graphics();
-    particle.circle(0, 0, particleSize);
-    particle.fill({ color: lightenColor(color, 0.4), alpha: 0.7 });
-    particleContainer.addChild(particle);
+    // Scale particle to desired size
+    particle.graphics.scale.set(particleSize);
 
-    // Add highlight to make it look like a 3D orb
-    const highlight = new Graphics();
-    const highlightOffset = -particleSize * 0.35;
-    highlight.ellipse(
-      highlightOffset * 0.3,
-      highlightOffset,
-      particleSize * 0.4,
-      particleSize * 0.3,
-    );
-    highlight.fill({ color: 0xffffff, alpha: 0.6 });
-    particleContainer.addChild(highlight);
-
-    // Smaller bright spot
-    const brightSpot = new Graphics();
-    brightSpot.circle(highlightOffset * 0.5, highlightOffset * 0.8, particleSize * 0.2);
-    brightSpot.fill({ color: 0xffffff, alpha: 0.8 });
-    particleContainer.addChild(brightSpot);
-
-    // Random starting position on the gem surface (not center)
+    // Random starting position on the gem surface
     const angle = Math.random() * Math.PI * 2;
-    const distance = radius * 0.7 + Math.random() * radius * 0.3; // Near/on surface
+    const distance = radius * 0.7 + Math.random() * radius * 0.3;
     const startX = gemX + Math.cos(angle) * distance;
     const startY = gemY + Math.sin(angle) * distance;
 
-    particleContainer.position.set(startX, startY);
-    this.particleContainer.addChild(particleContainer);
+    particle.graphics.position.set(startX, startY);
+    particle.graphics.visible = true;
+    particle.graphics.alpha = 0.7;
 
-    // Store particle data
-    this.particles.push({
-      graphics: particleContainer,
-      life: 1.0,
-      velocityX: (Math.random() - 0.5) * 0.3, // Slight horizontal drift
-      velocityY: -0.5 - Math.random() * 0.5, // Upward movement
-      gemX,
-      gemY,
-    });
+    // Reset particle data with variable lifespan (20% to 100% of max)
+    const lifespanVariation = 0.2 + Math.random() * 0.8;
+    particle.life = 1.0 * lifespanVariation;
+    particle.velocityX = (Math.random() - 0.5) * 0.3;
+    particle.velocityY = -0.5 - Math.random() * 0.5;
+    particle.gemX = gemX;
+    particle.gemY = gemY;
+    particle.active = true;
+
+    this.activeParticles.push(particle);
   }
 
   /**
@@ -900,7 +950,7 @@ export class ProfileShapesTestManager {
           const glowLayer = gem.container.children[i];
           if (glowLayer) {
             const baseAlpha = i === 0 ? 0.15 : i === 1 ? 0.22 : 0.3;
-            const hoverBoost = gem.isHovered ? 1.3 : 1.0; // Brighter on hover
+            const hoverBoost = gem.isHovered ? 1.8 : 1.0; // Much brighter on hover (was 1.3)
             glowLayer.alpha = baseAlpha * pulse * hoverBoost;
           }
         }
@@ -920,25 +970,25 @@ export class ProfileShapesTestManager {
       }
     }
 
-    // Update particles
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      const particle = this.particles[i];
+    // Update particles using pool
+    for (let i = this.activeParticles.length - 1; i >= 0; i--) {
+      const particle = this.activeParticles[i];
 
       // Update position
       particle.graphics.x += particle.velocityX;
       particle.graphics.y += particle.velocityY;
 
-      // Decrease life faster so particles fade closer to gem
-      particle.life -= 0.025 * deltaTime; // Increased from 0.01 to 0.025
+      // Decrease life very fast so particles barely travel 10px upward
+      particle.life -= 0.12 * deltaTime; // Max ~6-8px travel at 60fps
 
       // Fade out with smooth curve
       particle.graphics.alpha = Math.max(0, particle.life * 0.7);
 
-      // Remove dead particles
+      // Deactivate dead particles and return to pool
       if (particle.life <= 0) {
-        particle.graphics.removeFromParent();
-        particle.graphics.destroy({ children: true });
-        this.particles.splice(i, 1);
+        particle.graphics.visible = false;
+        particle.active = false;
+        this.activeParticles.splice(i, 1);
       }
     }
   }
@@ -947,11 +997,9 @@ export class ProfileShapesTestManager {
     // Remove ticker callback
     this.app.ticker.remove(this.updateBound);
 
-    // Clean up particles
-    for (const particle of this.particles) {
-      particle.graphics.destroy();
-    }
-    this.particles = [];
+    // Clean up particle pool (particles are already children of particleContainer)
+    this.particlePool = [];
+    this.activeParticles = [];
 
     this.particleContainer.removeFromParent();
     this.particleContainer.destroy({ children: true });
