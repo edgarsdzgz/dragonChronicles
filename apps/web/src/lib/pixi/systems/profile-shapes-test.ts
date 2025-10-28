@@ -581,8 +581,10 @@ export class ProfileShapesTestManager {
   private updateBound: (ticker: Ticker) => void;
   private timeAccumulator: number = 0;
   private hoverParticleAccumulator: number = 0;
+  private nextPoolIndex: number = 0;
 
-  private readonly PARTICLE_POOL_SIZE = 200; // Pre-allocate 200 particles
+  private readonly PARTICLE_POOL_SIZE = 100; // Reduced from 200
+  private readonly PARTICLE_SPAWN_INTERVAL = 0.3; // Slower spawn (was 0.15)
 
   constructor(app: Application) {
     this.app = app;
@@ -856,11 +858,24 @@ export class ProfileShapesTestManager {
   }
 
   /**
-   * Spawns a magical particle from a gem using object pool
+   * Spawns a magical particle from a gem using object pool with index-based search
    */
   private spawnParticle(gemX: number, gemY: number, color: number, radius: number): void {
-    // Find inactive particle from pool
-    const particle = this.particlePool.find((p) => !p.active);
+    // Use circular index to find next available particle (O(1) instead of O(n))
+    let attempts = 0;
+    let particle: MagicalParticle | null = null;
+
+    while (attempts < this.PARTICLE_POOL_SIZE) {
+      const candidate = this.particlePool[this.nextPoolIndex];
+      this.nextPoolIndex = (this.nextPoolIndex + 1) % this.PARTICLE_POOL_SIZE;
+
+      if (!candidate.active) {
+        particle = candidate;
+        break;
+      }
+      attempts++;
+    }
+
     if (!particle) return; // Pool exhausted
 
     // Vary particle size (60% to 100% of base size)
@@ -907,18 +922,14 @@ export class ProfileShapesTestManager {
     this.hoverParticleAccumulator += deltaTime;
 
     // Spawn particles from lit gems periodically
-    if (this.timeAccumulator > 0.15) {
-      // Spawn every ~0.15 seconds
+    if (this.timeAccumulator > this.PARTICLE_SPAWN_INTERVAL) {
       this.timeAccumulator = 0;
 
       for (const gem of this.gems) {
         if (!gem.isLit) continue;
 
-        // Spawn 1-2 particles per lit gem
-        const particleCount = Math.random() > 0.5 ? 2 : 1;
-        for (let i = 0; i < particleCount; i++) {
-          this.spawnParticle(gem.container.x, gem.container.y, gem.color, gem.radius);
-        }
+        // Spawn only 1 particle per gem (reduced from 1-2 for performance)
+        this.spawnParticle(gem.container.x, gem.container.y, gem.color, gem.radius);
       }
     }
 
@@ -978,8 +989,8 @@ export class ProfileShapesTestManager {
       particle.graphics.x += particle.velocityX;
       particle.graphics.y += particle.velocityY;
 
-      // Decrease life very fast so particles barely travel 5px upward
-      particle.life -= 0.18 * deltaTime; // Max ~5px travel at 60fps
+      // Decrease life extremely fast so particles barely travel 2-3px upward
+      particle.life -= 0.36 * deltaTime; // Max ~2-3px travel at 60fps
 
       // Fade out with smooth curve
       particle.graphics.alpha = Math.max(0, particle.life * 0.7);
