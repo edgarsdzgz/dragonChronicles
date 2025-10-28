@@ -26,7 +26,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     antialias: true, // Enable antialiasing for smoother sprites
     resolution: dpr,
     autoDensity: true,
-    background: 0x0d4f3c, // Draconia green background
+    background: 0x0d4f3c, // Draconia green background (matches splash screen, changes per land)
     resizeTo: canvas.parentElement ?? window,
   });
 
@@ -68,6 +68,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     showSplashScreen: true,
     showDraconiaMenu: true,
     autoStartJourney: false,
+    skipProfiles: true, // Skip profile selection for testing
   });
 
   // Initialize the game start sequence (splash -> menu -> journey)

@@ -40,6 +40,7 @@ export interface GameStartConfig {
     buttonTextColor?: number;
   };
   autoStartJourney?: boolean;
+  skipProfiles?: boolean; // Skip profile selection and go straight to Draconia
 }
 
 export interface GameStartState {
@@ -250,6 +251,13 @@ export class GameStartManager {
     console.log('🎮 Game Start: Splash screen complete');
 
     this.state.isShowingSplash = false;
+
+    // Skip profiles if configured (for testing)
+    if (this.config.skipProfiles) {
+      console.log('🧪 Skipping profiles, going to Draconia menu...');
+      await this.showDraconiaMenu();
+      return;
+    }
 
     // Show profile selection (new flow: Splash → Profile → Draconia → Journey)
     await this.showProfileSelection();
