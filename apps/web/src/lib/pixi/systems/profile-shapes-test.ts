@@ -38,6 +38,8 @@ interface ProfileContainerData {
   attachment?: Container;
   gems: GemData[];
   isHovered: boolean;
+  isSelected: boolean; // Only spawn particles if selected
+  isExtended: boolean; // Only extended attachments can be selected
 }
 
 export interface ProfileShapeConfig {
@@ -794,6 +796,30 @@ export class ProfileShapesTestManager {
     testUnlitGem.position.set(600, testGemY);
     this.container.addChild(testUnlitGem);
     this.registerGem(testUnlitGem, 0xffd700, testGemRadius, false); // Gold for hover testing
+
+    // Register extended profile container for selection (particles only spawn here)
+    const extendedProfileGems = [sapphireGemNameplate, unlitGem2]
+      .map((container) => this.gems.find((g) => g.container === container)!)
+      .filter(Boolean);
+
+    const extendedProfile: ProfileContainerData = {
+      nameplate: extendedNameplate,
+      attachment: extendedAttachment,
+      gems: extendedProfileGems,
+      isHovered: false,
+      isSelected: false, // Click to toggle
+      isExtended: true,
+    };
+
+    // Make extended attachment clickable to toggle particle spawning
+    extendedAttachment.eventMode = 'static';
+    extendedAttachment.cursor = 'pointer';
+    extendedAttachment.on('pointerdown', () => {
+      extendedProfile.isSelected = !extendedProfile.isSelected;
+      console.log('Extended profile selected:', extendedProfile.isSelected);
+    });
+
+    this.profileContainers.push(extendedProfile);
   }
 
   /**
@@ -921,39 +947,31 @@ export class ProfileShapesTestManager {
     this.timeAccumulator += deltaTime;
     this.hoverParticleAccumulator += deltaTime;
 
-    // Spawn particles from lit gems periodically
+    // Spawn particles ONLY for selected extended attachment profiles
     if (this.timeAccumulator > this.PARTICLE_SPAWN_INTERVAL) {
       this.timeAccumulator = 0;
 
-      for (const gem of this.gems) {
-        if (!gem.isLit) continue;
+      // Check if any profile is selected
+      const selectedProfile = this.profileContainers.find((p) => p.isSelected && p.isExtended);
 
-        // Spawn only 1 particle per gem (reduced from 1-2 for performance)
-        this.spawnParticle(gem.container.x, gem.container.y, gem.color, gem.radius);
-      }
-    }
+      if (selectedProfile) {
+        for (const gem of selectedProfile.gems) {
+          if (!gem.isLit) continue;
 
-    // Spawn very few particles from hovered unlit gems
-    if (this.hoverParticleAccumulator > 0.8) {
-      // Much slower spawn rate
-      this.hoverParticleAccumulator = 0;
-
-      for (const gem of this.gems) {
-        if (gem.isLit || !gem.isHovered) continue;
-
-        // Very rarely spawn a particle (20% chance)
-        if (Math.random() < 0.2) {
+          // Spawn only 1 particle per gem
           this.spawnParticle(gem.container.x, gem.container.y, gem.color, gem.radius);
         }
       }
     }
 
-    // Update glow effects
+    // No hover particles - only spawn for selected profiles
+
+    // Update glow effects - stronger idle glow for all gems
     for (const gem of this.gems) {
       if (gem.isLit) {
-        // Lit gems - pulse normally, breathe slower on hover
+        // Lit gems - pulse with stronger idle animation, even stronger on hover
         const pulseSpeed = gem.isHovered ? 1.0 : 2.0; // Slower breathing on hover
-        const pulseAmount = gem.isHovered ? 0.25 : 0.15; // Stronger pulse on hover
+        const pulseAmount = gem.isHovered ? 0.3 : 0.22; // Stronger pulse (was 0.25/0.15)
         const pulse = 1.0 + Math.sin(time * pulseSpeed) * pulseAmount;
 
         // Pulse the first 3 children (glow layers)
@@ -989,8 +1007,8 @@ export class ProfileShapesTestManager {
       particle.graphics.x += particle.velocityX;
       particle.graphics.y += particle.velocityY;
 
-      // Decrease life extremely fast so particles barely travel 2-3px upward
-      particle.life -= 0.36 * deltaTime; // Max ~2-3px travel at 60fps
+      // Decrease life fast - doubled lifespan for selected profile impact
+      particle.life -= 0.18 * deltaTime; // Max ~5px travel for selected profiles
 
       // Fade out with smooth curve
       particle.graphics.alpha = Math.max(0, particle.life * 0.7);
