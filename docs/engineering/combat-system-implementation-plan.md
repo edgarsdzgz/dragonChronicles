@@ -636,9 +636,10 @@ async startJourney(): Promise<void> {
   await this.entityManager.createCombatManager({
     dragonFireRate: 500, // 2 attacks/second
     dragonAttackRange: 1100,
-    dragonBaseDamage: 5,
+    dragonBaseDamage: 3, // UPDATED from 5
     enemyAttackRange: 300,
-    enemyBaseDamage: 5
+    enemyBaseDamageMin: 2, // UPDATED - variable damage
+    enemyBaseDamageMax: 5  // UPDATED - variable damage
   })
   const combatManager = this.entityManager.getCombatManager()
   if (combatManager) {
@@ -838,19 +839,60 @@ export class FloatingDamageManager {
 
 ---
 
-## 10. QUESTIONS FOR EXECUTOR
+## 10. EXECUTOR DECISIONS & SCALING CALCULATIONS
 
-1. **Combat Balance**: Are the current damage values (5 HP dragon damage, 5 HP enemy damage) correct? Or should we reference the GDD for different values?
+### Combat Balance ✅
 
-2. **Elemental System**: Should we implement elemental damage types now (Fire/Ice/Lightning from GDD) or keep it simple with flat damage for Phase 1?
+**Dragon Damage**: 3 HP (reduced from 5)
+**Enemy Damage**: 2-5 HP variable (not flat 5)
+**Enemy HP**: 10 HP baseline (Mantair starts with 13, reduce to 10)
 
-3. **Enemy Variety**: All enemies currently use Mantair sprite. When should we add different sprites and behaviors for swarm vs corsair?
+### Scaling Progression
 
-4. **Manual Abilities**: Should we plan for the 20% manual ability damage contribution now, or focus on 100% auto-combat first?
+**Scaling Rate**: Every 2.5km, enemies gain +X% to damage and health
+**Ward 1 Distance**: 2.2km (Sunwake Downs → First Horizon)
 
-5. **Arcana Integration**: Should arcana rewards display as floating UI elements, or integrate with the currency top bar?
+**Analysis**:
 
-6. **Testing Priority**: Which should we prioritize - unit tests for each system, or getting the full integration working first for playtesting?
+- Ward 1 ends at 2.2km
+- First scaling occurs at 2.5km (in Ward 2)
+- **No scaling happens within Ward 1**
+
+**Ward 1 Enemy Stats** (entire ward):
+
+- Damage: 2-5 HP (no change)
+- Health: 10 HP (no change)
+- Dragon Damage: 3 HP (no change)
+
+**Note**: The first enemy power increase will occur at 2.5km mark, which is early in Ward 2.
+
+**Proposed Scaling Rate**: +5% per interval
+
+- At 2.5km (Ward 2): 2.1-5.25 damage, 10.5 HP
+- At 5.0km (Ward 3): 2.2-5.5 damage, 11 HP
+- At 7.5km (Ward 4): 2.3-5.8 damage, 11.6 HP
+- And so on...
+
+### Other Decisions ✅
+
+1. **Elemental System**: Keep simple, no elements for Phase 1
+2. **Enemy Variety**: All use Mantair sprite, but build bestiary with different names/stats
+3. **Manual Abilities**: 100% auto-combat only (manual abilities later)
+4. **Arcana Display**: Update currency top bar, persist to profile for offline progression
+5. **Testing Priority**: Get it working for playtesting first (skip unit tests for now)
+
+### Profile Currency Storage ✅
+
+Profiles already have currency storage:
+
+```typescript
+currencies: {
+  arcana: 0,
+  gold: 0,
+}
+```
+
+**Action**: Integrate combat rewards with profile.currencies.arcana
 
 ---
 
@@ -867,4 +909,43 @@ Before implementation begins, confirm:
 
 ---
 
-**Executor, please review this plan and provide approval or feedback before I begin implementation.**
+## APPENDIX A: WARD 1 DISTANCE BREAKDOWN
+
+**Source**: [18_Region_R01_Horizon_Steppe.md](../tome/18_Region_R01_Horizon_Steppe.md)
+
+| Subzone              | Distance Range | Length    | Cumulative |
+| -------------------- | -------------- | --------- | ---------- |
+| Sunwake Downs        | 0.0 - 0.5 km   | 0.5km     | 0.5km      |
+| Waystone Mile        | 0.5 - 1.0 km   | 0.5km     | 1.0km      |
+| Skylark Flats        | 1.0 - 1.5 km   | 0.5km     | 1.5km      |
+| Longgrass Reach      | 1.5 - 1.8 km   | 0.3km     | 1.8km      |
+| Bluewind Shelf       | 1.8 - 2.0 km   | 0.2km     | 2.0km      |
+| Old Hoard Road       | 2.0 - 2.2 km   | 0.2km     | 2.2km      |
+| First Horizon (Boss) | 2.2+ km        | Boss Gate | End Ward 1 |
+
+**Ward 1 Total**: 2.2km
+**First Scaling**: 2.5km (occurs in Ward 2)
+
+---
+
+## APPENDIX B: BESTIARY PLANNING NOTES
+
+For Phase 1, all enemies use **Mantair Corsair sprite** but have different:
+
+- Base stats (damage, HP, speed)
+- Names (building lore-accurate bestiary)
+- Arcana rewards
+- Fire rates
+
+**Example Bestiary Entries** (all using same sprite):
+
+- **Mantair Corsair**: 10 HP, 3-5 damage, 0.03 arcana
+- **Steppe Harrier**: 8 HP, 2-4 damage, 0.02 arcana
+- **Wind Scout**: 6 HP, 2-3 damage, 0.01 arcana
+- **Sky Raider**: 12 HP, 4-5 damage, 0.04 arcana
+
+**Future**: Different sprites for swarm, tank, ranged enemy types
+
+---
+
+**STATUS: APPROVED BY EXECUTOR - READY FOR IMPLEMENTATION**
