@@ -847,31 +847,42 @@ export class FloatingDamageManager {
 **Enemy Damage**: 2-5 HP variable (not flat 5)
 **Enemy HP**: 10 HP baseline (Mantair starts with 13, reduce to 10)
 
-### Scaling Progression
+### Scaling Progression ✅
 
-**Scaling Rate**: Every 2.5km, enemies gain +X% to damage and health
-**Ward 1 Distance**: 2.2km (Sunwake Downs → First Horizon)
+**CORRECTED VALUES** (Approved by Executor):
 
-**Analysis**:
+- **Ward 1 Total Length**: 5km (0-5000m)
+- **Scaling Interval**: Every 500m (10 scaling bumps in Ward 1)
+- **Scaling Model**: Multiplicative ×1.05 compound growth
+- **Dragon Damage**: 3 HP (constant for Phase 1)
 
-- Ward 1 ends at 2.2km
-- First scaling occurs at 2.5km (in Ward 2)
-- **No scaling happens within Ward 1**
+**Scaling Formula**:
 
-**Ward 1 Enemy Stats** (entire ward):
+```typescript
+const scalingFactor = Math.pow(1.05, distanceMeters / 500);
+enemyHP = 10 * scalingFactor;
+enemyMinDamage = 2 * scalingFactor;
+enemyMaxDamage = 5 * scalingFactor;
+```
 
-- Damage: 2-5 HP (no change)
-- Health: 10 HP (no change)
-- Dragon Damage: 3 HP (no change)
+**Ward 1 Progression Table** (Multiplicative ×1.05 every 500m):
 
-**Note**: The first enemy power increase will occur at 2.5km mark, which is early in Ward 2.
+| Distance | HP   | Damage Range | TTK  | Notes                       |
+| -------- | ---- | ------------ | ---- | --------------------------- |
+| 0m       | 10.0 | 2.0 - 5.0    | 1.7s | Starting stats              |
+| 500m     | 10.5 | 2.1 - 5.3    | 1.8s | First bump                  |
+| 1000m    | 11.0 | 2.2 - 5.5    | 1.8s |                             |
+| 1500m    | 11.6 | 2.3 - 5.8    | 1.9s |                             |
+| 2000m    | 12.2 | 2.4 - 6.1    | 2.0s |                             |
+| 2500m    | 12.8 | 2.6 - 6.4    | 2.1s | Halfway through Ward 1      |
+| 3000m    | 13.4 | 2.7 - 6.7    | 2.2s |                             |
+| 3500m    | 14.1 | 2.8 - 7.0    | 2.3s |                             |
+| 4000m    | 14.8 | 3.0 - 7.4    | 2.5s |                             |
+| 4500m    | 15.5 | 3.1 - 7.8    | 2.6s |                             |
+| 5000m    | 16.3 | 3.3 - 8.1    | 2.7s | Ward 1 Boss (First Horizon) |
 
-**Proposed Scaling Rate**: +5% per interval
-
-- At 2.5km (Ward 2): 2.1-5.25 damage, 10.5 HP
-- At 5.0km (Ward 3): 2.2-5.5 damage, 11 HP
-- At 7.5km (Ward 4): 2.3-5.8 damage, 11.6 HP
-- And so on...
+**Total Growth**: 63% stat increase across Ward 1
+**TTK Range**: 1.7s → 2.7s (60% increase, manageable progression)
 
 ### Other Decisions ✅
 
@@ -913,6 +924,11 @@ Before implementation begins, confirm:
 
 **Source**: [18_Region_R01_Horizon_Steppe.md](../tome/18_Region_R01_Horizon_Steppe.md)
 
+**Ward 1 Total**: 5km (0-5000m)
+**Scaling Intervals**: Every 500m (10 bumps total)
+
+**Subzones** (narrative landmarks within Ward 1):
+
 | Subzone              | Distance Range | Length    | Cumulative |
 | -------------------- | -------------- | --------- | ---------- |
 | Sunwake Downs        | 0.0 - 0.5 km   | 0.5km     | 0.5km      |
@@ -921,10 +937,10 @@ Before implementation begins, confirm:
 | Longgrass Reach      | 1.5 - 1.8 km   | 0.3km     | 1.8km      |
 | Bluewind Shelf       | 1.8 - 2.0 km   | 0.2km     | 2.0km      |
 | Old Hoard Road       | 2.0 - 2.2 km   | 0.2km     | 2.2km      |
-| First Horizon (Boss) | 2.2+ km        | Boss Gate | End Ward 1 |
+| [Additional zones]   | 2.2 - 5.0 km   | 2.8km     | 5.0km      |
+| First Horizon (Boss) | 5.0 km         | Boss Gate | End Ward 1 |
 
-**Ward 1 Total**: 2.2km
-**First Scaling**: 2.5km (occurs in Ward 2)
+**Note**: Subzones are narrative landmarks. Ward 1 extends to 5km total.
 
 ---
 
