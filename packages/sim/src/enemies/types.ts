@@ -49,6 +49,11 @@ export type SpawnedEnemy = Enemy & {
 
   // AI state (for future P1-E2-S2)
   state: EnemyState;
+
+  // Item drop properties
+  enemyType: string;           // Enemy type identifier for loot tables
+  lootTableId?: string;        // Optional specific loot table override
+  lastDropTime: number;        // Prevent spam drops
 };
 
 /**

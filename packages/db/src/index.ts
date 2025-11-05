@@ -17,3 +17,4 @@ export * from './export.js';
 export * from './migrate.js';
 export * from './errors.js';
 export * from './profile.js';
+export * from './profile-repo.js';

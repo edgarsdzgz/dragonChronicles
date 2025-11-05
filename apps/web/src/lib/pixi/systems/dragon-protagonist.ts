@@ -14,7 +14,8 @@ import { Sprite, Container, type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { createAnimatedDragonSprite, type DragonAnimator } from '../dragon-sprites';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
-import { GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, type ResponsiveManager } from './responsive-manager';
+import type { ResponsiveManager } from './responsive-manager';
+import type { EventBus, EventSubscription, UIEvent } from '@draconia/shared';
 
 /**
  * Dragon position in game world coordinates (at 1080p baseline)
@@ -30,6 +31,7 @@ export interface DragonProtagonistConfig {
   scale?: number;
   visible?: boolean;
   movementSpeed?: number; // Pixels per second (for journey scrolling)
+  eventBus?: EventBus; // Event bus for event-driven communication
 }
 
 export interface DragonProtagonistState {
@@ -56,6 +58,11 @@ export class DragonProtagonistManager {
   private state: DragonProtagonistState;
   private isInitialized: boolean = false;
   private resizeCallback: (() => void) | null = null;
+  private disableAutoRestart: boolean = false; // For cutscenes to control animation
+
+  // Event system
+  private eventBus: EventBus | null = null;
+  private eventSubscriptions: EventSubscription[] = [];
 
   constructor(
     app: Application,
@@ -92,6 +99,26 @@ export class DragonProtagonistManager {
     // Subscribe to responsive manager resize events
     this.resizeCallback = () => this.handleResize();
     this.responsiveManager.onResize(this.resizeCallback);
+
+    // Set up event bus and listeners
+    this.eventBus = config.eventBus || null;
+    if (this.eventBus) {
+      this.setupEventListeners();
+    }
+  }
+
+  /**
+   * Set up event listeners for UI events
+   */
+  private setupEventListeners(): void {
+    if (!this.eventBus) return;
+
+    // Listen for speed change events
+    const speedSub = this.eventBus.on<UIEvent>('ui', 'speed_changed', (event) => {
+      const payload = event.payload as { speed: number };
+      this.setMovementSpeed(payload.speed);
+    });
+    this.eventSubscriptions.push(speedSub);
   }
 
   /**
@@ -213,15 +240,15 @@ export class DragonProtagonistManager {
   /**
    * Update dragon animation and position
    */
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     if (!this.isInitialized || !this.dragonSprite || !this.dragonAnimator) {
       return;
     }
 
     // Only update if visible and in a land
     if (this.state.isVisible && this.state.isInLand) {
-      // Start animation if not already playing
-      if (!this.dragonAnimator.isAnimating()) {
+      // Start animation if not already playing (unless cutscene has disabled auto-restart)
+      if (!this.dragonAnimator.isAnimating() && !this.disableAutoRestart) {
         this.dragonAnimator.start();
       }
     }
@@ -276,9 +303,14 @@ export class DragonProtagonistManager {
 
     const baseFPS = 8; // Default FPS for dragon animation
     const targetFPS = baseFPS * multiplier;
+
+    // Get stack trace to see who's calling this during debug
+    const stack = new Error().stack;
+    const caller = stack?.split('\n')[2]?.trim() || 'unknown';
+
     this.dragonAnimator.setFPS(targetFPS);
 
-    console.log(`🐉 Dragon Protagonist: Animation speed set to ${multiplier}x (${targetFPS} FPS)`);
+    console.log(`🐉 Dragon Protagonist: Animation speed set to ${multiplier}x (${targetFPS} FPS) - called from: ${caller}`);
   }
 
   /**
@@ -311,6 +343,22 @@ export class DragonProtagonistManager {
    */
   isInLand(): boolean {
     return this.state.isInLand;
+  }
+
+  /**
+   * Disable auto-restart of animation (for cutscenes to control animation manually)
+   */
+  disableAnimationAutoRestart(): void {
+    this.disableAutoRestart = true;
+    console.log('🐉 Dragon Protagonist: Animation auto-restart DISABLED (cutscene control)');
+  }
+
+  /**
+   * Enable auto-restart of animation (restore normal behavior after cutscene)
+   */
+  enableAnimationAutoRestart(): void {
+    this.disableAutoRestart = false;
+    console.log('🐉 Dragon Protagonist: Animation auto-restart ENABLED (normal behavior)');
   }
 
   /**
@@ -388,6 +436,12 @@ export class DragonProtagonistManager {
    * Destroy the dragon protagonist system
    */
   destroy(): void {
+    // Unsubscribe from event listeners
+    for (const subscription of this.eventSubscriptions) {
+      subscription.unsubscribe();
+    }
+    this.eventSubscriptions = [];
+
     // Unsubscribe from responsive manager
     if (this.resizeCallback) {
       this.responsiveManager.offResize(this.resizeCallback);

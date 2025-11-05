@@ -164,14 +164,14 @@ export class ResponsiveManager {
   /**
    * Subscribe to breakpoint change events
    */
-  onBreakpointChange(callback: (event: BreakpointChangeEvent) => void): void {
+  onBreakpointChange(callback: (_event: BreakpointChangeEvent) => void): void {
     this.breakpointChangeCallbacks.push(callback);
   }
 
   /**
    * Unsubscribe from breakpoint change events
    */
-  offBreakpointChange(callback: (event: BreakpointChangeEvent) => void): void {
+  offBreakpointChange(callback: (_event: BreakpointChangeEvent) => void): void {
     const index = this.breakpointChangeCallbacks.indexOf(callback);
     if (index !== -1) {
       this.breakpointChangeCallbacks.splice(index, 1);
@@ -207,17 +207,17 @@ export class ResponsiveManager {
    *
    * Exception: Portrait mobile (future - force landscape for now)
    */
-  calculateScale(contentWidth: number, contentHeight: number): number {
-    const { viewportWidth, viewportHeight } = this.state;
+  calculateScale(_contentWidth: number, _contentHeight: number): number {
+    const { viewportWidth, viewportHeight: _viewportHeight } = this.state;
 
     if (!this.config.maintainAspectRatio) {
       // Simple scaling based on width
-      return Math.min(viewportWidth / contentWidth, this.config.maxScale);
+      return Math.min(viewportWidth / _contentWidth, this.config.maxScale);
     }
 
     // WIDTH-FIRST RULE: Always use width scale
     // This ensures no dead space on sides (top/bottom may be cut off)
-    const scaleX = viewportWidth / contentWidth;
+    const scaleX = viewportWidth / _contentWidth;
 
     return Math.max(this.config.minScale, Math.min(scaleX, this.config.maxScale));
   }
@@ -371,6 +371,7 @@ export class ResponsiveManager {
         callback(event);
       } catch (error) {
         console.error('Error in breakpoint change callback:', error);
+        // Error logged, continue with other callbacks
       }
     });
   }
@@ -385,6 +386,7 @@ export class ResponsiveManager {
         callback();
       } catch (error) {
         console.error('Error in resize callback:', error);
+        // Error logged, continue with other callbacks
       }
     });
   }

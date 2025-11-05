@@ -5,7 +5,7 @@
  * with existing code that expects makeProfile functionality.
  */
 
-import type { ProfileV1 } from './schema.v1.js';
+import type { ProfileV1, ItemCategory, ItemRarity } from './schema.v1.js';
 
 /**
  * User profile data structure (legacy interface)
@@ -103,6 +103,26 @@ export function convertToProfileV1(profile: Profile): ProfileV1 {
     sim: {
       lastSimWallClock: Date.now(),
       bgCoveredMs: 0,
+    },
+    inventory: {
+      items: {},
+      maxSlots: 100,
+      autoSellSettings: {
+        enabled: false,
+        sellCommon: false,
+        sellUncommon: false,
+        categories: [],
+        minValue: 0,
+        maxInventorySlots: 100,
+      },
+      lastDropTime: 0,
+    },
+    itemStats: {
+      totalItemsFound: 0,
+      totalItemsSold: 0,
+      totalGoldEarned: 0,
+      itemsByCategory: {} as Record<ItemCategory, number>,
+      itemsByRarity: {} as Record<ItemRarity, number>,
     },
   };
 }

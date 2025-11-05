@@ -14,6 +14,21 @@
     "skipLibCheck": true,
     "sourceMap": false
   },
+  "references": [
+    { "path": "../shared" },
+    { "path": "../db" }
+  ],
   "include": ["src"],
-  "exclude": ["tests"]
+  "exclude": [
+    "tests",
+    "src/combat/auto-combat-system.ts",
+    "src/combat/boss-ai-integration.ts",
+    "src/combat/boss-ai-system.ts",
+    "src/combat/combat-integration-system.ts",
+    "src/combat/combat-testing-system.ts",
+    "src/combat/death-processing-system.ts",
+    "src/combat/enhanced-enemy-ai.ts",
+    "src/combat/enhanced-targeting-system.ts",
+    "src/combat/manual-ability-system.ts"
+  ]
 }

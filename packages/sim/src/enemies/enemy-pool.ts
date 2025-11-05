@@ -98,12 +98,32 @@ export class EnemyPool {
       isActive: false,
       poolIndex: this.pool.length,
       state: EnemyState.APPROACH, // Will be set when allocated
+
+      // Item drop properties
+      enemyType: 'unknown', // Will be set when allocated
+      lastDropTime: 0,
     };
 
     this.pool.push(enemy);
     this.availableIndices.push(this.pool.length - 1);
 
     return enemy;
+  }
+
+  /**
+   * Get enemy type string based on family and land
+   */
+  private getEnemyType(family: Family, landId: LandId): string {
+    // Map family and land to enemy type strings
+    const enemyTypes: Record<string, string> = {
+      '1_1': 'wind_taken_nomad',      // Family 1, Land 1
+      '2_1': 'corrupted_centaur',     // Family 2, Land 1
+      '1_2': 'forest_walker',         // Family 1, Land 2 (future)
+      '2_2': 'shadow_stalker',        // Family 2, Land 2 (future)
+    };
+    
+    const key = `${family}_${landId}`;
+    return enemyTypes[key] || 'unknown_enemy';
   }
 
   /**
@@ -173,6 +193,10 @@ export class EnemyPool {
     enemy.isActive = true;
     enemy.poolIndex = poolIndex;
     enemy.state = EnemyState.APPROACH;
+    
+    // Set enemy type based on family and land
+    enemy.enemyType = this.getEnemyType(family, landId);
+    enemy.lastDropTime = 0;
 
     // Add to active enemies list
     this.activeEnemies.push(enemy);

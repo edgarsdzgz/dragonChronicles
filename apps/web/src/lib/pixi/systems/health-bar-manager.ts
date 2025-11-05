@@ -101,13 +101,19 @@ export class HealthBarManager {
   private defaultPalette: EtherealFlamePalette = HP_BAR_PALETTES['classic-green'];
   private responsiveManager: ResponsiveManager;
 
-  constructor(app: Application, responsiveManager: ResponsiveManager) {
+  constructor(
+    app: Application,
+    responsiveManager: ResponsiveManager,
+    parentContainer: Container,
+  ) {
     this.app = app;
     this.container = new Container();
     this.container.label = 'health-bar-manager';
     // Use UI_ELEMENTS layer (higher than ENTITY_UI) to ensure bars are always on top
     setZIndex(this.container, Z_LAYERS.UI_ELEMENTS);
-    this.app.stage.addChild(this.container);
+    // Add to parent container (UIManager) instead of app.stage
+    // This creates proper hierarchy where hiding UIManager hides all UI
+    parentContainer.addChild(this.container);
 
     // Initialize responsive system
     this.responsiveManager = responsiveManager;

@@ -390,7 +390,7 @@ export class DraconiaMenuManager {
 
           console.log('🏰 Draconia Menu: Dragon silhouette added to Journey button');
         }
-      } catch (error) {
+      } catch {
         console.log('🏰 Draconia Menu: Dragon silhouette not found, skipping decoration');
       }
     }

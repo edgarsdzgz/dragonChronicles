@@ -16,11 +16,9 @@ import {
   getDragonProjectileType,
   getProjectileTypeForEnemy,
   type Projectile,
-  type ProjectileType,
 } from '../../projectile-sprites';
 import type { EnemyType } from '../../enemy-sprites';
 import { Z_LAYERS, setZIndex } from '../rendering/layer-manager';
-import type { CollisionSystem } from './collision-system';
 
 export interface ProjectileData {
   id: number;
@@ -52,12 +50,11 @@ export const DEFAULT_PROJECTILE_CONFIG: ProjectileManagerConfig = {
 /**
  * Projectile Manager
  *
- * Manages all projectiles in the game, integrating with collision detection
- * and providing pierce mechanics.
+ * Manages all projectiles in the game independently.
+ * Collision detection is handled via callbacks passed to fire methods.
  */
 export class ProjectileManager {
   private app: Application;
-  private collisionSystem: CollisionSystem;
   private config: ProjectileManagerConfig;
   private projectiles: ProjectileData[] = [];
   private nextProjectileId = 1;
@@ -65,11 +62,9 @@ export class ProjectileManager {
 
   constructor(
     app: Application,
-    collisionSystem: CollisionSystem,
     config: ProjectileManagerConfig = {},
   ) {
     this.app = app;
-    this.collisionSystem = collisionSystem;
     this.config = { ...DEFAULT_PROJECTILE_CONFIG, ...config };
   }
 
@@ -217,6 +212,11 @@ export class ProjectileManager {
     // Update projectiles and check for removal
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const projectileData = this.projectiles[i];
+
+      // Safety check: skip if projectileData is undefined (race condition during clear)
+      if (!projectileData) {
+        continue;
+      }
 
       // Check if projectile has hit and pierce delay has expired
       if (projectileData.hasHit) {

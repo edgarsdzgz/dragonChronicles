@@ -12,7 +12,8 @@
 import { Container, Sprite, type Application } from 'pixi.js';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { AssetManager } from './rendering/asset-manager';
-import { GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, type ResponsiveManager } from './responsive-manager';
+import type { ResponsiveManager } from './responsive-manager';
+import type { EventBus, EventSubscription, UIEvent } from '@draconia/shared';
 
 /**
  * Land layer configuration
@@ -49,6 +50,10 @@ export interface LandConfig {
 /**
  * Land Manager class
  */
+export interface LandManagerConfig {
+  eventBus?: EventBus; // Event bus for event-driven communication
+}
+
 export class LandManager {
   private app: Application;
   private assetManager: AssetManager;
@@ -62,13 +67,25 @@ export class LandManager {
   private resizeCallback: (() => void) | null = null;
   private movementState: MovementState = 'forward'; // Default: moving forward
 
+  // Event system
+  private eventBus: EventBus | null = null;
+  private eventSubscriptions: EventSubscription[] = [];
+
   // Cutscene state
   private isInCutscene: boolean = false;
   private cutsceneScale: number = 1.0; // Scale multiplier for layers during cutscene
   private cutsceneSpeedMultiplier: number = 1.0; // Speed multiplier for scrolling during cutscene
   private cutsceneBackgroundYOffset: number = 0; // Y offset for background during cutscene (in pixels)
+  private cutsceneCloudXOffsetProgress: number = 0; // Cloud X-offset progress: 1.0 = 75% offset, 0.0 = no offset (smooth transition)
+  private cutsceneCloudScaleMultiplier: number = 1.0; // Cloud scale multiplier: 1.0 = same as other layers, <1.0 = slower zoom
+  private cloudDriftOffset: number = 0; // Independent cloud drift offset (pixels) - clouds slowly drift right to help hide bad cloud
 
-  constructor(app: Application, assetManager: AssetManager, responsiveManager: ResponsiveManager) {
+  constructor(
+    app: Application,
+    assetManager: AssetManager,
+    responsiveManager: ResponsiveManager,
+    config: LandManagerConfig = {},
+  ) {
     this.app = app;
     this.assetManager = assetManager;
     this.responsiveManager = responsiveManager;
@@ -79,6 +96,28 @@ export class LandManager {
     // Subscribe to responsive manager resize events
     this.resizeCallback = () => this.handleResize();
     this.responsiveManager.onResize(this.resizeCallback);
+
+    // Set up event bus and listeners
+    this.eventBus = config.eventBus || null;
+    if (this.eventBus) {
+      this.setupEventListeners();
+    }
+  }
+
+  /**
+   * Set up event listeners for UI events
+   */
+  private setupEventListeners(): void {
+    if (!this.eventBus) return;
+
+    // Listen for movement button clicked events
+    const movementSub = this.eventBus.on<UIEvent>('ui', 'movement_button_clicked', (event) => {
+      const payload = event.payload as { buttonType: 'backward' | 'pause' | 'forward' };
+      // Convert JourneyButtonType to MovementState
+      const movementState = payload.buttonType === 'pause' ? 'paused' : payload.buttonType;
+      this.setMovementState(movementState);
+    });
+    this.eventSubscriptions.push(movementSub);
   }
 
   /**
@@ -124,7 +163,7 @@ export class LandManager {
       land1_steppe: {
         id: 'land1_steppe',
         name: 'Horizon Steppe',
-        backgroundColor: 0x87ceeb, // Sky blue fallback
+        backgroundColor: 0x7e2453, // Underground purple
         scrollSpeed: 0, // Static scene - no movement
         enableParallax: false, // Static scene - no parallax
         layers: [
@@ -337,6 +376,13 @@ export class LandManager {
     // Update cumulative scroll offset
     this.scrollOffset += scrollDelta;
 
+    // If in cutscene mode, apply slow rightward drift to clouds
+    // This helps counteract the visual effect of zoom "pulling" bad clouds into view
+    if (this.isInCutscene) {
+      const CLOUD_DRIFT_SPEED = 25; // pixels per second - slow rightward drift
+      this.cloudDriftOffset += CLOUD_DRIFT_SPEED * deltaSeconds;
+    }
+
     // Apply parallax scrolling to each layer
     this.currentLand.layers.forEach((layer) => {
       const sprite = this.landLayers.get(layer.id);
@@ -349,19 +395,78 @@ export class LandManager {
       const gameWorldScale = this.responsiveManager.getGameWorldScale();
 
       // Apply cutscene scale if in cutscene mode
-      const effectiveScale = this.isInCutscene
-        ? gameWorldScale * this.cutsceneScale
-        : gameWorldScale;
+      // Clouds get special slower zoom treatment
+      let effectiveScale: number;
+      if (this.isInCutscene) {
+        if (layer.id === 'clouds') {
+          // Clouds use separate scale multiplier for slower zoom
+          effectiveScale = gameWorldScale * this.cutsceneScale * this.cutsceneCloudScaleMultiplier;
+        } else {
+          effectiveScale = gameWorldScale * this.cutsceneScale;
+        }
+      } else {
+        effectiveScale = gameWorldScale;
+      }
+
       sprite.scale.set(effectiveScale);
       const tiledSprite = this.landLayersTiled.get(layer.id);
       if (tiledSprite) {
         tiledSprite.scale.set(effectiveScale);
       }
 
-      // Apply cutscene background Y offset if in cutscene mode
-      const effectiveY = this.isInCutscene
-        ? layer.y * gameWorldScale + this.cutsceneBackgroundYOffset * gameWorldScale
-        : layer.y * gameWorldScale;
+      // Apply cutscene Y offset if in cutscene mode
+      // Foreground and hills get special treatment - needs to align with horizon
+      let effectiveY: number;
+      if (this.isInCutscene) {
+        if (layer.id === 'foreground-grass') {
+          // Calculate normal Y position
+          const normalY = layer.y * gameWorldScale;
+          // Calculate cutscene Y position (fixed at 700 game world coords)
+          const cutsceneY = 700 * gameWorldScale;
+
+          // During zoom out (scale < 3x), interpolate from cutscene Y to normal Y
+          // This keeps the ground at the horizon line as we zoom out
+          const zoomProgress = Math.max(0, Math.min(1, (3.0 - this.cutsceneScale) / (3.0 - 1.0))); // 0 at 3x, 1 at 1x
+          effectiveY = cutsceneY + (normalY - cutsceneY) * zoomProgress;
+
+          console.log(
+            `🎬 Land Manager: Foreground Y=${effectiveY.toFixed(0)}px (zoom: ${zoomProgress.toFixed(2)}, scale: ${this.cutsceneScale.toFixed(2)}x, normal: ${normalY.toFixed(0)})`,
+          );
+        } else if (layer.id === 'hills') {
+          // Calculate normal Y position
+          const normalY = layer.y * gameWorldScale;
+          // Calculate cutscene Y position (just above the ground)
+          const cutsceneY = 580;
+
+          // During zoom out (scale < 3x), interpolate from cutscene Y to normal Y
+          const zoomProgress = Math.max(0, Math.min(1, (3.0 - this.cutsceneScale) / (3.0 - 1.0))); // 0 at 3x, 1 at 1x
+          effectiveY = cutsceneY + (normalY - cutsceneY) * zoomProgress;
+
+          console.log(
+            `🎬 Land Manager: Hills Y=${effectiveY.toFixed(0)}px (zoom: ${zoomProgress.toFixed(2)}, scale: ${this.cutsceneScale.toFixed(2)}x, normal: ${normalY.toFixed(0)})`,
+          );
+        } else if (layer.id === 'clouds') {
+          // Clouds: Apply background Y offset with 10% acceleration during zoom out
+          // This makes clouds drop into position faster to avoid clipping
+          const zoomProgress = Math.max(0, Math.min(1, (3.0 - this.cutsceneScale) / (3.0 - 1.0)));
+          const acceleratedProgress = Math.min(1, zoomProgress * 1.1); // 10% faster drop
+
+          // Interpolate background Y offset with acceleration
+          const acceleratedBgYOffset = this.cutsceneBackgroundYOffset * (1 - acceleratedProgress);
+          effectiveY = layer.y * gameWorldScale + acceleratedBgYOffset * gameWorldScale;
+
+          console.log(
+            `🎬 Land Manager: Clouds Y=${effectiveY.toFixed(0)}px (zoom: ${zoomProgress.toFixed(2)}, accel: ${acceleratedProgress.toFixed(2)}, bgOffset: ${acceleratedBgYOffset.toFixed(0)})`,
+          );
+        } else {
+          // Background layers: Apply standard background Y offset
+          effectiveY = layer.y * gameWorldScale + this.cutsceneBackgroundYOffset * gameWorldScale;
+        }
+      } else {
+        // Normal mode: Use standard game world positioning
+        effectiveY = layer.y * gameWorldScale;
+      }
+
       sprite.y = effectiveY;
       if (tiledSprite) {
         tiledSprite.y = effectiveY;
@@ -394,7 +499,18 @@ export class LandManager {
         // Use actual texture width, not configured width, for accurate tiling
         const layerWidth = sprite.texture.width; // Use actual texture width
         const scaledLayerWidth = layerWidth * effectiveScale;
-        const normalizedOffset = ((layerScrollOffset % layerWidth) + layerWidth) % layerWidth;
+
+        // For clouds during cutscene, apply X-axis offset based on progress (smoothly transition from 75% to 0%)
+        let xOffsetAdjustment = 0;
+        if (layer.id === 'clouds') {
+          // Static offset: 0-75% based on progress (hides bad cloud initially)
+          const staticOffset = layerWidth * 0.75 * this.cutsceneCloudXOffsetProgress;
+          // Drift offset: slow rightward drift to counteract zoom's leftward pull
+          const driftOffset = this.cloudDriftOffset;
+          xOffsetAdjustment = staticOffset + driftOffset;
+        }
+
+        const normalizedOffset = (((layerScrollOffset + xOffsetAdjustment) % layerWidth) + layerWidth) % layerWidth;
 
         // Position first sprite
         sprite.x = (baseX - normalizedOffset) * effectiveScale;
@@ -545,17 +661,65 @@ export class LandManager {
   }
 
   /**
+   * Set cloud scale multiplier for slower zoom
+   * @param multiplier - Scale multiplier (1.0 = normal zoom, <1.0 = slower zoom)
+   */
+  setCutsceneCloudScaleMultiplier(multiplier: number): void {
+    this.cutsceneCloudScaleMultiplier = Math.max(0.1, Math.min(1, multiplier));
+  }
+
+  /**
+   * Set cloud X-offset progress for smooth transition
+   * @param progress - 0.0 to 1.0, where 1.0 = 75% offset (clouds offscreen), 0.0 = no offset (normal)
+   */
+  setCutsceneCloudXOffsetProgress(progress: number): void {
+    const oldProgress = this.cutsceneCloudXOffsetProgress;
+    const newProgress = Math.max(0, Math.min(1, progress));
+
+    // Compensate scroll offset to maintain visual cloud alignment
+    // Get cloud sprite to calculate offset delta
+    const cloudSprite = this.landLayers.get('clouds');
+    if (cloudSprite && cloudSprite.texture) {
+      const cloudLayerWidth = cloudSprite.texture.width;
+      const oldOffset = cloudLayerWidth * 0.75 * oldProgress;
+      const newOffset = cloudLayerWidth * 0.75 * newProgress;
+      const offsetDelta = oldOffset - newOffset;
+
+      // Adjust base scroll offset to compensate
+      // When offset decreases, increase scrollOffset by the same amount to keep clouds in place
+      if (Math.abs(offsetDelta) > 0.01) {
+        this.scrollOffset += offsetDelta;
+        console.log(
+          `🎬 Land Manager: Cloud offset compensation - delta=${offsetDelta.toFixed(1)}px (progress ${oldProgress.toFixed(2)} → ${newProgress.toFixed(2)})`,
+        );
+      }
+    }
+
+    this.cutsceneCloudXOffsetProgress = newProgress;
+  }
+
+  /**
    * Exit cutscene mode and return to normal state
    */
   exitCutsceneMode(): void {
     this.isInCutscene = false;
     this.cutsceneScale = 1.0;
     this.cutsceneSpeedMultiplier = 1.0;
+    this.cutsceneCloudXOffsetProgress = 0; // Reset cloud offset progress
+    this.cutsceneCloudScaleMultiplier = 1.0; // Reset cloud scale
+    // NOTE: Do NOT reset cloudDriftOffset - preserve accumulated drift to prevent visual snap
+    // The drift will remain constant after cutscene (only accumulates during isInCutscene)
 
-    console.log('🎬 Land Manager: Exited cutscene mode');
+    console.log(`🎬 Land Manager: Exited cutscene mode (cloudDrift preserved: ${this.cloudDriftOffset.toFixed(1)}px)`);
   }
 
   destroy(): void {
+    // Unsubscribe from event listeners
+    for (const subscription of this.eventSubscriptions) {
+      subscription.unsubscribe();
+    }
+    this.eventSubscriptions = [];
+
     // Unsubscribe from responsive manager
     if (this.resizeCallback) {
       this.responsiveManager.offResize(this.resizeCallback);

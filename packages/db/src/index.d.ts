@@ -1,29 +1,19 @@
 /**
- * @file Database models and factories for the Draconia Chronicles
- * @description Provides user profile management and data persistence abstractions
- */
-import type { Seed } from '@draconia/shared';
-/**
- * User profile data structure
- * @property id - Unique identifier for the profile
- * @property name - Display name (user-provided)
- * @property createdAt - Profile creation timestamp (Unix milliseconds)
- * @property seed - Optional deterministic seed for gameplay RNG
- */
-export type Profile = {
-  readonly id: string;
-  readonly name: string;
-  readonly createdAt: number;
-  readonly seed?: Seed;
-};
-/**
- * Creates a new user profile with generated ID and current timestamp
- * @param name - The display name for the profile
- * @returns A new Profile instance
- * @throws {Error} When name doesn't match validation rules
+ * Database layer for Draconia Chronicles
  *
- * @example
- * const profile = makeProfile("Aster");
- * console.log(profile.id); // "ak9x7m2p" (random)
+ * Provides persistence functionality including:
+ * - Dexie database with versioned schema
+ * - Zod validation for save data
+ * - Atomic write operations
+ * - Export/import capabilities
+ * - Migration system for schema evolution
  */
-export declare function makeProfile(name: string): Profile;
+export * from './db.js';
+export * from './schema.v1.js';
+export * from './repo.js';
+export * from './export.js';
+export * from './migrate.js';
+export * from './errors.js';
+export * from './profile.js';
+export * from './profile-repo.js';
+//# sourceMappingURL=index.d.ts.map

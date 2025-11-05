@@ -41,3 +41,9 @@ export * from './protocol.js';
 
 // Export deterministic RNG
 export * from './rng.js';
+
+// Export event system
+export * from './events/index.js';
+
+// Export world data (lands and wards)
+export * from './game-data/world-data.js';

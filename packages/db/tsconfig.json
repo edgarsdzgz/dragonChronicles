@@ -3,6 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "declaration": true,
+    "emitDeclarationOnly": false,
     "rootDir": "src",
     "outDir": "dist",
     "module": "NodeNext",

@@ -18,6 +18,18 @@ import type { LandManager } from './land-manager';
 import { TopBarUI } from './top-bar-ui';
 import type { JourneyProgressionManager } from './journey-progression-manager';
 import type { DragonProtagonistManager } from './dragon-protagonist';
+import { HealthBarManager } from './health-bar-manager';
+import type { EventBus, UIEvent } from '@draconia/shared';
+
+/**
+ * Currency data interface
+ */
+export interface CurrencyData {
+  arcana: number;
+  soulPower: number;
+  gold: number;
+  astralSeals: number;
+}
 
 /**
  * Journey button types
@@ -47,6 +59,7 @@ interface JourneyButton {
 export interface UIManagerConfig {
   journeyButtonSize?: number; // Size in game world pixels (default: 80)
   journeyButtonSpacing?: number; // Spacing between buttons in game world pixels (default: 15)
+  eventBus?: EventBus; // Event bus for event-driven communication
 }
 
 /**
@@ -59,6 +72,7 @@ export class UIManager {
   private landManager: LandManager | null = null;
   private journeyProgressionManager: JourneyProgressionManager | null = null;
   private dragonProtagonist: DragonProtagonistManager | null = null;
+  private healthBarManager: HealthBarManager;
   private container: Container;
   private config: UIManagerConfig;
   private isInitialized: boolean = false;
@@ -74,9 +88,27 @@ export class UIManager {
   // Top Bar UI
   private topBarUI: TopBarUI | null = null;
 
+  // Topbar decorative UI (separate container - always visible, not part of fade)
+  private topbarContainer: Container | null = null;
+  private topbarGraphics: Graphics | null = null;
+
+  // Currency display texts (2x2 grid inside topbar - separate entities for cutscene fading)
+  private arcanaText!: Text;
+  private soulPowerText!: Text;
+  private goldText!: Text;
+  private astralSealsText!: Text;
+
   // Event handlers
   private mouseHandler: ((event: MouseEvent) => void) | null = null;
   private resizeCallback: (() => void) | null = null;
+
+  // Fade animation state
+  private isFadingIn: boolean = false;
+  private fadeProgress: number = 0; // 0 = fully transparent, 1 = fully opaque
+  private fadeDuration: number = 1500; // 1.5 seconds fade-in
+
+  // Event system
+  private eventBus: EventBus | null = null;
 
   constructor(
     app: Application,
@@ -94,11 +126,23 @@ export class UIManager {
       ...config,
     };
 
-    // Create main container
+    this.eventBus = config.eventBus || null;
+
+    // Create topbar container (separate, always visible, scales with responsive)
+    this.topbarContainer = new Container();
+    this.topbarContainer.label = 'topbar-ui';
+    setZIndex(this.topbarContainer, Z_LAYERS.UI_BACKGROUND);
+    this.app.stage.addChild(this.topbarContainer);
+
+    // Create main container (for fading UI elements)
     this.container = new Container();
     this.container.label = 'ui-manager';
-    setZIndex(this.container, Z_LAYERS.UI_BACKGROUND_ELEMENTS);
+    setZIndex(this.container, Z_LAYERS.UI_BACKGROUND);
     this.app.stage.addChild(this.container);
+
+    // Create HealthBarManager as child of UI container
+    // This creates proper hierarchy where hiding UIManager hides all UI including HP bars
+    this.healthBarManager = new HealthBarManager(this.app, this.responsiveManager, this.container);
 
     // Create journey controls container
     this.journeyControlsContainer = new Container();
@@ -121,11 +165,15 @@ export class UIManager {
     try {
       console.log('🎮 UI Manager: Initializing...');
 
+      // Load and create topbar decorative image with currency texts
+      await this.createTopbarImage();
+      this.createCurrencyTexts();
+
       // Create journey controls
       await this.createJourneyControls();
 
-      // Create top bar UI
-      this.topBarUI = new TopBarUI(this.app, this.responsiveManager);
+      // Create top bar UI (pass our container so it's properly managed)
+      this.topBarUI = new TopBarUI(this.app, this.responsiveManager, this.container);
 
       // Setup mouse event handlers
       this.setupMouseHandlers();
@@ -159,7 +207,7 @@ export class UIManager {
   }
 
   /**
-   * Set the dragon protagonist reference (for speed control)
+   * Set the dragon protagonist reference (for speed control and HP bar tracking)
    */
   setDragonProtagonist(dragon: DragonProtagonistManager): void {
     this.dragonProtagonist = dragon;
@@ -176,13 +224,194 @@ export class UIManager {
   }
 
   /**
+   * Get topbar container (for cutscene zoom/pan control)
+   */
+  getTopbarContainer(): Container | null {
+    return this.topbarContainer;
+  }
+
+  /**
+   * Update currency values in the topbar
+   */
+  updateCurrencies(currencies: Partial<CurrencyData>): void {
+    if (currencies.arcana !== undefined) {
+      this.arcanaText.text = `Arcana: ${this.formatNumber(currencies.arcana)}`;
+    }
+    
+    if (currencies.soulPower !== undefined) {
+      this.soulPowerText.text = `Soul Power: ${this.formatNumber(currencies.soulPower)}`;
+    }
+    
+    if (currencies.gold !== undefined) {
+      this.goldText.text = `Gold: ${this.formatNumber(currencies.gold)}`;
+    }
+    
+    if (currencies.astralSeals !== undefined) {
+      this.astralSealsText.text = `Astral Seals: ${this.formatNumber(currencies.astralSeals)}`;
+    }
+  }
+
+  /**
+   * Create currency text elements in main UI container (for cutscene fading)
+   */
+  private createCurrencyTexts(): void {
+    const textStyle = {
+      fontFamily: 'Cinzel, serif',
+      fontSize: 14,
+      fontWeight: 'bold' as const,
+      fill: 0xffffff, // White text for visibility
+      align: 'left' as const,
+    };
+
+    // Arcana (top-left)
+    this.arcanaText = new Text({
+      text: 'Arcana: 0.00',
+      style: textStyle,
+    });
+    this.container.addChild(this.arcanaText);
+
+    // Soul Power (bottom-left)
+    this.soulPowerText = new Text({
+      text: 'Soul Power: 0',
+      style: textStyle,
+    });
+    this.container.addChild(this.soulPowerText);
+
+    // Gold (top-right)
+    this.goldText = new Text({
+      text: 'Gold: 0',
+      style: textStyle,
+    });
+    this.container.addChild(this.goldText);
+
+    // Astral Seals (bottom-right)
+    this.astralSealsText = new Text({
+      text: 'Astral Seals: 0',
+      style: textStyle,
+    });
+    this.container.addChild(this.astralSealsText);
+
+    // Position currency texts in tight 2x2 rectangle on left side
+    this.updateCurrencyLayout();
+
+    console.log('💰 UI Manager: Currency texts created in main UI container (cutscene fading enabled)');
+  }
+
+  /**
+   * Format numbers with appropriate suffixes (K, M, B)
+   * Always shows 2 decimal places for values < 1000
+   */
+  private formatNumber(num: number): string {
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)}B`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}M`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    } else {
+      return num.toFixed(2); // Always show 2 decimal places for small numbers
+    }
+  }
+
+  /**
+   * Update currency text layout in tight 2x2 rectangle on left side
+   */
+  private updateCurrencyLayout(): void {
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const { width: _screenWidth, height: _screenHeight } = this.app.screen;
+
+    // Position currencies in tight 2x2 rectangle on left side of screen
+    const leftMargin = 20 * gameWorldScale;
+    const topMargin = 20 * gameWorldScale;
+    const spacing = 8 * gameWorldScale; // Tight spacing between currencies
+    
+    // Calculate tight rectangle dimensions
+    const currencyWidth = 120 * gameWorldScale; // Fixed width for tight layout
+    const currencyHeight = 20 * gameWorldScale; // Fixed height for tight layout
+    
+    // Top row
+    this.arcanaText.x = leftMargin;
+    this.arcanaText.y = topMargin;
+    this.arcanaText.scale.set(gameWorldScale);
+    
+    this.goldText.x = leftMargin + currencyWidth + spacing;
+    this.goldText.y = topMargin;
+    this.goldText.scale.set(gameWorldScale);
+    
+    // Bottom row
+    this.soulPowerText.x = leftMargin;
+    this.soulPowerText.y = topMargin + currencyHeight + spacing;
+    this.soulPowerText.scale.set(gameWorldScale);
+    
+    this.astralSealsText.x = leftMargin + currencyWidth + spacing;
+    this.astralSealsText.y = topMargin + currencyHeight + spacing;
+    this.astralSealsText.scale.set(gameWorldScale);
+  }
+
+  /**
+   * Create topbar decorative UI at top of screen
+   * Purple background with double red outline and rounded corners
+   */
+  private async createTopbarImage(): Promise<void> {
+    try {
+      // Create graphics object
+      this.topbarGraphics = new Graphics();
+
+      // Topbar dimensions (full screen width, top bar for currency/settings only)
+      const topbarWidth = 1920;
+      const topbarHeight = 80; // 68px original PNG + 12px extra = 80px
+      const cornerRadius = 12; // Rounded corners
+      const lineThickness = 2;
+
+      // Colors
+      const backgroundColor = 0x4b0093; // Purple
+      const outlineColor = 0xfe3030; // Red
+
+      // Draw background with rounded corners
+      this.topbarGraphics.roundRect(0, 0, topbarWidth, topbarHeight, cornerRadius);
+      this.topbarGraphics.fill({ color: backgroundColor });
+
+      // Draw outer outline (first red border)
+      this.topbarGraphics.roundRect(0, 0, topbarWidth, topbarHeight, cornerRadius);
+      this.topbarGraphics.stroke({ color: outlineColor, width: lineThickness });
+
+      // Draw inner outline (second red border, parallel to outer)
+      // Offset by 6px inward for parallel effect
+      const innerOffset = 6;
+      this.topbarGraphics.roundRect(
+        innerOffset,
+        innerOffset,
+        topbarWidth - innerOffset * 2,
+        topbarHeight - innerOffset * 2,
+        cornerRadius - 3,
+      );
+      this.topbarGraphics.stroke({ color: outlineColor, width: lineThickness });
+
+      // Position at top of screen
+      this.topbarGraphics.x = 0;
+      this.topbarGraphics.y = 0;
+
+      // Add to topbar container (separate, always visible, not part of fade)
+      if (this.topbarContainer) {
+        this.topbarContainer.addChild(this.topbarGraphics);
+      }
+
+      // Update topbar scaling
+      this.updateTopbarScale();
+
+      console.log('🎮 UI Manager: Topbar UI created at (0, 0) - Purple with double red outline (always visible)');
+    } catch (error) {
+      console.error('❌ UI Manager: Failed to create topbar UI:', error);
+    }
+  }
+
+  /**
    * Create journey control buttons (backward, pause, forward)
    * Positioned in underground area: underground top + 150px
    */
   private async createJourneyControls(): Promise<void> {
     console.log('🎮 UI Manager: Creating journey controls...');
 
-    const gameWorldScale = this.responsiveManager.getGameWorldScale();
     const buttonSize = this.config.journeyButtonSize!;
     const spacing = this.config.journeyButtonSpacing!;
 
@@ -275,11 +504,22 @@ export class UIManager {
    * Handle 4x speed test button click
    */
   private handle4xSpeedClick(): void {
-    if (!this.dragonProtagonist) return;
-
-    // Set to 4x speed (400 pixels/second)
-    this.dragonProtagonist.setMovementSpeed(400);
-    console.log('🎮 UI Manager: Dragon speed set to 4x (400 pps)');
+    // Emit speed change event instead of direct call
+    if (this.eventBus) {
+      this.eventBus.emit<UIEvent>({
+        category: 'ui',
+        type: 'speed_changed',
+        timestamp: Date.now(),
+        source: 'ui-manager',
+        payload: {
+          speed: 400,
+          multiplier: 4.0,
+        },
+      });
+      console.log('🎮 UI Manager: Emitted speed change event (4x = 400 pps)');
+    } else {
+      console.warn('⚠️ UI Manager: No eventBus available, cannot change speed');
+    }
   }
 
   /**
@@ -318,7 +558,7 @@ export class UIManager {
       sprite.eventMode = 'static';
       sprite.cursor = 'pointer';
 
-      setZIndex(sprite, Z_LAYERS.UI_BACKGROUND_ELEMENTS);
+      setZIndex(sprite, Z_LAYERS.UI_BACKGROUND);
 
       const button: JourneyButton = {
         type,
@@ -400,13 +640,35 @@ export class UIManager {
     const previousState = this.currentJourneyState;
     this.currentJourneyState = buttonType;
 
-    // Reset dragon speed to 1x when clicking forward button
-    if (buttonType === 'forward' && this.dragonProtagonist) {
-      this.dragonProtagonist.setMovementSpeed(100); // Reset to 1x speed
-      console.log('🎮 UI Manager: Dragon speed reset to 1x (100 pps)');
+    // Emit movement button clicked event
+    if (this.eventBus) {
+      this.eventBus.emit<UIEvent>({
+        category: 'ui',
+        type: 'movement_button_clicked',
+        timestamp: Date.now(),
+        source: 'ui-manager',
+        payload: {
+          buttonType,
+          speedMultiplier: buttonType === 'forward' ? 1.0 : undefined,
+        },
+      });
     }
 
-    // Update button states
+    // Reset dragon speed to 1x when clicking forward button (via event)
+    if (buttonType === 'forward' && this.eventBus) {
+      this.eventBus.emit<UIEvent>({
+        category: 'ui',
+        type: 'speed_changed',
+        timestamp: Date.now(),
+        source: 'ui-manager',
+        payload: {
+          speed: 100,
+          multiplier: 1.0,
+        },
+      });
+    }
+
+    // Update button states (visual only - no manager calls)
     this.journeyButtons.forEach((button) => {
       if (button.type === buttonType) {
         button.state = 'selected';
@@ -415,11 +677,6 @@ export class UIManager {
       }
       this.updateButtonVisual(button);
     });
-
-    // Notify land manager of movement change
-    if (this.landManager) {
-      this.landManager.setMovementState(buttonType);
-    }
 
     console.log(`🎮 UI Manager: Journey state changed: ${previousState} → ${buttonType}`);
   }
@@ -463,7 +720,37 @@ export class UIManager {
       this.topBarUI.update(deltaTime);
     }
 
-    // Future: Update animations, states, etc.
+    // Update dragon health bar position to follow dragon
+    if (this.dragonProtagonist && this.dragonProtagonist.isVisible()) {
+      this.updateDragonHealthBarPosition();
+    }
+
+    // Update fade-in animation
+    if (this.isFadingIn) {
+      this.fadeProgress += deltaTime / this.fadeDuration;
+
+      if (this.fadeProgress >= 1.0) {
+        this.fadeProgress = 1.0;
+        this.isFadingIn = false;
+        console.log('🎬 UI Manager: Fade-in complete');
+      }
+
+      // Apply fade progress to container alpha
+      this.container.alpha = this.fadeProgress;
+    }
+  }
+
+  /**
+   * Update topbar scaling based on responsive manager
+   * Topbar scales with background to avoid revealing dark blue space
+   */
+  private updateTopbarScale(): void {
+    if (!this.topbarContainer) return;
+
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    this.topbarContainer.scale.set(gameWorldScale);
+
+    console.log(`🎮 UI Manager: Topbar scaled to ${gameWorldScale.toFixed(3)}x`);
   }
 
   /**
@@ -476,6 +763,10 @@ export class UIManager {
 
     const gameWorldScale = this.responsiveManager.getGameWorldScale();
     const buttonSize = this.config.journeyButtonSize!;
+
+    // Update topbar scaling (always visible, scales with background)
+    this.updateTopbarScale();
+    this.updateCurrencyLayout();
 
     // Update journey button positions and scales
     this.journeyButtons.forEach((button) => {
@@ -490,25 +781,154 @@ export class UIManager {
       this.topBarUI.handleResize();
     }
 
+    // Re-render all HP bars with new gameWorldScale
+    if (this.healthBarManager) {
+      this.healthBarManager.rerender();
+      console.log('🎮 UI Manager: Re-rendered HP bars with new scale');
+    }
+
+    // Update dragon health bar position immediately after dragon resizes
+    if (this.dragonProtagonist && this.dragonProtagonist.isVisible()) {
+      this.updateDragonHealthBarPosition();
+      console.log('🎮 UI Manager: Updated dragon health bar position on resize');
+    }
+
     console.log(
       `🎮 UI Manager: Resize completed - ${this.app.screen.width}x${this.app.screen.height}`,
     );
   }
 
   /**
-   * Hide UI during cutscene (journey controls, top bar, etc.)
+   * Create dragon health bar
+   * HP bar is a UI element and belongs in UI Manager's container hierarchy
    */
-  hideForCutscene(): void {
-    this.container.visible = false;
-    console.log('🎬 UI Manager: Hidden for cutscene');
+  createDragonHealthBar(): void {
+    if (!this.healthBarManager || !this.dragonProtagonist) {
+      console.warn('🎮 UI Manager: Cannot create health bar - missing dependencies');
+      return;
+    }
+
+    const sprite = this.dragonProtagonist.getDragonSprite();
+    if (!sprite) {
+      console.warn('🎮 UI Manager: Cannot create health bar - dragon sprite not ready');
+      return;
+    }
+
+    const state = this.dragonProtagonist.getState();
+
+    // Calculate HP bar offset using game world coordinates
+    // Dragon: 128px sprite * 0.8 scale = 102.4px visual width, half = 51.2px
+    // HP bar: Arc from 120° to 240° with 50px radius
+    //   - Rightmost point of arc is at 120° = radius * cos(120°) = -radius/2 from center
+    // Gap: 8px desired spacing at baseline
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
+    const hpBarRadius = 50; // Baseline radius
+    const desiredGap = 8; // Baseline gap in pixels
+    // Offset = -(dragon half-width + gap - HP bar rightmost extent)
+    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
+
+    // Create health bar to the left of dragon at head level
+    // Offset accounts for dragon size, HP bar size, and desired gap - all scaled uniformly
+    this.healthBarManager.createHealthBar(
+      'dragon-protagonist',
+      sprite.x + hpBarOffsetX,
+      sprite.y + 1, // Raised ~1.75% total (19px up from original +20)
+      state.maxHealth,
+      state.health,
+      // Using default classic-green palette
+    );
+
+    console.log('✅ UI Manager: Dragon health bar created');
   }
 
   /**
-   * Show UI after cutscene
+   * Update dragon health bar position to follow dragon
+   */
+  updateDragonHealthBarPosition(): void {
+    if (!this.healthBarManager || !this.dragonProtagonist) {
+      return;
+    }
+
+    const sprite = this.dragonProtagonist.getDragonSprite();
+    if (!sprite) return;
+
+    // Calculate HP bar offset using game world coordinates (same as creation)
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    const dragonHalfWidth = (128 * 0.8) / 2; // 51.2px at baseline
+    const hpBarRadius = 50; // Baseline radius
+    const desiredGap = 8; // Baseline gap in pixels
+    // Offset accounts for arc geometry: rightmost point is at 120° = -radius/2 from center
+    const hpBarOffsetX = -(dragonHalfWidth + desiredGap - hpBarRadius / 2) * gameWorldScale;
+
+    // Keep HP bar positioned properly (same as creation)
+    this.healthBarManager.setHealthBarPosition(
+      'dragon-protagonist',
+      sprite.x + hpBarOffsetX,
+      sprite.y + 1,
+    );
+  }
+
+  /**
+   * Update dragon health bar value
+   */
+  updateDragonHealth(health: number, maxHealth: number): void {
+    if (!this.healthBarManager) {
+      return;
+    }
+
+    this.healthBarManager.updateHealthBar('dragon-protagonist', health, maxHealth);
+  }
+
+  /**
+   * Hide UI during cutscene (journey controls, top bar, HP bar, etc.)
+   * Now works properly because all UI is in this container hierarchy
+   */
+  hideForCutscene(): void {
+    this.container.visible = false;
+    this.container.alpha = 0; // Start fully transparent
+    this.fadeProgress = 0;
+    this.isFadingIn = false;
+    console.log('🎬 UI Manager: Hidden for cutscene (including TopBarUI and HP bar)');
+  }
+
+  /**
+   * Show UI after cutscene with smooth fade-in animation
    */
   showAfterCutscene(): void {
     this.container.visible = true;
-    console.log('🎬 UI Manager: Shown after cutscene');
+    this.fadeProgress = 0;
+    this.isFadingIn = true;
+    console.log('🎬 UI Manager: Starting fade-in animation (1.5s duration)');
+  }
+
+  /**
+   * Set topbar cutscene state (zoom and Y offset)
+   * Called by cutscene manager to control topbar during cutscene
+   */
+  setTopbarCutsceneState(scale: number, yOffset: number): void {
+    if (!this.topbarContainer) return;
+
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+
+    // Apply cutscene scale on top of responsive scale
+    this.topbarContainer.scale.set(gameWorldScale * scale);
+
+    // Apply Y offset (same as background)
+    this.topbarContainer.y = yOffset * gameWorldScale;
+  }
+
+  /**
+   * Reset topbar to normal state after cutscene
+   */
+  resetTopbarState(): void {
+    if (!this.topbarContainer) return;
+
+    const gameWorldScale = this.responsiveManager.getGameWorldScale();
+    this.topbarContainer.scale.set(gameWorldScale);
+    this.topbarContainer.y = 0;
+
+    console.log('🎬 UI Manager: Topbar reset to normal state');
   }
 
   /**

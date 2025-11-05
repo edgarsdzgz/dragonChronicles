@@ -5,7 +5,7 @@
  * This system is completely separate from journey/combat systems to avoid interference.
  */
 
-import { Container, Sprite, Text, Graphics, type Application, type Texture } from 'pixi.js';
+import { Container, Sprite, Text, Graphics, type Application } from 'pixi.js';
 import { AssetManager } from './rendering/asset-manager';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { ResponsiveManager } from './responsive-manager';
@@ -52,8 +52,8 @@ export class SplashScreenManager {
   private fadeOutStartTime: number = 0;
 
   // Event handling
-  private keyHandler: ((event: KeyboardEvent) => void) | null = null;
-  private clickHandler: ((event: PointerEvent) => void) | null = null;
+  private keyHandler: ((_event: KeyboardEvent) => void) | null = null;
+  private clickHandler: ((_event: PointerEvent) => void) | null = null;
   private resizeCallback: (() => void) | null = null;
   private isInitialized: boolean = false;
 
@@ -182,7 +182,7 @@ export class SplashScreenManager {
   /**
    * Update splash screen animation
    */
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     if (!this.state.isVisible) {
       return;
     }
@@ -375,7 +375,7 @@ export class SplashScreenManager {
       } else {
         console.log('🎮 Splash Screen: Using fallback background');
       }
-    } catch (error) {
+    } catch {
       console.log('🎮 Splash Screen: Using fallback background');
     }
   }
@@ -550,7 +550,7 @@ export class SplashScreenManager {
       } else {
         console.log('🎮 Splash Screen: Logo not found, skipping');
       }
-    } catch (error) {
+    } catch {
       console.log('🎮 Splash Screen: Logo failed to load, skipping');
     }
   }
@@ -598,7 +598,7 @@ export class SplashScreenManager {
    * Set up keyboard handler (accepts any key)
    */
   private setupKeyboardHandler(): void {
-    this.keyHandler = (event: KeyboardEvent) => {
+    this.keyHandler = (_event: KeyboardEvent) => {
       if (this.state.isVisible && !this.state.isFadingOut) {
         console.log('🎮 Splash Screen: Key pressed, starting game...');
         this.hide();
@@ -613,7 +613,7 @@ export class SplashScreenManager {
    * Set up click/pointer handler
    */
   private setupClickHandler(): void {
-    this.clickHandler = (event: PointerEvent) => {
+    this.clickHandler = (_event: PointerEvent) => {
       if (this.state.isVisible && !this.state.isFadingOut) {
         console.log('🎮 Splash Screen: Click detected, starting game...');
         this.hide();

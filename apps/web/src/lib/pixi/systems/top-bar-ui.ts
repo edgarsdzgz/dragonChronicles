@@ -36,9 +36,17 @@ const BAR_RIGHT_MARGIN = 20; // Right margin in pixels
 /**
  * Ward transition animation configuration
  */
-const PULSE_DURATION = 400; // Pulse duration in ms (40% of total)
-const SWIPE_DURATION = 600; // Swipe duration in ms (60% of total)
+const PAUSE_AT_END_DURATION = 300; // Pause at end before pulse (ms)
+const PULSE_DURATION = 400; // Pulse duration in ms
+const SWIPE_DURATION = 2000; // Swipe duration in ms (slower for visibility)
 const PULSE_SCALE = 2.5; // How much to scale diamond during pulse
+
+/**
+ * Progress bar colors (3-color cycling pattern)
+ */
+const BAR_COLOR_BLACK = 0x000000; // Black
+const BAR_COLOR_GOLD = 0xffd700; // Gold
+const BAR_COLOR_PURPLE = 0x7c3aed; // Royal Purple (Violet-600) - brighter than deep purple
 
 /**
  * Top Bar UI Manager
@@ -71,25 +79,32 @@ export class TopBarUI {
   private lastWardIndex: number = 0;
 
   // Ward transition animation state
+  private isPausingAtEnd: boolean = false; // Pause at end before pulse
+  private pauseTimer: number = 0;
   private isPulsing: boolean = false;
   private pulseTimer: number = 0;
   private isSwiping: boolean = false;
   private swipeTimer: number = 0;
   private swipeStartX: number = 0;
   private swipeEndX: number = 0;
+  private transitionDirection: 'forward' | 'backward' = 'forward'; // Which direction is ward transition
 
   // Cutscene state
   private isInCutscene: boolean = false;
   private cutsceneSpeed: number = 0; // Speed to display during cutscene (km/h)
 
-  constructor(app: Application, responsiveManager: ResponsiveManager) {
+  constructor(
+    app: Application,
+    responsiveManager: ResponsiveManager,
+    parentContainer: Container,
+  ) {
     this.app = app;
     this.responsiveManager = responsiveManager;
 
-    // Create main container
+    // Create main container and add to parent (UIManager's container, not app.stage)
     this.container = new Container();
     this.container.label = 'TopBarUI';
-    this.app.stage.addChild(this.container);
+    parentContainer.addChild(this.container);
 
     // Create left container (1/4 width)
     this.leftContainer = new Container();
@@ -264,7 +279,7 @@ export class TopBarUI {
   private checkWardTransition(
     currentProgress: number,
     currentWardIndex: number,
-    deltaTime: number,
+    _deltaTime: number,
   ): void {
     // Detect ward change by comparing ward indices
     if (currentWardIndex !== this.lastWardIndex) {
@@ -277,35 +292,75 @@ export class TopBarUI {
   }
 
   /**
-   * Trigger ward transition animation (pulse + swipe)
+   * Trigger ward transition animation (pause at end + pulse + swipe)
    */
   private triggerWardTransition(newProgressPercent: number): void {
     const gameWorldScale = this.responsiveManager.getGameWorldScale();
     const { width: screenWidth } = this.app.screen;
-    const leftSideWidth = screenWidth * 0.25;
+    const _leftSideWidth = screenWidth * 0.25;
     const rightSideWidth = screenWidth * 0.75;
     const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
 
-    // Start pulse animation
-    this.isPulsing = true;
-    this.pulseTimer = 0;
+    // Determine direction based on new progress (low % = forward, high % = backward)
+    this.transitionDirection = newProgressPercent < 50 ? 'forward' : 'backward';
 
-    // Calculate swipe positions
-    this.swipeStartX = this.diamond.x; // Current position
-    this.swipeEndX = (newProgressPercent / 100) * barWidth; // New position
+    // Force diamond to end position before animation
+    if (this.transitionDirection === 'forward') {
+      // Forward: Stop at 100% (right end)
+      this.diamond.x = barWidth;
+      this.swipeStartX = barWidth;
+    } else {
+      // Backward: Stop at 0% (left end)
+      this.diamond.x = 0;
+      this.swipeStartX = 0;
+    }
 
-    console.log('✨ Top Bar UI: Ward transition - pulse and swipe animation');
+    // Calculate swipe end position (where diamond will go after pulse)
+    this.swipeEndX = (newProgressPercent / 100) * barWidth;
+
+    // Start pause at end
+    this.isPausingAtEnd = true;
+    this.pauseTimer = 0;
+
+    console.log(
+      `✨ Top Bar UI: Ward transition ${this.transitionDirection} - pause at ${this.transitionDirection === 'forward' ? '100%' : '0%'} then pulse and swipe`,
+    );
   }
 
   /**
-   * Update ward transition animations (pulse and swipe)
+   * Update ward transition animations (pause + pulse + swipe)
    */
   private updateTransitionAnimations(deltaTime: number): void {
+    // Update pause at end
+    if (this.isPausingAtEnd) {
+      this.pauseTimer += deltaTime;
+      if (this.pauseTimer >= PAUSE_AT_END_DURATION) {
+        // Pause complete, start pulse
+        this.isPausingAtEnd = false;
+        this.isPulsing = true;
+        this.pulseTimer = 0;
+      }
+    }
+
     // Update pulse animation
     if (this.isPulsing) {
       this.pulseTimer += deltaTime;
       if (this.pulseTimer >= PULSE_DURATION) {
         // Pulse complete, start swipe
+        // Recalculate swipe target based on CURRENT progress (not when transition started)
+        // This ensures the diamond slides to the actual position the player is at now
+        if (this.journeyProgressionManager) {
+          const gameWorldScale = this.responsiveManager.getGameWorldScale();
+          const { width: screenWidth } = this.app.screen;
+          const rightSideWidth = screenWidth * 0.75;
+          const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
+          const currentProgress = this.journeyProgressionManager.getCurrentWardProgress();
+          this.swipeEndX = (currentProgress / 100) * barWidth;
+          console.log(
+            `✨ Top Bar UI: Swipe target recalculated - ${currentProgress.toFixed(1)}% (${this.swipeEndX.toFixed(1)}px)`,
+          );
+        }
+
         this.isPulsing = false;
         this.isSwiping = true;
         this.swipeTimer = 0;
@@ -331,21 +386,27 @@ export class TopBarUI {
     const { width: screenWidth } = this.app.screen;
 
     // Calculate bar dimensions (right side is 3/4 of screen, with right margin)
-    const leftSideWidth = screenWidth * 0.25;
+    const _leftSideWidth = screenWidth * 0.25;
     const rightSideWidth = screenWidth * 0.75;
     const barWidth = rightSideWidth - BAR_RIGHT_MARGIN * gameWorldScale;
     const barHeight = BAR_THICKNESS * gameWorldScale;
 
-    // Clear and redraw progress bar
-    this.progressBar.clear();
-    this.progressBar.rect(0, 0, barWidth, barHeight);
-    this.progressBar.fill(0x666666); // Dark gray bar for visibility on sky
+    // Calculate bar fill based on ACTUAL distance traveled (progressPercent)
+    // This represents real progress and doesn't change during animations
+    const filledWidth = (progressPercent / 100) * barWidth;
 
-    // Calculate diamond position (0-100% along bar)
-    let diamondX = (progressPercent / 100) * barWidth;
+    // Calculate diamond position separately (for animation)
+    let diamondX = filledWidth; // Default: diamond at fill position
 
-    // Apply swipe animation if active
-    if (this.isSwiping) {
+    // Override diamond position during transition animations
+    if (this.isPausingAtEnd) {
+      // Keep diamond at end position during pause
+      diamondX = this.swipeStartX;
+    } else if (this.isPulsing) {
+      // Keep diamond at end position during pulse
+      diamondX = this.swipeStartX;
+    } else if (this.isSwiping) {
+      // Animate diamond from end to new position
       const swipeProgress = this.swipeTimer / SWIPE_DURATION;
       // Ease-out cubic for smooth deceleration
       const easedProgress = 1 - Math.pow(1 - swipeProgress, 3);
@@ -354,6 +415,40 @@ export class TopBarUI {
 
     // Position diamond along bar
     this.diamond.x = diamondX;
+
+    // Clear and redraw progress bar with cumulative 3-color cycling system
+    this.progressBar.clear();
+
+    // Determine color cycle based on ward number (1-indexed)
+    // Ward 1, 4, 7, 10... → Gold
+    // Ward 2, 5, 8, 11... → Purple
+    // Ward 3, 6, 9, 12... → Black
+    const currentWardNumber = this.journeyProgressionManager?.getCurrentWardNumber() || 1;
+
+    const getWardColor = (wardNum: number): number => {
+      const cycle = ((wardNum - 1) % 3) + 1; // 1, 2, 3, 1, 2, 3...
+      if (cycle === 1) return BAR_COLOR_GOLD;
+      if (cycle === 2) return BAR_COLOR_PURPLE;
+      return BAR_COLOR_BLACK;
+    };
+
+    const currentColor = getWardColor(currentWardNumber);
+    const previousColor = currentWardNumber > 1 ? getWardColor(currentWardNumber - 1) : BAR_COLOR_BLACK;
+
+    // Draw bar in two sections:
+    // Left: Current color filling (represents progress in current ward)
+    // Right: Previous color (from last ward - stays filled)
+    if (filledWidth > 0) {
+      this.progressBar.rect(0, 0, filledWidth, barHeight);
+      this.progressBar.fill(currentColor);
+    }
+
+    // Draw unfilled portion (previous ward's color)
+    const unfilledWidth = barWidth - filledWidth;
+    if (unfilledWidth > 0) {
+      this.progressBar.rect(filledWidth, 0, unfilledWidth, barHeight);
+      this.progressBar.fill(previousColor);
+    }
 
     // Clear and redraw diamond (centered at origin in local space)
     this.diamond.clear();

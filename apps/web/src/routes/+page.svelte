@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Used in template (line 11, 28)
   import { hudEnabled, appFlags } from '$lib/flags/store';
 
   let fps = 0;

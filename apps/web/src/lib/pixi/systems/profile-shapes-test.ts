@@ -68,7 +68,7 @@ export interface ProfileShapeConfig {
  *   - Radius: 12px
  */
 export function createNameplateShape(config: ProfileShapeConfig = {}): Graphics {
-  const { width = 500, height = 80, cornerRadius = 10, parallelogramLean = 50 } = config;
+  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50 } = config;
 
   const graphics = new Graphics();
 
@@ -121,7 +121,7 @@ export function createNameplateShape(config: ProfileShapeConfig = {}): Graphics 
 
   // CUT BOTTOM-RIGHT SECTION (for parallelogram attachment)
   const parallelogramHeight = height / 2; // 40px
-  const lean = parallelogramLean; // 50px
+  const lean = _parallelogramLean; // 50px
   const offsetX = width * 0.5; // Start at 50% of rectangle width (250px)
   const offsetY = height - parallelogramHeight; // Bottom section (40px)
 
@@ -158,7 +158,7 @@ export function createNameplateShape(config: ProfileShapeConfig = {}): Graphics 
  * - Decorative concave corner: 15x15px at (260,0), flipped horizontally
  */
 export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): Graphics {
-  const { width = 500, height = 80, cornerRadius = 10, parallelogramLean = 50 } = config;
+  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50 } = config;
 
   const graphics = new Graphics();
 
@@ -197,7 +197,7 @@ export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): G
   graphics.cut();
 
   // CUT TOP-LEFT SECTION with rectangle
-  const parallelogramHeight = height / 2; // 40px (original)
+  const _parallelogramHeight = height / 2; // 40px (original)
   const rectWidth = width * 0.52; // 52% of attachment width: 260px
   const rectHeight = height * 0.6; // 60% of attachment height: 48px
   const triangleHeight = height * 0.4; // 40% of attachment height: 32px
@@ -247,7 +247,7 @@ export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): G
  * - Gem position: On nameplate at standard position (x=480, y=20)
  */
 export function createExtendedAttachmentShape(config: ProfileShapeConfig = {}): Graphics {
-  const { width = 500, height = 80, cornerRadius = 10, parallelogramLean = 50 } = config;
+  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50 } = config;
 
   const extensionHeight = 300;
   const totalHeight = height + extensionHeight;
@@ -289,7 +289,7 @@ export function createExtendedAttachmentShape(config: ProfileShapeConfig = {}): 
   graphics.cut();
 
   // CUT TOP-LEFT SECTION with rectangle
-  const parallelogramHeight = height / 2; // 40px (original)
+  const _parallelogramHeight = height / 2; // 40px (original)
   const rectWidth = width * 0.52; // 52% of attachment width: 260px
   const rectHeight = height * 0.6; // 60% of attachment height: 48px
   const triangleHeight = height * 0.4; // 40% of attachment height: 32px
@@ -473,7 +473,7 @@ export function createParallelogramShape(
   rectangleWidth: number = 500,
   rectangleHeight: number = 80,
   lean: number = 50,
-  cornerRadius: number = 10,
+  _cornerRadius: number = 10,
   fillColor: number = 0xff0000,
 ): Graphics {
   const parallelogramHeight = rectangleHeight / 2; // Half the rectangle height
@@ -580,7 +580,7 @@ export class ProfileShapesTestManager {
   private gems: GemData[] = [];
   private profileContainers: ProfileContainerData[] = [];
   private particleContainer: Container;
-  private updateBound: (ticker: Ticker) => void;
+  private updateBound: (_ticker: Ticker) => void;
   private timeAccumulator: number = 0;
   private hoverParticleAccumulator: number = 0;
   private nextPoolIndex: number = 0;

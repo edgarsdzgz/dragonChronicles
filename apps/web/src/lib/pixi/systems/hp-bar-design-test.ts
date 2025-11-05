@@ -36,8 +36,8 @@ export type HPBarStyle =
 
 interface DragonTestInstance {
   container: Container;
-  sprite: any;
-  animator: any;
+  sprite: Sprite;
+  animator: { start: () => void; stop: () => void; destroy: () => void };
   healthBar: Container;
   currentHealth: number;
   maxHealth: number;
@@ -821,8 +821,8 @@ export class HPBarDesignTest {
     container.filters = [];
 
     // Create a glow effect based on health
-    const glowColor = this.getHealthColorNumber(healthPercent);
-    const glowStrength = 15 + healthPercent * 15; // 15-30 based on health
+    const _glowColor = this.getHealthColorNumber(healthPercent);
+    const _glowStrength = 15 + healthPercent * 15; // 15-30 based on health
 
     // Apply colored glow filter to entire dragon container
     // Note: PixiJS v8 filters work differently, using simple tint for now
@@ -858,7 +858,7 @@ export class HPBarDesignTest {
     container.addChild(text);
   }
 
-  private renderScaleColorShift(sprite: any, healthPercent: number): void {
+  private renderScaleColorShift(sprite: Sprite, healthPercent: number): void {
     // Shift dragon color based on health - but keep it always green per user request
     // Apply a subtle green tint that gets lighter as health decreases
     if (healthPercent > 0.75) {
@@ -872,7 +872,7 @@ export class HPBarDesignTest {
     }
   }
 
-  private renderPulsingBreathing(sprite: any, healthPercent: number): void {
+  private renderPulsingBreathing(sprite: Sprite, healthPercent: number): void {
     // Pulsing effect: faster pulse when low health
     const time = performance.now() / 1000;
     const pulseSpeed = 2 + (1 - healthPercent) * 4; // 2-6 Hz based on health
@@ -975,7 +975,7 @@ export class HPBarDesignTest {
     container.addChild(bg);
 
     if (healthPercent > 0) {
-      const healthEndAngle = startAngle + (endAngle - startAngle) * healthPercent;
+      const _healthEndAngle = startAngle + (endAngle - startAngle) * healthPercent;
 
       // Draw crystal shards as segments
       for (let i = 0; i < segments; i++) {
@@ -1602,7 +1602,7 @@ export class HPBarDesignTest {
     edge.alpha = 0.7;
   }
 
-  private getHealthColor(healthPercent: number): number {
+  private getHealthColor(_healthPercent: number): number {
     return 0x00ff00; // Always green
   }
 
@@ -1610,7 +1610,7 @@ export class HPBarDesignTest {
     return this.getHealthColor(healthPercent);
   }
 
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     const currentTime = performance.now();
     const elapsedTime = currentTime - this.phaseStartTime;
 
@@ -1645,7 +1645,7 @@ export class HPBarDesignTest {
     let phase3End = phase2End + damageIIDuration;
     let phase4End = phase3End + hold2Duration;
     let phase5End = phase4End + healingDuration;
-    let phase6End = phase5End + hold3Duration;
+    const _phase6End = phase5End + hold3Duration;
 
     if (cycleTime < phase1End) {
       // Damage Phase I: 100% → 50%

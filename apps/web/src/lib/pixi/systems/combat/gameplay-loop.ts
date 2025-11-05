@@ -99,7 +99,7 @@ export class GameplayLoopManager {
     this.spawnEnemy(randomType);
   }
 
-  spawnEnemy(type: string): void {
+  spawnEnemy(_type: string): void {
     // This would integrate with the enemy spawning system
     this.stats.currentEnemies++;
   }

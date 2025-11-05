@@ -20,12 +20,7 @@ export declare function getActiveSave(profileId: string): Promise<SaveRowV1 | nu
  * @param keepBackups - Number of backups to keep (default: 3)
  * @returns ID of the created save row
  */
-export declare function putSaveAtomic(
-  profileId: string,
-  saveData: SaveV1,
-  keepBackups?: number,
-  providedChecksum?: string,
-): Promise<number>;
+export declare function putSaveAtomic(profileId: string, saveData: SaveV1, keepBackups?: number, providedChecksum?: string): Promise<number>;
 /**
  * Gets all save data for a profile (including backups)
  *
@@ -66,8 +61,9 @@ export declare function clearProfileData(profileId: string): Promise<boolean>;
  * @returns Object with database statistics
  */
 export declare function getDatabaseStats(): Promise<{
-  totalSaves: number;
-  totalProfiles: number;
-  totalMeta: number;
-  totalLogs: number;
+    totalSaves: number;
+    totalProfiles: number;
+    totalMeta: number;
+    totalLogs: number;
 }>;
+//# sourceMappingURL=repo.d.ts.map

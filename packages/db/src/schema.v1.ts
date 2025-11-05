@@ -25,6 +25,63 @@ export interface W3TimeAccounting {
 }
 
 /**
+ * Item categories for classification
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Exported for use in other files
+export enum ItemCategory {
+  MATERIAL = 'material',
+  TREASURE = 'treasure',
+  CONSUMABLE = 'consumable',
+  ENCHANT_SCROLL = 'scroll',
+  RUNE = 'rune',
+}
+
+/**
+ * Item rarity levels with value multipliers
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Exported for use in other files
+export enum ItemRarity {
+  COMMON = 1,      // Grey - 1x value multiplier
+  UNCOMMON = 2,    // Green - 2x value multiplier  
+  RARE = 3,        // Blue - 4x value multiplier
+  EPIC = 4,        // Purple - 8x value multiplier
+  LEGENDARY = 5    // Orange - 16x value multiplier
+}
+
+/**
+ * Auto-sell settings for convenience
+ */
+export interface AutoSellSettings {
+  enabled: boolean;
+  sellCommon: boolean;
+  sellUncommon: boolean;
+  categories: ItemCategory[];
+  minValue: number;
+  maxInventorySlots: number;
+}
+
+/**
+ * Inventory data structure
+ */
+export interface InventoryData {
+  items: Record<string, number>;  // itemId -> quantity
+  maxSlots: number;
+  autoSellSettings: AutoSellSettings;
+  lastDropTime: number;
+}
+
+/**
+ * Item statistics for tracking
+ */
+export interface ItemStats {
+  totalItemsFound: number;
+  totalItemsSold: number;
+  totalGoldEarned: number;
+  itemsByCategory: Record<ItemCategory, number>;
+  itemsByRarity: Record<ItemRarity, number>;
+}
+
+/**
  * Profile data structure with W3 time accounting
  */
 export interface ProfileV1 {
@@ -56,6 +113,8 @@ export interface ProfileV1 {
     fastestBossS: number;
   };
   sim: W3TimeAccounting;
+  inventory: InventoryData;
+  itemStats: ItemStats;
 }
 
 /**
@@ -177,6 +236,39 @@ export const ProfileLeaderboardSchema = z.object({
 });
 
 /**
+ * Auto-sell settings schema
+ */
+export const AutoSellSettingsSchema = z.object({
+  enabled: z.boolean(),
+  sellCommon: z.boolean(),
+  sellUncommon: z.boolean(),
+  categories: z.array(z.nativeEnum(ItemCategory)),
+  minValue: z.number().int().min(0),
+  maxInventorySlots: z.number().int().min(1),
+});
+
+/**
+ * Inventory data schema
+ */
+export const InventoryDataSchema = z.object({
+  items: z.record(z.string(), z.number().int().min(0)),
+  maxSlots: z.number().int().min(1),
+  autoSellSettings: AutoSellSettingsSchema,
+  lastDropTime: z.number().int().min(0),
+});
+
+/**
+ * Item statistics schema
+ */
+export const ItemStatsSchema = z.object({
+  totalItemsFound: z.number().int().min(0),
+  totalItemsSold: z.number().int().min(0),
+  totalGoldEarned: z.number().int().min(0),
+  itemsByCategory: z.record(z.nativeEnum(ItemCategory), z.number().int().min(0)),
+  itemsByRarity: z.record(z.nativeEnum(ItemRarity), z.number().int().min(0)),
+});
+
+/**
  * Complete profile schema with W3 time accounting
  */
 export const ProfileV1Schema = z.object({
@@ -190,6 +282,8 @@ export const ProfileV1Schema = z.object({
   stats: ProfileStatsSchema,
   leaderboard: ProfileLeaderboardSchema,
   sim: W3TimeAccountingSchema,
+  inventory: InventoryDataSchema,
+  itemStats: ItemStatsSchema,
 });
 
 /**

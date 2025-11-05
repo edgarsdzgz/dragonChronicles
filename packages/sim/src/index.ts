@@ -41,3 +41,6 @@ export * from './economy/soul-forging-manager.js';
 export * from './economy/soul-forging-costs.js';
 export * from './economy/soul-forging-persistence.js';
 export * from './economy/soul-forging-analytics.js';
+
+// Export item system components
+export * from './items/index.js';

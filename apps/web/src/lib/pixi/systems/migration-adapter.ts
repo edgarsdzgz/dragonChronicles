@@ -52,7 +52,7 @@ export class MigrationAdapter {
     try {
       // Initialize health bar manager if enabled
       if (this.config.enableHealthBarManager) {
-        this.healthBarManager = new HealthBarManager(this.app, this.responsiveManager);
+        this.healthBarManager = new HealthBarManager(this.app, this.responsiveManager, this.app.stage);
         console.log('🔧 Migration Adapter: HealthBarManager initialized');
       }
 

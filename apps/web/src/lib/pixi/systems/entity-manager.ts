@@ -78,6 +78,7 @@ export class EntityManager {
     y?: number;
     scale?: number;
     visible?: boolean;
+    eventBus?: unknown; // EventBus type from @draconia/shared
   }): Promise<DragonProtagonistManager> {
     // Return existing instance if already created
     if (this.dragonProtagonist) {
@@ -117,6 +118,7 @@ export class EntityManager {
   async createEnemyManager(config?: {
     maxEnemies?: number;
     spawnInterval?: number;
+    eventBus?: unknown; // EventBus type from @draconia/shared
   }): Promise<EnemyManager> {
     // Return existing instance if already created
     if (this.enemyManager) {

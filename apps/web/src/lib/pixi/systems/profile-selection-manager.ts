@@ -12,6 +12,20 @@ import { Application, Container, Graphics, Text } from 'pixi.js';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { ResponsiveManager } from './responsive-manager';
 import { profileRepo, type ProfileSlotData } from '@draconia/db';
+import {
+  createNameplateShape,
+  createMagicalGem,
+  createMirroredNameplateShape,
+  createExtendedAttachmentShape,
+  createConcaveCornerShape,
+} from './profile-shapes-test';
+
+// Profile gem colors from UI specifications
+const PROFILE_GEM_COLORS = {
+  1: 0xFFD700, // Gold
+  2: 0xE0115F, // Ruby  
+  3: 0x0F52BA, // Sapphire
+} as const;
 
 export interface ProfileSelectionConfig {
   backgroundColor?: number;
@@ -25,8 +39,8 @@ export interface ProfileSelectionConfig {
   buttonColor?: number;
   buttonHoverColor?: number;
   fadeInDuration?: number;
-  onProfileSelected?: (profileId: string, slotNumber: number) => void;
-  onNewProfile?: (slotNumber: number) => void;
+  onProfileSelected?: (_profileId: string, _slotNumber: number) => void;
+  onNewProfile?: (_slotNumber: number) => void;
   onCopy?: () => void;
   onErase?: () => void;
   onOptions?: () => void;
@@ -45,12 +59,19 @@ interface ProfileSelectionState {
 
 interface SlotVisual {
   container: Container;
-  background: Graphics;
-  icon: Graphics;
-  nameText: Text;
-  infoText: Text;
-  emptyText: Text;
+  nameplate: Graphics;
+  gem: Container;
+  gemColor: number; // Color of the gem (gold, ruby, sapphire)
+  slotNumber: number; // 1, 2, or 3
+  fileText: Text;
+  nameText: Text; // Dragon name or "Empty Slot"
+  infoText: Text; // Ward, playtime, land, last-played info
   selectionArrow: Text;
+  // Attachment visual elements (added for state-based rendering)
+  attachment?: Graphics; // Simple or complex attachment shape
+  attachmentGem?: Container; // Unlit gem on attachment
+  decorativeCorner?: Graphics; // Concave corner decoration
+  currentAttachmentType?: 'simple' | 'extended' | null; // Track current attachment state
 }
 
 interface ButtonVisual {
@@ -87,8 +108,9 @@ export class ProfileSelectionManager {
   private fadeInStartTime: number = 0;
 
   // Event handlers
-  private keyHandler: ((event: KeyboardEvent) => void) | null = null;
-  private mouseHandler: ((event: MouseEvent) => void) | null = null;
+  private keyHandler: ((_event: KeyboardEvent) => void) | null = null;
+  private mouseHandler: ((_event: MouseEvent) => void) | null = null;
+  private clickHandler: (() => void) | null = null;
   private resizeCallback: (() => void) | null = null;
   private isInitialized: boolean = false;
 
@@ -119,7 +141,7 @@ export class ProfileSelectionManager {
       isVisible: false,
       isFadingIn: false,
       fadeProgress: 0,
-      selectedSlotIndex: 0,
+      selectedSlotIndex: -1, // No auto-selection on first load
       hoveredSlotIndex: -1,
       hoveredButton: null,
     };
@@ -240,8 +262,8 @@ export class ProfileSelectionManager {
     // Buttons (Copy, Erase, Options)
     this.createButtons(gameWorldScale);
 
-    // Help text
-    this.createHelpText(gameWorldScale);
+    // NOTE: Help text (ENTER/ESC) is only shown on the name entry screen, not profile selection
+    // this.createHelpText(gameWorldScale);
   }
 
   /**
@@ -279,96 +301,117 @@ export class ProfileSelectionManager {
    * Create 3 profile slots
    */
   private createSlots(scale: number): void {
-    const slotWidth = 500 * scale;
-    const slotHeight = 120 * scale;
+    const nameplateWidth = 500 * scale;
+    const nameplateHeight = 80 * scale;
     const slotGap = 30 * scale;
     const startY = 150 * scale;
     const centerX = this.app.screen.width / 2;
 
+    // Calculate gem positions for centering
+    // Nameplate gem at x=480, attachment gem at x=250+259+25=534
+    // Midpoint: (480 + 534) / 2 = 507
+    const gemMidpoint = 507 * scale;
+
     for (let i = 0; i < 3; i++) {
-      const slotY = startY + i * (slotHeight + slotGap);
+      const slotY = startY + i * (nameplateHeight + slotGap);
+      const slotNumber = i + 1;
 
       const slotContainer = new Container();
-      slotContainer.x = centerX - slotWidth / 2;
+      // Position to center the GEMS (not the nameplate+attachment)
+      slotContainer.x = centerX - gemMidpoint;
       slotContainer.y = slotY;
 
-      // Background rectangle
-      const background = new Graphics();
-      background.roundRect(0, 0, slotWidth, slotHeight, 8 * scale);
-      background.fill(this.config.slotNormalColor!);
-      background.stroke({ color: 0x7fb892, width: 2 * scale });
-      slotContainer.addChild(background);
+      // Create nameplate shape using the profile UI specifications
+      // Use unscaled dimensions (500x80) and scale the Graphics object
+      const nameplate = createNameplateShape({
+        width: 500,
+        height: 80,
+      });
+      nameplate.scale.set(scale);
+      slotContainer.addChild(nameplate);
 
-      // Icon (left side)
-      const icon = new Graphics();
-      icon.x = 20 * scale;
-      icon.y = slotHeight / 2;
-      slotContainer.addChild(icon);
+      // Create gem for this slot (Gold/Ruby/Sapphire) - starts unlit (no data yet)
+      const gemColor = PROFILE_GEM_COLORS[slotNumber as keyof typeof PROFILE_GEM_COLORS];
+      const gem = createMagicalGem(12 * scale, gemColor, false); // Unlit initially
+      
+      // Position gem according to specifications: x=480, y=20 (relative to nameplate)
+      gem.x = 480 * scale;
+      gem.y = 20 * scale;
+      slotContainer.addChild(gem);
 
       // Selection arrow (hidden by default)
       const arrow = new Text({
         text: '▸',
         style: {
-          fontFamily: this.config.fontFamily,
+          fontFamily: this.config.fontFamily!,
           fontSize: 32 * scale,
           fill: 0xffd700, // Gold
         },
       });
       arrow.anchor.set(0.5);
       arrow.x = -20 * scale;
-      arrow.y = slotHeight / 2;
+      arrow.y = nameplateHeight / 2;
       arrow.visible = false;
       slotContainer.addChild(arrow);
 
-      // Name text
-      const nameText = new Text({
-        text: `File ${i + 1}`,
+      // File text (FILE 1, FILE 2, FILE 3) - larger, left-aligned, vertically centered
+      const fileText = new Text({
+        text: `FILE ${slotNumber}`,
         style: {
-          fontFamily: this.config.fontFamily,
-          fontSize: 24 * scale,
-          fill: this.config.textColor,
+          fontFamily: this.config.fontFamily!,
+          fontSize: 32 * scale, // Larger (was 24)
+          fill: this.config.textColor!,
         },
       });
-      nameText.x = 120 * scale;
-      nameText.y = 30 * scale;
+      fileText.anchor.set(0, 0); // Left-aligned
+      fileText.x = 20 * scale; // Left margin
+      fileText.y = 15 * scale; // Vertically centered in nameplate
+      fileText.zIndex = 10; // Ensure text is on top
+      slotContainer.addChild(fileText);
+
+      // Name text (dragon name or "Empty Slot") - larger font for land/ward data
+      const nameText = new Text({
+        text: 'Empty Slot',
+        style: {
+          fontFamily: this.config.fontFamily!,
+          fontSize: 20 * scale, // Increased from 18 for better visibility
+          fill: this.config.textColor!,
+        },
+      });
+      nameText.x = 20 * scale;
+      nameText.y = 55 * scale; // Below fileText
+      nameText.zIndex = 10; // Ensure text is on top
       slotContainer.addChild(nameText);
 
-      // Info text (ward, playtime)
+      // Info text (ward, playtime, land, last-played)
       const infoText = new Text({
         text: '',
         style: {
-          fontFamily: this.config.fontFamily,
-          fontSize: 18 * scale,
-          fill: 0xcccccc, // Light gray
+          fontFamily: this.config.fontFamily!,
+          fontSize: 14 * scale,
+          fill: 0xcccccc, // Slightly dimmed
         },
       });
-      infoText.x = 120 * scale;
-      infoText.y = 60 * scale;
+      infoText.x = 20 * scale;
+      infoText.y = 75 * scale; // Below nameText
+      infoText.visible = false; // Hidden by default for empty slots
+      infoText.zIndex = 10; // Ensure text is on top
       slotContainer.addChild(infoText);
 
-      // Empty text (for empty slots)
-      const emptyText = new Text({
-        text: '[Empty]',
-        style: {
-          fontFamily: this.config.fontFamily,
-          fontSize: 18 * scale,
-          fill: 0x666666, // Dark gray
-        },
-      });
-      emptyText.x = 120 * scale;
-      emptyText.y = 60 * scale;
-      emptyText.visible = false;
-      slotContainer.addChild(emptyText);
+      // Enable sorting by zIndex for this container
+      slotContainer.sortableChildren = true;
 
       this.container.addChild(slotContainer);
 
       this.slots.push({
         container: slotContainer,
-        background,
-        icon,
+        nameplate,
+        gem,
+        gemColor,
+        slotNumber,
+        fileText,
         nameText,
         infoText,
-        emptyText,
         selectionArrow: arrow,
       });
     }
@@ -491,28 +534,169 @@ export class ProfileSelectionManager {
   }
 
   /**
-   * Update slot visuals with loaded data
+   * Update slot visuals with loaded data - STATE-BASED RENDERING
    */
   private updateSlotVisuals(): void {
+    const scale = this.responsiveManager.getGameWorldScale();
+
     for (let i = 0; i < 3; i++) {
       const slotData = this.profileData[i];
       const slotVisual = this.slots[i];
+      const hasData = !slotData.isEmpty;
+      const isSelected = i === this.state.selectedSlotIndex;
 
+      // Determine desired attachment type based on state
+      let desiredAttachmentType: 'simple' | 'extended' | null = null;
+      if (hasData && !isSelected) {
+        desiredAttachmentType = 'simple';
+      } else if (hasData && isSelected) {
+        desiredAttachmentType = 'extended';
+      }
+
+      // Update nameplate gem (lit if has data, unlit if empty - no data = no magic)
+      const oldGem = slotVisual.gem;
+      const gemPosition = { x: oldGem.x, y: oldGem.y };
+      slotVisual.container.removeChild(oldGem);
+      oldGem.destroy();
+
+      const isGemLit = hasData; // Lit only if profile has data
+      const newGem = createMagicalGem(12 * scale, slotVisual.gemColor, isGemLit);
+      newGem.x = gemPosition.x;
+      newGem.y = gemPosition.y;
+      slotVisual.container.addChild(newGem);
+      slotVisual.gem = newGem;
+
+      // Manage attachments based on state
+      if (desiredAttachmentType !== slotVisual.currentAttachmentType) {
+        // Remove existing attachment if type changed
+        if (slotVisual.attachment) {
+          slotVisual.container.removeChild(slotVisual.attachment);
+          slotVisual.attachment.destroy();
+          slotVisual.attachment = undefined;
+        }
+        if (slotVisual.attachmentGem) {
+          slotVisual.container.removeChild(slotVisual.attachmentGem);
+          slotVisual.attachmentGem.destroy();
+          slotVisual.attachmentGem = undefined;
+        }
+        if (slotVisual.decorativeCorner) {
+          slotVisual.container.removeChild(slotVisual.decorativeCorner);
+          slotVisual.decorativeCorner.destroy();
+          slotVisual.decorativeCorner = undefined;
+        }
+
+        // Create new attachment if needed
+        if (desiredAttachmentType === 'simple') {
+          // SIMPLE ATTACHMENT (700x80px, 40% wider, 37% cut for optimal connection)
+          const cutPercent = 0.37; // 37% cut (decreased by 3% from 40%)
+          const attachment = createMirroredNameplateShape({
+            width: 700, // 40% wider than 500px for extended right side
+            height: 80,
+            cutPercentage: cutPercent,
+          });
+          attachment.scale.set(scale);
+          // Position to start where nameplate cutout begins
+          attachment.x = 250 * scale;
+          attachment.y = 0;
+          // Match attachment color to nameplate
+          attachment.tint = slotVisual.nameplate.tint;
+          slotVisual.container.addChild(attachment);
+          slotVisual.attachment = attachment;
+
+          // Lit gem on attachment - positioned in visible solid area (37% of 700px = 259px cut)
+          const cutWidth = 700 * cutPercent; // 259px
+          const attachmentGem = createMagicalGem(12 * scale, slotVisual.gemColor, true); // Lit
+          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 (moved 10px left)
+          attachmentGem.y = 20 * scale;
+          slotVisual.container.addChild(attachmentGem);
+          slotVisual.attachmentGem = attachmentGem;
+
+          // Decorative concave corner at cut edge (259px for 37% of 700px)
+          const corner = createConcaveCornerShape(15 * scale, 0x1a3d2d, 1.0);
+          corner.scale.x = -1; // Flip horizontally
+          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) - positioned at cut edge
+          corner.y = 0;
+          // Match corner color to nameplate and attachment
+          corner.tint = slotVisual.nameplate.tint;
+          slotVisual.container.addChild(corner);
+          slotVisual.decorativeCorner = corner;
+
+        } else if (desiredAttachmentType === 'extended') {
+          // COMPLEX ATTACHMENT (700x80px, 40% wider, 37% cut for optimal connection)
+          const cutPercent = 0.37; // 37% cut (decreased by 3% from 40%)
+          const attachment = createExtendedAttachmentShape({
+            width: 700, // 40% wider than 500px for extended right side
+            height: 80,
+            cutPercentage: cutPercent,
+          });
+          attachment.scale.set(scale);
+          // Position to start where nameplate cutout begins
+          attachment.x = 250 * scale;
+          attachment.y = 0;
+          // Match attachment color to nameplate
+          attachment.tint = slotVisual.nameplate.tint;
+          slotVisual.container.addChild(attachment);
+          slotVisual.attachment = attachment;
+
+          // Lit gem on attachment - positioned in visible solid area (37% of 700px = 259px cut)
+          const cutWidth = 700 * cutPercent; // 259px
+          const attachmentGem = createMagicalGem(12 * scale, slotVisual.gemColor, true); // Lit
+          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 (moved 10px left)
+          attachmentGem.y = 20 * scale;
+          slotVisual.container.addChild(attachmentGem);
+          slotVisual.attachmentGem = attachmentGem;
+
+          // Decorative concave corner at cut edge (259px for 37% of 700px)
+          const corner = createConcaveCornerShape(15 * scale, 0x1a3d2d, 1.0);
+          corner.scale.x = -1; // Flip horizontally
+          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) - positioned at cut edge
+          corner.y = 0;
+          // Match corner color to nameplate and attachment
+          corner.tint = slotVisual.nameplate.tint;
+          slotVisual.container.addChild(corner);
+          slotVisual.decorativeCorner = corner;
+        }
+
+        slotVisual.currentAttachmentType = desiredAttachmentType;
+      }
+
+      // Update text content
       if (slotData.isEmpty) {
-        // Empty slot
-        slotVisual.background.tint = this.config.slotEmptyColor!;
-        slotVisual.nameText.text = `File ${i + 1}`;
+        // Empty slot - show FILE # in file text, nothing in name text
+        slotVisual.nameplate.tint = this.config.slotEmptyColor!;
+        slotVisual.fileText.text = `FILE ${slotVisual.slotNumber}`;
+        slotVisual.nameText.text = ''; // No text for empty slots
         slotVisual.infoText.visible = false;
-        slotVisual.emptyText.visible = true;
-        this.drawEmptyIcon(slotVisual.icon);
+        // Reset text positions for empty slots
+        slotVisual.nameText.x = 20 * scale;
+        slotVisual.nameText.y = 55 * scale;
+        slotVisual.infoText.x = 20 * scale;
       } else {
-        // Filled slot - display dragon name directly
-        slotVisual.background.tint = this.config.slotNormalColor!;
-        slotVisual.nameText.text = slotData.dragonName!; // Show dragon name instead of "File # - Name"
-        slotVisual.infoText.text = `Ward ${slotData.wardNumber} • ${slotData.playtimeFormatted} • ${slotData.landName}\nLast: ${slotData.lastPlayedRelative}`;
-        slotVisual.infoText.visible = true;
-        slotVisual.emptyText.visible = false;
-        this.drawDragonIcon(slotVisual.icon);
+        // Filled slot - show dragon name in file text
+        slotVisual.nameplate.tint = this.config.slotNormalColor!;
+        slotVisual.fileText.text = slotData.dragonName || 'Unknown Dragon';
+
+        // Simple attachment: Show "Land # Name • Ward # Name" aligned with gem
+        if (desiredAttachmentType === 'simple') {
+          slotVisual.nameText.text = `Land ${slotData.landNumber} ${slotData.landName} • Ward ${slotData.wardNumber} ${slotData.wardName}`;
+          // Position text to the right of attachment gem (534 + 30px spacing)
+          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px
+          slotVisual.nameText.anchor.set(0, 0.5); // Left-aligned, vertically centered
+          slotVisual.nameText.x = textStartX;
+          slotVisual.nameText.y = 20 * scale; // Center vertically on gem (gem is at y=20)
+          slotVisual.infoText.visible = false; // Hide info text for simple attachment
+        }
+        // Extended attachment: Show all info (playtime, last played) with full land/ward details
+        else if (desiredAttachmentType === 'extended') {
+          slotVisual.nameText.text = `Ward ${slotData.wardNumber} ${slotData.wardName} • ${slotData.playtimeFormatted}`;
+          slotVisual.infoText.text = `Land ${slotData.landNumber} ${slotData.landName} • Last: ${slotData.lastPlayedRelative}`;
+          slotVisual.infoText.visible = true;
+          // Position text to the right of attachment gem (534 + 30px spacing)
+          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px
+          slotVisual.nameText.x = textStartX;
+          slotVisual.nameText.y = 55 * scale; // Standard position below fileText
+          slotVisual.infoText.x = textStartX;
+        }
       }
     }
   }
@@ -526,16 +710,42 @@ export class ProfileSelectionManager {
       const isSelected = i === this.state.selectedSlotIndex;
       const isHovered = i === this.state.hoveredSlotIndex;
 
-      // Show/hide selection arrow
-      slot.selectionArrow.visible = isSelected;
+      // Show/hide selection arrow - show on hover
+      slot.selectionArrow.visible = isHovered;
 
-      // Update background color
-      if (this.profileData[i].isEmpty) {
-        slot.background.tint = this.config.slotEmptyColor!;
-      } else if (isSelected || isHovered) {
-        slot.background.tint = this.config.slotSelectedColor!;
+      // Update nameplate tint based on state
+      if (isSelected || isHovered) {
+        slot.nameplate.tint = 0xffffff; // Full brightness
+        slot.nameplate.alpha = 1.0;
+        // Match attachment and decorative corner color to nameplate
+        if (slot.attachment) {
+          slot.attachment.tint = 0xffffff;
+          slot.attachment.alpha = 1.0;
+        }
+        if (slot.decorativeCorner) {
+          slot.decorativeCorner.tint = 0xffffff;
+          slot.decorativeCorner.alpha = 1.0;
+        }
       } else {
-        slot.background.tint = this.config.slotNormalColor!;
+        slot.nameplate.tint = 0xcccccc; // Slightly dimmed
+        slot.nameplate.alpha = 0.9;
+        // Match attachment and decorative corner color to nameplate
+        if (slot.attachment) {
+          slot.attachment.tint = 0xcccccc;
+          slot.attachment.alpha = 0.9;
+        }
+        if (slot.decorativeCorner) {
+          slot.decorativeCorner.tint = 0xcccccc;
+          slot.decorativeCorner.alpha = 0.9;
+        }
+      }
+
+      // Update gem glow intensity based on hover state
+      // The gem container contains glow layers and the gem itself
+      if (isHovered) {
+        slot.gem.alpha = 1.2; // Brighter when hovered
+      } else {
+        slot.gem.alpha = 1.0; // Normal brightness
       }
     }
 
@@ -549,28 +759,6 @@ export class ProfileSelectionManager {
     }
   }
 
-  /**
-   * Draw dragon icon (simple silhouette)
-   */
-  private drawDragonIcon(graphics: Graphics): void {
-    const scale = this.responsiveManager.getGameWorldScale();
-
-    graphics.clear();
-    graphics.circle(0, 0, 30 * scale);
-    graphics.fill(0xffd700); // Gold circle for now
-    // TODO: Replace with actual dragon sprite
-  }
-
-  /**
-   * Draw empty icon
-   */
-  private drawEmptyIcon(graphics: Graphics): void {
-    const scale = this.responsiveManager.getGameWorldScale();
-
-    graphics.clear();
-    graphics.circle(0, 0, 30 * scale);
-    graphics.fill(0x666666); // Gray circle
-  }
 
   /**
    * Handle slot selection
@@ -601,8 +789,14 @@ export class ProfileSelectionManager {
     this.mouseHandler = (event: MouseEvent) => this.handleMouseMove(event);
     this.app.canvas.addEventListener('mousemove', this.mouseHandler);
 
-    // Mouse click
-    this.app.canvas.addEventListener('click', () => this.handleSlotSelection());
+    // Mouse click - only select if clicking on a hovered slot
+    this.clickHandler = () => {
+      if (this.state.hoveredSlotIndex !== -1) {
+        this.state.selectedSlotIndex = this.state.hoveredSlotIndex;
+        this.handleSlotSelection();
+      }
+    };
+    this.app.canvas.addEventListener('click', this.clickHandler);
 
     // Resize
     this.resizeCallback = () => this.handleResize();
@@ -623,6 +817,11 @@ export class ProfileSelectionManager {
       this.mouseHandler = null;
     }
 
+    if (this.clickHandler) {
+      this.app.canvas.removeEventListener('click', this.clickHandler);
+      this.clickHandler = null;
+    }
+
     if (this.resizeCallback) {
       this.responsiveManager.offResize(this.resizeCallback);
       this.resizeCallback = null;
@@ -633,6 +832,8 @@ export class ProfileSelectionManager {
    * Handle keyboard input
    */
   private handleKeyPress(event: KeyboardEvent): void {
+    const previousSelection = this.state.selectedSlotIndex;
+
     switch (event.key) {
       case 'ArrowUp':
         this.state.selectedSlotIndex = Math.max(0, this.state.selectedSlotIndex - 1);
@@ -650,6 +851,11 @@ export class ProfileSelectionManager {
         this.hide();
         break;
     }
+
+    // Update visuals if selection changed (to switch between simple/extended attachments)
+    if (previousSelection !== this.state.selectedSlotIndex) {
+      this.updateSlotVisuals();
+    }
   }
 
   /**
@@ -660,11 +866,12 @@ export class ProfileSelectionManager {
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
 
-    // Check slot hover
+    // Check slot hover - use nameplate bounds, not container bounds
+    // (container includes arrow at x=-20 and text that may extend beyond nameplate)
     this.state.hoveredSlotIndex = -1;
     for (let i = 0; i < 3; i++) {
       const slot = this.slots[i];
-      const bounds = slot.container.getBounds();
+      const bounds = slot.nameplate.getBounds();
 
       if (
         mouseX >= bounds.x &&

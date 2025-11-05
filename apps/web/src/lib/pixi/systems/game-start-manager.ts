@@ -19,6 +19,21 @@ import { UIManager } from './ui-manager';
 import { JourneyProgressionManager } from './journey-progression-manager';
 import { TakeoffCutsceneManager } from './takeoff-cutscene';
 import { profileRepo } from '@draconia/db';
+import { ProjectileManager } from './combat/projectile-manager';
+import type { DragonCombatState, EnemyCombatState } from './combat/combat-state';
+import {
+  createDragonCombatState,
+  createEnemyCombatState,
+  calculateScaledStats,
+  calculateRangePixels,
+  DEFAULT_COMBAT_CONFIG,
+} from './combat/combat-state';
+import * as CollisionUtils from './combat/collision-utils';
+import * as DamageUtils from './combat/damage-utils';
+import { getEventBus, type EventBus, type CombatEvent } from '@draconia/shared';
+import { createDefaultArcanaDropManager } from '@draconia/sim';
+import { setupArcanaRewardListeners } from './combat/arcana-reward-calculator';
+import { setupArcanaEventHandler } from './combat/arcana-event-handler';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -76,6 +91,15 @@ export class GameStartManager {
   private uiManager: UIManager | null = null;
   private journeyProgressionManager: JourneyProgressionManager | null = null;
   private takeoffCutsceneManager: TakeoffCutsceneManager | null = null;
+
+  // Combat systems (independent managers, no orchestrator)
+  private projectileManager: ProjectileManager | null = null;
+  private dragonCombatState: DragonCombatState | null = null;
+  private enemyCombatStates: Map<number, EnemyCombatState> = new Map();
+
+  // Event system
+  private eventBus: EventBus | null = null;
+  private arcanaManager: ReturnType<typeof createDefaultArcanaDropManager> | null = null;
 
   // Journey system state
   private isJourneyActive = false;
@@ -480,8 +504,14 @@ export class GameStartManager {
       // Get responsive manager for use by multiple managers
       const responsiveManager = this.migrationAdapter.getResponsiveManager();
 
-      // Initialize land manager (background only)
-      this.landManager = new LandManager(this.app, this.assetManager, responsiveManager);
+      // Initialize Event System (before creating managers that need it)
+      this.eventBus = getEventBus();
+      this.arcanaManager = createDefaultArcanaDropManager();
+
+      // Initialize land manager (background only, with eventBus)
+      this.landManager = new LandManager(this.app, this.assetManager, responsiveManager, {
+        eventBus: this.eventBus,
+      });
       await this.landManager.loadLand('land1_steppe');
       this.landManager.start();
 
@@ -493,10 +523,11 @@ export class GameStartManager {
       // HP bars now managed by UIManager (UI elements, not entity logic)
       this.entityManager = new EntityManager(this.app, this.assetManager, responsiveManager);
 
-      // Create dragon protagonist
+      // Create dragon protagonist (with eventBus)
       // Position and scale are handled internally using game world coordinates
       await this.entityManager.createDragonProtagonist({
         visible: true,
+        eventBus: this.eventBus,
       });
 
       // Start journey for dragon
@@ -505,10 +536,11 @@ export class GameStartManager {
         await dragon.enterLand('land1_steppe');
       }
 
-      // Create and start enemy manager
+      // Create and start enemy manager (with eventBus)
       await this.entityManager.createEnemyManager({
         maxEnemies: 10,
         spawnInterval: 3000, // Spawn every 3 seconds
+        eventBus: this.eventBus,
       });
 
       const enemyManager = this.entityManager.getEnemyManager();
@@ -516,9 +548,20 @@ export class GameStartManager {
         enemyManager.start(); // Start automatic spawning
       }
 
+      // Initialize Combat Systems (independent managers, no orchestrator)
+      this.projectileManager = new ProjectileManager(this.app);
+      await this.projectileManager.initialize();
+
+      // Create dragon combat state
+      this.dragonCombatState = createDragonCombatState(DEFAULT_COMBAT_CONFIG);
+
+      console.log('⚔️ Combat Systems: Initialized (independent architecture)');
+
       // Initialize UI Manager (journey controls, top bar, HP bars, etc.)
       // UIManager creates and owns HealthBarManager - proper UI hierarchy
-      this.uiManager = new UIManager(this.app, this.assetManager, responsiveManager);
+      this.uiManager = new UIManager(this.app, this.assetManager, responsiveManager, {
+        eventBus: this.eventBus,
+      });
       await this.uiManager.initialize();
       this.uiManager.setLandManager(this.landManager); // Connect UI to land manager
       this.uiManager.setDragonProtagonist(dragon!); // Connect UI to dragon for HP bar tracking
@@ -531,6 +574,25 @@ export class GameStartManager {
       this.journeyProgressionManager.startJourney();
       this.uiManager.setJourneyProgressionManager(this.journeyProgressionManager); // Connect UI to progression manager
 
+      // Set up arcana reward listeners (eventBus already initialized above)
+      setupArcanaRewardListeners(
+        this.eventBus,
+        this.arcanaManager,
+        () => this.journeyProgressionManager?.getDistanceMeters() || 0,
+        () => this.journeyProgressionManager?.getCurrentWardNumber() || 1,
+      );
+
+      // Set up arcana event handler
+      setupArcanaEventHandler(this.eventBus, this.arcanaManager);
+
+      // Listen for arcana_awarded events to update UI
+      this.eventBus.on<CombatEvent>('combat', 'arcana_awarded', (event) => {
+        const payload = event.payload as { totalBalance: number };
+        if (this.uiManager) {
+          this.uiManager.updateCurrencies({ arcana: payload.totalBalance });
+        }
+      });
+
       // Initialize Takeoff Cutscene Manager
       this.takeoffCutsceneManager = new TakeoffCutsceneManager(this.app, responsiveManager);
       this.takeoffCutsceneManager.setDragon(dragon!);
@@ -540,7 +602,7 @@ export class GameStartManager {
       this.takeoffCutsceneManager.setUIManager(this.uiManager);
       this.takeoffCutsceneManager.setEntityManager(this.entityManager);
       // Inject topbar container so cutscene can control zoom/pan
-      const topbarContainer = (this.uiManager as any).topbarContainer;
+      const topbarContainer = this.uiManager.getTopbarContainer();
       if (topbarContainer) {
         this.takeoffCutsceneManager.setTopbarContainer(topbarContainer);
       }
@@ -712,6 +774,355 @@ export class GameStartManager {
   }
 
   /**
+   * Update combat systems
+   * Demonstrates independent manager architecture - no orchestrator
+   * Uses pure utility functions and data passing
+   */
+  private updateCombat(deltaTime: number, currentTime: number): void {
+    if (!this.projectileManager || !this.dragonCombatState || !this.entityManager) {
+      return;
+    }
+
+    const enemyManager = this.entityManager.getEnemyManager();
+    const dragon = this.entityManager.getDragonProtagonist();
+    if (!enemyManager || !dragon) return;
+
+    const dragonSprite = dragon.getDragonSprite();
+    if (!dragonSprite) return;
+
+    const enemies = enemyManager.getEnemies();
+    const currentDistance = this.journeyProgressionManager?.getDistanceMeters() || 0;
+
+    // 1. Update projectiles (independent manager)
+    this.projectileManager.update(deltaTime);
+
+    // 2. Update enemy manager (already done by entity manager)
+    enemyManager.update(deltaTime);
+
+    // 3. Register new enemies in combat (create combat state using pure functions)
+    for (const enemy of enemies) {
+      if (!this.enemyCombatStates.has(enemy.id)) {
+        // Assign random attack range tier (20%, 25%, or 28%)
+        const rangeTiers = [0.20, 0.25, 0.28];
+        const attackRangePercent = rangeTiers[Math.floor(Math.random() * rangeTiers.length)];
+
+        // Create enemy combat state using pure function
+        const combatState = createEnemyCombatState(attackRangePercent, DEFAULT_COMBAT_CONFIG);
+        this.enemyCombatStates.set(enemy.id, combatState);
+
+        // Apply scaled stats using pure function
+        const scaledStats = calculateScaledStats(currentDistance, DEFAULT_COMBAT_CONFIG);
+        enemy.health = scaledStats.hp;
+        enemy.maxHealth = scaledStats.hp;
+        enemy.damage = scaledStats.damage;
+      }
+    }
+
+    // 4. Get alive enemies (shared by both dragon and enemy attacks)
+    const aliveEnemies = enemies.filter((e) => {
+      const combatState = this.enemyCombatStates.get(e.id);
+      return combatState && !combatState.isDefeated;
+    });
+
+    // 5. Dragon auto-attack (using pure utility functions)
+    if (currentTime - this.dragonCombatState.lastFireTime >= this.dragonCombatState.fireRate) {
+      // Find enemies in range using pure function
+      const dragonRangePixels = calculateRangePixels(
+        this.dragonCombatState.attackRangePercent,
+        DEFAULT_COMBAT_CONFIG,
+      );
+
+      // Find closest enemy using pure function
+      const closestEnemy = CollisionUtils.findClosestSprite(
+        dragonSprite,
+        aliveEnemies.map((e) => e.sprite),
+        dragonRangePixels,
+      );
+
+      if (closestEnemy) {
+        const targetEnemy = aliveEnemies.find((e) => e.sprite === closestEnemy);
+        if (targetEnemy) {
+          // Fire projectile with collision callback
+          this.projectileManager.fireDragonProjectile(
+            dragonSprite.x,
+            dragonSprite.y,
+            targetEnemy.sprite,
+            (projectileSprite) => {
+              // Collision callback using pure function
+              const isColliding = CollisionUtils.checkCollision(projectileSprite, targetEnemy.sprite);
+
+              if (isColliding) {
+                // Apply damage using pure function
+                const result = DamageUtils.applyEnemyDamage(
+                  targetEnemy.health,
+                  this.dragonCombatState!.damage,
+                  targetEnemy.maxHealth,
+                );
+
+                targetEnemy.health = result.newHealth;
+
+                // Handle death
+                if (result.targetDied) {
+                  const combatState = this.enemyCombatStates.get(targetEnemy.id);
+                  if (combatState) {
+                    combatState.isDefeated = true;
+                    combatState.deathData = DamageUtils.createDeathData();
+
+                    // Emit enemy_defeated event
+                    if (this.eventBus) {
+                      this.eventBus.emit<CombatEvent>({
+                        category: 'combat',
+                        type: 'enemy_defeated',
+                        timestamp: Date.now(),
+                        source: 'game-start-manager',
+                        payload: {
+                          enemyId: targetEnemy.id,
+                          enemyType: targetEnemy.type,
+                          baseArcana: targetEnemy.baseArcana || 0,
+                          defeatMethod: 'projectile',
+                          position: { x: targetEnemy.x, y: targetEnemy.y },
+                          enemy: targetEnemy,
+                        },
+                      });
+
+                      // Emit death_animation_started event
+                      this.eventBus.emit<CombatEvent>({
+                        category: 'combat',
+                        type: 'death_animation_started',
+                        timestamp: Date.now(),
+                        source: 'game-start-manager',
+                        payload: {
+                          enemyId: targetEnemy.id,
+                          animationStartTime: combatState.deathData.timestamp,
+                          animationDuration: 330,
+                        },
+                      });
+                    }
+                  }
+                }
+
+                return true; // Collision occurred
+              }
+
+              return false; // No collision
+            },
+          );
+
+          this.dragonCombatState.lastFireTime = currentTime;
+        }
+      }
+    }
+
+    // 6. Enemy auto-attack (using pure utility functions)
+    for (const enemy of aliveEnemies) {
+      const combatState = this.enemyCombatStates.get(enemy.id);
+      if (!combatState || combatState.isDefeated) continue;
+
+      // Calculate enemy attack range and distance to dragon
+      const enemyRangePixels = calculateRangePixels(
+        combatState.attackRangePercent,
+        DEFAULT_COMBAT_CONFIG,
+      );
+      const distanceToDragon = CollisionUtils.getDistance(enemy.sprite, dragonSprite);
+
+      // Stop enemy movement when in attack range, continue when out of range
+      if (distanceToDragon <= enemyRangePixels) {
+        enemy.isMoving = false; // Stop moving, start attacking
+      } else {
+        enemy.isMoving = true; // Keep approaching dragon
+      }
+
+      // Check if enemy can fire
+      if (currentTime - combatState.lastFireTime >= combatState.fireRate) {
+        // Fire only if dragon is in range (already calculated above)
+        if (distanceToDragon <= enemyRangePixels) {
+          // Enemy is in range, fire projectile at dragon's current position
+          this.projectileManager.fireEnemyProjectile(
+            enemy.sprite.x,
+            enemy.sprite.y,
+            dragonSprite.x,
+            dragonSprite.y,
+            enemy.type,
+            (projectileSprite) => {
+              // Collision callback for enemy projectile hitting dragon
+              const isColliding = CollisionUtils.checkCollision(projectileSprite, dragonSprite);
+
+              if (isColliding && this.dragonCombatState) {
+                // Apply damage to dragon using pure function
+                const result = DamageUtils.applyDragonDamage(
+                  this.dragonCombatState.hp,
+                  enemy.damage,
+                  this.dragonCombatState.maxHP,
+                );
+
+                this.dragonCombatState.hp = result.newHealth;
+
+                // Update dragon HP in dragon protagonist
+                dragon.setHealth(result.newHealth);
+
+                // Update HP bar visual
+                if (this.uiManager) {
+                  this.uiManager.updateDragonHealth(result.newHealth, this.dragonCombatState.maxHP);
+                }
+
+                // Handle dragon death
+                if (result.targetDied) {
+                  this.handleDragonDeath();
+                }
+
+                return true; // Collision occurred
+              }
+
+              return false; // No collision
+            },
+          );
+
+          combatState.lastFireTime = currentTime;
+        }
+      }
+    }
+
+    // 7. Check enemy projectile collisions with dragon (for projectiles already in flight)
+    const enemyProjectiles = this.projectileManager.getEnemyProjectiles();
+    for (const projectileData of enemyProjectiles) {
+      if (!projectileData.hasHit && this.dragonCombatState) {
+        const isColliding = CollisionUtils.checkCollision(
+          projectileData.projectile.getSprite(),
+          dragonSprite,
+        );
+
+        if (isColliding) {
+          // Find which enemy fired this projectile (for damage value)
+          // For now, use average enemy damage
+          const avgDamage = 2.0; // Base damage, will be scaled
+
+          const result = DamageUtils.applyDragonDamage(
+            this.dragonCombatState.hp,
+            avgDamage,
+            this.dragonCombatState.maxHP,
+          );
+
+          this.dragonCombatState.hp = result.newHealth;
+          dragon.setHealth(result.newHealth);
+
+          // Update HP bar visual
+          if (this.uiManager) {
+            this.uiManager.updateDragonHealth(result.newHealth, this.dragonCombatState.maxHP);
+          }
+
+          // Mark projectile as hit
+          this.projectileManager.markProjectileHit(projectileData);
+
+          // Handle dragon death
+          if (result.targetDied) {
+            this.handleDragonDeath();
+          }
+        }
+      }
+    }
+
+    // 8. Update death animations and remove defeated enemies (using pure functions)
+    for (const enemy of enemies) {
+      const combatState = this.enemyCombatStates.get(enemy.id);
+      if (combatState && combatState.isDefeated && combatState.deathData) {
+        const isComplete = DamageUtils.updateDeathAnimation(combatState.deathData, currentTime);
+
+        // Update sprite visibility based on blink state
+        enemy.sprite.visible = combatState.deathData.isBlinking;
+
+        // Remove when animation complete
+        if (isComplete) {
+          enemy.sprite.visible = false;
+
+          // Emit death_animation_complete event
+          if (this.eventBus) {
+            this.eventBus.emit<CombatEvent>({
+              category: 'combat',
+              type: 'death_animation_complete',
+              timestamp: Date.now(),
+              source: 'game-start-manager',
+              payload: {
+                enemyId: enemy.id,
+                enemy: enemy, // Full enemy data for reward calculation
+              },
+            });
+          }
+
+          // EnemyManager will clean up invisible enemies
+        }
+      }
+    }
+  }
+
+  /**
+   * Handle dragon death (full death sequence)
+   */
+  private handleDragonDeath(): void {
+    if (!this.journeyProgressionManager || !this.dragonCombatState || !this.entityManager) return;
+
+    console.log('💀 Dragon Death: Starting death sequence...');
+
+    // 1. Clear all enemies from the battlefield
+    const enemyManager = this.entityManager.getEnemyManager();
+    if (enemyManager) {
+      const enemyCount = enemyManager.getEnemyCount();
+      enemyManager.clearAllEnemies();
+      console.log(`💀 Dragon Death: Cleared ${enemyCount} enemies`);
+    }
+
+    // 2. Clear all projectiles
+    if (this.projectileManager) {
+      const projectileCount = this.projectileManager.getProjectileCount();
+      this.projectileManager.clearAllProjectiles();
+      console.log(`💀 Dragon Death: Cleared ${projectileCount} projectiles`);
+    }
+
+    // 3. Clear enemy combat states
+    this.enemyCombatStates.clear();
+
+    // 4. TODO: Dragon blink animation (330ms, 3 blinks)
+    // For now, skip animation and proceed directly to respawn
+
+    // 5. Get current journey state for pushback calculation
+    const currentDistance = this.journeyProgressionManager.getDistanceMeters();
+    const currentWard = this.journeyProgressionManager.getCurrentWard();
+    const wardStartDistance = currentWard?.distanceFromStart || 0;
+    const wardEndDistance = wardStartDistance + 5000; // Ward 1 is 5000m
+
+    // 6. Calculate pushback using pure function
+    const deathResult = DamageUtils.calculateDragonPushback(
+      currentDistance,
+      wardStartDistance,
+      wardEndDistance,
+    );
+
+    console.log(
+      `💀 Dragon Death: Pushback ${deathResult.pushbackDistance.toFixed(2)}m (${currentDistance.toFixed(2)}m → ${deathResult.newDistance.toFixed(2)}m)`,
+    );
+
+    // 7. Apply pushback distance
+    this.journeyProgressionManager.setState({ distanceTraveledMeters: deathResult.newDistance });
+
+    // 8. Reset dragon HP to full
+    this.dragonCombatState.hp = this.dragonCombatState.maxHP;
+
+    const dragon = this.entityManager.getDragonProtagonist();
+    if (dragon) {
+      dragon.setHealth(this.dragonCombatState.maxHP);
+    }
+
+    // Update HP bar visual to show full health
+    if (this.uiManager) {
+      this.uiManager.updateDragonHealth(this.dragonCombatState.maxHP, this.dragonCombatState.maxHP);
+    }
+
+    // 9. Pause journey (TODO: set pause button state via UIManager)
+    // For now, journey continues automatically
+
+    console.log('💀 Dragon Death: Sequence complete - respawned with full HP');
+  }
+
+  /**
    * Start the journey update loop (replaces scrolling-background-phase2 functionality)
    */
   private startJourneyUpdateLoop(): void {
@@ -749,6 +1160,12 @@ export class GameStartManager {
         if (dragon) {
           dragon.update(deltaTime);
           // HP bar position is now updated by UIManager.update()
+        }
+
+        // Update Combat (independent systems coordinated via data passing)
+        // Skip combat during cutscene to prevent targeting issues
+        if (!this.takeoffCutsceneManager || !this.takeoffCutsceneManager.isPlaying()) {
+          this.updateCombat(deltaTime, currentTime);
         }
       }
 
