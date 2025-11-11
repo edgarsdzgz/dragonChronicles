@@ -587,10 +587,11 @@ export class ProfileSelectionManager {
 
         // Create new attachment if needed
         if (desiredAttachmentType === 'simple') {
-          // SIMPLE ATTACHMENT (700x80px, 40% wider, 37% cut for optimal connection)
-          const cutPercent = 0.37; // 37% cut (decreased by 3% from 40%)
+          // SIMPLE ATTACHMENT (810x80px, 62% wider, 32% cut for balanced connection)
+          const cutPercent = 0.32; // 32% cut (increased from 30% for better spacing)
+          const attachmentWidth = 810; // Reduced from 900px (10% smaller)
           const attachment = createMirroredNameplateShape({
-            width: 700, // 40% wider than 500px for extended right side
+            width: attachmentWidth,
             height: 80,
             cutPercentage: cutPercent,
           });
@@ -603,18 +604,18 @@ export class ProfileSelectionManager {
           slotVisual.container.addChild(attachment);
           slotVisual.attachment = attachment;
 
-          // Lit gem on attachment - positioned in visible solid area (37% of 700px = 259px cut)
-          const cutWidth = 700 * cutPercent; // 259px
+          // Lit gem on attachment - positioned in visible solid area (32% of 810px = 259px cut)
+          const cutWidth = attachmentWidth * cutPercent; // 259px
           const attachmentGem = createMagicalGem(12 * scale, slotVisual.gemColor, true); // Lit
-          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 (moved 10px left)
+          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 = 534px
           attachmentGem.y = 20 * scale;
           slotVisual.container.addChild(attachmentGem);
           slotVisual.attachmentGem = attachmentGem;
 
-          // Decorative concave corner at cut edge (259px for 37% of 700px)
+          // Decorative concave corner at cut edge (259px for 32% of 810px)
           const corner = createConcaveCornerShape(15 * scale, 0x1a3d2d, 1.0);
           corner.scale.x = -1; // Flip horizontally
-          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) - positioned at cut edge
+          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) = 509px - positioned at cut edge
           corner.y = 0;
           // Match corner color to nameplate and attachment
           corner.tint = slotVisual.nameplate.tint;
@@ -622,10 +623,11 @@ export class ProfileSelectionManager {
           slotVisual.decorativeCorner = corner;
 
         } else if (desiredAttachmentType === 'extended') {
-          // COMPLEX ATTACHMENT (700x80px, 40% wider, 37% cut for optimal connection)
-          const cutPercent = 0.37; // 37% cut (decreased by 3% from 40%)
+          // COMPLEX ATTACHMENT (810x80px, 62% wider, 32% cut for balanced connection)
+          const cutPercent = 0.32; // 32% cut (increased from 30% for better spacing)
+          const attachmentWidth = 810; // Reduced from 900px (10% smaller)
           const attachment = createExtendedAttachmentShape({
-            width: 700, // 40% wider than 500px for extended right side
+            width: attachmentWidth,
             height: 80,
             cutPercentage: cutPercent,
           });
@@ -638,18 +640,18 @@ export class ProfileSelectionManager {
           slotVisual.container.addChild(attachment);
           slotVisual.attachment = attachment;
 
-          // Lit gem on attachment - positioned in visible solid area (37% of 700px = 259px cut)
-          const cutWidth = 700 * cutPercent; // 259px
+          // Lit gem on attachment - positioned in visible solid area (32% of 810px = 259px cut)
+          const cutWidth = attachmentWidth * cutPercent; // 259px
           const attachmentGem = createMagicalGem(12 * scale, slotVisual.gemColor, true); // Lit
-          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 (moved 10px left)
+          attachmentGem.x = (250 + cutWidth + 25) * scale; // attachment.x (250) + cutWidth (259) + 25 = 534px
           attachmentGem.y = 20 * scale;
           slotVisual.container.addChild(attachmentGem);
           slotVisual.attachmentGem = attachmentGem;
 
-          // Decorative concave corner at cut edge (259px for 37% of 700px)
+          // Decorative concave corner at cut edge (259px for 32% of 810px)
           const corner = createConcaveCornerShape(15 * scale, 0x1a3d2d, 1.0);
           corner.scale.x = -1; // Flip horizontally
-          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) - positioned at cut edge
+          corner.x = (250 + cutWidth) * scale; // attachment.x (250) + cutWidth (259) = 509px - positioned at cut edge
           corner.y = 0;
           // Match corner color to nameplate and attachment
           corner.tint = slotVisual.nameplate.tint;
@@ -662,25 +664,32 @@ export class ProfileSelectionManager {
 
       // Update text content
       if (slotData.isEmpty) {
-        // Empty slot - show FILE # in file text, nothing in name text
+        // Empty slot - show FILE # in file text, "NO DATA" in small tertiary text
         slotVisual.nameplate.tint = this.config.slotEmptyColor!;
         slotVisual.fileText.text = `FILE ${slotVisual.slotNumber}`;
-        slotVisual.nameText.text = ''; // No text for empty slots
+        slotVisual.nameText.text = 'NO DATA'; // Small tertiary text for empty slots
+        slotVisual.nameText.style.fontSize = 12 * scale; // Tertiary font size (small)
+        slotVisual.nameText.style.fill = 0x888888; // Dimmed grey color
+        slotVisual.nameText.anchor.set(0, 0); // Left-aligned, top anchor
         slotVisual.infoText.visible = false;
-        // Reset text positions for empty slots
+        // Position "NO DATA" text beneath "FILE #"
         slotVisual.nameText.x = 20 * scale;
-        slotVisual.nameText.y = 55 * scale;
+        slotVisual.nameText.y = 45 * scale; // Below FILE text (15 + 32 = 47, so 45 works)
         slotVisual.infoText.x = 20 * scale;
       } else {
         // Filled slot - show dragon name in file text
         slotVisual.nameplate.tint = this.config.slotNormalColor!;
         slotVisual.fileText.text = slotData.dragonName || 'Unknown Dragon';
 
+        // Reset nameText style to normal (in case it was "NO DATA" style before)
+        slotVisual.nameText.style.fontSize = 20 * scale; // Normal font size
+        slotVisual.nameText.style.fill = 0xffffff; // White color
+
         // Simple attachment: Show "Land # Name • Ward # Name" aligned with gem
         if (desiredAttachmentType === 'simple') {
           slotVisual.nameText.text = `Land ${slotData.landNumber} ${slotData.landName} • Ward ${slotData.wardNumber} ${slotData.wardName}`;
-          // Position text to the right of attachment gem (534 + 30px spacing)
-          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px
+          // Position text to the right of attachment gem (534 + 30px spacing) - updated for 32% cut
+          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px (32% cut)
           slotVisual.nameText.anchor.set(0, 0.5); // Left-aligned, vertically centered
           slotVisual.nameText.x = textStartX;
           slotVisual.nameText.y = 20 * scale; // Center vertically on gem (gem is at y=20)
@@ -691,8 +700,8 @@ export class ProfileSelectionManager {
           slotVisual.nameText.text = `Ward ${slotData.wardNumber} ${slotData.wardName} • ${slotData.playtimeFormatted}`;
           slotVisual.infoText.text = `Land ${slotData.landNumber} ${slotData.landName} • Last: ${slotData.lastPlayedRelative}`;
           slotVisual.infoText.visible = true;
-          // Position text to the right of attachment gem (534 + 30px spacing)
-          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px
+          // Position text to the right of attachment gem (534 + 30px spacing) - updated for 32% cut
+          const textStartX = (250 + 259 + 25 + 30) * scale; // 564px (32% cut)
           slotVisual.nameText.x = textStartX;
           slotVisual.nameText.y = 55 * scale; // Standard position below fileText
           slotVisual.infoText.x = textStartX;

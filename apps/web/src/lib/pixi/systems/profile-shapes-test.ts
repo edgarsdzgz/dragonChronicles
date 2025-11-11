@@ -49,6 +49,7 @@ export interface ProfileShapeConfig {
   parallelogramWidth?: number;
   parallelogramHeight?: number;
   parallelogramLean?: number; // How much the parallelogram leans right
+  cutPercentage?: number; // Percentage of width for top-left cut (default 0.52 = 52%)
 }
 
 /**
@@ -158,7 +159,7 @@ export function createNameplateShape(config: ProfileShapeConfig = {}): Graphics 
  * - Decorative concave corner: 15x15px at (260,0), flipped horizontally
  */
 export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): Graphics {
-  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50 } = config;
+  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50, cutPercentage = 0.52 } = config;
 
   const graphics = new Graphics();
 
@@ -198,7 +199,7 @@ export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): G
 
   // CUT TOP-LEFT SECTION with rectangle
   const _parallelogramHeight = height / 2; // 40px (original)
-  const rectWidth = width * 0.52; // 52% of attachment width: 260px
+  const rectWidth = width * cutPercentage; // Configurable cut percentage (default 52%)
   const rectHeight = height * 0.6; // 60% of attachment height: 48px
   const triangleHeight = height * 0.4; // 40% of attachment height: 32px
   const triangleWidth = triangleHeight * 1.25; // Maintain same proportions: 40px
@@ -247,7 +248,7 @@ export function createMirroredNameplateShape(config: ProfileShapeConfig = {}): G
  * - Gem position: On nameplate at standard position (x=480, y=20)
  */
 export function createExtendedAttachmentShape(config: ProfileShapeConfig = {}): Graphics {
-  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50 } = config;
+  const { width = 500, height = 80, cornerRadius: _cornerRadius = 10, parallelogramLean: _parallelogramLean = 50, cutPercentage = 0.52 } = config;
 
   const extensionHeight = 300;
   const totalHeight = height + extensionHeight;
@@ -290,7 +291,7 @@ export function createExtendedAttachmentShape(config: ProfileShapeConfig = {}): 
 
   // CUT TOP-LEFT SECTION with rectangle
   const _parallelogramHeight = height / 2; // 40px (original)
-  const rectWidth = width * 0.52; // 52% of attachment width: 260px
+  const rectWidth = width * cutPercentage; // Configurable cut percentage (default 52%)
   const rectHeight = height * 0.6; // 60% of attachment height: 48px
   const triangleHeight = height * 0.4; // 40% of attachment height: 32px
   const triangleWidth = triangleHeight * 1.25; // Maintain same proportions: 40px

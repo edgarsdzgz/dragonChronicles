@@ -47,15 +47,28 @@ export class ProfileRepository {
         const profile = save?.data.profiles[0];
 
         if (save && profile) {
+          const wardNumber = profile.progress.ward;
+          const landNumber = profile.progress.land;
+          const wardName = getWardName(wardNumber, landNumber);
+          const landName = getLandName(landNumber);
+
+          console.log('🔍 Profile Repo Debug:', {
+            wardNumber,
+            landNumber,
+            wardName,
+            landName,
+            profileName: profile.name
+          });
+
           slots.push({
             slotNumber: (i + 1) as 1 | 2 | 3,
             isEmpty: false,
             profileId: profile.id,
             dragonName: profile.name,
-            wardNumber: profile.progress.ward,
-            wardName: getWardName(profile.progress.ward, profile.progress.land),
-            landNumber: profile.progress.land,
-            landName: getLandName(profile.progress.land),
+            wardNumber,
+            wardName,
+            landNumber,
+            landName,
             playtimeFormatted: this.formatPlaytime(profile.stats.playtimeS),
             lastPlayedRelative: this.formatRelativeTime(profile.lastActive),
             lastActiveTimestamp: profile.lastActive,

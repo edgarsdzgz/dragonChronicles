@@ -119,7 +119,7 @@ export class ProfileNameEntryManager {
       buttonColor: 0x2d5a3d,
       buttonHoverColor: 0x4a7c59,
       fadeInDuration: 500, // Reduced from 1000ms to 500ms
-      maxNameLength: 20,
+      maxNameLength: 15, // Character limit for profile names
       ...config,
     };
 
@@ -442,11 +442,11 @@ export class ProfileNameEntryManager {
       buttonHeight,
     );
 
-    // Yes/No buttons (for confirmation)
+    // Yes/No buttons (for confirmation) - positioned to match Confirm/Cancel layout
     this.createButton(
       'yes',
       'Yes',
-      centerX - buttonWidth / 2 - buttonSpacing / 2,
+      centerX + buttonWidth / 2 + buttonSpacing / 2, // RIGHT (matches Confirm position)
       this.app.screen.height / 2 + 120 * scale,
       buttonWidth,
       buttonHeight,
@@ -454,7 +454,7 @@ export class ProfileNameEntryManager {
     this.createButton(
       'no',
       'No',
-      centerX + buttonWidth / 2 + buttonSpacing / 2,
+      centerX - buttonWidth / 2 - buttonSpacing / 2, // LEFT (matches Cancel position)
       this.app.screen.height / 2 + 120 * scale,
       buttonWidth,
       buttonHeight,

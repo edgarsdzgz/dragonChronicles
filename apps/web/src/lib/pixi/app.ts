@@ -68,7 +68,7 @@ export async function mountPixi(canvas: HTMLCanvasElement): Promise<PixiHandle> 
     showSplashScreen: true,
     showDraconiaMenu: true,
     autoStartJourney: false,
-    skipProfiles: true, // Skip profile selection for testing
+    skipProfiles: false, // Enable profile selection (splash → profile → draconia → journey)
   });
 
   // Initialize the game start sequence (splash -> menu -> journey)
