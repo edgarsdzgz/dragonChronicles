@@ -85,8 +85,8 @@ export class DragonProtagonistManager {
       isInLand: false,
       isJourneyActive: false,
       currentLand: null,
-      health: 100,
-      maxHealth: 100,
+      health: 10000,
+      maxHealth: 10000,
       movementSpeed: config.movementSpeed ?? DRAGON_BASE_MOVEMENT_SPEED,
     };
 

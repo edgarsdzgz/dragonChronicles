@@ -67,6 +67,7 @@ export const enemyConfigs: Record<
     cols: number;
     damage: number; // Base damage this enemy deals to the dragon
     health: number; // Base health for this enemy type
+    baseArcana: number; // Base arcana reward when defeated (before scaling)
   }
 > = {
   'mantair-corsair': {
@@ -76,8 +77,9 @@ export const enemyConfigs: Record<
     frameHeight: 128,
     rows: 2,
     cols: 2,
-    damage: 8, // Stronger enemy, deals more damage
+    damage: 500, // Balanced for 20 hits at 10000 HP
     health: 13,
+    baseArcana: 10, // Moderate arcana reward for stronger enemy
   },
   swarm: {
     name: 'Swarm',
@@ -86,8 +88,9 @@ export const enemyConfigs: Record<
     frameHeight: 128,
     rows: 2,
     cols: 2,
-    damage: 3, // Weaker enemy, deals less damage
+    damage: 250, // Balanced for 40 hits at 10000 HP
     health: 8,
+    baseArcana: 5, // Lower arcana reward for weaker enemy
   },
 };
 
