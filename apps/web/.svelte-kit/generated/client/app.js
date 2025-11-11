@@ -12,22 +12,31 @@ export const nodes = [
 	() => import('./nodes/8'),
 	() => import('./nodes/9'),
 	() => import('./nodes/10'),
-	() => import('./nodes/11')
+	() => import('./nodes/11'),
+	() => import('./nodes/12'),
+	() => import('./nodes/13'),
+	() => import('./nodes/14'),
+	() => import('./nodes/15'),
+	() => import('./nodes/16')
 ];
 
 export const server_loads = [];
 
 export const dictionary = {
-		"/": [2],
-		"/dev/boom": [3],
-		"/dev/dragon-animated": [5],
-		"/dev/dragon-debug": [6],
-		"/dev/dragon-final": [7],
-		"/dev/dragon-simple": [8],
-		"/dev/dragon-working": [9],
-		"/dev/dragon": [4],
-		"/dev/logs": [10],
-		"/dev/pool": [11]
+		"/": [3],
+		"/dev/boom": [4,[2]],
+		"/dev/currency-topbar": [5,[2]],
+		"/dev/dragon-animated": [7,[2]],
+		"/dev/dragon-debug": [8,[2]],
+		"/dev/dragon-final": [9,[2]],
+		"/dev/dragon-simple": [10,[2]],
+		"/dev/dragon-working": [11,[2]],
+		"/dev/dragon": [6,[2]],
+		"/dev/logo-spinner": [12,[2]],
+		"/dev/logs": [13,[2]],
+		"/dev/pool": [14,[2]],
+		"/dev/profile-shapes": [15,[2]],
+		"/dev/protoprofile": [16,[2]]
 	};
 
 export const hooks = {

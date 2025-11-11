@@ -27,26 +27,33 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/dev" | "/dev/boom" | "/dev/dragon-animated" | "/dev/dragon-debug" | "/dev/dragon-final" | "/dev/dragon-simple" | "/dev/dragon-working" | "/dev/dragon" | "/dev/logs" | "/dev/pool" | "/dev/svg-test";
+		RouteId(): "/" | "/api" | "/api/dev" | "/api/dev/logs" | "/dev" | "/dev/boom" | "/dev/currency-topbar" | "/dev/dragon-animated" | "/dev/dragon-debug" | "/dev/dragon-final" | "/dev/dragon-simple" | "/dev/dragon-working" | "/dev/dragon" | "/dev/logo-spinner" | "/dev/logs" | "/dev/pool" | "/dev/profile-shapes" | "/dev/protoprofile" | "/dev/svg-test";
 		RouteParams(): {
 			
 		};
 		LayoutParams(): {
 			"/": Record<string, never>;
+			"/api": Record<string, never>;
+			"/api/dev": Record<string, never>;
+			"/api/dev/logs": Record<string, never>;
 			"/dev": Record<string, never>;
 			"/dev/boom": Record<string, never>;
+			"/dev/currency-topbar": Record<string, never>;
 			"/dev/dragon-animated": Record<string, never>;
 			"/dev/dragon-debug": Record<string, never>;
 			"/dev/dragon-final": Record<string, never>;
 			"/dev/dragon-simple": Record<string, never>;
 			"/dev/dragon-working": Record<string, never>;
 			"/dev/dragon": Record<string, never>;
+			"/dev/logo-spinner": Record<string, never>;
 			"/dev/logs": Record<string, never>;
 			"/dev/pool": Record<string, never>;
+			"/dev/profile-shapes": Record<string, never>;
+			"/dev/protoprofile": Record<string, never>;
 			"/dev/svg-test": Record<string, never>
 		};
-		Pathname(): "/" | "/dev" | "/dev/" | "/dev/boom" | "/dev/boom/" | "/dev/dragon-animated" | "/dev/dragon-animated/" | "/dev/dragon-debug" | "/dev/dragon-debug/" | "/dev/dragon-final" | "/dev/dragon-final/" | "/dev/dragon-simple" | "/dev/dragon-simple/" | "/dev/dragon-working" | "/dev/dragon-working/" | "/dev/dragon" | "/dev/dragon/" | "/dev/logs" | "/dev/logs/" | "/dev/pool" | "/dev/pool/" | "/dev/svg-test" | "/dev/svg-test/";
+		Pathname(): "/" | "/api" | "/api/" | "/api/dev" | "/api/dev/" | "/api/dev/logs" | "/api/dev/logs/" | "/dev" | "/dev/" | "/dev/boom" | "/dev/boom/" | "/dev/currency-topbar" | "/dev/currency-topbar/" | "/dev/dragon-animated" | "/dev/dragon-animated/" | "/dev/dragon-debug" | "/dev/dragon-debug/" | "/dev/dragon-final" | "/dev/dragon-final/" | "/dev/dragon-simple" | "/dev/dragon-simple/" | "/dev/dragon-working" | "/dev/dragon-working/" | "/dev/dragon" | "/dev/dragon/" | "/dev/logo-spinner" | "/dev/logo-spinner/" | "/dev/logs" | "/dev/logs/" | "/dev/pool" | "/dev/pool/" | "/dev/profile-shapes" | "/dev/profile-shapes/" | "/dev/protoprofile" | "/dev/protoprofile/" | "/dev/svg-test" | "/dev/svg-test/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/backgrounds/steppe_background_2-1.png" | "/favicon.svg" | "/icons/icon-128.png" | "/icons/icon-144.png" | "/icons/icon-152.png" | "/icons/icon-192-maskable.png" | "/icons/icon-192.png" | "/icons/icon-384.png" | "/icons/icon-512-maskable.png" | "/icons/icon-512.png" | "/icons/icon-72.png" | "/icons/icon-96.png" | "/manifest.json" | "/robots.txt" | "/sprites/dragon_fly_128_sheet.png" | "/sprites/protagonist_dragon_attack.png" | "/sprites/wsn_mantairCorsair_attack.png" | "/sprites/wsn_mantairCorsair_sprite.png" | "/sprites/wsn_swarmAttack_sprite.png" | "/sprites/wsn_swarm_sprite.png" | "/sw.js.backup" | string & {};
+		Asset(): "/backgrounds/land1_steppe/foreground/grasslandLayer_steppe.png" | "/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-2.png" | "/backgrounds/land1_steppe/parallax/lonelyMountain-clouds-badShading.png" | "/backgrounds/land1_steppe/parallax/steppe_clouds-1.png" | "/backgrounds/land1_steppe/parallax/steppe_hills-1.png" | "/backgrounds/land1_steppe/static/lonelyMountain-3.png" | "/backgrounds/land1_steppe/static/lonelyMountain-4.png" | "/backgrounds/land1_steppe/static/steppe_background_2-1.png" | "/backgrounds/land1_steppe/static/steppe_background_grassless.png" | "/backgrounds/README.md" | "/favicon.svg" | "/icons/icon-128.png" | "/icons/icon-144.png" | "/icons/icon-152.png" | "/icons/icon-192-maskable.png" | "/icons/icon-192.png" | "/icons/icon-384.png" | "/icons/icon-512-maskable.png" | "/icons/icon-512.png" | "/icons/icon-72.png" | "/icons/icon-96.png" | "/manifest.json" | "/robots.txt" | "/sprites/dragon_fly_128_sheet.png" | "/sprites/protagonist_dragon_attack.png" | "/sprites/wsn_mantairCorsair_attack.png" | "/sprites/wsn_mantairCorsair_sprite.png" | "/sprites/wsn_swarmAttack_sprite.png" | "/sprites/wsn_swarm_sprite.png" | "/sw.js.backup" | "/ui/buttons/action/backwardJourney_hover.png" | "/ui/buttons/action/backwardJourney_neutral.png" | "/ui/buttons/action/backwardJourney_selected.png" | "/ui/buttons/action/forwardJourney_hover.png" | "/ui/buttons/action/forwardJourney_neutral.png" | "/ui/buttons/action/forwardJourney_selected.png" | "/ui/buttons/action/pauseJourney_hover.png" | "/ui/buttons/action/pauseJourney_neutral.png" | "/ui/buttons/action/pauseJourney_selected.png" | "/ui/buttons/menu/decorations/draconia_sillouette_v1.webp" | "/ui/buttons/menu/decorations/draconia_sillouette_v2-1.png" | "/ui/buttons/menu/logo/draconia_logo_v1.png" | "/ui/buttons/menu/logo/draconia_logo_v2.png" | "/ui/buttons/menu/splash/draconia_splash_5.png" | "/ui/buttons/movement/README.md" | "/ui/BUTTON_COLOR_IMPLEMENTATION.md" | "/ui/icons/arcana_icon.png" | "/ui/PIXEL_ART_COLOR_GUIDE.md" | "/ui/README.md" | string & {};
 	}
 }

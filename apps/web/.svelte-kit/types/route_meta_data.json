@@ -3,32 +3,64 @@
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
 	],
+	"/api/dev/logs": [
+		"src/routes/api/dev/logs/+server.ts"
+	],
+	"/dev": [
+		"src/routes/dev/+layout.ts",
+		"src/routes/+layout.ts"
+	],
 	"/dev/boom": [
 		"src/routes/dev/boom/+page.ts",
+		"src/routes/dev/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/dev/currency-topbar": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon-animated": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon-debug": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon-final": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon-simple": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon-working": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/dragon": [
+		"src/routes/dev/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/dev/logo-spinner": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/logs": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	],
 	"/dev/pool": [
+		"src/routes/dev/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/dev/profile-shapes": [
+		"src/routes/dev/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/dev/protoprofile": [
+		"src/routes/dev/+layout.ts",
 		"src/routes/+layout.ts"
 	]
 }

@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/dev/dragon-animated/+page.svelte";
+export { default as component } from "../../../../src/routes/dev/currency-topbar/+page.svelte";

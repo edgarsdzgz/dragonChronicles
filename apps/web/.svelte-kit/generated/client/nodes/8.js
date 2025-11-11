@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/dev/dragon-simple/+page.svelte";
+export { default as component } from "../../../../src/routes/dev/dragon-debug/+page.svelte";

@@ -1,0 +1,1 @@
+export { default as component } from "../../../../src/routes/dev/logo-spinner/+page.svelte";
