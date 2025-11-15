@@ -1,0 +1,94 @@
+{
+  "profiles": {
+    "selectProfile": "Select a Profile",
+    "newProfile": "New Profile",
+    "emptySlot": "Empty Slot",
+    "deleteProfile": "Delete Profile",
+    "confirmDelete": "Are you sure you want to delete this profile?",
+    "slot": "Slot {{number}}",
+    "lastPlayed": "Last played: {{date}}",
+    "playTime": "{{hours}}h {{minutes}}m played"
+  },
+  "nameEntry": {
+    "title": "Name Your Dragon",
+    "placeholder": "Dragon Name",
+    "confirm": "Confirm Name",
+    "requirements": "2-24 characters, letters and spaces only",
+    "invalidName": "Invalid name. Please use only letters, spaces, apostrophes, and hyphens.",
+    "nameTooShort": "Name must be at least 2 characters long.",
+    "nameTooLong": "Name must be 24 characters or less."
+  },
+  "menu": {
+    "journey": "Journey",
+    "city": "Draconia City",
+    "research": "Research",
+    "inventory": "Inventory",
+    "equipment": "Equipment",
+    "stats": "Stats",
+    "settings": "Settings",
+    "quit": "Quit to Menu",
+    "resume": "Resume",
+    "newGame": "New Game",
+    "continue": "Continue",
+    "load": "Load Game",
+    "save": "Save Game"
+  },
+  "skipDialog": {
+    "title": "Skip Cutscene?",
+    "message": "Are you sure you want to skip this cutscene?",
+    "canReplay": "You can replay it later from the menu.",
+    "yes": "Yes, Skip",
+    "no": "No, Continue Watching"
+  },
+  "journey": {
+    "title": "Journey Into the Steppe",
+    "description": "Venture beyond the Barrier to gather Arcana",
+    "start": "Start Journey",
+    "preparing": "Preparing for departure...",
+    "ready": "Ready to Fly"
+  },
+  "currencies": {
+    "arcana": "Arcana",
+    "arcana_one": "{{count}} Arcana",
+    "arcana_other": "{{count}} Arcana",
+    "gold": "Gold",
+    "gold_one": "{{count}} Gold",
+    "gold_other": "{{count}} Gold",
+    "soulPower": "Soul Power",
+    "soulPower_one": "{{count}} Soul Power",
+    "soulPower_other": "{{count}} Soul Power"
+  },
+  "stats": {
+    "health": "Health",
+    "mana": "Mana",
+    "damage": "Damage",
+    "defense": "Defense",
+    "speed": "Speed",
+    "critRate": "Critical Rate",
+    "critDamage": "Critical Damage",
+    "level": "Level {{level}}"
+  },
+  "notifications": {
+    "gameSaved": "Game saved successfully",
+    "gameLoaded": "Game loaded successfully",
+    "profileDeleted": "Profile deleted",
+    "error": "An error occurred: {{message}}"
+  },
+  "settings": {
+    "title": "Settings",
+    "audio": "Audio",
+    "video": "Video",
+    "gameplay": "Gameplay",
+    "controls": "Controls",
+    "language": "Language",
+    "masterVolume": "Master Volume",
+    "musicVolume": "Music Volume",
+    "sfxVolume": "Sound Effects Volume",
+    "fullscreen": "Fullscreen",
+    "resolution": "Resolution",
+    "quality": "Graphics Quality",
+    "vsync": "V-Sync",
+    "apply": "Apply Changes",
+    "reset": "Reset to Defaults"
+  }
+}

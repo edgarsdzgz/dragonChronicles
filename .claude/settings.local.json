@@ -4,7 +4,10 @@
       "Bash(scripts/rebuild-with-cache-clear.bat)",
       "Bash(npx tsc --version)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(pnpm -w run lint:*)",
+      "Bash(pnpm exec tsc:*)"
     ],
     "deny": [],
     "ask": []

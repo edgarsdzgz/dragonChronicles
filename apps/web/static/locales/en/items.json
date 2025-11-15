@@ -1,0 +1,85 @@
+{
+  "equipment": {
+    "pendant": {
+      "name": "Arcana Pendant",
+      "description": "A crystalline pendant that protects you from the unmaking and collects Arcana from defeated enemies."
+    },
+    "dragonscaleArmor": {
+      "name": "Dragonscale Armor",
+      "description": "Armor crafted from the scales of ancient dragons. Provides excellent protection."
+    },
+    "flamebrandSword": {
+      "name": "Flamebrand Sword",
+      "description": "A sword imbued with the essence of fire. Burns enemies on contact."
+    }
+  },
+  "consumables": {
+    "healthPotion": {
+      "name": "Health Potion",
+      "description": "Restores {{amount}} health when consumed."
+    },
+    "manaPotion": {
+      "name": "Mana Potion",
+      "description": "Restores {{amount}} mana when consumed."
+    },
+    "arcanaElixir": {
+      "name": "Arcana Elixir",
+      "description": "Increases Arcana gained from enemies for {{duration}} seconds."
+    }
+  },
+  "materials": {
+    "dragonScale": {
+      "name": "Dragon Scale",
+      "description": "A sturdy scale shed by a dragon. Used in crafting armor."
+    },
+    "arcanaCrystal": {
+      "name": "Arcana Crystal",
+      "description": "A crystallized form of pure Arcana. Used in enchantments."
+    },
+    "emberStone": {
+      "name": "Ember Stone",
+      "description": "A stone that radiates heat. Used in fire-based crafting."
+    }
+  },
+  "questItems": {
+    "ancientScroll": {
+      "name": "Ancient Scroll",
+      "description": "A scroll containing knowledge from before the Rift."
+    },
+    "barr ierFragment": {
+      "name": "Barrier Fragment",
+      "description": "A piece of the Barrier's crystalline structure. Perhaps it can be studied."
+    }
+  },
+  "categories": {
+    "all": "All Items",
+    "equipment": "Equipment",
+    "weapons": "Weapons",
+    "armor": "Armor",
+    "accessories": "Accessories",
+    "consumables": "Consumables",
+    "materials": "Materials",
+    "questItems": "Quest Items",
+    "junk": "Junk"
+  },
+  "rarity": {
+    "common": "Common",
+    "uncommon": "Uncommon",
+    "rare": "Rare",
+    "epic": "Epic",
+    "legendary": "Legendary",
+    "mythic": "Mythic"
+  },
+  "actions": {
+    "equip": "Equip",
+    "unequip": "Unequip",
+    "use": "Use",
+    "drop": "Drop",
+    "destroy": "Destroy",
+    "sell": "Sell",
+    "buy": "Buy",
+    "craft": "Craft",
+    "upgrade": "Upgrade",
+    "compare": "Compare"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "boroughs": {
+    "academy": "The Academy",
+    "academyDesc": "Center of learning and research",
+    "market": "The Market",
+    "marketDesc": "Trade goods and equipment",
+    "forge": "The Forge",
+    "forgeDesc": "Craft and upgrade equipment",
+    "sanctuary": "The Sanctuary",
+    "sanctuaryDesc": "Heal and restore your strength",
+    "barrierChamber": "Barrier Chamber",
+    "barrierChamberDesc": "The heart of Draconia's protection"
+  },
+  "academy": {
+    "library": "Ancient Library",
+    "libraryDesc": "Study ancient texts and unlock new abilities",
+    "trainingGrounds": "Training Grounds",
+    "trainingGroundsDesc": "Practice combat skills and increase stats",
+    "observatory": "Star Observatory",
+    "observatoryDesc": "Study the cosmos and unlock mystical powers",
+    "researchLab": "Research Laboratory",
+    "researchLabDesc": "Experiment with Arcana and discover new technologies"
+  },
+  "market": {
+    "generalStore": "General Store",
+    "generalStoreDesc": "Buy consumables and basic supplies",
+    "equipmentShop": "Equipment Shop",
+    "equipmentShopDesc": "Purchase weapons, armor, and accessories",
+    "tradingPost": "Trading Post",
+    "tradingPostDesc": "Buy and sell rare items",
+    "auctionHouse": "Auction House",
+    "auctionHouseDesc": "Bid on unique and legendary items"
+  },
+  "forge": {
+    "weaponsmith": "Weaponsmith",
+    "weaponsmithDesc": "Forge and upgrade weapons",
+    "armorsmith": "Armorsmith",
+    "armorsmithDesc": "Craft and enhance armor",
+    "enchanter": "Enchantment Chamber",
+    "enchanterDesc": "Imbue items with magical properties",
+    "jewelcrafter": "Jewelcrafter",
+    "jewelcrafterDesc": "Create and socket gems"
+  },
+  "sanctuary": {
+    "healingPool": "Healing Pool",
+    "healingPoolDesc": "Restore health and mana",
+    "meditation": "Meditation Chamber",
+    "meditationDesc": "Increase Soul Power regeneration",
+    "chapel": "Dragon Chapel",
+    "chapelDesc": "Receive blessings and buffs",
+    "restArea": "Rest Area",
+    "restAreaDesc": "Take a break and prepare for your next journey"
+  },
+  "barrier": {
+    "core": "Barrier Core",
+    "coreDesc": "The source of Draconia's protection. Deposit Arcana here.",
+    "monitor": "Barrier Monitor",
+    "monitorDesc": "Check the Barrier's current status and remaining power",
+    "console": "Control Console",
+    "consoleDesc": "Manage Barrier functions and upgrades"
+  }
+}

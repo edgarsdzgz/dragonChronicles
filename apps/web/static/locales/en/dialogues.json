@@ -1,0 +1,38 @@
+{
+  "opening": {
+    "title": "The Day the Sky Broke",
+    "description": "Opening cutscene for new game",
+    "screen1": "Dragons gather from all over the land outside the beautiful city of Draconia for the graduation of the next class of Guardians.\n\n{{dragonName}} is one of the graduates. They don't know this will be the final graduating class… because the world is about to end.\n\nThis is their story.",
+    "screen2": "Graduation day: officially the best day of my life.\n\nThe Master called us forward one by one, and in her claws she held our Aracana Pendant.\nI felt the crystal's weight against my scales: decades of training and hard work are now hung around my neck.",
+    "screen3": "Then, the sky screamed.\nThe horizon unmade itself, piece by piece, like reality was a painting someone was scrubbing away.\nWe fled.\nWings pounding. Hearts hammering.\nBehind us a distortion grew — a wave of uncolor spreading across the world.\nI could hear it like glass shattering in reverse, breath drawn backward, unresolved music dying mid-note.\nEverything the uncolor reached flickered, warped, and became shapes that hurt to see.\nThings that had been dragons twisted into claws and teeth and wrongness.",
+    "screen4": "Suddenly a dome of gold erupted before me, enveloping all of the city proper ahead. I broke through the light and crashed onto stone inside the city walls.\n\nSafe. Alive.",
+    "screen5": "I turned back.\nMy Master was just behind me, but her claws crashed against the Barrier and she stopped mid-flight.\nShe scratched at the barrier in desperation, her mouth open in a scream I couldn't hear.\nBehind her, one by one, thousands slammed silently in a struggling panic against the cursed barrier.\nI pressed my own claws to the Barrier, trying to pull her through. It wouldn't yield. It wouldn't let me out.",
+    "screen6": "The uncolor reached them.\nI witnessed my Master distort. Her scales rippled like water, wings folding into impossible angles.\nThen, she was corrupted, mutating into grotesque and horrible shapes.\nThen, she was unmade.\nUnraveled as though strings were being pulled from the fabric of her very being, and then she was gone.\nEveryone outside of the barrier followed, Dragons dissolving into void.",
+    "screen7": "The wave of unmaking stopped, and the Barrier softened. We stood silently, in shock, staring into an empty Steppe.\nElder Saphyrian arrived, flying at full speed. Sticking one limb outside the barrier, she quickly retracted it as if in pain. Looking to me and my pendant, a look of understanding befell her. Her voice, steady as stone, broke the silence.\n\"This unmaking is being kept at bay by this strange barrier. We are safe… for now.\"\n\"The Barrier is drawing from Draconia's Arcana, but that Arcana is finite.\"\n\"When it runs out, the Barrier will fall, and all of us with it.\"\n\"Your pendants resonate with the Barrier, and so they will protect you outside of it.\nIf you defeat creatures of unmaking you will be able to gather their Arcana into those pendants, and return here to keep the barrier up.\"",
+    "screen8": "\"Today you Graduated. Today you became the Final Flight.\nSo, Fly, Graduates.\n\nJourney, Gather Arcana, and return it here to keep Draconia alive.\nAnyone without a pendant cannot leave this barrier without being distorted and becoming unmade.\n\nYou were meant to defend distant outposts.\nNow, you will defend all that remains.\"\n\nI spread my wings and flew outside the barrier, my pendant glowed and I felt no pain.\n\"We fly.\""
+  },
+  "elderSaphyrian": {
+    "greeting": "Welcome, young dragon. How may I assist you?",
+    "aboutBarrier": "The Barrier protects us from the unmaking. It draws power from the Arcana we gather. Every journey you complete, every piece of Arcana you bring back, extends our time.",
+    "barrierWeakening": "I can feel the Barrier weakening. We need more Arcana, and soon.",
+    "upgradePendant": "Your pendant grows stronger with each journey. Let me enhance it for you.",
+    "pendantMaxLevel": "Your pendant has reached its current maximum potential. Continue your journeys to unlock further upgrades.",
+    "notEnoughArcana": "You do not have enough Arcana for this upgrade. Journey forth and gather more.",
+    "upgradeComplete": "It is done. Your pendant resonates with greater power now.",
+    "aboutTheRift": "The unmaking—the Rift—came without warning. It consumed everything beyond the Barrier. We still don't understand what caused it, only that it can be held at bay.",
+    "aboutTheFinalFlight": "You and your fellow graduates are the Final Flight. The last dragons trained to protect our kind. But your purpose has changed. Now you defend the last remnants of our civilization.",
+    "aboutTheSteppe": "The Horizon Steppe was once filled with life. Now it is a wasteland of corrupted creatures. Be vigilant out there.",
+    "farewell": "Fly safe, Guardian. Draconia needs you.",
+    "returnFromJourney": "You've returned! Let me collect the Arcana you've gathered.",
+    "arcanaDeposited": "{{amount}} Arcana has been added to the Barrier. Well done.",
+    "firstJourneyComplete": "Your first journey beyond the Barrier! You have proven yourself worthy of your pendant. The path ahead will be difficult, but you are ready."
+  },
+  "tutorial": {
+    "welcome": "Welcome to Draconia, young dragon.",
+    "movementBasics": "Use the arrow keys or WASD to move your dragon.",
+    "combatBasics": "Press SPACE to use your primary ability. Watch your mana!",
+    "collectArcana": "Defeat enemies to collect Arcana. Bring it back to strengthen the Barrier.",
+    "avoidDamage": "Avoid enemy attacks! Your health is precious.",
+    "returnToCit y": "Press ESC to return to Draconia City at any time."
+  }
+}

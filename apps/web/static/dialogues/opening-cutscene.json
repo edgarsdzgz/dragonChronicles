@@ -1,0 +1,51 @@
+{
+  "id": "opening-cutscene",
+  "type": "linear",
+  "metadata": {
+    "titleKey": "dialogues:opening.title",
+    "descriptionKey": "dialogues:opening.description"
+  },
+  "screens": [
+    {
+      "id": "screen-1",
+      "textKey": "dialogues:opening.screen1",
+      "speaker": null,
+      "variables": ["dragonName"]
+    },
+    {
+      "id": "screen-2",
+      "textKey": "dialogues:opening.screen2",
+      "speaker": null
+    },
+    {
+      "id": "screen-3",
+      "textKey": "dialogues:opening.screen3",
+      "speaker": null
+    },
+    {
+      "id": "screen-4",
+      "textKey": "dialogues:opening.screen4",
+      "speaker": null
+    },
+    {
+      "id": "screen-5",
+      "textKey": "dialogues:opening.screen5",
+      "speaker": null
+    },
+    {
+      "id": "screen-6",
+      "textKey": "dialogues:opening.screen6",
+      "speaker": null
+    },
+    {
+      "id": "screen-7",
+      "textKey": "dialogues:opening.screen7",
+      "speaker": null
+    },
+    {
+      "id": "screen-8",
+      "textKey": "dialogues:opening.screen8",
+      "speaker": null
+    }
+  ]
+}

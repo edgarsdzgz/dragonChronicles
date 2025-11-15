@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./CIIlhMDM.js","./Cpj98o6Y.js"])))=>i.map(i=>d[i]);
+import{_ as n}from"./PPVm8Dsz.js";let r=null;async function g(){if(!r){const{createLogger:a,createDexieSink:e}=await n(async()=>{const{createLogger:t,createDexieSink:o}=await import("./CIIlhMDM.js");return{createLogger:t,createDexieSink:o}},__vite__mapDeps([0,1]),import.meta.url);r=a({maxBytes:2*1024*1024,maxEntries:1e4,devConsole:!1,dexie:e(1e3,1e4)})}return r}new Proxy({},{get(a,e){return async(...t)=>(await g())[e](...t)}});export{g};

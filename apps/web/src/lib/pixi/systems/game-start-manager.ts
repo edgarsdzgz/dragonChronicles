@@ -34,6 +34,9 @@ import { getEventBus, type EventBus, type CombatEvent } from '@draconia/shared';
 import { createDefaultArcanaDropManager } from '@draconia/sim';
 import { setupArcanaRewardListeners } from './combat/arcana-reward-calculator';
 import { setupArcanaEventHandler } from './combat/arcana-event-handler';
+import { initI18n } from '$lib/i18n/config';
+import { DialogueManager } from '$lib/dialogue/manager';
+import { DialogueLoader, getDialogueLoader } from '$lib/dialogue/loader';
 
 export interface GameStartConfig {
   showSplashScreen?: boolean;
@@ -63,9 +66,10 @@ export interface GameStartState {
   isShowingSplash: boolean;
   isShowingProfileSelection: boolean;
   isShowingNameEntry: boolean;
+  isShowingOpeningCutscene: boolean;
   isShowingDraconiaMenu: boolean;
   isJourneyStarted: boolean;
-  currentPhase: 'splash' | 'profile-selection' | 'name-entry' | 'draconia' | 'journey' | 'complete';
+  currentPhase: 'splash' | 'profile-selection' | 'name-entry' | 'opening-cutscene' | 'draconia' | 'journey' | 'complete';
   selectedProfileId?: string;
   selectedSlotNumber?: 1 | 2 | 3;
 }
@@ -91,6 +95,8 @@ export class GameStartManager {
   private uiManager: UIManager | null = null;
   private journeyProgressionManager: JourneyProgressionManager | null = null;
   private takeoffCutsceneManager: TakeoffCutsceneManager | null = null;
+  private dialogueManager: DialogueManager | null = null;
+  private dialogueLoader: DialogueLoader;
 
   // Combat systems (independent managers, no orchestrator)
   private projectileManager: ProjectileManager | null = null;
@@ -143,10 +149,14 @@ export class GameStartManager {
       isShowingSplash: false,
       isShowingProfileSelection: false,
       isShowingNameEntry: false,
+      isShowingOpeningCutscene: false,
       isShowingDraconiaMenu: false,
       isJourneyStarted: false,
       currentPhase: 'splash',
     };
+
+    // Initialize dialogue loader (singleton)
+    this.dialogueLoader = getDialogueLoader();
   }
 
   /**
@@ -159,6 +169,11 @@ export class GameStartManager {
 
     try {
       console.log('🎮 Game Start: Initializing...');
+
+      // Initialize i18n (must be first for all translated text)
+      console.log('🌐 Game Start: Initializing i18n...');
+      await initI18n('en'); // Default to English, profile preference loaded later
+      console.log('✅ Game Start: i18n initialized');
 
       // Initialize migration adapter early so all managers can access shared systems
       if (!this.migrationAdapter) {
@@ -249,6 +264,11 @@ export class GameStartManager {
     // Update profile name entry if showing
     if (this.state.isShowingNameEntry && this.profileNameEntryManager) {
       this.profileNameEntryManager.update(deltaTime);
+    }
+
+    // Update opening cutscene if showing
+    if (this.state.isShowingOpeningCutscene && this.dialogueManager) {
+      this.dialogueManager.update(deltaTime);
     }
 
     // Update Draconia menu if showing
@@ -412,6 +432,51 @@ export class GameStartManager {
   }
 
   /**
+   * Show opening cutscene
+   */
+  private async showOpeningCutscene(dragonName: string): Promise<void> {
+    console.log(`🎬 Game Start: Showing opening cutscene for ${dragonName}...`);
+
+    // Get responsive manager
+    const responsiveManager = this.migrationAdapter?.getResponsiveManager();
+    if (!responsiveManager) {
+      console.error('❌ Responsive manager not available');
+      return;
+    }
+
+    // Create dialogue manager if not already created
+    if (!this.dialogueManager) {
+      this.dialogueManager = new DialogueManager(
+        this.app,
+        responsiveManager,
+        this.dialogueLoader
+      );
+    }
+
+    // Update state
+    this.state.isShowingOpeningCutscene = true;
+    this.state.currentPhase = 'opening-cutscene';
+
+    // Show opening cutscene with dragon name substitution
+    await this.dialogueManager.show('opening-cutscene', {
+      animationType: 'fade', // Use cinematic fade-in for opening cutscene
+      fadeDuration: 1000, // 1 second fade per screen
+      variables: {
+        dragonName: dragonName,
+      },
+      allowSkip: true,
+      skipConfirmation: true,
+      typewriterSpeed: 40, // Not used for fade animation, kept for backwards compatibility
+      onComplete: () => {
+        console.log('✅ Game Start: Opening cutscene complete');
+        this.state.isShowingOpeningCutscene = false;
+      },
+    });
+
+    console.log('🎬 Game Start: Opening cutscene shown');
+  }
+
+  /**
    * Handle name confirmation (new profile created)
    */
   private async onNameConfirmed(name: string, slotNumber: 1 | 2 | 3): Promise<void> {
@@ -436,13 +501,13 @@ export class GameStartManager {
       return;
     }
 
-    // Show Draconia menu if enabled
-    if (this.config.showDraconiaMenu) {
-      await this.showDraconiaMenu();
-    } else {
-      // Skip Draconia menu, go directly to journey
-      await this.startJourney();
-    }
+    // NEW PLAYER FLOW: Show opening cutscene → Start journey (skip Draconia menu)
+    console.log('🎬 Game Start: New player detected, showing opening cutscene...');
+    await this.showOpeningCutscene(name);
+
+    // After cutscene, go directly to journey
+    console.log('🚀 Game Start: Opening cutscene complete, starting journey...');
+    await this.startJourney();
   }
 
   /**

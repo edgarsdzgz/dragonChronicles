@@ -1,0 +1,50 @@
+{
+  "elderSaphyrian": {
+    "name": "Elder Saphyrian",
+    "title": "Keeper of the Barrier",
+    "description": "Ancient dragon who understands the Barrier's power. She guides the Final Flight and manages the Arcana that sustains Draconia.",
+    "greeting": "Greetings, young Guardian."
+  },
+  "masterThalorin": {
+    "name": "Master Thalorin",
+    "title": "Forge Master",
+    "description": "Expert craftsman who forges dragon equipment. His knowledge of metalwork is unparalleled.",
+    "greeting": "Welcome to my forge, dragon."
+  },
+  "scholarVynara": {
+    "name": "Scholar Vynara",
+    "title": "Keeper of Knowledge",
+    "description": "Head librarian of the Ancient Library. She preserves the collective knowledge of dragonkind.",
+    "greeting": "Knowledge awaits those who seek it."
+  },
+  "merchantKael": {
+    "name": "Merchant Kael",
+    "title": "Master Trader",
+    "description": "Shrewd merchant who runs the general store. Always has something useful for sale.",
+    "greeting": "Looking to trade, friend?"
+  },
+  "healerMyria": {
+    "name": "Healer Myria",
+    "title": "Guardian of Wellness",
+    "description": "Compassionate healer who tends to wounded dragons. Her healing pools can cure any ailment.",
+    "greeting": "Rest here, brave one. You are safe."
+  },
+  "enchanterZephyr": {
+    "name": "Enchanter Zephyr",
+    "title": "Master of Mysteries",
+    "description": "Enigmatic enchanter who imbues items with magical properties. His methods are ancient and powerful.",
+    "greeting": "The arcane arts await your discovery."
+  },
+  "captainDrakon": {
+    "name": "Captain Drakon",
+    "title": "Training Master",
+    "description": "Veteran warrior who trains new Guardians. His combat expertise is legendary.",
+    "greeting": "Ready for training, recruit?"
+  },
+  "unknown": {
+    "name": "???",
+    "title": "Unknown",
+    "description": "A mysterious figure shrouded in shadow.",
+    "greeting": "..."
+  }
+}

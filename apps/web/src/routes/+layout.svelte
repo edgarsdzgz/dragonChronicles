@@ -61,6 +61,10 @@
     style="width:100%; height:100%; display:block;"
     aria-label="Draconia Chronicles Game Canvas"
   ></canvas>
+
+  <!-- Allow page content to render on top of canvas -->
+  <slot />
+
   {#if $hudEnabled}
     <slot name="hud" />
   {/if}

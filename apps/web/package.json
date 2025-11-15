@@ -12,6 +12,7 @@
   "dependencies": {
     "@draconia/logger": "workspace:*",
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "i18next": "^25.6.2",
     "pixi.js": "^8.4.1",
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",

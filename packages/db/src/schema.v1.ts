@@ -82,6 +82,15 @@ export interface ItemStats {
 }
 
 /**
+ * Game state tracking for tutorials and story progression
+ */
+export interface GameState {
+  hasSeenOpeningCutscene: boolean;
+  firstJourneyComplete: boolean;
+  tutorialProgress: number;
+}
+
+/**
  * Profile data structure with W3 time accounting
  */
 export interface ProfileV1 {
@@ -89,6 +98,8 @@ export interface ProfileV1 {
   name: string;
   createdAt: number;
   lastActive: number;
+  language: string; // Preferred language code (e.g., 'en', 'es', 'fr')
+  gameState: GameState; // Tutorial and story progression tracking
   progress: {
     land: number;
     ward: number;
@@ -193,6 +204,15 @@ export const W3TimeAccountingSchema = z.object({
 });
 
 /**
+ * Game state schema for tracking tutorials and story progression
+ */
+export const GameStateSchema = z.object({
+  hasSeenOpeningCutscene: z.boolean(),
+  firstJourneyComplete: z.boolean(),
+  tutorialProgress: z.number().int().min(0),
+});
+
+/**
  * Profile progress schema
  */
 export const ProfileProgressSchema = z.object({
@@ -276,6 +296,8 @@ export const ProfileV1Schema = z.object({
   name: z.string().min(1).max(50),
   createdAt: z.number().int().min(0),
   lastActive: z.number().int().min(0),
+  language: z.string().min(2).max(5), // Language code (e.g., 'en', 'es', 'fr')
+  gameState: GameStateSchema,
   progress: ProfileProgressSchema,
   currencies: ProfileCurrenciesSchema,
   enchants: ProfileEnchantsSchema,

@@ -12,6 +12,7 @@ import { Application, Container, Graphics, Text } from 'pixi.js';
 import { Z_LAYERS, setZIndex } from './rendering/layer-manager';
 import { ResponsiveManager } from './responsive-manager';
 import { profileRepo, type ProfileSlotData } from '@draconia/db';
+import { ConfirmationDialog } from '$lib/dialogue/ui/confirmation-dialog';
 import {
   createNameplateShape,
   createMagicalGem,
@@ -48,6 +49,8 @@ export interface ProfileSelectionConfig {
   onTestJourney?: () => void; // Test button to start journey directly
 }
 
+type SelectionMode = 'normal' | 'copy-source' | 'copy-destination' | 'delete-target';
+
 interface ProfileSelectionState {
   isVisible: boolean;
   isFadingIn: boolean;
@@ -55,6 +58,11 @@ interface ProfileSelectionState {
   selectedSlotIndex: number; // 0, 1, 2 (for slots 1, 2, 3)
   hoveredSlotIndex: number;
   hoveredButton: string | null; // 'copy', 'erase', 'options'
+
+  // Copy/Delete flow state
+  mode: SelectionMode;
+  copySourceSlot: number | null; // Slot index (0-2) selected as copy source
+  deleteTargetSlot: number | null; // Slot index (0-2) selected for deletion
 }
 
 interface SlotVisual {
@@ -114,6 +122,9 @@ export class ProfileSelectionManager {
   private resizeCallback: (() => void) | null = null;
   private isInitialized: boolean = false;
 
+  // Dialogs
+  private confirmationDialog: ConfirmationDialog;
+
   constructor(
     app: Application,
     responsiveManager: ResponsiveManager,
@@ -144,6 +155,9 @@ export class ProfileSelectionManager {
       selectedSlotIndex: -1, // No auto-selection on first load
       hoveredSlotIndex: -1,
       hoveredButton: null,
+      mode: 'normal',
+      copySourceSlot: null,
+      deleteTargetSlot: null,
     };
 
     // Create main container
@@ -152,6 +166,9 @@ export class ProfileSelectionManager {
     this.container.visible = false;
     setZIndex(this.container, Z_LAYERS.UI_MENUS);
     this.app.stage.addChild(this.container);
+
+    // Create confirmation dialog
+    this.confirmationDialog = new ConfirmationDialog(app, responsiveManager);
 
     console.log('✅ Profile Selection Manager: Initialized');
   }
@@ -203,6 +220,457 @@ export class ProfileSelectionManager {
     this.removeEventListeners();
 
     console.log('✅ Profile Selection: Hidden');
+  }
+
+  /**
+   * Check if copy button should be enabled
+   * Requires: ≥1 filled slot AND ≥1 empty slot
+   */
+  private isCopyButtonEnabled(): boolean {
+    let filledCount = 0;
+    let emptyCount = 0;
+
+    for (let i = 0; i < 3; i++) {
+      const slotData = this.profileData[i];
+      if (slotData && !slotData.isEmpty) {
+        filledCount++;
+      } else {
+        emptyCount++;
+      }
+    }
+
+    return filledCount >= 1 && emptyCount >= 1;
+  }
+
+  /**
+   * Check if delete button should be enabled
+   * Requires: ≥1 filled slot
+   */
+  private isDeleteButtonEnabled(): boolean {
+    for (let i = 0; i < 3; i++) {
+      const slotData = this.profileData[i];
+      if (slotData && !slotData.isEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Handle copy button click - initiates copy mode
+   */
+  private async handleCopyButtonClick(): Promise<void> {
+    if (!this.isCopyButtonEnabled()) {
+      console.warn('⚠️ Copy button clicked but not enabled');
+      return;
+    }
+
+    console.log('📋 Copy button clicked - entering copy-source mode');
+    this.state.mode = 'copy-source';
+    this.state.copySourceSlot = null;
+    this.updateInstructionText('Select a profile to copy');
+    this.updateSlotHighlights();
+  }
+
+  /**
+   * Execute copy operation from source to destination
+   */
+  private async executeCopy(sourceSlot: number, destSlot: number): Promise<void> {
+    try {
+      console.log(`📋 Copying profile from slot ${sourceSlot} to slot ${destSlot}`);
+
+      // Animate gem power-up on source slot
+      await this.animateGemPowerUp(sourceSlot);
+
+      // Perform database copy (convert 0-based indices to 1-based slot numbers)
+      await profileRepo.copyProfile((sourceSlot + 1) as 1 | 2 | 3, (destSlot + 1) as 1 | 2 | 3);
+
+      // Reload profile data
+      await this.loadProfileData();
+
+      // Animate attachment duplication to destination
+      await this.animateAttachmentDuplicate(sourceSlot, destSlot);
+
+      // Reset state
+      this.state.mode = 'normal';
+      this.state.copySourceSlot = null;
+      this.updateInstructionText('Select a profile or create a new one');
+      this.updateSlotHighlights();
+
+      console.log('✅ Copy operation complete');
+    } catch (error) {
+      console.error('❌ Copy operation failed:', error);
+      this.state.mode = 'normal';
+      this.state.copySourceSlot = null;
+      this.updateInstructionText('Copy failed - please try again');
+      this.updateSlotHighlights();
+    }
+  }
+
+  /**
+   * Animate gem power-up effect on source slot
+   */
+  private async animateGemPowerUp(slotIndex: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const slot = this.slots[slotIndex];
+      if (!slot?.gem) {
+        resolve();
+        return;
+      }
+
+      const gemSprite = slot.gem;
+      const startScale = gemSprite.scale.x;
+      const targetScale = startScale * 1.3; // 30% larger
+      const duration = 400; // 400ms
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease out quad
+        const easeProgress = 1 - (1 - progress) * (1 - progress);
+
+        // Scale up then back down
+        const scale =
+          progress < 0.5
+            ? startScale + (targetScale - startScale) * (easeProgress * 2)
+            : targetScale - (targetScale - startScale) * ((easeProgress - 0.5) * 2);
+
+        gemSprite.scale.set(scale);
+
+        // Pulse alpha
+        gemSprite.alpha = 0.7 + Math.sin(progress * Math.PI * 4) * 0.3;
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          gemSprite.scale.set(startScale);
+          gemSprite.alpha = 1;
+          resolve();
+        }
+      };
+
+      animate();
+    });
+  }
+
+  /**
+   * Animate attachment duplication from source to destination
+   */
+  private async animateAttachmentDuplicate(sourceSlot: number, destSlot: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const sourceSlotObj = this.slots[sourceSlot];
+      const destSlotObj = this.slots[destSlot];
+
+      if (!sourceSlotObj?.attachmentSprite || !destSlotObj?.attachmentSprite) {
+        resolve();
+        return;
+      }
+
+      const sourceAttachment = sourceSlotObj.attachmentSprite;
+      const destAttachment = destSlotObj.attachmentSprite;
+
+      // Get positions (reserved for future arc animation)
+      const _startX = sourceAttachment.x;
+      const _startY = sourceAttachment.y;
+      const _endX = destAttachment.x;
+      const _endY = destAttachment.y;
+
+      // Start destination attachment invisible
+      destAttachment.alpha = 0;
+
+      const duration = 600; // 600ms
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease in-out quad
+        const easeProgress =
+          progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+        // Fade in destination attachment
+        destAttachment.alpha = easeProgress;
+
+        // Optional: animate position along arc (creates visual "travel" effect)
+        // For now, just fade in at destination
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          destAttachment.alpha = 1;
+          resolve();
+        }
+      };
+
+      animate();
+    });
+  }
+
+  /**
+   * Handle delete button click - initiates delete mode
+   */
+  private async handleDeleteButtonClick(): Promise<void> {
+    if (!this.isDeleteButtonEnabled()) {
+      console.warn('⚠️ Delete button clicked but not enabled');
+      return;
+    }
+
+    console.log('🗑️ Delete button clicked - entering delete-target mode');
+    this.state.mode = 'delete-target';
+    this.state.deleteTargetSlot = null;
+    this.updateInstructionText('CHOOSE A FILE TO DELETE');
+    this.updateSlotHighlights();
+  }
+
+  /**
+   * Show delete confirmation dialog
+   */
+  private async showDeleteConfirmation(): Promise<boolean> {
+    return await this.confirmationDialog.show({
+      title: 'Delete Profile?',
+      message: 'Are you sure you want to delete this profile?',
+      additionalMessage: 'Data is not recoverable.',
+      yesText: 'Delete',
+      noText: 'Cancel',
+    });
+  }
+
+  /**
+   * Execute delete operation on target slot
+   */
+  private async executeDelete(targetSlot: number): Promise<void> {
+    try {
+      console.log(`🗑️ Deleting profile from slot ${targetSlot}`);
+
+      // Animate gem fade out and attachment fall
+      await Promise.all([
+        this.animateGemFadeOut(targetSlot),
+        this.animateAttachmentFallOff(targetSlot),
+      ]);
+
+      // Perform database delete (convert 0-based index to 1-based slot number)
+      await profileRepo.eraseProfile((targetSlot + 1) as 1 | 2 | 3);
+
+      // Reload profile data
+      await this.loadProfileData();
+
+      // Refresh slot visuals with new data (makes deletion visible immediately)
+      this.updateSlotVisuals();
+
+      // Reset state
+      this.state.mode = 'normal';
+      this.state.deleteTargetSlot = null;
+      this.updateInstructionText('Select a profile or create a new one');
+      this.updateSlotHighlights();
+
+      console.log('✅ Delete operation complete');
+    } catch (error) {
+      console.error('❌ Delete operation failed:', error);
+      this.state.mode = 'normal';
+      this.state.deleteTargetSlot = null;
+      this.updateInstructionText('Delete failed - please try again');
+      this.updateSlotHighlights();
+    }
+  }
+
+  /**
+   * Animate gem fade out effect on target slot
+   */
+  private async animateGemFadeOut(slotIndex: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const slot = this.slots[slotIndex];
+      if (!slot?.gem) {
+        resolve();
+        return;
+      }
+
+      const gemSprite = slot.gem;
+      const startAlpha = gemSprite.alpha;
+      const duration = 500; // 500ms
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease in quad
+        const easeProgress = progress * progress;
+
+        // Fade out alpha
+        gemSprite.alpha = startAlpha * (1 - easeProgress);
+
+        // Slight scale down
+        const scale = 1 - easeProgress * 0.2; // 20% smaller
+        gemSprite.scale.set(scale);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          gemSprite.alpha = 0;
+          gemSprite.scale.set(1); // Reset for future use
+          resolve();
+        }
+      };
+
+      animate();
+    });
+  }
+
+  /**
+   * Animate attachment falling off screen on target slot
+   */
+  private async animateAttachmentFallOff(slotIndex: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const slot = this.slots[slotIndex];
+      if (!slot?.attachment) {
+        resolve();
+        return;
+      }
+
+      // Collect all elements that should fall together
+      const attachmentSprite = slot.attachment;
+      const attachmentGem = slot.attachmentGem;
+      const nameText = slot.nameText;
+      const infoText = slot.infoText;
+
+      // Store initial positions and alphas
+      const startY = attachmentSprite.y;
+      const startAlpha = attachmentSprite.alpha;
+      const nameStartY = nameText.y;
+      const nameStartAlpha = nameText.alpha;
+      const infoStartY = infoText.y;
+      const infoStartAlpha = infoText.alpha;
+      const gemStartY = attachmentGem?.y ?? 0;
+      const gemStartAlpha = attachmentGem?.alpha ?? 1;
+
+      const fallDistance = this.app.screen.height; // Fall off screen
+      const duration = 800; // 800ms
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease in quad (accelerating fall)
+        const easeProgress = progress * progress;
+
+        // Animate attachment shape
+        attachmentSprite.y = startY + fallDistance * easeProgress;
+        attachmentSprite.alpha = startAlpha * (1 - easeProgress * 0.5);
+        attachmentSprite.rotation = easeProgress * Math.PI * 0.5; // 90 degrees
+
+        // Animate text elements (fall together with attachment)
+        nameText.y = nameStartY + fallDistance * easeProgress;
+        nameText.alpha = nameStartAlpha * (1 - easeProgress * 0.5);
+
+        infoText.y = infoStartY + fallDistance * easeProgress;
+        infoText.alpha = infoStartAlpha * (1 - easeProgress * 0.5);
+
+        // Animate attachment gem if present
+        if (attachmentGem) {
+          attachmentGem.y = gemStartY + fallDistance * easeProgress;
+          attachmentGem.alpha = gemStartAlpha * (1 - easeProgress * 0.5);
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // Reset all elements for future use
+          attachmentSprite.y = startY;
+          attachmentSprite.alpha = 0; // Hide it
+          attachmentSprite.rotation = 0;
+
+          nameText.y = nameStartY;
+          nameText.alpha = 0; // Hide text
+
+          infoText.y = infoStartY;
+          infoText.alpha = 0; // Hide text
+
+          if (attachmentGem) {
+            attachmentGem.y = gemStartY;
+            attachmentGem.alpha = 0; // Hide gem
+          }
+
+          resolve();
+        }
+      };
+
+      animate();
+    });
+  }
+
+  /**
+   * Update instruction text (updates the prominent title text to show current mode)
+   */
+  private updateInstructionText(text: string): void {
+    if (this.titleText) {
+      this.titleText.text = text.toUpperCase(); // Keep consistent uppercase style
+    }
+  }
+
+  /**
+   * Handle button click - routes to appropriate handler
+   */
+  private async handleButtonClick(buttonId: string): Promise<void> {
+    console.log(`🔘 Button clicked: ${buttonId}`);
+
+    switch (buttonId) {
+      case 'copy':
+        await this.handleCopyButtonClick();
+        break;
+      case 'erase':
+        await this.handleDeleteButtonClick();
+        break;
+      case 'options':
+        console.log('⚙️ Options button clicked (not yet implemented)');
+        break;
+      default:
+        console.warn(`⚠️ Unknown button clicked: ${buttonId}`);
+    }
+  }
+
+  /**
+   * Update button visual states (hover, disabled, etc.)
+   */
+  private updateButtonHighlights(): void {
+    const copyEnabled = this.isCopyButtonEnabled();
+    const deleteEnabled = this.isDeleteButtonEnabled();
+
+    for (const button of this.buttons) {
+      let shouldDisable = false;
+
+      // Determine if button should be disabled
+      if (button.id === 'copy' && !copyEnabled) {
+        shouldDisable = true;
+      } else if (button.id === 'erase' && !deleteEnabled) {
+        shouldDisable = true;
+      }
+
+      // Apply disabled styling
+      if (shouldDisable) {
+        button.graphics.tint = 0x666666; // Grey out
+        button.graphics.alpha = 0.5;
+        button.graphics.eventMode = 'none';
+        button.graphics.cursor = 'default';
+        button.text.alpha = 0.5;
+      } else {
+        button.graphics.tint = 0xffffff; // Normal color
+        button.graphics.alpha = 1;
+        button.graphics.eventMode = 'static';
+        button.graphics.cursor = 'pointer';
+        button.text.alpha = 1;
+      }
+
+      // Highlight hovered button
+      if (this.state.hoveredButton === button.id && !shouldDisable) {
+        button.graphics.alpha = 0.8;
+      }
+    }
   }
 
   /**
@@ -262,8 +730,8 @@ export class ProfileSelectionManager {
     // Buttons (Copy, Erase, Options)
     this.createButtons(gameWorldScale);
 
-    // NOTE: Help text (ENTER/ESC) is only shown on the name entry screen, not profile selection
-    // this.createHelpText(gameWorldScale);
+    // Help text for instruction display (SELECT A PROFILE, CHOOSE A FILE TO DELETE, etc.)
+    this.createHelpText(gameWorldScale);
   }
 
   /**
@@ -301,7 +769,7 @@ export class ProfileSelectionManager {
    * Create 3 profile slots
    */
   private createSlots(scale: number): void {
-    const nameplateWidth = 500 * scale;
+    const _nameplateWidth = 500 * scale; // Reserved for future use
     const nameplateHeight = 80 * scale;
     const slotGap = 30 * scale;
     const startY = 150 * scale;
@@ -439,6 +907,13 @@ export class ProfileSelectionManager {
       graphics.fill(this.config.buttonColor!);
       graphics.x = config.x - buttonWidth / 2;
       graphics.y = startY;
+      graphics.eventMode = 'static';
+      graphics.cursor = 'pointer';
+
+      // Add click handler
+      graphics.on('pointerdown', () => {
+        this.handleButtonClick(config.id);
+      });
 
       const text = new Text({
         text: config.text,
@@ -774,15 +1249,79 @@ export class ProfileSelectionManager {
    */
   private async handleSlotSelection(): Promise<void> {
     const selectedSlot = this.profileData[this.state.selectedSlotIndex];
+    const slotIndex = this.state.selectedSlotIndex;
 
-    if (selectedSlot.isEmpty) {
-      // Empty slot - go to name entry
-      console.log(`🆕 Creating new profile in slot ${selectedSlot.slotNumber}`);
-      this.config.onNewProfile?.(selectedSlot.slotNumber);
-    } else {
-      // Filled slot - load profile
-      console.log(`▶️ Loading profile: ${selectedSlot.dragonName}`);
-      this.config.onProfileSelected?.(selectedSlot.profileId!, selectedSlot.slotNumber);
+    // Route based on current mode
+    switch (this.state.mode) {
+      case 'normal':
+        // Normal mode - create or load profile
+        if (selectedSlot.isEmpty) {
+          // Empty slot - go to name entry
+          console.log(`🆕 Creating new profile in slot ${selectedSlot.slotNumber}`);
+          this.config.onNewProfile?.(selectedSlot.slotNumber);
+        } else {
+          // Filled slot - load profile
+          console.log(`▶️ Loading profile: ${selectedSlot.dragonName}`);
+          this.config.onProfileSelected?.(selectedSlot.profileId!, selectedSlot.slotNumber);
+        }
+        break;
+
+      case 'copy-source':
+        // User is selecting which profile to copy FROM
+        if (selectedSlot.isEmpty) {
+          console.warn('⚠️ Cannot copy from empty slot');
+          return;
+        }
+
+        console.log(`📋 Selected slot ${slotIndex} as copy source`);
+        this.state.copySourceSlot = slotIndex;
+        this.state.mode = 'copy-destination';
+        this.updateInstructionText('Select an empty slot to copy to');
+        this.updateSlotHighlights();
+        break;
+
+      case 'copy-destination':
+        // User is selecting which empty slot to copy TO
+        if (!selectedSlot.isEmpty) {
+          console.warn('⚠️ Cannot copy to filled slot');
+          return;
+        }
+
+        if (this.state.copySourceSlot === null) {
+          console.error('❌ No copy source set');
+          this.state.mode = 'normal';
+          return;
+        }
+
+        console.log(
+          `📋 Selected slot ${slotIndex} as copy destination from slot ${this.state.copySourceSlot}`,
+        );
+        await this.executeCopy(this.state.copySourceSlot, slotIndex);
+        break;
+
+      case 'delete-target': {
+        // User is selecting which profile to delete
+        if (selectedSlot.isEmpty) {
+          console.warn('⚠️ Cannot delete empty slot');
+          return;
+        }
+
+        console.log(`🗑️ Selected slot ${slotIndex} for deletion`);
+        this.state.deleteTargetSlot = slotIndex;
+
+        // Show confirmation dialog
+        const confirmed = await this.showDeleteConfirmation();
+        if (confirmed) {
+          await this.executeDelete(slotIndex);
+        } else {
+          console.log('🚫 Delete operation cancelled');
+          this.state.mode = 'normal';
+          this.state.deleteTargetSlot = null;
+          this.updateInstructionText('Select a profile or create a new one');
+          this.updateSlotHighlights();
+        }
+        break;
+      }
     }
   }
 
@@ -857,7 +1396,17 @@ export class ProfileSelectionManager {
         break;
 
       case 'Escape':
-        this.hide();
+        // Cancel copy/delete operations if in progress
+        if (this.state.mode !== 'normal') {
+          console.log(`🚫 Canceling ${this.state.mode} operation`);
+          this.state.mode = 'normal';
+          this.state.copySourceSlot = null;
+          this.state.deleteTargetSlot = null;
+          this.updateInstructionText('Select a profile or create a new one');
+          this.updateSlotHighlights();
+        } else {
+          this.hide();
+        }
         break;
     }
 
