@@ -5,6 +5,30 @@ architecture, processes, and engineering standards.
 
 ## Navigation
 
+### 🎮 Game Design (v2.4)
+
+**Current authoritative documentation** for all game systems and mechanics:
+
+- **[GDD v2.4.0](./v2.4/GDD_v2.4.0.md)** - Complete Game Design Document
+- **[Tome Index](./v2.4/tome/00_TOME_Index.md)** - Master navigation for all specifications
+- **Game Systems:**
+  - [Tutorial Sequence](./v2.4/tome/01_Game_Flow_MVP.md) - 15-step Ward 1 → Soul Power unlock
+  - [Economy System](./v2.4/tome/02_Economy_System.md) - Arcana, Gold, Soul Power
+  - [Progression System](./v2.4/tome/03_Progression_System.md) - Branching paths, boss encounters
+  - [Building System](./v2.4/tome/04_Building_System.md) - City Council hub
+  - [Combat System](./v2.4/tome/05_Combat_System.md) - Boss waves, world bosses
+  - [Path Navigation](./v2.4/tome/06_Path_Navigation_System.md) - Fast travel, checkpoints
+  - [State Persistence](./v2.4/tome/07_State_Persistence.md) - Save system (Dexie)
+
+**Supporting Documentation:**
+- [Aethervault & Scrolls](./Aethervault_and_Scroll_System_Spec.md) - Scroll collection system
+- [Lore Compendium](./Draconia_Lore_Compendium.md) - World-building canon
+- [Gold Mining Economy](./GOLD_MINING_ECONOMY_SPEC_v1_0.md) - Mining mini-game
+- [Horizon Steppe Colors](./Horizon_Steppe_Color_Palette.md) - Visual reference
+
+**Historical Archive:**
+- [Archive Index](./archive/README.md) - Complete archive of superseded versions (v2.2, v2.3)
+
 ### 📋 [Overview](./overview/README.md)
 
 Product summaries, architecture overviews, and project status:

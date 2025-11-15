@@ -806,43 +806,41 @@ if (this.renderer && this.stage) {
 
 ## Game Design Reference System
 
-**CRITICAL**: All game-related development MUST reference the Draconia Tome of Knowledge for specifications, lore, and balance requirements.
+**CRITICAL**: All game-related development MUST reference the Draconia v2.4.0 documentation for specifications, lore, and balance requirements.
 
-### Draconia Tome Navigation
+### Current Documentation (v2.4.0)
+
+**Version:** 2.4.0 (2025-11-15)
+**Location:** `docs/v2.4/`
+**Archived:** v2.3 documentation in `docs/archive/v2.3/`
 
 #### Primary Entry Points
 
-- **Start Here**: `draconiaChroniclesDocs/README.md` - Overview and integration sources
+- **Start Here**: [docs/v2.4/GDD_v2.4.0.md](docs/v2.4/GDD_v2.4.0.md) - Authoritative game design document
+- **Master Index**: [docs/v2.4/tome/00_TOME_Index.md](docs/v2.4/tome/00_TOME_Index.md) - Complete tome navigation
+- **Archival Notes**: [docs/archive/v2.3/ARCHIVAL_NOTES.md](docs/archive/v2.3/ARCHIVAL_NOTES.md) - What changed from v2.3
 
-- **Master Index**: `draconiaChroniclesDocs/tome/00*TOME*Index_v2.2.md` - Complete navigation
+**Precedence Rule**: GDD_v2.4.0.md is authoritative source
 
-- **Precedence Rule**: If conflicts exist, v2.1 GDD is authoritative over tome
+#### v2.4 Tome Documents (MVP Focus)
 
-#### Development Area Quick Reference
+- **Tutorial Sequence**: `docs/v2.4/tome/01_Game_Flow_MVP.md` - 15-step tutorial implementation
+- **Economy System**: `docs/v2.4/tome/02_Economy_System.md` - Arcana, Gold, Soul Power currencies
+- **Progression System**: `docs/v2.4/tome/03_Progression_System.md` - Branching paths, boss encounters
+- **Building System**: `docs/v2.4/tome/04_Building_System.md` - City Council, 6 buildings
+- **Combat System**: `docs/v2.4/tome/05_Combat_System.md` - v2.4 changes (references v2.3 for details)
+- **Path Navigation**: `docs/v2.4/tome/06_Path_Navigation_System.md` - Fast travel, backtracking
+- **State Persistence**: `docs/v2.4/tome/07_State_Persistence.md` - Save system, journey vs permanent state
 
-- **Core Gameplay Implementation**: `03*ShooterIdle*Core_Loop.md`
+#### v2.3 Reference (Archived)
 
-- **Combat Systems & Enemies**: `05*Combat*Systems*Enemies*Bosses.md`
+**Location:** `docs/archive/v2.3/`
+**Usage:** Reference for detailed combat/ability mechanics not yet updated in v2.4
 
-- **Player Progression**: `04*Progression*Maps*Wards*Lands.md`
-
-- **Economic Systems**: `07*Economy*Currencies*Items*Market.md`
-
-- **Frontend Architecture**: `12*Tech*Architecture_Frontend.md`
-
-- **Web Worker Simulation**: `13*Simulation*Workers_Protocol.md`
-
-- **PixiJS Rendering**: `14*Rendering*Pixi*Perf*Budgets.md`
-
-- **Database Schema**: `15*Persistence*Save*Dexie*Schema.md`
-
-- **Tech Tree Systems**: `16*Firecraft*Safety*Scales*Tech_Trees.md`
-
-- **Region Content**: `18*Region*R01*Horizon*Steppe.md`
-
-- **Premium Currency**: `19*Premium*Currency*Astral*Seals.md`
-
-- **Game Balance**: `20*Balancing*Math*Curves*Tables.md`
+- **Combat Details**: `docs/archive/v2.3/tome/05_Combat_Systems_Enemies_Bosses.md`
+- **Abilities**: `docs/archive/v2.3/tome/06_Abilities_Skills_Rituals.md`
+- **Tech Trees**: `docs/archive/v2.3/tome/16_Firecraft_Safety_Scales_Tech_Trees.md`
+- **Technical Architecture**: `docs/archive/v2.3/tome/12-15*.md`
 
 ### Mandatory Game Design Compliance
 
